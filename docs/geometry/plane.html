@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>plane.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="../docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>plane.coffee</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h2 id="about">ABOUT</h2>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>             .__   
+_________  __|  |  
+\____ \  \/  /  |  
+|  |_&gt; &gt;    &lt;|  |__
+|   __<span class="hljs-regexp">/__/</span>\_ \____/
+|__|        \/     js
+
+                    PXL.js
+                    Benjamin Blundell - ben@pxljs.com
+                    http:<span class="hljs-regexp">//</span>pxljs.com
+
+This software <span class="hljs-keyword">is</span> released under the MIT Licence. See LICENCE.txt <span class="hljs-keyword">for</span> details</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>##</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+
+{RGBA,RGB} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../colour/colour'</span>
+{Matrix4,Vec2,Vec3,Vec4} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../math/math'</span>
+{Geometry} = <span class="hljs-built_in">require</span> <span class="hljs-string">'./primitive'</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>##Plane###
+Basically, a varying resolution Quad made up of quads, -1 to 1, parallel to x/z plane
+Quads are added but the indices are triangles</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Plane</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Geometry</span> </span>
+
+  constructor: <span class="hljs-function"><span class="hljs-params">(@xres=<span class="hljs-number">1</span>, @zres=<span class="hljs-number">1</span>)</span> -&gt;</span>
+    <span class="hljs-keyword">super</span>()
+    @v = []
+    @faces = []
+    @indexed = <span class="hljs-literal">true</span>
+    @indices = []
+
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.zres<span class="hljs-number">-1</span>]
+      <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.xres<span class="hljs-number">-1</span>]
+        xp = <span class="hljs-number">-1.0</span> + (<span class="hljs-number">2.0</span> / xres * j)
+        zp = <span class="hljs-number">-1.0</span> + (<span class="hljs-number">2.0</span> / zres * i)
+        xt = <span class="hljs-number">1.0</span> / xres * j
+        zt = <span class="hljs-number">1.0</span> / zres * i
+        
+        @vertices.push <span class="hljs-keyword">new</span> Vertex
+          p : <span class="hljs-keyword">new</span> Vec3 xp,<span class="hljs-number">0</span>,zp
+          c : <span class="hljs-keyword">new</span> RGBA <span class="hljs-number">1.0</span>,<span class="hljs-number">1.0</span>,<span class="hljs-number">1.0</span>,<span class="hljs-number">1.0</span>
+          n : <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>
+          t : <span class="hljs-keyword">new</span> Vec2 xt,zt</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>create indices as triangles - anti-clockwise winding</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">for</span> z <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.zres<span class="hljs-number">-2</span>]
+      <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.xres<span class="hljs-number">-2</span>]
+        row = xres*z
+        row2 = xres*(z+<span class="hljs-number">1</span>)
+
+        @indices.push row+x
+        @indices.push row2+x
+        @indices.push row+x+<span class="hljs-number">1</span>
+        @indices.push row+x+<span class="hljs-number">1</span>
+        @indices.push row2+x
+        @indices.push row2+x+<span class="hljs-number">1</span>
+        
+        @faces.push <span class="hljs-keyword">new</span> Quad @v[row2+x], @v[row2+x+<span class="hljs-number">1</span>], @v[row+x+<span class="hljs-number">1</span>], @v[row+x]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>##PlaneFlat###
+Flat refers to the data size being fixed and the arrays already set
+Vertices are arranged as a triangle strip. Vertices are indexed so 
+as not to show cracks. We use degenerate triangles in order to create
+a proper plane.
+Designed for really large meshes</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>TODO - greater than 256x256 causes issues
+TODO - Tangents? Options for normals etc?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PlaneFlat</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Geometry</span> </span>
+
+  constructor: <span class="hljs-function"><span class="hljs-params">(@xres=<span class="hljs-number">2</span>, @zres=<span class="hljs-number">2</span>)</span> -&gt;</span>
+    <span class="hljs-keyword">super</span>()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>TODO - Can we have options here?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    tt = xres * zres
+
+    @p = <span class="hljs-keyword">new</span> Float32Array(tt * <span class="hljs-number">3</span>)
+    @t = <span class="hljs-keyword">new</span> Float32Array(tt * <span class="hljs-number">2</span>)
+    @n = <span class="hljs-keyword">new</span> Float32Array(tt * <span class="hljs-number">3</span>)
+    @c = <span class="hljs-keyword">new</span> Float32Array(tt * <span class="hljs-number">4</span>)
+    @indices = <span class="hljs-keyword">new</span> Uint16Array(xres * (zres - <span class="hljs-number">1</span>) * <span class="hljs-number">2</span>)
+
+    @indexed = <span class="hljs-literal">true</span>
+    @flat = <span class="hljs-literal">true</span>
+
+    @layout = GL.TRIANGLE_STRIP <span class="hljs-keyword">if</span> GL?
+
+    idv = <span class="hljs-number">0</span>
+    idt = <span class="hljs-number">0</span>
+    idc = <span class="hljs-number">0</span>
+    idn = <span class="hljs-number">0</span>
+    idx = <span class="hljs-number">0</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>create rows and columns of vertices - left to right, bottom to top</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.zres<span class="hljs-number">-1</span>]
+
+      <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.xres<span class="hljs-number">-1</span>]
+
+        xp = <span class="hljs-number">-1.0</span> + (<span class="hljs-number">2.0</span> / (xres<span class="hljs-number">-1</span>) * j)
+        zp = <span class="hljs-number">-1.0</span> + (<span class="hljs-number">2.0</span> / (zres<span class="hljs-number">-1</span>) * i)
+
+        @p[idv++] = xp
+        @p[idv++] = <span class="hljs-number">0</span>
+        @p[idv++] = zp
+
+        xt = <span class="hljs-number">1.0</span> / (xres<span class="hljs-number">-1</span>) * j
+        zt = <span class="hljs-number">1.0</span> / (zres<span class="hljs-number">-1</span>) * i
+
+        @t[idt++] = xt
+        @t[idt++] = zt
+
+        @c[idc++] = <span class="hljs-number">1.0</span>
+        @c[idc++] = <span class="hljs-number">1.0</span>
+        @c[idc++] = <span class="hljs-number">1.0</span>
+        @c[idc++] = <span class="hljs-number">1.0</span>
+
+        @n[idn++] = <span class="hljs-number">0.0</span>
+        @n[idn++] = <span class="hljs-number">1.0</span>
+        @n[idn++] = <span class="hljs-number">0.0</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Now add the indices - triangle strip</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.zres<span class="hljs-number">-2</span>]
+
+      <span class="hljs-keyword">if</span> i % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>
+
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.xres<span class="hljs-number">-1</span>]
+          
+          @indices[idx++] = xres * i + j
+          @indices[idx++] = xres * (i+<span class="hljs-number">1</span>) + j
+    
+      <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> [xres<span class="hljs-number">-1.</span><span class="hljs-number">.0</span>]
+
+          @indices[idx++] = xres * (i+<span class="hljs-number">1</span>) + j
+          @indices[idx++] = xres * i + j</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Overridden from the Geometry Class as its the only one so far that uses 
+a flat tristrip</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  getTrisIndexer : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+<span class="hljs-function">
+    <span class="hljs-title">flat_indexed_tristrip</span> = <span class="hljs-params">(index)</span> =&gt;</span>
+      <span class="hljs-keyword">return</span> [ <span class="hljs-keyword">new</span> Vec3( @p[ @indices[index] * <span class="hljs-number">3</span> ], @p[ @indices[index ] * <span class="hljs-number">3</span> + <span class="hljs-number">1</span> ], @p[ @indices[index] * <span class="hljs-number">3</span> + <span class="hljs-number">2</span>]),
+        <span class="hljs-keyword">new</span> Vec3( @p[ @indices[index + <span class="hljs-number">1</span>] * <span class="hljs-number">3</span>], @p[ @indices[index + <span class="hljs-number">1</span>] * <span class="hljs-number">3</span> + <span class="hljs-number">1</span>], @p[ @indices[index + <span class="hljs-number">1</span>] * <span class="hljs-number">3</span> + <span class="hljs-number">2</span>]),
+        <span class="hljs-keyword">new</span> Vec3( @p[ @indices[index+ <span class="hljs-number">2</span>] * <span class="hljs-number">3</span>], @p[ @indices[index + <span class="hljs-number">2</span>] * <span class="hljs-number">3</span> + <span class="hljs-number">1</span>], @p[ @indices[index + <span class="hljs-number">2</span>] * <span class="hljs-number">3</span> + <span class="hljs-number">2</span>])]
+
+
+    <span class="hljs-keyword">return</span> flat_indexed_tristrip</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>##PlaneHexagonFlat###
+Very similar to the plane flat, only this one is laid out with pretty
+triangles as oppose to strips, with a ragged edge, giving regular hexagons
+Flat refers to the data size being fixed and the arrays already set
+It is indexed as otherwise, we get cracks.
+It also include the barycentre for rendering wireframe
+TODO - Tangents? Options for normals etc?</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>TODO - Certain resolutions are causing issues</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PlaneHexagonFlat</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Geometry</span></span>
+
+  constructor: <span class="hljs-function"><span class="hljs-params">(@xres=<span class="hljs-number">2</span>, @zres=<span class="hljs-number">2</span>, indexed=<span class="hljs-literal">true</span>)</span> -&gt;</span>
+    <span class="hljs-keyword">super</span>()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>TODO - Can we have options here?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    ep = Math.floor(@zres/<span class="hljs-number">2</span>) + <span class="hljs-number">1</span> 
+
+    tt = <span class="hljs-number">3</span> * @xres * @zres
+    
+    @indexed = indexed 
+
+    <span class="hljs-keyword">if</span> @indexed
+      tt = (ep * (@xres<span class="hljs-number">-1</span>)) + ((@zres - ep + <span class="hljs-number">1</span>) * (@xres<span class="hljs-number">-2</span>)) 
+
+    @p = <span class="hljs-keyword">new</span> Float32Array(tt * <span class="hljs-number">3</span>)
+    @t = <span class="hljs-keyword">new</span> Float32Array(tt * <span class="hljs-number">2</span>)
+    @n = <span class="hljs-keyword">new</span> Float32Array(tt * <span class="hljs-number">3</span>)
+    @c = <span class="hljs-keyword">new</span> Float32Array(tt * <span class="hljs-number">4</span>)
+    @indices = <span class="hljs-keyword">new</span> Uint16Array( <span class="hljs-number">3</span> * @xres * @zres)
+    @y = <span class="hljs-keyword">new</span> Float32Array(tt * <span class="hljs-number">3</span>) 
+
+    @flat = <span class="hljs-literal">true</span>
+
+    @layout = GL.TRIANGLES <span class="hljs-keyword">if</span> GL?
+
+    idv = <span class="hljs-number">0</span>
+    idt = <span class="hljs-number">0</span>
+    idc = <span class="hljs-number">0</span>
+    idn = <span class="hljs-number">0</span>
+    idx = <span class="hljs-number">0</span>
+    idy = <span class="hljs-number">0</span>
+    bc = <span class="hljs-number">0</span>
+    idu = <span class="hljs-number">0</span>
+    sstep = [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]
+
+    edge_width = <span class="hljs-number">2.0</span> / Math.ceil(@xres/<span class="hljs-number">2</span>)
+    tex_width = <span class="hljs-number">1.0</span> / Math.ceil(@xres/<span class="hljs-number">2</span>)
+   
+    barycentres = [[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>], [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>], [<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>]]
+
+    points = @p
+    texcoords = @t
+    colours = @c
+    normals = @n
+    baries = @y
+    
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @indexed
+      tt = (ep * (@xres<span class="hljs-number">-1</span>)) + ((@zres - ep + <span class="hljs-number">1</span>) * (@xres<span class="hljs-number">-2</span>)) 
+      points = <span class="hljs-keyword">new</span> Float32Array(tt * <span class="hljs-number">3</span>)
+      texcoords = <span class="hljs-keyword">new</span> Float32Array(tt * <span class="hljs-number">2</span>)
+      colours = <span class="hljs-keyword">new</span> Float32Array(tt * <span class="hljs-number">4</span>)
+      normals = <span class="hljs-keyword">new</span> Float32Array(tt * <span class="hljs-number">3</span>)
+      baries = <span class="hljs-keyword">new</span> Float32Array(tt * <span class="hljs-number">3</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>create rows and columns of vertices - left to right, bottom to top</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.@zres]
+
+      offset = <span class="hljs-number">0</span>
+      tex_offset = <span class="hljs-number">0</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>This row is the full width</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      row_width = @xres - <span class="hljs-number">1</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>but this one isnt</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> i % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>
+        row_width = @xres - <span class="hljs-number">2</span>
+        offset = edge_width / <span class="hljs-number">2</span>
+        tex_offset = tex_width / <span class="hljs-number">2</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>Barycentre stuff</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      bc = sstep[idu]
+
+      <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.row_width<span class="hljs-number">-1</span>]
+
+        xp = <span class="hljs-number">-1.0</span> + (j * edge_width) + offset
+        zp = <span class="hljs-number">-1.0</span> + (<span class="hljs-number">2.0</span> / (@zres) * i)
+
+        points[idv++] = xp
+        points[idv++] = <span class="hljs-number">0</span>
+        points[idv++] = zp
+
+        xt = tex_width * j + tex_offset
+        zt = <span class="hljs-number">1.0</span> / @zres * i
+
+        texcoords[idt++] = xt
+        texcoords[idt++] = zt
+
+        colours[idc++] = <span class="hljs-number">1.0</span>
+        colours[idc++] = <span class="hljs-number">1.0</span>
+        colours[idc++] = <span class="hljs-number">1.0</span>
+        colours[idc++] = <span class="hljs-number">1.0</span>
+
+        normals[idn++] = <span class="hljs-number">0.0</span>
+        normals[idn++] = <span class="hljs-number">1.0</span>
+        normals[idn++] = <span class="hljs-number">0.0</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>Barycentre
+TODO - export barycentre calculation in a similar manner to compute tangents</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        baries[idy++] = barycentres[bc][<span class="hljs-number">0</span>]
+        baries[idy++] = barycentres[bc][<span class="hljs-number">1</span>]
+        baries[idy++] = barycentres[bc][<span class="hljs-number">2</span>]
+
+        bc++
+        <span class="hljs-keyword">if</span> bc &gt; <span class="hljs-number">2</span>
+          bc = <span class="hljs-number">0</span>
+
+      idu++
+      <span class="hljs-keyword">if</span> idu &gt; <span class="hljs-number">1</span>
+        idu = <span class="hljs-number">0</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>Now add the indices - triangles</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    
+    <span class="hljs-keyword">for</span> z <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.@zres<span class="hljs-number">-1</span>]
+
+      row0 = Math.floor(z/<span class="hljs-number">2</span>) * (@xres<span class="hljs-number">-2</span> + @xres<span class="hljs-number">-1</span>)
+      row1 = row0 + @xres - <span class="hljs-number">2</span>
+
+      te = Math.ceil(@xres/<span class="hljs-number">2</span>)
+      be = Math.floor(@xres/<span class="hljs-number">2</span>)
+  
+      odds = <span class="hljs-literal">false</span>
+      <span class="hljs-keyword">if</span> z % <span class="hljs-number">2</span> != <span class="hljs-number">0</span>
+        odds = <span class="hljs-literal">true</span>
+        row0 = row1
+        row1 = row0 + @xres - <span class="hljs-number">1</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>Swap top edge / bottom edge</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        tt = te
+        te = be
+        be = tt</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>bottom edge</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.be<span class="hljs-number">-1</span>]
+
+        <span class="hljs-keyword">if</span> odds
+          @indices[idx++] = row1 + x
+        <span class="hljs-keyword">else</span>
+          @indices[idx++] = row1 + x + <span class="hljs-number">1</span>
+
+        @indices[idx++] = row0 + x + <span class="hljs-number">1</span>
+        @indices[idx++] = row0 + x</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>top edge</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.te<span class="hljs-number">-1</span>]
+        @indices[idx++] = row1 + x
+        @indices[idx++] = row1 + x + <span class="hljs-number">1</span>
+      
+        <span class="hljs-keyword">if</span> odds
+          @indices[idx++] = row0 + x + <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>
+          @indices[idx++] = row0 + x
+   
+    
+    idt = <span class="hljs-number">0</span>
+    idc = <span class="hljs-number">0</span>
+    idp = <span class="hljs-number">0</span>
+    idn = <span class="hljs-number">0</span> 
+    idy = <span class="hljs-number">0</span>
+
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @indexed
+      <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.@indices.length<span class="hljs-number">-1</span>]
+        idx = @indices[i]
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span><span class="hljs-number">.2</span>]
+          @p[ idp++ ] = points[idx * <span class="hljs-number">3</span> + j]
+
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span><span class="hljs-number">.3</span>]
+          @c[ idc++ ] = colours[idx * <span class="hljs-number">4</span> + j]
+
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span><span class="hljs-number">.1</span>]
+          @t[ idt++ ] = texcoords[idx * <span class="hljs-number">2</span> + j]
+
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span><span class="hljs-number">.2</span>]
+          @n[ idn++ ] = normals[idx * <span class="hljs-number">3</span> + j]
+        
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span><span class="hljs-number">.2</span>]
+          @y[ idy++ ] = baries[idx * <span class="hljs-number">3</span> + j]
+
+      @indices = []
+
+<span class="hljs-built_in">module</span>.exports =
+  Plane : Plane 
+  PlaneFlat : PlaneFlat
+  PlaneHexagonFlat : PlaneHexagonFlat</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

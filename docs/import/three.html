@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>three.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="../docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>three.coffee</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h2 id="about">ABOUT</h2>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>             .__   
+_________  __|  |  
+\____ \  \/  /  |  
+|  |_&gt; &gt;    &lt;|  |__
+|   __<span class="hljs-regexp">/__/</span>\_ \____/
+|__|        \/     js
+
+                    PXL.js
+                    Benjamin Blundell - ben@pxljs.com
+                    http:<span class="hljs-regexp">//</span>pxljs.com
+
+This software <span class="hljs-keyword">is</span> released under the MIT Licence. See LICENCE.txt <span class="hljs-keyword">for</span> details
+
+
+- Resources
+
+* http:<span class="hljs-regexp">//</span>www.yuiblog.com<span class="hljs-regexp">/blog/2007/06/12/module-pattern/</span>
+* http:<span class="hljs-regexp">//</span>www.plexical.com<span class="hljs-regexp">/blog/2012/01/25/writing-coffeescript-for-browser-and-nod/</span>
+
+A mesh <span class="hljs-keyword">is</span> a collection <span class="hljs-keyword">of</span> triangles with <span class="hljs-keyword">or</span> without indices. All the triangles should have the same kinds <span class="hljs-keyword">of</span> vertices 
+
+- TODO
+  * We split <span class="hljs-literal">on</span> materials at present. We should split <span class="hljs-literal">on</span> meshes <span class="hljs-keyword">if</span> possible but
+    <span class="hljs-keyword">not</span> sure <span class="hljs-keyword">if</span> the three.js supports that. For example, normal map <span class="hljs-keyword">and</span> diffuse
+    textures per mesh. Double check the three standard
+
+  * There are texture loads <span class="hljs-keyword">in</span> here. We need to set their callbacks <span class="hljs-keyword">and</span> have a signal
+    <span class="hljs-keyword">in</span> here <span class="hljs-keyword">for</span> <span class="hljs-keyword">when</span> everything completes as 
+
+  * <span class="hljs-keyword">is</span> it a great idea to have an internal load queue
+    - Probably <span class="hljs-keyword">not</span> but we need to hook out to an external load queue so pass one <span class="hljs-keyword">in</span>
+
+ThreeJSModel <span class="hljs-keyword">is</span> a node that creates geometries below it which are also nodes. These geometries are drawn seperatly, each with their own material. 
+Accepts three.js style json model format</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>##</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+
+{Triangle, Quad, Vertex, TriangleMesh } = <span class="hljs-built_in">require</span> <span class="hljs-string">'../geometry/primitive'</span>
+{Node} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../core/node'</span>
+{Vec2, Vec3, Vec4, Matrix4} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../math/math'</span>
+{PhongBasicMaterial} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../material/phong'</span>
+{RGB,RGBA} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../colour/colour'</span>
+{Texture} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../gl/texture'</span>
+{Request} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../util/request'</span>
+{Signal} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../util/signal'</span>
+{PXLWarning} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../util/log'</span>
+{Promise} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../util/promise'</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>##ThreeJSModel###
+ThreeJSModel accepts a json format of model (three.js version 3.1) and creates a set of nodes
+with a single top node, representing the model.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ThreeJSModel</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Node</span></span>
+
+  _bitset: <span class="hljs-function"><span class="hljs-params">(value, position)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> value &amp; ( <span class="hljs-number">1</span> &lt;&lt; position );</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Given data create the model
+materials contain links to the textures they may or may not need
+params is a dictionary of options we may wish to pass in such as
+params.texturing = true/false - default = true
+params.onLoad = called when the model is finally loaded
+params.onItem = called when individual items are loaded</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  constructor: <span class="hljs-function"><span class="hljs-params">(json_data, @params)</span> -&gt;</span>
+    <span class="hljs-keyword">super</span>()
+    
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @params?
+      @params = {}
+      @params.texturing = <span class="hljs-literal">true</span>
+
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @params.texturing?
+        @params.texturing = <span class="hljs-literal">true</span>
+    
+
+    @queue = <span class="hljs-keyword">new</span> LoadQueue(@, @params.onItem, @params.onLoad)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>We create one node per material - but each node shares all the buffers save
+for the indices</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    materials = json_data[<span class="hljs-string">"materials"</span>]
+
+    <span class="hljs-keyword">if</span> materials.length == <span class="hljs-number">0</span>
+      @add(<span class="hljs-keyword">new</span> Node(<span class="hljs-keyword">new</span> TriangleMesh(<span class="hljs-literal">true</span>)))
+    <span class="hljs-keyword">else</span>
+
+      <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.materials.length<span class="hljs-number">-1</span>]
+
+        n = <span class="hljs-keyword">new</span> Node()
+        @add(n)
+
+        n.dbgName = json_data[<span class="hljs-string">"materials"</span>][i][<span class="hljs-string">"DbgName"</span>] <span class="hljs-keyword">if</span> json_data[<span class="hljs-string">"materials"</span>][i][<span class="hljs-string">"DbgName"</span>]?</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>TODO - DbgIndex == 1 - is that kosher?
+TODO - defaulting to basic Phong Texture</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> json_data[<span class="hljs-string">"materials"</span>][i][<span class="hljs-string">"DbgName"</span>] == <span class="hljs-string">"default"</span> <span class="hljs-keyword">or</span>  json_data[<span class="hljs-string">"materials"</span>][i][<span class="hljs-string">"DbgIndex"</span>] == <span class="hljs-number">1</span>
+          n.add PhongColourMaterial()
+       
+        <span class="hljs-keyword">else</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Create a new material for this node</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          colourAmbient = <span class="hljs-keyword">new</span> RGB(json_data[<span class="hljs-string">"materials"</span>][i][<span class="hljs-string">"colorAmbient"</span>][<span class="hljs-number">0</span>],
+            json_data[<span class="hljs-string">"materials"</span>][i][<span class="hljs-string">"colorAmbient"</span>][<span class="hljs-number">1</span>],
+            json_data[<span class="hljs-string">"materials"</span>][i][<span class="hljs-string">"colorAmbient"</span>][<span class="hljs-number">2</span>])
+          <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> colourAmbient?
+            colourAmbient = RGB.WHITE()
+
+          colourDiffuse = <span class="hljs-keyword">new</span> RGB(json_data[<span class="hljs-string">"materials"</span>][i][<span class="hljs-string">"colorDiffuse"</span>][<span class="hljs-number">0</span>],
+            json_data[<span class="hljs-string">"materials"</span>][i][<span class="hljs-string">"colorDiffuse"</span>][<span class="hljs-number">1</span>],
+            json_data[<span class="hljs-string">"materials"</span>][i][<span class="hljs-string">"colorDiffuse"</span>][<span class="hljs-number">2</span>])
+          <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> colourDiffuse?
+            colourDiffuse = RGB.WHITE()
+
+          colourSpecular = <span class="hljs-keyword">new</span> RGB(json_data[<span class="hljs-string">"materials"</span>][i][<span class="hljs-string">"colorSpecular"</span>][<span class="hljs-number">0</span>],
+            json_data[<span class="hljs-string">"materials"</span>][i][<span class="hljs-string">"colorSpecular"</span>][<span class="hljs-number">1</span>],
+            json_data[<span class="hljs-string">"materials"</span>][i][<span class="hljs-string">"colorSpecular"</span>][<span class="hljs-number">2</span>])
+
+          <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> colourSpecular?
+            colourSpecular = RGB.WHITE()
+
+          specularCoef = json_data[<span class="hljs-string">"materials"</span>][i][<span class="hljs-string">"specularCoef"</span>]
+
+          <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> json_data[<span class="hljs-string">"materials"</span>][i][<span class="hljs-string">"mapDiffuse"</span>]?
+            n.add(<span class="hljs-keyword">new</span> PhongColourMaterial(colourAmbient, colourDiffuse, colourSpecular, specularCoef))
+          
+        n.geometry = <span class="hljs-keyword">new</span> TriangleMesh(<span class="hljs-literal">true</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Create a texture for this node if there is one</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+        <span class="hljs-keyword">if</span> @params.texturing
+
+          <span class="hljs-keyword">if</span> json_data[<span class="hljs-string">"materials"</span>][i][<span class="hljs-string">"mapDiffuse"</span>]? <span class="hljs-keyword">and</span> json_data._coffeegl_request_url?</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Exporting three.js in blender seems to give just the filename of the texture
+So I pass it in here. We assume textures are in the same dir as the model file</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            
+            url = json_data._coffeegl_request_url.substring(<span class="hljs-number">0</span>, json_data._coffeegl_request_url.lastIndexOf(<span class="hljs-string">"/"</span>));
+            path =  url + <span class="hljs-string">"/"</span> + json_data[<span class="hljs-string">"materials"</span>][i][<span class="hljs-string">"mapDiffuse"</span>]
+            cc = PXL.Context</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Close over the variables at this point</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      
+            tf = <span class="hljs-keyword">new</span> LoadItem <span class="hljs-keyword">do</span> (n,path) -&gt;
+              _n = n
+              _path = path
+              _cc = cc           
+              <span class="hljs-keyword">return</span> () -&gt;
+                PXL.Context.switchContext _cc</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Some heavy closures going on here! :P</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>                PXL.GL.textureFromURL(_path, <span class="hljs-function"><span class="hljs-params">(texture)</span> =&gt;</span> 
+                  _n.add(<span class="hljs-keyword">new</span> PhongBasicMaterial(texture, colourAmbient, colourDiffuse, colourSpecular, specularCoef))
+                  @loaded()
+                  @ 
+                )
+              
+              @
+              
+            @queue.add tf</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>if @children.length &gt; 1
+ for i in [1..@children.length-1]
+   @children[i].geometry.vertices = @children[0].geometry.vertices</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>   
+    cc = PXL.Context
+    model = @
+    closure_parse  = <span class="hljs-keyword">do</span> (n,model) -&gt;
+      data = json_data
+      _model = model
+      _cc = cc
+      <span class="hljs-keyword">return</span> () =&gt;
+        PXL.Context.switchContext _cc
+        _model._parse(data)
+
+    @queue.add <span class="hljs-keyword">new</span> LoadItem () -&gt; 
+      closure_parse()
+      @loaded()
+
+    @queue.start()
+
+  _parse : <span class="hljs-function"><span class="hljs-params">(json_data)</span> =&gt;</span>
+
+    node_idx = <span class="hljs-number">0</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>create the vertices
+Assume normals for all in these meshes as we seem to occasionally get missing ones</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    vidx = <span class="hljs-number">0</span>
+    vertices = []
+    <span class="hljs-keyword">while</span> vidx &lt; json_data[<span class="hljs-string">"vertices"</span>].length
+      vertices.push <span class="hljs-keyword">new</span> Vertex
+        p : <span class="hljs-keyword">new</span> Vec3(json_data[<span class="hljs-string">"vertices"</span>][vidx++], json_data[<span class="hljs-string">"vertices"</span>][vidx++], json_data[<span class="hljs-string">"vertices"</span>][vidx++])</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>@children[0].geometry.addVertex new Vertex(new Vec3(json_data[“vertices”][vidx++], json_data[“vertices”][vidx++], json_data[“vertices”][vidx++]),
+undefined,
+new Vec3(1.0,0.0,0.0))</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>We have to have matching colours if we havent been provided with any. At least for now. We can decorate with
+a material class later perhaps?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    i = <span class="hljs-number">0</span>
+    
+    <span class="hljs-keyword">while</span> i &lt; json_data[<span class="hljs-string">"faces"</span>].length
+
+      type = json_data[<span class="hljs-string">"faces"</span>][i++]
+
+      prim</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>TODO - Move final vertex prim to the end once we have all the vertex data if possible
+Quad or Triangle</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>TODO - Differing face types should result in differing geometry and nodes</p>
+<ul>
+<li>we need to check which material we have and whether or not we need another
+node at all?</li>
+</ul>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>TODO - We assume that differing faces types are different materials - possibly not true</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+      vi0
+      vi1
+      vi2
+      vi3
+      midx = {id:<span class="hljs-number">0</span> , type: <span class="hljs-number">-1</span>}
+
+      <span class="hljs-keyword">if</span> @_bitset(type,<span class="hljs-number">0</span>)
+        
+        vi0 = json_data[<span class="hljs-string">"faces"</span>][i++]
+        vi1 = json_data[<span class="hljs-string">"faces"</span>][i++]
+        vi2 = json_data[<span class="hljs-string">"faces"</span>][i++]
+        vi3 = json_data[<span class="hljs-string">"faces"</span>][i++]
+
+        prim = <span class="hljs-keyword">new</span> Quad(vertices[vi0], vertices[vi1], vertices[vi2], vertices[vi3])
+        prim.indexed = <span class="hljs-literal">true</span>
+
+      <span class="hljs-keyword">else</span>
+        vi0 = json_data[<span class="hljs-string">"faces"</span>][i++]
+        vi1 = json_data[<span class="hljs-string">"faces"</span>][i++]
+        vi2 = json_data[<span class="hljs-string">"faces"</span>][i++]
+
+        prim = <span class="hljs-keyword">new</span> Triangle(vertices[vi0], vertices[vi1], vertices[vi2])
+        prim.indexed = <span class="hljs-literal">true</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>Material</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> @_bitset(type,<span class="hljs-number">1</span>)
+        midx.id = json_data[<span class="hljs-string">"faces"</span>][i++]
+        type2 = type | <span class="hljs-number">1</span> <span class="hljs-comment"># ignore quad or tris</span>
+        <span class="hljs-keyword">if</span> midx.type == <span class="hljs-number">-1</span>
+          midx.type = type2
+        <span class="hljs-keyword">else</span>
+          <span class="hljs-keyword">if</span> type2 != midx.type
+            PXLWarning <span class="hljs-string">"Different types within the same material"</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>Face UV</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> @_bitset(type,<span class="hljs-number">2</span>)
+        uvidx = json_data[<span class="hljs-string">"faces"</span>][i++]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>Vertex UV
+TODO - For some reason, UVS are held inside another array. Dunno why
+hence the [“uvs”][0][i0] thing</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+      <span class="hljs-keyword">if</span> @_bitset(type,<span class="hljs-number">3</span>)
+        i0 = json_data[<span class="hljs-string">"faces"</span>][i++]
+        i1 = json_data[<span class="hljs-string">"faces"</span>][i++]
+        i2 = json_data[<span class="hljs-string">"faces"</span>][i++]
+        <span class="hljs-keyword">if</span> prim <span class="hljs-keyword">instanceof</span> Quad
+          i3 = json_data[<span class="hljs-string">"faces"</span>][i++]
+          vertices[vi3].t = <span class="hljs-keyword">new</span> Vec2(json_data[<span class="hljs-string">"uvs"</span>][<span class="hljs-number">0</span>][i3*<span class="hljs-number">2</span>], json_data[<span class="hljs-string">"uvs"</span>][<span class="hljs-number">0</span>][i3*<span class="hljs-number">2</span>+<span class="hljs-number">1</span>])
+        
+        vertices[vi0].t = <span class="hljs-keyword">new</span> Vec2(json_data[<span class="hljs-string">"uvs"</span>][<span class="hljs-number">0</span>][i0*<span class="hljs-number">2</span>], json_data[<span class="hljs-string">"uvs"</span>][<span class="hljs-number">0</span>][i0*<span class="hljs-number">2</span>+<span class="hljs-number">1</span>])
+        vertices[vi1].t = <span class="hljs-keyword">new</span> Vec2(json_data[<span class="hljs-string">"uvs"</span>][<span class="hljs-number">0</span>][i1*<span class="hljs-number">2</span>], json_data[<span class="hljs-string">"uvs"</span>][<span class="hljs-number">0</span>][i1*<span class="hljs-number">2</span>+<span class="hljs-number">1</span>])
+        vertices[vi2].t = <span class="hljs-keyword">new</span> Vec2(json_data[<span class="hljs-string">"uvs"</span>][<span class="hljs-number">0</span>][i2*<span class="hljs-number">2</span>], json_data[<span class="hljs-string">"uvs"</span>][<span class="hljs-number">0</span>][i2*<span class="hljs-number">2</span>+<span class="hljs-number">1</span>])</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>Face normal</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> @_bitset(type,<span class="hljs-number">4</span>)
+        nidx = json_data[<span class="hljs-string">"faces"</span>][i++]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>Face Vertex Normals</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> @_bitset(type,<span class="hljs-number">5</span>)
+        i0 = json_data[<span class="hljs-string">"faces"</span>][i++]
+        i1 = json_data[<span class="hljs-string">"faces"</span>][i++]
+        i2 = json_data[<span class="hljs-string">"faces"</span>][i++]
+        <span class="hljs-keyword">if</span> prim <span class="hljs-keyword">instanceof</span> Quad
+          i3 = json_data[<span class="hljs-string">"faces"</span>][i++]
+          vertices[vi3].n = <span class="hljs-keyword">new</span> Vec3(json_data[<span class="hljs-string">"normals"</span>][i3*<span class="hljs-number">3</span>], json_data[<span class="hljs-string">"normals"</span>][i3*<span class="hljs-number">3</span>+<span class="hljs-number">1</span>], json_data[<span class="hljs-string">"normals"</span>][i3*<span class="hljs-number">3</span>+<span class="hljs-number">2</span>])
+        
+        vertices[vi0].n = <span class="hljs-keyword">new</span> Vec3(json_data[<span class="hljs-string">"normals"</span>][i0*<span class="hljs-number">3</span>], json_data[<span class="hljs-string">"normals"</span>][i0*<span class="hljs-number">3</span>+<span class="hljs-number">1</span>], json_data[<span class="hljs-string">"normals"</span>][i0*<span class="hljs-number">3</span>+<span class="hljs-number">2</span>])
+        vertices[vi1].n = <span class="hljs-keyword">new</span> Vec3(json_data[<span class="hljs-string">"normals"</span>][i1*<span class="hljs-number">3</span>], json_data[<span class="hljs-string">"normals"</span>][i1*<span class="hljs-number">3</span>+<span class="hljs-number">1</span>], json_data[<span class="hljs-string">"normals"</span>][i1*<span class="hljs-number">3</span>+<span class="hljs-number">2</span>])
+        vertices[vi2].n = <span class="hljs-keyword">new</span> Vec3(json_data[<span class="hljs-string">"normals"</span>][i2*<span class="hljs-number">3</span>], json_data[<span class="hljs-string">"normals"</span>][i2*<span class="hljs-number">3</span>+<span class="hljs-number">1</span>], json_data[<span class="hljs-string">"normals"</span>][i2*<span class="hljs-number">3</span>+<span class="hljs-number">2</span>])</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>Face colour</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> @_bitset(type,<span class="hljs-number">6</span>)
+        cidx = json_data[<span class="hljs-string">"faces"</span>][i++]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>Face Vertex Colours</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> @_bitset(type,<span class="hljs-number">7</span>)
+        i0 = json_data[<span class="hljs-string">"faces"</span>][i++]
+        i1 = json_data[<span class="hljs-string">"faces"</span>][i++]
+        i2 = json_data[<span class="hljs-string">"faces"</span>][i++]
+        <span class="hljs-keyword">if</span> prim <span class="hljs-keyword">instanceof</span> Quad
+          i3 = json_data[<span class="hljs-string">"faces"</span>][i++]
+
+      <span class="hljs-keyword">if</span> prim <span class="hljs-keyword">instanceof</span> Triangle
+        @children[midx.id].geometry.addTriangle(prim)
+      <span class="hljs-keyword">else</span>
+        @children[midx.id].geometry.addQuad(prim)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>remove any children with no geometry</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    removals = []
+    <span class="hljs-keyword">for</span> child <span class="hljs-keyword">in</span> @children
+      <span class="hljs-keyword">if</span> child.geometry?
+        <span class="hljs-keyword">if</span> child.geometry.vertices.length == <span class="hljs-number">0</span>
+          removals.push child
+
+    <span class="hljs-keyword">for</span> child <span class="hljs-keyword">in</span> removals
+      @remove child
+
+    @
+
+
+
+<span class="hljs-built_in">module</span>.exports = 
+  ThreeJSModel : ThreeJSModel</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

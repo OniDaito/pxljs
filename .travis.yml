@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - "0.10"
+#services:
+#  - mongodb
+#env:
+#  global:
+#    - NODE_ENV=travisci
+#    - BUILD_DIR=`pwd`/zpratt
+before_script:
+  - npm update
+
+script: gulp

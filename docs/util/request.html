@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>request.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="../docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>request.coffee</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h2 id="about">ABOUT</h2>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>             .__   
+_________  __|  |  
+\____ \  \/  /  |  
+|  |_&gt; &gt;    &lt;|  |__
+|   __<span class="hljs-regexp">/__/</span>\_ \____/
+|__|        \/     js
+
+                    PXL.js
+                    Benjamin Blundell - ben@pxljs.com
+                    http:<span class="hljs-regexp">//</span>pxljs.com
+
+This software <span class="hljs-keyword">is</span> released under the MIT Licence. See LICENCE.txt <span class="hljs-keyword">for</span> details
+
+
+- Resources
+
+* http:<span class="hljs-regexp">//</span>coffeescriptcookbook.com/chapters/ajax/ajax_request_without_jquery
+
+- TODO
+  * Need to get some kind <span class="hljs-keyword">of</span> percentage <span class="hljs-keyword">in</span> here, along with a signal we can check!
+  
+
+
+- Potentially
+- But what about <span class="hljs-keyword">not</span> being <span class="hljs-keyword">in</span> a browser, potentially? Nodejs style?
+
+<span class="hljs-regexp">//</span> Check <span class="hljs-keyword">for</span> the various File API support.
+<span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.File &amp;&amp; <span class="hljs-built_in">window</span>.FileReader &amp;&amp; <span class="hljs-built_in">window</span>.FileList &amp;&amp; <span class="hljs-built_in">window</span>.Blob) {
+  <span class="hljs-regexp">//</span> Great success! All the File APIs are supported.
+} <span class="hljs-keyword">else</span> {
+  alert(<span class="hljs-string">'The File APIs are not fully supported in this browser.'</span>);
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>##</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+{Signal} = <span class="hljs-built_in">require</span> <span class="hljs-string">'./signal'</span>
+{PXLWarning, PXLError, PXLLog} = <span class="hljs-built_in">require</span> <span class="hljs-string">'./log'</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>##Request###
+A class that makes an XMLHTTPRequest for us, given a url</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Request</span></span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>@url -  the url to file in question</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  
+  constructor : <span class="hljs-function"><span class="hljs-params">(@url)</span> -&gt;</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>At the time of construction note down the WebGL context as we will need
+that as the active context may have changed - async remember</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    @_context = PXL.Context <span class="hljs-keyword">if</span> PXL?</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Decide how to parse the data we have</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  _parse : <span class="hljs-function"><span class="hljs-params">(callback)</span> -&gt;</span>
+
+    PXLLog <span class="hljs-string">"Request Result of "</span> + @url + <span class="hljs-string">" is "</span> + @req.responseType, @
+    l = @url.length - <span class="hljs-number">1</span>
+
+    <span class="hljs-keyword">if</span> @req.responseType == <span class="hljs-string">""</span> <span class="hljs-keyword">or</span> @req.responseType == <span class="hljs-string">"text"</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Basic DOM String - pass on</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      callback(@req.responseText)
+
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> @req.responseType == <span class="hljs-string">"json"</span>
+      data = eval <span class="hljs-string">'('</span> + @req.responseText + <span class="hljs-string">')'</span>
+      data._coffeegl_request_url = @url <span class="hljs-comment"># Add this because its really handy!</span>
+      callback(data)
+    
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> @req.responseType == <span class="hljs-string">"blob"</span>
+      PXLError <span class="hljs-string">"Blob Type not supported yet"</span>, @
+
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> @req.responseType == <span class="hljs-string">""</span>
+      PXLError <span class="hljs-string">"responseType was empty"</span>, @
+    <span class="hljs-keyword">else</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Just pass on the data</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      callback(@req.responseText)
+
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Actually perform the request. Pass in a callback to handle the data</p>
+<ul>
+<li>callback - a function</li>
+<li>onerror - a function called when errors occur</li>
+<li>synchronous - an optional boolean flag to make this call synchronous</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  get : <span class="hljs-function"><span class="hljs-params">(callback, onerror, synchronous=<span class="hljs-literal">false</span>)</span> -&gt;</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Are we running in the browser? If so go with XMLHTTPRequest, else go with node’s
+readFile instead</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    <span class="hljs-keyword">if</span> XMLHttpRequest?
+
+      @req = <span class="hljs-keyword">new</span> XMLHttpRequest()
+
+      <span class="hljs-keyword">if</span> synchronous
+        @req.open(<span class="hljs-string">'GET'</span>, @url, <span class="hljs-literal">false</span>)
+        @req.setRequestHeader(<span class="hljs-string">'X-Requested-With'</span>, <span class="hljs-string">'XMLHttpRequest'</span>)
+        @req.send(<span class="hljs-literal">null</span>)
+        @_parse(callback)
+
+      <span class="hljs-keyword">else</span>
+
+        @req.onreadystatechange = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> 
+
+          <span class="hljs-keyword">if</span> @req.readyState <span class="hljs-keyword">is</span> <span class="hljs-number">4</span>
+
+            <span class="hljs-keyword">if</span> @req.status <span class="hljs-keyword">is</span> <span class="hljs-number">200</span> <span class="hljs-keyword">or</span> @req.status <span class="hljs-keyword">is</span> <span class="hljs-number">304</span>   <span class="hljs-comment"># Success result codes</span>
+              
+              PXL.Context.switchContext @_context <span class="hljs-keyword">if</span> PXL?
+              @_parse(callback)
+
+            <span class="hljs-keyword">else</span>
+              PXL.Context.switchContext @_context <span class="hljs-keyword">if</span> PXL?
+              onerror(@req.responseText)
+        
+        @req.open(<span class="hljs-string">'GET'</span>, @url)
+        @req.setRequestHeader(<span class="hljs-string">'X-Requested-With'</span>, <span class="hljs-string">'XMLHttpRequest'</span>)
+        @req.send(<span class="hljs-literal">null</span>)
+
+    <span class="hljs-keyword">else</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Must be running on node (for tests etc)
+We still provide the same interface however but we basically callback instantly
+Issues may occur given this files location in the source tree :S</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+      fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>)
+      
+      <span class="hljs-keyword">if</span> synchronous
+        data = fs.readFileSync @url
+        callback data.toString()
+
+      <span class="hljs-keyword">else</span>
+        fs.readFile @url, <span class="hljs-function"><span class="hljs-params">(err, data)</span> =&gt;</span>
+          <span class="hljs-keyword">if</span> err?
+            PXLError <span class="hljs-string">"nodejs readFile Errored with "</span> + err</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>TODO - should we really be doing a toString here? </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          callback data.toString()
+      
+    @
+
+<span class="hljs-built_in">module</span>.exports = 
+  Request : Request</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

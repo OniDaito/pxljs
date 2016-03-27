@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>texture.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="../docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>texture.coffee</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h2 id="about">ABOUT</h2>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>             .__   
+_________  __|  |  
+\____ \  \/  /  |  
+|  |_&gt; &gt;    &lt;|  |__
+|   __<span class="hljs-regexp">/__/</span>\_ \____/
+|__|        \/     js
+
+                    PXL.js
+                    Benjamin Blundell - ben@pxljs.com
+                    http:<span class="hljs-regexp">//</span>pxljs.com
+
+This software <span class="hljs-keyword">is</span> released under the MIT Licence. See LICENCE.txt <span class="hljs-keyword">for</span> details
+
+
+TODO - Probably pass <span class="hljs-keyword">in</span> data <span class="hljs-keyword">and</span> have a convinence method that calls a request?
+  - handling <span class="hljs-literal">no</span> RGBA textures like JPGS?
+
+https:<span class="hljs-regexp">//</span>developer.mozilla.org/en-US/docs/WebGL/Animating_textures_in_WebGL
+
+
+Texture Objects - uses the request object <span class="hljs-keyword">and</span> callbacks. Is bound to a context
+
+- TODO
+  * How does <span class="hljs-keyword">this</span> match with textures <span class="hljs-keyword">in</span> the current shader context? Check that!
+  * Video textures <span class="hljs-keyword">and</span> compressed textures as per the spec <span class="hljs-keyword">for</span> HTML5</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>##</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+{Request} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../util/request'</span>
+
+{PXLError, PXLWarning, PXLLog} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../util/log'</span>
+
+{Contract} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../gl/contract'</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>##TextureBase###
+Our base texture. It creates a blank set of data bound to a texture
+Params is a dictionary containing various parameters for textures
+Accepted values are:
+min - the min distance filter
+max - the max distance filter
+wraps - the s wrap
+wrapt - the t wrap
+width
+height
+channels - the number of channels such as RGBA
+datatype - internal datatype such as UNSIGNED_BYTE</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TextureBase</span></span>
+
+  @UNITS = [] <span class="hljs-comment"># Which texture unit is free?</span>
+
+  constructor : <span class="hljs-function"><span class="hljs-params">(params)</span> -&gt;</span>
+
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> PXL.Context.gl?
+      PXLError(<span class="hljs-string">"No context or url provided for texture"</span>)
+
+    gl = PXL.Context.gl
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> params?
+      params = {}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Build our @UNITS if it isnt already? This is perhaps not optimal
+but rather than do this in the App class I prefer to do it here</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Watcher for texture bind units</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> TextureBase.UNITS.length == <span class="hljs-number">0</span>
+      <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.PXL.Context.profile.combinedUnits<span class="hljs-number">-1</span>]
+        TextureBase.UNITS.push <span class="hljs-literal">null</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Non power of two textures must have the following in webgl
+TODO - test for powers and look at params</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    @unit = <span class="hljs-number">0</span>  <span class="hljs-comment"># unit is 0 - default</span>
+    @min =  <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> params.min? <span class="hljs-keyword">then</span> gl.LINEAR <span class="hljs-keyword">else</span> params.min
+    @max =  <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> params.max? <span class="hljs-keyword">then</span> gl.LINEAR <span class="hljs-keyword">else</span> params.max
+    @wraps = <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> params.wraps? <span class="hljs-keyword">then</span> gl.CLAMP_TO_EDGE <span class="hljs-keyword">else</span> params.wraps
+    @wrapt =  <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> params.wrapt? <span class="hljs-keyword">then</span> gl.CLAMP_TO_EDGE <span class="hljs-keyword">else</span> params.wrapt
+    @width = <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> params.width? <span class="hljs-keyword">then</span> <span class="hljs-number">512</span> <span class="hljs-keyword">else</span> params.width
+    @height = <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> params.height? <span class="hljs-keyword">then</span> <span class="hljs-number">512</span> <span class="hljs-keyword">else</span> params.height
+    @channels = <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> params.channels? <span class="hljs-keyword">then</span> gl.RGBA <span class="hljs-keyword">else</span> params.channels 
+    @datatype = <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> params.datatype? <span class="hljs-keyword">then</span> gl.UNSIGNED_BYTE  <span class="hljs-keyword">else</span> params.datatype
+
+
+    @texture = gl.createTexture()
+
+    @contract = <span class="hljs-keyword">new</span> Contract()
+    @contract.roles.uSampler = <span class="hljs-string">"unit"</span> <span class="hljs-comment"># Default role for a texture - overridden in materials</span>
+
+  _isPowerOfTwo : <span class="hljs-function"><span class="hljs-params">(x)</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> (x &amp; (x - <span class="hljs-number">1</span>)) == <span class="hljs-number">0</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Internal static lookup - tries to find empty texture units</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  _findUnit : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.TextureBase.UNITS.length<span class="hljs-number">-1</span>]
+      <span class="hljs-keyword">if</span> TextureBase.UNITS[i] == <span class="hljs-literal">null</span> <span class="hljs-keyword">or</span> TextureBase.UNITS[i] == @
+        TextureBase.UNITS[i] = @
+        <span class="hljs-keyword">return</span> i
+    
+    PXLError <span class="hljs-string">"Run out of available texture units"</span>
+    <span class="hljs-number">0</span>
+
+
+  _nextHighestPowerOfTwo : <span class="hljs-function"><span class="hljs-params">(x)</span> -&gt;</span>
+    --x
+    i = <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span> i &lt; <span class="hljs-number">32</span>
+      x = x | x &gt;&gt; i
+      i &lt;&lt;= <span class="hljs-number">1</span>
+   
+    <span class="hljs-keyword">return</span> x + <span class="hljs-number">1</span>
+
+  build : <span class="hljs-function"><span class="hljs-params">(passed_context)</span> -&gt;</span>
+    context = PXL.Context
+    <span class="hljs-keyword">if</span> passed_context?
+      context = passed_context
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> context
+      <span class="hljs-keyword">return</span> 
+
+    gl = context.gl
+    
+    @bind()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>TODO - using channels twice here - thats not strictly true and will need adjusting</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    gl.texImage2D(gl.TEXTURE_2D,<span class="hljs-number">0</span>, @channels, @width, @height, <span class="hljs-number">0</span>, @channels, @datatype ,<span class="hljs-literal">null</span>)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, @max)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, @min)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, @wraps)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, @wrapt)
+    
+    @unbind()
+
+    @loaded = <span class="hljs-literal">true</span>
+
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>bind - bind this texture to texture unit in params (or the one given in unit)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  bind: <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    gl = PXL.Context.gl
+    <span class="hljs-keyword">if</span> gl?
+      @unit = @_findUnit()
+      gl.activeTexture GL.TEXTURE0 + @unit
+      gl.bindTexture(gl.TEXTURE_2D, @texture)
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>unbind - clear the bound unit</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  unbind: <span class="hljs-function">-&gt;</span>
+    gl = PXL.Context.gl
+    <span class="hljs-keyword">if</span> gl?
+      gl.activeTexture(gl.TEXTURE0 + @unit)
+      gl.bindTexture(gl.TEXTURE_2D, <span class="hljs-literal">null</span>)
+      TextureBase.UNITS[@unit] = <span class="hljs-literal">null</span>
+      @unit = <span class="hljs-number">0</span>
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>update the texture. If we are referencing an image or video (like HTML5 image) then
+simply re-read the image. If we are using a data texture however, this new array is 
+passed in as an array of values like [0,1,0,1,1] etc and converted
+TODO do we really need to bind here in order to update a texture? Check that! 
+Example, in the case of a skeleton pallete we bind, update, then unbind only to bind again</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  update : <span class="hljs-function"><span class="hljs-params">(texdata)</span> -&gt;</span>
+    
+    <span class="hljs-keyword">if</span> @textureData <span class="hljs-keyword">instanceof</span> Image <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> texdata?
+
+      gl = PXL.Context.gl
+      
+      @bind()
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, <span class="hljs-literal">false</span>)
+      gl.texImage2D(gl.TEXTURE_2D, <span class="hljs-number">0</span>, @channels, @channels, @datatype, @textureData)
+      @unbind()
+
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> texdata? <span class="hljs-keyword">and</span> texdata <span class="hljs-keyword">instanceof</span> Array</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>We do the conversion here I think</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+      <span class="hljs-keyword">if</span>  @datatype == GL.UNSIGNED_BYTE
+        @textureData = <span class="hljs-keyword">new</span> Uint8Array texdata
+
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> @datatype == GL.FLOAT
+        @textureData = <span class="hljs-keyword">new</span> Float32Array texdata
+
+      gl = PXL.Context.gl
+      @bind()
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, <span class="hljs-literal">false</span>)
+      gl.texImage2D(gl.TEXTURE_2D, <span class="hljs-number">0</span>, @channels, @width, @height, <span class="hljs-number">0</span>, @channels, @datatype, @textureData)
+      @unbind()
+
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> texdata? <span class="hljs-keyword">and</span> (texdata <span class="hljs-keyword">instanceof</span> Uint8Array <span class="hljs-keyword">or</span> texdata <span class="hljs-keyword">instanceof</span> Float32Array)
+      @textureData = texdata
+      
+      gl = PXL.Context.gl
+      @bind()
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, <span class="hljs-literal">false</span>)
+      gl.texImage2D(gl.TEXTURE_2D, <span class="hljs-number">0</span>, @channels, @width, @height, <span class="hljs-number">0</span>, @channels, @datatype, @textureData)
+      @unbind()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>_addToNode - called when this texture is added to a node</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  _addToNode: <span class="hljs-function"><span class="hljs-params">(node)</span> -&gt;</span>
+    node.textures.push @
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>_removeFromNode - called when this texture is removed from a node</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  _removeFromNode: <span class="hljs-function"><span class="hljs-params">(node)</span> -&gt;</span>
+    node.textures.splice node.textures.indexOf @
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>washUp - remove from the graphics card</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  washup : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    gl = PXL.Context.gl
+    gl.deleteTexture @texture
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>##Texture###
+Create a texture from either a provided image or creates a blank one if texdata not provided
+Params are as the TextureBase class</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Texture</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">TextureBase</span></span>
+
+  constructor: <span class="hljs-function"><span class="hljs-params">(texdata, params)</span> -&gt;</span>
+    <span class="hljs-keyword">super</span>(params)
+
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> PXL.Context.gl?
+      PXLError(<span class="hljs-string">"No context provided for texture"</span>)
+
+    <span class="hljs-keyword">if</span> texdata?
+      <span class="hljs-keyword">if</span> texdata <span class="hljs-keyword">instanceof</span> Image
+        @textureData = texdata  
+        @width = @textureData.width
+        @height = @textureData.height
+  
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> texdata <span class="hljs-keyword">instanceof</span> Array
+        <span class="hljs-keyword">if</span>  @datatype == GL.UNSIGNED_BYTE
+          @textureData = <span class="hljs-keyword">new</span> Uint8Array texdata
+
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> @datatype == GL.FLOAT
+          @textureData = <span class="hljs-keyword">new</span> Float32Array texdata
+
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> texdata <span class="hljs-keyword">instanceof</span> Uint8Array <span class="hljs-keyword">or</span> texdata <span class="hljs-keyword">instanceof</span> Float32Array
+        @textureData = texdata
+
+    <span class="hljs-keyword">else</span>
+      PXLLog <span class="hljs-string">"No Texture Data provided. Assuming uint8 data"</span>
+      
+      texdata = []
+      
+      <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.@width*@height*@channels<span class="hljs-number">-1</span>]
+        texdata.push <span class="hljs-number">0</span>
+      
+      @textureData = <span class="hljs-keyword">new</span> Float32Array texdata
+     
+    @build()
+
+
+
+  build : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    context = PXL.Context
+    gl = context.gl</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>TODO are we sure we dont need to flip anymore</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    gl.pixelStorei gl.UNPACK_FLIP_Y_WEBGL, <span class="hljs-literal">false</span>
+    gl.bindTexture gl.TEXTURE_2D, @texture</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>In case we are using webgl images and or video as oppose to our array for messing with</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> @textureData <span class="hljs-keyword">instanceof</span> Image
+      gl.texImage2D gl.TEXTURE_2D, <span class="hljs-number">0</span>, @channels, @channels, @datatype, @textureData
+    <span class="hljs-keyword">else</span>
+      gl.texImage2D gl.TEXTURE_2D, <span class="hljs-number">0</span>, @channels, @width, @height, <span class="hljs-number">0</span>, @channels, @datatype, @textureData
+
+    gl.texParameteri gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, @min
+    gl.texParameteri gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, @max
+    gl.texParameteri gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, @wraps
+    gl.texParameteri gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, @wrapt
+
+    gl.bindTexture gl.TEXTURE_2D, <span class="hljs-literal">null</span>
+  @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>##textureFromURL###
+Load a texture from a URL - convinience function that wraps a request
+Takes a url string, a callback, a failure callback. and optional params
+Saves the current context so we can fire different context requests
+TODO - Ideally we would have a future here and block till it returns?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function">
+<span class="hljs-title">textureFromURL</span> = <span class="hljs-params">(url, callback, onerror, params)</span> -&gt;</span>
+
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> url? <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> PXL.Context.gl?
+      PXLWarning <span class="hljs-string">"No context or url provided for texture"</span>
+
+    cc = PXL.Context
+    gl = cc.gl</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>TODO - On these callbacks context needs to be saved each time
+from the request all the way down :S</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    r = <span class="hljs-keyword">new</span> Request url
+<span class="hljs-function">
+    <span class="hljs-title">success</span> = <span class="hljs-params">()</span> =&gt;</span>
+      texImage = <span class="hljs-keyword">new</span> Image()
+      texImage.src = url
+<span class="hljs-function">
+      <span class="hljs-title">loadHandler</span> = <span class="hljs-params">()</span> =&gt;</span>
+
+        texture = <span class="hljs-keyword">new</span> Texture texImage, params
+        callback?(texture)
+
+      texImage.addEventListener(<span class="hljs-string">'load'</span>, loadHandler)
+      
+      <span class="hljs-keyword">if</span> texImage.complete
+        loadHandler()
+<span class="hljs-function">
+    <span class="hljs-title">failure</span> = <span class="hljs-params">()</span> =&gt;</span>
+      PXLWarning <span class="hljs-string">"Failed to load Texture: "</span> + url
+      onerror?()
+
+    r.get success, failure</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>##TextureCube###
+Loads 6 textures for the texture cube. Provide a list (@paths) of 6 paths. Optional params
+consist of { min,max,wraps,wrapt,unit }
+Texture cube doesnt keep references to its source images unlike the other textures :S</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TextureCube</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">TextureBase</span></span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>constructor - takes an array of 6 paths for the cube</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  constructor: <span class="hljs-function"><span class="hljs-params">(images, params)</span> -&gt;</span>
+    
+    <span class="hljs-keyword">super</span> (params)
+
+    gl = PXL.Context.gl
+
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, <span class="hljs-literal">false</span>)
+    gl.bindTexture(gl.TEXTURE_CUBE_MAP,@texture)
+
+    gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MAG_FILTER, @max);
+    gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, @min);
+    gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_S, @wraps);
+    gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_WRAP_T, @wrapt);
+
+    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span><span class="hljs-number">.5</span>]
+      gl.texImage2D(gl.TEXTURE_CUBE_MAP_POSITIVE_X + j, <span class="hljs-number">0</span>, @channels, @channels, @datatype, images[j]);
+
+    gl.bindTexture(gl.TEXTURE_CUBE_MAP, <span class="hljs-literal">null</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>bind - bind this texture to texture unit given in params (or the one given in unit)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  bind: <span class="hljs-function"><span class="hljs-params">(unit)</span> -&gt;</span>
+    gl = PXL.Context.gl
+    <span class="hljs-keyword">if</span> gl?  
+      @unit = @_findUnit()
+      gl.activeTexture(gl.TEXTURE0 + @unit)
+      gl.bindTexture(gl.TEXTURE_CUBE_MAP, @texture)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>unbind - clear the bound unit</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  unbind: <span class="hljs-function">-&gt;</span>
+    gl = PXL.Context.gl
+    <span class="hljs-keyword">if</span> gl?
+      gl.activeTexture(gl.TEXTURE0 + @unit)
+      gl.bindTexture(gl.TEXTURE_CUBE_MAP, <span class="hljs-literal">null</span>)
+      TextureBase.UNITS[i] = <span class="hljs-literal">null</span>
+      @unit = <span class="hljs-number">0</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>TODO - Deal with the error case</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-title">textureCubeFromURL</span> = <span class="hljs-params">(paths,callback,onerror,params)</span> -&gt;</span>
+
+  <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> paths? <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> PXL.Context?
+    PXLError(<span class="hljs-string">"No context or urls provided for cubemap texture"</span>)
+
+  <span class="hljs-keyword">if</span> paths.length != <span class="hljs-number">6</span>
+    PXLError(<span class="hljs-string">"6 URLs must be provided for cubemap texture"</span>)
+
+  texImages = []
+  loadedTextures = <span class="hljs-number">0</span>
+
+  cc = PXL.Context
+
+  <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span><span class="hljs-number">.5</span>]
+    texImages[i] = <span class="hljs-keyword">new</span> Image()
+    texImages[i].cubeID = i
+    texImages[i].src = paths[i]
+
+    texImages[i].onload = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span>
+
+      loadedTextures++
+      <span class="hljs-keyword">if</span> loadedTextures == <span class="hljs-number">6</span>
+
+        texture = <span class="hljs-keyword">new</span> TextureCube texImages, params
+        callback?(texture)
+
+  @
+
+
+<span class="hljs-built_in">module</span>.exports = 
+  Texture : Texture
+  TextureBase : TextureBase
+  TextureCube : TextureCube
+  textureFromURL : textureFromURL
+  textureCubeFromURL : textureCubeFromURL</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

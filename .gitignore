@@ -1,0 +1,11 @@
+build
+src/*.js
+html/_site/*
+.DS_Store
+node_modules
+npm-debug.log
+TODO.markdown
+misc
+*~
+*.swp
+*.swo

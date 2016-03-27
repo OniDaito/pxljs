@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>shader.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="../docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>shader.coffee</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h2 id="about">ABOUT</h2>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>             .__   
+_________  __|  |  
+\____ \  \/  /  |  
+|  |_&gt; &gt;    &lt;|  |__
+|   __<span class="hljs-regexp">/__/</span>\_ \____/
+|__|        \/     js
+
+                    PXL.js
+                    Benjamin Blundell - ben@pxljs.com
+                    http:<span class="hljs-regexp">//</span>pxljs.com
+
+This software <span class="hljs-keyword">is</span> released under the MIT Licence. See LICENCE.txt <span class="hljs-keyword">for</span> details
+
+
+- TODO - Caching needs to go <span class="hljs-keyword">in</span> here
+- TODO - We need a smart-uniform setter that automagically determines type
+- TODO - Uniform caching!
+- TODO - Texture roles
+- TODO - ShaderChunks as well as actual shaders from a text file</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>##</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+
+{Matrix4, Vec2, Vec3, Vec4} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../math/math'</span>
+{Light} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../light/light'</span>
+{PXLError, PXLWarning, PXLLog} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../util/log'</span>
+{Contract} = <span class="hljs-built_in">require</span> <span class="hljs-string">'./contract'</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <h2 id="shader">Shader</h2>
+<p>The master shader class. Represents a shader that can be bound to a context or attached to a node
+chunks - a list [] of ShaderChunks that create our shader - order is important - it defines what
+chunks take precidence. chunks later on in the line rely and may overwrite these earlier in line.
+user_roles = passed onto the contract </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Shader</span></span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Constructor. Designed so an object can be built with no parameters 
+via functions such as shaderFromText
+We keep hold of the chunks incase we need to rebuild the shader (changing various defines 
+for example)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  constructor : <span class="hljs-function"><span class="hljs-params">(@vertex_source, @fragment_source, user_roles)</span> -&gt;</span>
+
+    <span class="hljs-keyword">if</span> PXL?
+      <span class="hljs-keyword">if</span> PXL.Context.debug
+        <span class="hljs-built_in">console</span>.log @vertex_source, @fragment_source
+
+      <span class="hljs-keyword">if</span> PXL.Context.gl?
+        @_compile @vertex_source, @fragment_source
+        @contract = <span class="hljs-keyword">new</span> Contract( @_getAttributes(), @_getUniforms(), user_roles)
+
+    @_uber = <span class="hljs-literal">false</span>
+    @
+
+  _compile: <span class="hljs-function"><span class="hljs-params">(sv, sf)</span> -&gt;</span>
+    gl = PXL.Context.gl <span class="hljs-comment"># Global / Current context</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Create the Vertex Shader</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    @vertexShader = gl.createShader(gl.VERTEX_SHADER);
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @vertexShader
+      PXLError <span class="hljs-string">"No vertex shader object could be created"</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Fragment Shader </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    
+    @fragmentShader = gl.createShader(gl.FRAGMENT_SHADER)
+ 
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @fragmentShader
+      PXLError <span class="hljs-string">"No Fragment shader object could be created"</span>
+
+    gl.shaderSource @vertexShader, sv
+    gl.compileShader @vertexShader
+
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> gl.getShaderParameter @vertexShader, gl.COMPILE_STATUS  
+      @_printLog @vertexShader, sv, <span class="hljs-string">"vertex"</span>
+
+    gl.shaderSource @fragmentShader, sf
+    gl.compileShader @fragmentShader
+
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> gl.getShaderParameter @fragmentShader, gl.COMPILE_STATUS
+      @_printLog @fragmentShader, sf, <span class="hljs-string">"fragment"</span>
+
+    @shaderProgram = gl.createProgram()
+
+    gl.attachShader(@shaderProgram, @vertexShader)
+    gl.attachShader(@shaderProgram, @fragmentShader)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Naughty hack - we check for the attribute aVertexPosition to bind it to 0!
+TODO - might need to do something better here but it stops attrib 0 being blank which is good</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    gl.bindAttribLocation(@shaderProgram, <span class="hljs-number">0</span>, <span class="hljs-string">"aVertexPosition"</span>)
+
+    gl.linkProgram(@shaderProgram)
+
+    success = gl.getProgramParameter(@shaderProgram, gl.LINK_STATUS)
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> success
+      PXLWarning gl.getProgramInfoLog @shaderProgram
+      PXLError <span class="hljs-string">"Failed to Link Shader"</span>
+
+      WebGLActiveInfo</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>We grab the attributes here and we set their positions to these
+in the contract - order dependent
+Thanks to @Tojiro</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    attrs = @_getAttributes()
+    <span class="hljs-keyword">for</span> attr <span class="hljs-keyword">in</span> attrs
+      gl.bindAttribLocation @shaderProgram, attr.pos, attr.name
+
+    @
+
+  _printLog : <span class="hljs-function"><span class="hljs-params">(shader, source, kind)</span> -&gt;</span>
+    compilationLog = PXL.Context.gl.getShaderInfoLog shader
+    PXLLog <span class="hljs-string">'Shader compiler log: '</span> + compilationLog
+    tsf = <span class="hljs-string">""</span>
+    ln = <span class="hljs-number">1</span>
+    
+    <span class="hljs-keyword">for</span> l <span class="hljs-keyword">in</span> source.split <span class="hljs-string">"\n"</span>
+      tsf += ln + <span class="hljs-string">": "</span> + l + <span class="hljs-string">"\n"</span>
+      ln++
+
+    PXLLog tsf
+    @_splitError compilationLog, source
+    PXLError <span class="hljs-string">"Could not compile "</span> + kind + <span class="hljs-string">" shader"</span>
+
+  _addToNode : <span class="hljs-function"><span class="hljs-params">(node)</span> -&gt;</span>
+    node.shader = @
+    @
+
+  _splitError : <span class="hljs-function"><span class="hljs-params">(s, data)</span> -&gt;</span>
+    lines = s.split(<span class="hljs-string">'\n'</span>)
+    <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> lines
+      match = line.match(<span class="hljs-regexp">/ERROR: (\d+):(\d+): (.*)/</span>)
+      <span class="hljs-keyword">if</span> match
+        fileno = parseInt(match[<span class="hljs-number">1</span>],<span class="hljs-number">10</span>)<span class="hljs-number">-1</span>
+        lineno = parseInt(match[<span class="hljs-number">2</span>],<span class="hljs-number">10</span>)<span class="hljs-number">-1</span>
+        message = match[<span class="hljs-number">3</span>]
+
+        datalines = data.split(<span class="hljs-string">'\n'</span>)
+
+        PXLLog <span class="hljs-string">"Shader Error Log: "</span> + fileno + <span class="hljs-string">", "</span> + lineno + <span class="hljs-string">", "</span> + message + <span class="hljs-string">","</span> + datalines[lineno]
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>_getLocation: Return the location of a variable inside a compiled shader</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  _getLocation : <span class="hljs-function"><span class="hljs-params">(name)</span> -&gt;</span>
+    PXL.Context.gl.getUniformLocation(@shaderProgram, name)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>bind - bind the shader to the current context</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  bind: <span class="hljs-function">-&gt;</span>
+    PXL.Context.gl.useProgram(@shaderProgram);
+    PXL.Context.shader = @
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>unbind - Clear the current context so there are no shaders</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  unbind: <span class="hljs-function">-&gt;</span>
+    PXL.Context.gl.useProgram(<span class="hljs-literal">null</span>)
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>washUp - Remove this shader and destroy it</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  washUp : <span class="hljs-function">-&gt;</span>
+    gl = PXL.Context.gl
+    gl.detachShader(@shaderProgram, @vertexShader)
+    gl.detachShader(@shaderProgram, @fragmentShader)
+
+    gl.deleteProgram(@shaderProgram)
+    gl.deleteShader(@vertexShader)
+    gl.deleteShader(@fragmentShader)
+    
+    @
+
+  _getAttributes : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Cache attributes as they hopefully wont change!</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @attributes?
+      gl = PXL.Context.gl
+      num_attributes = gl.getProgramParameter @shaderProgram, GL.ACTIVE_ATTRIBUTES
+      @attributes = []</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>we set and use the positions here. aVertexPosition must always be zero</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.num_attributes<span class="hljs-number">-1</span>]
+
+        a = gl.getActiveAttrib @shaderProgram, i
+        
+        attribute = 
+          name : a.name
+          pos : gl.getAttribLocation(@shaderProgram, a.name)
+          type : a.type <span class="hljs-comment"># TODO - test this</span>
+          size : a.size <span class="hljs-comment"># Pretty much always 1 it seems for attributes</span>
+      
+        @attributes.push attribute
+
+    @attributes</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>_getUniforms - Find all the active uniforms in a shader
+returns a list of objects :
+{ name, type, pos, size }
+Types are listed thusly and will need to be changed
+/<em> Uniform Types </em>/</p>
+<p>##</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    const GLenum FLOAT_VEC2                     = <span class="hljs-number">0x8B50</span>; 
+    const GLenum FLOAT_VEC3                     = <span class="hljs-number">0x8B51</span>;
+    const GLenum FLOAT_VEC4                     = <span class="hljs-number">0x8B52</span>;
+    const GLenum INT_VEC2                       = <span class="hljs-number">0x8B53</span>;
+    const GLenum INT_VEC3                       = <span class="hljs-number">0x8B54</span>;
+    const GLenum INT_VEC4                       = <span class="hljs-number">0x8B55</span>;
+    const GLenum BOOL                           = <span class="hljs-number">0x8B56</span>;
+    const GLenum BOOL_VEC2                      = <span class="hljs-number">0x8B57</span>;
+    const GLenum BOOL_VEC3                      = <span class="hljs-number">0x8B58</span>;
+    const GLenum BOOL_VEC4                      = <span class="hljs-number">0x8B59</span>;
+    const GLenum FLOAT_MAT2                     = <span class="hljs-number">0x8B5A</span>;
+    const GLenum FLOAT_MAT3                     = <span class="hljs-number">0x8B5B</span>;
+    const GLenum FLOAT_MAT4                     = <span class="hljs-number">0x8B5C</span>;
+    const GLenum SAMPLER_2D                     = <span class="hljs-number">0x8B5E</span>;
+    const GLenum SAMPLER_CUBE                   = <span class="hljs-number">0x8B60</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>##</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  _getUniforms : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>Cache uniforms as they hopefully wont change!</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @uniforms?
+      gl = PXL.Context.gl
+
+      num_uniforms = gl.getProgramParameter @shaderProgram, GL.ACTIVE_UNIFORMS
+
+      @uniforms = []
+
+      <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.num_uniforms<span class="hljs-number">-1</span>]
+
+        u = gl.getActiveUniform @shaderProgram, i</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>It appears that active uniform arrays seem to have their name with ‘[0]’ so remove
+TODO - must check to make sure this is the actual behaviour</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        tn = u.name
+        i = tn.indexOf(<span class="hljs-string">"["</span>)
+        <span class="hljs-keyword">if</span> i &gt; <span class="hljs-number">0</span>
+          tn = u.name.slice(<span class="hljs-number">0</span>,i)
+
+        uniform = 
+          name : tn 
+          pos : @._getLocation u.name
+          type : u.type <span class="hljs-comment"># TODO - test this</span>
+          size : u.size <span class="hljs-comment"># TODO - test this</span>
+
+        @uniforms.push uniform
+
+    @uniforms</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>_getTextures - find all the texture in a shader
+TODO - other samplers? Texture Cube for example?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  _getTextures : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    d = @._parseShader(<span class="hljs-string">"uniform"</span>)
+    x = []
+    <span class="hljs-keyword">for</span> a <span class="hljs-keyword">in</span> d
+      <span class="hljs-keyword">if</span> a.type == <span class="hljs-string">"sampler2D"</span>
+        p = @._getLocation(a.name)
+        <span class="hljs-keyword">if</span> p? <span class="hljs-keyword">and</span> p != <span class="hljs-number">-1</span>
+          a.pos = p
+          x.push(a)
+    x</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>_parseShader - Given a token, a line basically, parse the line and get the types (vec3 etc)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  _parseShader : <span class="hljs-function"><span class="hljs-params">(token)</span> -&gt;</span>
+    data = []
+    lines = @sv.split(<span class="hljs-string">";"</span>).concat(@sf.split(<span class="hljs-string">";"</span>));
+    <span class="hljs-keyword">for</span> l <span class="hljs-keyword">in</span> lines
+      re = RegExp(<span class="hljs-string">"\\b"</span> + token + <span class="hljs-string">"\\b"</span>); 
+      <span class="hljs-keyword">if</span> l.match(re)?
+        tokens  = l.split(<span class="hljs-string">" "</span>)
+        finals = []
+
+        <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> tokens
+          t = t.replace <span class="hljs-regexp">/\n/</span>, <span class="hljs-string">""</span>
+          t = t.replace <span class="hljs-regexp">/\s/</span>, <span class="hljs-string">""</span>
+
+          <span class="hljs-keyword">if</span> t.length != <span class="hljs-number">0</span>
+            finals.push t
+
+        finals.push <span class="hljs-number">1</span>
+        matches = finals[<span class="hljs-number">2</span>].match(<span class="hljs-regexp">/\[([0-9]+)\]/</span>)
+     
+        <span class="hljs-keyword">if</span> matches?
+          finals[<span class="hljs-number">3</span>] = matches[<span class="hljs-number">1</span>]
+
+        finals[<span class="hljs-number">2</span>] = finals[<span class="hljs-number">2</span>].match(<span class="hljs-regexp">/([a-zA-Z]+)/g</span>)[<span class="hljs-number">0</span>]
+
+        <span class="hljs-keyword">if</span> finals.length == <span class="hljs-number">4</span>
+          attr = {}
+          attr.name = finals[<span class="hljs-number">2</span>]
+          attr.type = finals[<span class="hljs-number">1</span>]
+          attr.pos = <span class="hljs-number">-1</span>
+          attr.size = finals[<span class="hljs-number">3</span>]
+          data.push attr 
+
+    data</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>setUniform1f - Given a uniform name and one float, set this uniform</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  setUniform1f: <span class="hljs-function"><span class="hljs-params">(name,a)</span> -&gt;</span>
+    gl = PXL.Context.gl
+    gl.uniform1f(@_getLocation(name),a)
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>setUniform1i - Given a uniform name and one integer, set this uniform</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  setUniform1i: <span class="hljs-function"><span class="hljs-params">(name,a)</span> -&gt;</span>
+    gl = PXL.Context.gl
+    gl.uniform1i(@_getLocation(name),a)
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>setUniform1fv - Given a uniform name and an array of floats, not grouped, set this uniform</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  setUniform1fv : <span class="hljs-function"><span class="hljs-params">(name, a)</span> -&gt;</span>
+    gl = PXL.Context.gl
+    gl.uniform1fv(@_getLocation(name), a)
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>setUniform2fv - Given a uniform name and an array of floats, grouped in pairs, set this uniform</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  setUniform2fv : <span class="hljs-function"><span class="hljs-params">(name, a)</span> -&gt;</span>
+    gl = PXL.Context.gl
+    gl.uniform2fv(@_getLocation(name), a)
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>setUniform2v - Given a uniform name and a Vec2, set this uniform</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  setUniform2v: <span class="hljs-function"><span class="hljs-params">(name,v)</span> -&gt;</span>
+    gl = PXL.Context.gl
+    gl.uniform2f(@_getLocation(name),v.x,v.y)
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>setUniform3f - Given a uniform name and three floats, set this uniform</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  setUniform3f: <span class="hljs-function"><span class="hljs-params">(name,a,b,c)</span> -&gt;</span>
+    gl = PXL.Context.gl
+    gl.uniform3f(@_getLocation(name),a,b,c)
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>setUniform3fv - Given a uniform name and an array of floats, grouped in threes, set this uniform</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  setUniform3fv : <span class="hljs-function"><span class="hljs-params">(name, a)</span> -&gt;</span>
+    gl = PXL.Context.gl
+    gl.uniform3fv(@_getLocation(name), a)
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>setUniform3v - Given a uniform name and a Vec3, set this uniform</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  setUniform3v: <span class="hljs-function"><span class="hljs-params">(name,v)</span> -&gt;</span>
+    gl = PXL.Context.gl
+    gl.uniform3f(@_getLocation(name),v.x,v.y,v.z)
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>setUniform3f - Given 3 floats, set this uniform</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  setUniform3f: <span class="hljs-function"><span class="hljs-params">(name,a,b,c)</span> -&gt;</span>
+    gl = PXL.Context.gl
+    gl.uniform3f(@_getLocation(name),a,b,c)
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>setUniform4f - Given a uniform name and four floats, set this uniform</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  setUniform4f: <span class="hljs-function"><span class="hljs-params">(name,a,b,c,d)</span> -&gt;</span>
+    gl = PXL.Context.gl
+    gl.uniform4f(@_getLocation(name),a,b,c,d) 
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>setUniform4v - Given a uniform name and a Vec4, set this uniform</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  setUniform4v: <span class="hljs-function"><span class="hljs-params">(name,v)</span> -&gt;</span>
+    gl = PXL.Context.gl
+    gl.uniform4f(@_getLocation(name),v.x,v.y,v.z,v.w)
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p>setUniform4fv - Given a uniform name and an array of floats, grouped in fours, set this uniform</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  setUniform4fv : <span class="hljs-function"><span class="hljs-params">(name, a)</span> -&gt;</span>
+    gl = PXL.Context.gl
+    gl.uniform4fv(@_getLocation(name), a)
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>setMatrix4f - Given a uniform name and a matrix4, set this uniform</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  setMatrix3f: <span class="hljs-function"><span class="hljs-params">(name, m)</span> -&gt;</span>
+    gl = PXL.Context.gl
+    gl.uniformMatrix3fv(@_getLocation(name), <span class="hljs-literal">false</span>, m.a)
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p>setMatrix4f - Given a uniform name and a matrix4, set this uniform</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  setMatrix4f: <span class="hljs-function"><span class="hljs-params">(name, m)</span> -&gt;</span>
+    gl = PXL.Context.gl
+    gl.uniformMatrix4fv(@_getLocation(name), <span class="hljs-literal">false</span>, m.a)
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <p>enableAttribArray - Enable an attribute array by name</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  enableAttribArray: <span class="hljs-function"><span class="hljs-params">(name)</span> -&gt;</span>
+    gl = PXL.Context.gl
+    position = gl.getAttribLocation(@shaderProgram, name)
+    gl.enableVertexAttribArray(position)
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              <p>getAttribLocation - Get the location of an attribute</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  getAttribLocation: <span class="hljs-function"><span class="hljs-params">(name)</span> -&gt;</span>
+    gl = PXL.Context.gl
+    gl.getAttribLocation(@shaderProgram, name)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-37">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-37">&#182;</a>
+              </div>
+              <h2 id="shaderfromtext">shaderFromText</h2>
+<p>Create a shader from a block of text and an optional contract</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function">
+<span class="hljs-title">shaderFromText</span> = <span class="hljs-params">( text, contract )</span> -&gt;</span>
+<span class="hljs-function">
+  <span class="hljs-title">_splitShader</span> = <span class="hljs-params">(s)</span> -&gt;</span>
+    
+    sv = sf = <span class="hljs-string">""</span>
+
+    pv = s.indexOf(<span class="hljs-string">"##&gt;VERTEX"</span>)
+    pf = s.indexOf(<span class="hljs-string">"##&gt;FRAGMENT"</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-38">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-38">&#182;</a>
+              </div>
+              <p>Grab vertex section</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> pv != <span class="hljs-number">-1</span>
+      <span class="hljs-keyword">if</span> pf != <span class="hljs-number">-1</span> <span class="hljs-keyword">and</span> pf &gt; pv
+        sv = s.slice(pv + <span class="hljs-number">9</span>, pf)
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> pf != <span class="hljs-number">-1</span> <span class="hljs-keyword">and</span> pf &lt; pv
+        sv = s.slice(pv + <span class="hljs-number">9</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-39">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-39">&#182;</a>
+              </div>
+              <p>Grab fragment section</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>     <span class="hljs-keyword">if</span> pf != <span class="hljs-number">-1</span>
+      <span class="hljs-keyword">if</span> pv != <span class="hljs-number">-1</span> <span class="hljs-keyword">and</span> pv &gt; pf
+        sf = s.slice(pf + <span class="hljs-number">11</span>, pv)
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> pf != <span class="hljs-number">-1</span> <span class="hljs-keyword">and</span> pv &lt; pf
+        sf = s.slice(pf + <span class="hljs-number">11</span>)
+   
+    [sv,sf]
+<span class="hljs-function">
+
+  <span class="hljs-title">_matchWithLibrary</span> = <span class="hljs-params">(s)</span> -&gt;</span>
+    matches = s.match(<span class="hljs-regexp">/\{\{(ShaderChunkLibrary\.[a-zA-Z]+)\}\}/g</span>)
+  
+    chunks = []
+    
+    <span class="hljs-keyword">if</span> matches?
+      <span class="hljs-keyword">for</span>  match <span class="hljs-keyword">in</span> matches
+        type = match.replace(<span class="hljs-string">"}}"</span>,<span class="hljs-string">""</span>).split(<span class="hljs-string">"."</span>)[<span class="hljs-number">1</span>]
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> ShaderChunkLibrary[type]?</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-40">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-40">&#182;</a>
+              </div>
+              <p>s = s.replace match,””</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          PXLError <span class="hljs-string">"Could not find "</span> + type + <span class="hljs-string">" in Shader Library"</span>
+
+        <span class="hljs-keyword">else</span> <span class="hljs-comment">#if ShaderChunkLibrary[type][shader_type]?</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-41">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-41">&#182;</a>
+              </div>
+              <p>if ShaderChunkLibrary[type][shader_type][“head”]?
+ s = s.replace match, ShaderChunkLibrary[type][shader_type][“head”]</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-42">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-42">&#182;</a>
+              </div>
+              <p>if ShaderChunkLibrary[type][shader_type][“main”]?
+ main_block += ShaderChunkLibrary[type][shader_type][“main”] + “\n”
+else
+  s = s.replace match,””</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+          chunks.push ShaderChunkLibrary[type]
+
+    chunks
+<span class="hljs-function">
+  <span class="hljs-title">_findPrecision</span> = <span class="hljs-params">(s)</span> -&gt;</span>
+    pp = <span class="hljs-string">""</span>
+    pv = ps = s.indexOf(<span class="hljs-string">"precision"</span>)
+    pe = <span class="hljs-number">-1</span>
+    <span class="hljs-keyword">while</span> pv != <span class="hljs-number">-1</span>
+      pe = s.indexOf(<span class="hljs-string">";"</span>,pv)
+      pp += s.slice(pv, pe + <span class="hljs-number">1</span>) + <span class="hljs-string">"\n"</span>
+      pv = s.indexOf(<span class="hljs-string">"precision"</span>,pe)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-43">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-43">&#182;</a>
+              </div>
+              <p>Remove the blocks of precision</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> ps != <span class="hljs-number">-1</span>
+      s = s.slice(pe+<span class="hljs-number">1</span>)
+
+    [pp,s]
+<span class="hljs-function">
+   <span class="hljs-title">_findMain</span> = <span class="hljs-params">(s)</span> -&gt;</span>
+    ps = s.indexOf(<span class="hljs-string">"void main"</span>)
+    <span class="hljs-keyword">if</span> ps != <span class="hljs-number">-1</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-44">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-44">&#182;</a>
+              </div>
+              <p>Assume the main function is the last thing in the shader :)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">return</span> [ s.slice(ps), s.slice(<span class="hljs-number">0</span>,ps)]
+
+    [<span class="hljs-literal">undefined</span>,s]
+
+  [sv,sf] = _splitShader text
+
+  chunks = _matchWithLibrary text
+
+  sv = sv.replace <span class="hljs-regexp">/;(?! [a-zA-Z0-9])/g</span>, <span class="hljs-string">';'</span>
+  sv = sv.replace <span class="hljs-regexp">/\{/g</span>, <span class="hljs-string">'{'</span>
+  sv = sv.replace <span class="hljs-regexp">/\}/g</span>, <span class="hljs-string">'}'</span>
+ 
+  sf = sf.replace <span class="hljs-regexp">/;(?! [a-zA-Z0-9])/g</span>, <span class="hljs-string">';'</span>
+  sf = sf.replace <span class="hljs-regexp">/;(?! [a-zA-Z0-9])/g</span>, <span class="hljs-string">';'</span>
+  sf = sf.replace <span class="hljs-regexp">/\{/g</span>, <span class="hljs-string">'{'</span>
+  sf = sf.replace <span class="hljs-regexp">/\}/g</span>, <span class="hljs-string">'}'</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-45">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-45">&#182;</a>
+              </div>
+              <p>Make a chunk out of the remaining sv and sf</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  [precision_fragment,sf] = _findPrecision sf
+  [precision_vertex,sv] = _findPrecision sv
+
+  [main_fragment,sf] = _findMain sf
+  [main_vertex,sv] = _findMain sv
+
+  chunks.push <span class="hljs-keyword">new</span> ShaderChunk {func : sv, main_func : main_vertex}, {func : sf, main_func : main_fragment}
+
+  shader = <span class="hljs-keyword">new</span> Shader chunks, contract, precision_vertex, precision_fragment
+ 
+  shader
+
+
+<span class="hljs-built_in">module</span>.exports = 
+  Shader : Shader
+  shaderFromText : shaderFromText</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

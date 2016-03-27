@@ -1,0 +1,25 @@
+/*                     __  .__              ________ 
+   ______ ____   _____/  |_|__| ____   ____/   __   \
+  /  ___// __ \_/ ___\   __\  |/  _ \ /    \____    /
+  \___ \\  ___/\  \___|  | |  (  <_> )   |  \ /    / 
+ /____  >\___  >\___  >__| |__|\____/|___|  //____/  .co.uk
+      \/     \/     \/                    \/         
+ 
+THE GHOST IN THE CSH 
+*/
+
+
+/* TEAM */
+  Saito.js: Benjamin Blundell
+  Site: http://saito.section9.co.uk
+  Twitter: secti0n9
+  Location: London, UK
+
+/* THANKS */
+  Names (& URL): 
+
+
+/* SITE */
+  Standards: HTML5, CSS3
+  Components: 
+  Software:

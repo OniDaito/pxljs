@@ -1,0 +1,55 @@
+{
+    "name": "pxljs",
+    "version": "0.6.0",
+    "description": "WebGL Library written for hackers!",
+    "main": "lib/pxl.min.js",
+    "scripts": {
+        "postinstall": "gulp",
+        "test": "gulp test"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/OniDaito/pxljs.git"
+    },
+    "keywords": [
+        "webgl",
+        "design",
+        "generative",
+        "geometry",
+        "physics",
+        "math"
+    ],
+    "author": "Benjamin Blundell",
+    "license": "Creative Commons Attribution Non-Commercial Share Alike",
+    "readmeFilename": "README.markdown",
+    
+    "dependencies": {
+                  
+    },
+    
+    "devDependencies": {
+        "coffee-script": "~1.9.0",
+        "browserify": "~9.0.0",
+        "coffeeify": "0.0.0",
+        "watchify":"~3.1.0",
+        "uglify-js": "~2.2.0",
+        "node-static": "~0.7.0",
+        "mocha": "~1.8.2",
+        "chai": "~ 1.5.0",
+        "docco" : "*",
+        "gulp" : "*",
+        "gulp-docco" : "*",
+        "gulp-coffee" : "~2.3",
+        "gulp-uglify" : "*",
+        "gulp-util" : "*",
+        "gulp-mocha" : "*",
+        "ansi-regex" : "*",
+        "gulp-rename" : "*",
+        "gulp-sourcemaps" : "*",
+        "gulp-watchify" : "*",
+        "del" : "*",
+        "through2" : "*",
+        "bl" : "*",
+        "budo" : "*"
+    }
+}

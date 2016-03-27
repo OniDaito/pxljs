@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>light.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="../docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>light.coffee</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h2 id="about">ABOUT</h2>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>             .__   
+_________  __|  |  
+\____ \  \/  /  |  
+|  |_&gt; &gt;    &lt;|  |__
+|   __<span class="hljs-regexp">/__/</span>\_ \____/
+|__|        \/     js
+
+                    PXL.js
+                    Benjamin Blundell - ben@pxljs.com
+                    http:<span class="hljs-regexp">//</span>pxljs.com
+
+This software <span class="hljs-keyword">is</span> released under the MIT Licence. See LICENCE.txt <span class="hljs-keyword">for</span> details
+
+- TODO 
+* Issue arises with timing <span class="hljs-keyword">of</span> shader definitions such as num-lights. Shader will need to 
+be rebuilt essentially <span class="hljs-keyword">if</span> the lights change. To <span class="hljs-keyword">do</span> that we have a set <span class="hljs-keyword">of</span> define lines <span class="hljs-keyword">in</span> the
+shader which we can modify easily. A user will need to set these <span class="hljs-keyword">if</span> they wish to mess with stuff
+
+*updating the pos <span class="hljs-keyword">and</span> the matrix together :S tricksy</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>##</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+{Matrix4, Vec2, Vec3, Vec4} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../math/math'</span>
+{RGB,RGBA} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../colour/colour'</span>
+{Contract} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../gl/contract'</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>These are set in stone and are the actual values passed to the
+shader. Ideally we’d reference them, but the are basically a cache</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+LIGHTING_NUM_POINT_LIGHTS = <span class="hljs-number">5</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>##UberShaderForwardLight###
+The shader source for our point light solution</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UberShaderForwardLight</span></span>
+
+  @vertex_head : <span class="hljs-string">"#ifdef LIGHTING_POINT\n"</span> +
+    <span class="hljs-string">"uniform vec3 uAmbientLightingColour;\n"</span> +
+    <span class="hljs-string">"#define LIGHTING_NUM_POINT_LIGHTS "</span> + LIGHTING_NUM_POINT_LIGHTS  + <span class="hljs-string">"\n"</span> +
+    <span class="hljs-string">"uniform int uPointLightNum;\n"</span> +
+    <span class="hljs-string">"uniform vec3 uPointLightPos[LIGHTING_NUM_POINT_LIGHTS];\n"</span> +
+    <span class="hljs-string">"uniform vec3 uPointLightColour[LIGHTING_NUM_POINT_LIGHTS];\n"</span> +
+    <span class="hljs-string">"uniform vec4 uPointLightAttenuation[LIGHTING_NUM_POINT_LIGHTS];\n"</span> +
+    <span class="hljs-string">"#endif"</span>
+
+  @fragment_head : @vertex_head</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>##AmbientLight###
+Basic ambient lighting. Should be included with all basic lights</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AmbientLight</span></span>
+
+  constructor : <span class="hljs-function"><span class="hljs-params">(@colour)</span> -&gt;</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @colour?
+      @colour = <span class="hljs-keyword">new</span> RGB(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)
+
+    @contract = <span class="hljs-keyword">new</span> Contract()
+    @contract.roles.uAmbientLightingColour = <span class="hljs-string">"colour"</span>
+
+  _addToNode: <span class="hljs-function"><span class="hljs-params">(node)</span> -&gt;</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Overwrite and give no warning?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    node.ambientLight = @
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <h2 id="pointlight">PointLight</h2>
+<p>A very basic light, a point in space. Used by the node class at present
+Doesnt create shadows at present (might use a different class for that)
+TODO - At some point this class will need to detect forward and deferred
+lighting solutions.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PointLight</span></span>
+
+ 
+
+  @posGlobal = <span class="hljs-keyword">new</span> Float32Array(LIGHTING_NUM_POINT_LIGHTS * <span class="hljs-number">3</span>)
+  @colourGlobal = <span class="hljs-keyword">new</span> Float32Array(LIGHTING_NUM_POINT_LIGHTS * <span class="hljs-number">3</span>)
+  @attenuationGlobal = <span class="hljs-keyword">new</span> Float32Array(LIGHTING_NUM_POINT_LIGHTS * <span class="hljs-number">4</span>)
+  @numLightsGlobal = <span class="hljs-number">0</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>TODO - Add a mask here that basically says which lights are on or off
+We need this because we may call draw on a subnode of a node that has a light
+and that light should not affect the scene. this mask would be passed to the shader</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>constructor -  takes a position (Vec3), a colour, and a set of attenuation factors ([float,float,float,float])</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  constructor : <span class="hljs-function"><span class="hljs-params">(@pos, @colour, @attenuation)</span> -&gt;</span>
+
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @pos?
+      @pos = <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>)
+    
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @colour?
+      @colour = RGB.WHITE()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Attention has 4 components - range, constant, linear and quadratic</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @attenuation?
+      @attenuation = [ <span class="hljs-number">100</span>, <span class="hljs-number">1.0</span>, <span class="hljs-number">0.045</span>, <span class="hljs-number">0.0075</span> ]
+
+    @idx = <span class="hljs-number">-1</span> <span class="hljs-comment"># Used to say where in the global array this light is</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>TODO - This is a tad wasteful. We should only need one static contract for all lights</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    @contract = <span class="hljs-keyword">new</span> Contract()
+    @contract.roles.uPointLightPos = <span class="hljs-string">"_posGlobal"</span>
+    @contract.roles.uPointLightColour = <span class="hljs-string">"_colourGlobal"</span>
+    @contract.roles.uPointLightAttenuation = <span class="hljs-string">"_attenuationGlobal"</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>We give each light a reference to the static variables to make
+contract matching easier</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    @_posGlobal = PointLight.posGlobal
+    @_colourGlobal = PointLight.colourGlobal
+    @_attenuationGlobal = PointLight.attenuationGlobal</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>_addToNode - called when this class is added to a node</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  _addToNode: <span class="hljs-function"><span class="hljs-params">(node)</span> -&gt;</span>
+    <span class="hljs-keyword">if</span> PointLight.numLightsGlobal &lt; LIGHTING_NUM_POINT_LIGHTS 
+      node.pointLights.push @
+      @idx = PointLight.numLightsGlobal
+      PointLight.numLightsGlobal += <span class="hljs-number">1</span> 
+    <span class="hljs-keyword">else</span>
+      PXLWarning(<span class="hljs-string">"Number of point lights is at maximum: "</span> + LIGHTING_NUM_POINT_LIGHTS)
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Called by the node traversal section when we create our node tree</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  _preDraw : <span class="hljs-function"><span class="hljs-params">(gmatrix)</span> -&gt;</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>Light transforms are now done in the shader</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    PointLight.posGlobal[@idx * <span class="hljs-number">3</span>] = @pos.x
+    PointLight.posGlobal[@idx * <span class="hljs-number">3</span> + <span class="hljs-number">1</span>] = @pos.y
+    PointLight.posGlobal[@idx * <span class="hljs-number">3</span> + <span class="hljs-number">2</span>] = @pos.z
+
+    PointLight.colourGlobal[@idx * <span class="hljs-number">3</span>] = @colour.r
+    PointLight.colourGlobal[@idx * <span class="hljs-number">3</span> + <span class="hljs-number">1</span>] = @colour.g
+    PointLight.colourGlobal[@idx * <span class="hljs-number">3</span> + <span class="hljs-number">2</span>] = @colour.b
+
+    PointLight.attenuationGlobal[@idx * <span class="hljs-number">4</span>] = @attenuation.x
+    PointLight.attenuationGlobal[@idx * <span class="hljs-number">4</span> + <span class="hljs-number">1</span>] = @attenuation.y
+    PointLight.attenuationGlobal[@idx * <span class="hljs-number">4</span> + <span class="hljs-number">2</span>] = @attenuation.z
+    PointLight.attenuationGlobal[@idx * <span class="hljs-number">4</span> + <span class="hljs-number">3</span>] = @attenuation.w</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>_removeFromNode - called when this class is removed from a node</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  _removeFromNode: <span class="hljs-function"><span class="hljs-params">(node)</span> -&gt;</span>
+    node.pointLights.splice node.pointLights.indexOf @
+    <span class="hljs-keyword">if</span> PointLight.numLightsGlobal &gt; <span class="hljs-number">0</span>
+      PointLight.numLightsGlobal -= <span class="hljs-number">1</span>
+    @idx = <span class="hljs-number">-1</span>
+    @
+
+
+<span class="hljs-built_in">module</span>.exports = 
+  PointLight : PointLight
+  AmbientLight : AmbientLight
+  UberShaderForwardLight : UberShaderForwardLight</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
