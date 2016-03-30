@@ -24,6 +24,11 @@ gulp.task('docs', function(){
 });
 
 
+// Build the website from the markdown guides and place in the HTML page
+gulp.task('guide', function(){
+  
+});
+
 // Make ready for the web
 // TODO - Turn on or off DEBUG gulp builds
 

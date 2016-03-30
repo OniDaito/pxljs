@@ -206,11 +206,10 @@ We choose the lights using #ifdef statements that we set thus we can set the dif
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>Name is used to help shader automagic and the user</p>
+              <p>Construct the shader chunks depending on what we are passed in.
+TODO Texture Cube support for phong materials</p>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>    @name = <span class="hljs-string">"PhongMaterial"</span></pre></div></div>
             
         </li>
         
@@ -220,20 +219,6 @@ We choose the lights using #ifdef statements that we set thus we can set the dif
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
-              </div>
-              <p>Construct the shader chunks depending on what we are passed in.
-TODO Texture Cube support for phong materials</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-10">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <p>Essentially, given the parameters, we are creating subtly different
 materials. This way is elegant for the end user but perhaps not so
@@ -250,11 +235,11 @@ generated shader will be different.</p>
         </li>
         
         
-        <li id="section-11">
+        <li id="section-10">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <p>If not diffuse assume vertex colours
 TODO - Finish off vertex diffuse colours</p>
@@ -263,9 +248,31 @@ TODO - Finish off vertex diffuse colours</p>
             
             <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @diffuse?
       @shaderChunks.push ShaderChunkLibrary.VertexColour
-      @name += <span class="hljs-string">"DV"</span>
       @_uber0 = uber_vertex_colour <span class="hljs-literal">true</span>, @_uber0
     <span class="hljs-keyword">else</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>TODO - Occasionally passing in RGBA causes this to fail. Best put a wrapper</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> @diffuse <span class="hljs-keyword">instanceof</span> RGB
+        @contract.roles.uMaterialDiffuseColour  = <span class="hljs-string">"diffuse"</span>
+        @_uber0 = uber_phong_diff_tex <span class="hljs-literal">false</span>, @_uber0
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> @diffuse <span class="hljs-keyword">instanceof</span> Texture
+        @diffuse.contract.roles.uSamplerDiffuse = <span class="hljs-string">"unit"</span>
+        @_preDrawCalls.push () =&gt;
+          @diffuse.bind()
+        usingTexture = <span class="hljs-literal">true</span>
+        @_uber0 = uber_phong_diff_tex <span class="hljs-literal">true</span>, @_uber0</pre></div></div>
             
         </li>
         
@@ -276,31 +283,6 @@ TODO - Finish off vertex diffuse colours</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <p>TODO - Occasionally passing in RGBA causes this to fail. Best put a wrapper</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> @diffuse <span class="hljs-keyword">instanceof</span> RGB
-        @contract.roles.uMaterialDiffuseColour  = <span class="hljs-string">"diffuse"</span>
-        @name += <span class="hljs-string">"DC"</span>
-        @_uber0 = uber_phong_diff_tex <span class="hljs-literal">false</span>, @_uber0
-      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> @diffuse <span class="hljs-keyword">instanceof</span> Texture
-        @diffuse.contract.roles.uSamplerDiffuse = <span class="hljs-string">"unit"</span>
-        @_preDrawCalls.push () =&gt;
-          @diffuse.bind()
-        usingTexture = <span class="hljs-literal">true</span>
-        @_uber0 = uber_phong_diff_tex <span class="hljs-literal">true</span>, @_uber0
-        @name += <span class="hljs-string">"DT"</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-13">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
-              </div>
               <p>TODO - Also texture cube  would be good here as well</p>
 
             </div>
@@ -308,7 +290,6 @@ TODO - Finish off vertex diffuse colours</p>
             <div class="content"><div class='highlight'><pre>
     <span class="hljs-keyword">if</span> @specular <span class="hljs-keyword">instanceof</span> RGB
       @contract.roles.uMaterialSpecularColour = <span class="hljs-string">"specular"</span>
-      @name += <span class="hljs-string">"SC"</span>
       @_uber0 = uber_phong_spec_tex <span class="hljs-literal">false</span>, @_uber0
     <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> @specular <span class="hljs-keyword">instanceof</span> Texture
       @specular.contract.roles.uSamplerSpecular = <span class="hljs-string">"unit"</span>
@@ -316,12 +297,10 @@ TODO - Finish off vertex diffuse colours</p>
           @specular.bind()
 
       usingTexture = <span class="hljs-literal">true</span>
-      @name += <span class="hljs-string">"ST"</span>
       @_uber0 = uber_phong_spec_tex <span class="hljs-literal">true</span>, @_uber0
 
     <span class="hljs-keyword">if</span> @emissive <span class="hljs-keyword">instanceof</span> RGB
       @contract.roles.uMaterialEmissiveColour = <span class="hljs-string">"emissive"</span>
-      @name += <span class="hljs-string">"EC"</span>
       @_uber0 = uber_phong_emis_tex <span class="hljs-literal">false</span>, @_uber0
     <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> @emissive <span class="hljs-keyword">instanceof</span> Texture
       @emissive.contract.roles.uSamplerEmissive = <span class="hljs-string">"unit"</span>
@@ -329,7 +308,6 @@ TODO - Finish off vertex diffuse colours</p>
         @emissive.bind()
 
       usingTexture = <span class="hljs-literal">true</span>
-      @name += <span class="hljs-string">"ET"</span>
       @_uber0 = uber_phong_spec_tex <span class="hljs-literal">true</span>, @_uber0
 
     <span class="hljs-keyword">if</span> usingTexture
@@ -340,11 +318,11 @@ TODO - Finish off vertex diffuse colours</p>
         </li>
         
         
-        <li id="section-14">
+        <li id="section-13">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p>Override to bind textures if there are any</p>
 

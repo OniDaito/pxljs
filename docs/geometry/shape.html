@@ -136,25 +136,21 @@ colour (optional) - added to each vertex</p>
             
             <div class="content"><div class='highlight'><pre>    @vertices.push <span class="hljs-keyword">new</span> Vertex 
       p : <span class="hljs-keyword">new</span> Vec3 -w,-h,d
-      c : colour
       n : Vec3.normalize <span class="hljs-keyword">new</span> Vec3 -w,-h,d
       t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">0</span>,<span class="hljs-number">0</span> 
     
     @vertices.push <span class="hljs-keyword">new</span> Vertex 
       p : <span class="hljs-keyword">new</span> Vec3 w,-h,d  
-      c : colour
       n : Vec3.normalize <span class="hljs-keyword">new</span> Vec3 w,-h,d
       t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">1</span>,<span class="hljs-number">0</span> 
     
     @vertices.push <span class="hljs-keyword">new</span> Vertex 
       p : <span class="hljs-keyword">new</span> Vec3 w,h,d
-      c : colour
       n : Vec3.normalize <span class="hljs-keyword">new</span> Vec3 w,h,d 
       t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">1</span>,<span class="hljs-number">1</span>
     
     @vertices.push <span class="hljs-keyword">new</span> Vertex 
       p : <span class="hljs-keyword">new</span> Vec3 -w,h,d  
-      c : colour
       n : Vec3.normalize <span class="hljs-keyword">new</span> Vec3 -w,h,d
       t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">0</span>,<span class="hljs-number">1</span></pre></div></div>
             
@@ -173,27 +169,27 @@ colour (optional) - added to each vertex</p>
             
             <div class="content"><div class='highlight'><pre>    @vertices.push <span class="hljs-keyword">new</span> Vertex
       p : <span class="hljs-keyword">new</span> Vec3 -w,-h,-d
-      c : colour
       n : Vec3.normalize <span class="hljs-keyword">new</span> Vec3 -w,-h,-d
       t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">1</span>,<span class="hljs-number">1</span> 
     
     @vertices.push <span class="hljs-keyword">new</span> Vertex
       p : <span class="hljs-keyword">new</span> Vec3 w,-h,-d
-      c : colour
       n : Vec3.normalize <span class="hljs-keyword">new</span> Vec3 w,-h,-d
       t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">1</span>,<span class="hljs-number">0</span>
     
     @vertices.push <span class="hljs-keyword">new</span> Vertex 
       p : <span class="hljs-keyword">new</span> Vec3 w,h,-d
-      c : colour
       n : Vec3.normalize <span class="hljs-keyword">new</span> Vec3 w,h,-d
       t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">0</span>,<span class="hljs-number">0</span>
     
     @vertices.push <span class="hljs-keyword">new</span> Vertex
       p : <span class="hljs-keyword">new</span> Vec3 -w,h,-d
-      c : colour
       n : Vec3.normalize <span class="hljs-keyword">new</span> Vec3 -w,h,-d
       t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">0</span>,<span class="hljs-number">1</span> 
+
+    <span class="hljs-keyword">if</span> colour?
+      <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> @vertices
+        v.c = colour
 
     @indices = [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>,<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>,<span class="hljs-number">4</span>,<span class="hljs-number">7</span>,<span class="hljs-number">4</span>,<span class="hljs-number">0</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">7</span>,<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">6</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>]
 
@@ -223,20 +219,18 @@ colour (optional) - added to each vertex</p>
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
               <p><a href="http://local.wasp.uwa.edu.au/~pbourke/texture_colour/spheremap/">http://local.wasp.uwa.edu.au/~pbourke/texture_colour/spheremap/</a>  Paul Bourke’s sphere code
-We should weigh an alternative that reduces the batch count by using GL_TRIANGLES instead</p>
+We should weigh an alternative that reduces the batch count by using GL_TRIANGLES instead
+TODO - Add Tangents?</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Sphere</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Geometry</span></span>
 
-  constructor: <span class="hljs-function"><span class="hljs-params">(radius, segments, center, colour)</span> -&gt;</span>
+  constructor: <span class="hljs-function"><span class="hljs-params">(radius, segments, colour)</span> -&gt;</span>
     <span class="hljs-keyword">super</span>()
     gl = PXL.Context.gl <span class="hljs-comment"># Global / Current context</span>
     @layout = gl.TRIANGLE_STRIP
-
-    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> center?
-      center = <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)
 
     <span class="hljs-keyword">if</span> segments? 
       <span class="hljs-keyword">if</span> segments &lt; <span class="hljs-number">0</span>
@@ -257,14 +251,13 @@ We should weigh an alternative that reduces the batch count by using GL_TRIANGLE
         e0.y = Math.sin(theta1)
         e0.z = Math.cos(theta1) * Math.sin(theta3)
 
-        p0 = Vec3.multScalar(e,radius).add(center)
+        p0 = Vec3.multScalar(e0,radius)
         c0 = <span class="hljs-keyword">new</span> RGBA(<span class="hljs-number">1.0</span>,<span class="hljs-number">1.0</span>,<span class="hljs-number">1.0</span>,<span class="hljs-number">1.0</span>)
         t0 = <span class="hljs-keyword">new</span> Vec2( <span class="hljs-number">0.999</span> - i / segments, <span class="hljs-number">0.999</span> - <span class="hljs-number">2</span> * j / segments)
         v = <span class="hljs-keyword">new</span> Vertex 
           p : p0
-          c : c0
           t : t0
-          n : e0      
+          n : e0   
 
         @vertices.push v
 
@@ -274,14 +267,13 @@ We should weigh an alternative that reduces the batch count by using GL_TRIANGLE
         e1.y = Math.sin(theta2)
         e1.z = Math.cos(theta2) * Math.sin(theta3)
 
-        p1 = Vec3.multScalar(e,radius).add(center)
+        p1 = Vec3.multScalar(e1,radius)
 
         t1 = <span class="hljs-keyword">new</span> Vec2( <span class="hljs-number">0.999</span> - i / segments, <span class="hljs-number">0.999</span> - <span class="hljs-number">2</span> * (j+<span class="hljs-number">1</span>) / segments)
         v = <span class="hljs-keyword">new</span> Vertex
           p : p1
-          c : c0
           n : e1
-          t : t1       
+          t : t1
      
         @vertices.push v
 
@@ -289,7 +281,11 @@ We should weigh an alternative that reduces the batch count by using GL_TRIANGLE
       <span class="hljs-keyword">if</span> i % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>
         @faces.push <span class="hljs-keyword">new</span> Triangle(@vertices[i], @vertices[i<span class="hljs-number">-1</span>], @vertices[i<span class="hljs-number">-2</span>])
       <span class="hljs-keyword">else</span>
-        @faces.push <span class="hljs-keyword">new</span> Triangle(@vertices[i], @vertices[i<span class="hljs-number">-2</span>], @vertices[i<span class="hljs-number">-1</span>])</pre></div></div>
+        @faces.push <span class="hljs-keyword">new</span> Triangle(@vertices[i], @vertices[i<span class="hljs-number">-2</span>], @vertices[i<span class="hljs-number">-1</span>])
+    
+    <span class="hljs-keyword">if</span> colour?
+      <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> @vertices
+        v.c = colour</pre></div></div>
             
         </li>
         
@@ -359,7 +355,12 @@ A basic cylinder</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    @vertices.push <span class="hljs-keyword">new</span> Vertex <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,height,<span class="hljs-number">0</span>), colour, <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,<span class="hljs-number">1.0</span>,<span class="hljs-number">0.0</span>), <span class="hljs-keyword">new</span> Vec2(<span class="hljs-number">0.5</span>,<span class="hljs-number">0.0</span>)
+            <div class="content"><div class='highlight'><pre>    @vertices.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,height,<span class="hljs-number">0</span>)
+      n : <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,<span class="hljs-number">1.0</span>,<span class="hljs-number">0.0</span>)
+      t : <span class="hljs-keyword">new</span> Vec2(<span class="hljs-number">0.5</span>,<span class="hljs-number">0.0</span>)
+      a : <span class="hljs-keyword">new</span> Vec2(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>) <span class="hljs-comment"># cx this - hairy coconut</span>
+    
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">1.</span>.resolution]
 
       x = radius * Math.sin degToRad(<span class="hljs-number">360.0</span> / resolution * i)
@@ -370,10 +371,9 @@ A basic cylinder</p>
       tangent.cross <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>)
 
       @vertices.push <span class="hljs-keyword">new</span> Vertex 
-        p : <span class="hljs-keyword">new</span> Vec3 x,height,z
-        c : colour 
-        n : Vec3.normalize <span class="hljs-keyword">new</span> Vec3 x,<span class="hljs-number">1.0</span>,z 
-        t : <span class="hljs-keyword">new</span> Vec2 i/resolution, <span class="hljs-number">0.0</span> 
+        p : <span class="hljs-keyword">new</span> Vec3(x,height,z)
+        n : Vec3.normalize(<span class="hljs-keyword">new</span> Vec3(x,<span class="hljs-number">1.0</span>,z)) 
+        t : <span class="hljs-keyword">new</span> Vec2(i/resolution, <span class="hljs-number">0.0</span>) 
         a : tangent</pre></div></div>
             
         </li>
@@ -427,7 +427,6 @@ A basic cylinder</p>
         
         @vertices.push <span class="hljs-keyword">new</span> Vertex 
           p : <span class="hljs-keyword">new</span> Vec3(x, height - (hstep * i) ,z) 
-          c : colour 
           n : n0
           t : <span class="hljs-keyword">new</span> Vec2(j/resolution, i/segments ) 
           a : tangent</pre></div></div>
@@ -479,11 +478,10 @@ A basic cylinder</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>    @vertices.push <span class="hljs-keyword">new</span> Vertex 
-      p : <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>, -height,<span class="hljs-number">0</span>
-      c : colour
-      n : <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,<span class="hljs-number">-1.0</span>,<span class="hljs-number">0.0</span>
-      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">0.5</span>,<span class="hljs-number">1.0</span>
-      a : <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span></pre></div></div>
+      p : <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,-height,<span class="hljs-number">0</span>)
+      n : <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,<span class="hljs-number">-1.0</span>,<span class="hljs-number">0.0</span>)
+      t : <span class="hljs-keyword">new</span> Vec2(<span class="hljs-number">0.5</span>,<span class="hljs-number">1.0</span>)
+      a : <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)</pre></div></div>
             
         </li>
         
@@ -510,7 +508,27 @@ A basic cylinder</p>
       @indices.push i
 
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.@indices.length<span class="hljs-number">-1</span>] <span class="hljs-keyword">by</span> <span class="hljs-number">3</span>
-      @faces.push <span class="hljs-keyword">new</span> Triangle @vertices[@indices[i]], @vertices[@indices[i+<span class="hljs-number">1</span>]], @vertices[@indices[i+<span class="hljs-number">2</span>]]
+      @faces.push <span class="hljs-keyword">new</span> Triangle @vertices[@indices[i]], @vertices[@indices[i+<span class="hljs-number">1</span>]], @vertices[@indices[i+<span class="hljs-number">2</span>]]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>Add colour - convert to RGBA here as that is what we expect in the shader
+Potentially this is bad but attributes are what they are and this is cheaper</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> colour?
+      <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> colour.a?
+        colour = <span class="hljs-keyword">new</span> RGBA(colour.r,colour.g,colour.b,<span class="hljs-number">1.0</span>)
+      <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> @vertices
+        v.c = colour
 
     @
 

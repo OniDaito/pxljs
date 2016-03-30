@@ -46,38 +46,7 @@ This software <span class="hljs-keyword">is</span> released under the MIT Licenc
 
 
 http:<span class="hljs-regexp">//</span>www.flipcode.com/documents/matrfaq.html
-http:<span class="hljs-regexp">//</span>www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/index.htm
-
-  - Thanks: Tojiro - https:<span class="hljs-regexp">//gi</span>thub.com/toji/gl-matrix
-  - Thanks: Cinder <span class="hljs-keyword">for</span> most <span class="hljs-keyword">of</span> the math!
-
-The maths functons <span class="hljs-keyword">in</span> PXLJS work as follows;
-  - Any instance method that doesn<span class="hljs-string">'t return a different tyoe to the instance, modifies 
-    that instance and returns a reference to the original. For example:
-    Vec3 a(1,0,0); 
-    b = a.add(1,0,0);
-
-    b will be a pointer or reference to a which will now have the value (2,0,0)
-
-  - Class methods do the opposite to the above - they return a new version
-    Vec3 a(1,0,0)
-    Vec3 b(2,0,0)
-    c = Vec3.add(a,b)
-    
-    c is now a new vector in its own right, with value (3,0,0)
-  
-  - Functions that are exceptions to this are things like dot, equals and length which
-  return values that are not copies or references to thing being called upon.
-
-
-- TODO
-  * Matrix mult function for vectors as well as scalars and matrices
-  * Some aliases (like multiply) might be nice
-  * Make functions that multiply other things destructive
-  * We have set/getPos on the matrices but should we have rotation as well?
-  * multiply / divide as well that check the types for eloquence
-
-</span></pre></div></div>
+http:<span class="hljs-regexp">//</span>www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/index.htm</pre></div></div>
             
         </li>
         
@@ -89,6 +58,79 @@ The maths functons <span class="hljs-keyword">in</span> PXLJS work as follows;
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
               <p>##</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>The maths functons in PXLjs work as follows;
+any instance function that doesnt return a different type to the instance, modifies 
+that instance and returns a reference to the original. For example:</p>
+<pre><code>Vec3 a(<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>); 
+b = a.add(<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>);
+</code></pre>
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p> b will be a pointer or reference to a which will now have the value (2,0,0)</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Class fucntions do the opposite to the above - they return a new version</p>
+<pre><code>Vec3 a(<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)
+Vec3 b(<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)
+c = Vec3.add(a,b)
+</code></pre>
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p> c is now a new vector in its own right, with value (3,0,0)</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Functions that are exceptions to this are things like dot, equals and length which
+return values that are not copies or references to thing being called upon.</p>
 
             </div>
             
@@ -106,11 +148,11 @@ The maths functons <span class="hljs-keyword">in</span> PXLJS work as follows;
         </li>
         
         
-        <li id="section-3">
+        <li id="section-8">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p>Useful constants</p>
 
@@ -134,14 +176,14 @@ sinx_over_x : <span class="hljs-function"><span class="hljs-params">(x)</span> -
         </li>
         
         
-        <li id="section-4">
+        <li id="section-9">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
+                <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>##Vec2###
-A two component vector with x,y</p>
+              <h2 id="vec2">Vec2</h2>
+<p>A two component vector with x,y</p>
 
             </div>
             
@@ -153,98 +195,23 @@ A two component vector with x,y</p>
         </li>
         
         
-        <li id="section-5">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
-              </div>
-              <p>@sub - static function - non destructive subtraction.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  @sub:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
-    a.copy()[<span class="hljs-string">"sub"</span>](b)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-6">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
-              </div>
-              <p>@add - static function - non destructive addition.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  @add:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
-    a.copy()[<span class="hljs-string">"add"</span>](b)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
-              </div>
-              <p>@div - static function - non destructive division.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  @div:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
-    a.copy()[<span class="hljs-string">"div"</span>](b)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-8">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
-              </div>
-              <p>@mult - static function - non destructive multiplication.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  @mult:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
-    a.copy()[<span class="hljs-string">"mult"</span>](b)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-9">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
-              </div>
-              <p>@multScalar - static function - non destructive multiplication by a scalar</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  @multScalar:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
-    a.copy()[<span class="hljs-string">"multScalar"</span>](b)</pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-10">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>@normalize - static function - non destructive normalization.</p>
+              <p><strong>@sub</strong> - static function - non destructive subtraction.</p>
+<ul>
+<li><strong>a</strong> - Vec2</li>
+<li><strong>b</strong> - Vec2</li>
+<li>returns a new Vec2</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  @normalize:<span class="hljs-function"><span class="hljs-params">(a)</span> -&gt;</span>
-    a.copy()[<span class="hljs-string">"normalize"</span>]()</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  @sub:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
+    a.copy()[<span class="hljs-string">"sub"</span>](b)</pre></div></div>
             
         </li>
         
@@ -255,15 +222,17 @@ A two component vector with x,y</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              <p>@dot - static function - return the dot product.</p>
+              <p><strong>@add</strong> - static function - non destructive subtraction.</p>
+<ul>
+<li><strong>a</strong> - Vec2</li>
+<li><strong>b</strong> - Vec2</li>
+<li>returns a new Vec2</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  @dot:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
-    a.dot(b)
-
-  constructor: <span class="hljs-function"><span class="hljs-params">(x=<span class="hljs-number">0</span>,y=<span class="hljs-number">0</span>)</span> -&gt;</span>
-  	[@x,@y] = [x,y]</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  @add:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
+    a.copy()[<span class="hljs-string">"add"</span>](b)</pre></div></div>
             
         </li>
         
@@ -274,12 +243,17 @@ A two component vector with x,y</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <p>copy - make a copy of this vector</p>
+              <p><strong>@div</strong> - static function - non destructive division.</p>
+<ul>
+<li><strong>a</strong> - Vec2</li>
+<li><strong>b</strong> - Vec2</li>
+<li>returns a new Vec2</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  copy: <span class="hljs-function">-&gt;</span>
-    <span class="hljs-keyword">new</span> Vec2(@x,@y)</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  @div:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
+    a.copy()[<span class="hljs-string">"div"</span>](b)</pre></div></div>
             
         </li>
         
@@ -290,7 +264,135 @@ A two component vector with x,y</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
-              <p>copyFrom - copy the value from another vector</p>
+              <p><strong>@mult</strong> - static function - non destructive multiplication.</p>
+<ul>
+<li><strong>a</strong> - Vec2</li>
+<li><strong>b</strong> - Vec2</li>
+<li>returns a new Vec2</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  @mult:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
+    a.copy()[<span class="hljs-string">"mult"</span>](b)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p><strong>@multScalar</strong> - static function - non destructive multiplication with a scalar.</p>
+<ul>
+<li><strong>a</strong> - Vec2</li>
+<li><strong>b</strong> - Number</li>
+<li>returns a new Vec2</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  @multScalar:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
+    a.copy()[<span class="hljs-string">"multScalar"</span>](b)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p><strong>@normalize</strong> static function - non destructive normalization.</p>
+<ul>
+<li><strong>a</strong> - Vec2</li>
+<li>returns a new Vec2</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  @normalize:<span class="hljs-function"><span class="hljs-params">(a)</span> -&gt;</span>
+    a.copy()[<span class="hljs-string">"normalize"</span>]()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p><strong>@dot</strong> - static function - compute the dot product</p>
+<ul>
+<li><strong>a</strong> - Vec2</li>
+<li><strong>b</strong> - Vec2</li>
+<li>returns a Number</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  @dot:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
+    a.dot(b)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p><strong>@constructor</strong> - Create a new Vec2</p>
+<ul>
+<li><strong>x</strong> - Number</li>
+<li><strong>y</strong> - Number</li>
+<li>returns a new Vec2</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  constructor: <span class="hljs-function"><span class="hljs-params">(x=<span class="hljs-number">0</span>,y=<span class="hljs-number">0</span>)</span> -&gt;</span>
+  	[@x,@y] = [x,y]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p><strong>copy</strong> - make a copy of this vector</p>
+<ul>
+<li>returns a new Vec2</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  copy: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> Vec2(@x,@y)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p><strong>copyFrom</strong> - copy the value from another vector</p>
+<ul>
+<li><strong>a</strong> - Vec2</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -302,13 +404,16 @@ A two component vector with x,y</p>
         </li>
         
         
-        <li id="section-14">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
-              <p>length - return the length of this vector</p>
+              <p><strong>length</strong> - return the length of this vector</p>
+<ul>
+<li>returns a number</li>
+</ul>
 
             </div>
             
@@ -318,13 +423,16 @@ A two component vector with x,y</p>
         </li>
         
         
-        <li id="section-15">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
-              <p>lengthSquared - return the squared length of this vector</p>
+              <p><strong>lengthSquared</strong> - return the squared length of this vector</p>
+<ul>
+<li>returns a number</li>
+</ul>
 
             </div>
             
@@ -334,13 +442,16 @@ A two component vector with x,y</p>
         </li>
         
         
-        <li id="section-16">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
-              <p>normalize - normalize - destructive</p>
+              <p><strong>normalize</strong> - normalize this vector</p>
+<ul>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -352,13 +463,17 @@ A two component vector with x,y</p>
         </li>
         
         
-        <li id="section-17">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
-              <p>sub - subtract another vector - destructive</p>
+              <p><strong>sub</strong> - subtract another vector from this one</p>
+<ul>
+<li><strong>v</strong> - a Vec2</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -370,13 +485,17 @@ A two component vector with x,y</p>
         </li>
         
         
-        <li id="section-18">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
-              <p>add - add another vector - destructive</p>
+              <p><strong>add</strong> - add another vector to this one</p>
+<ul>
+<li><strong>v</strong> - a Vec2</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -388,117 +507,22 @@ A two component vector with x,y</p>
         </li>
         
         
-        <li id="section-19">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
-              </div>
-              <p>dv - return a new vector being the difference between this vector and another (v)</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  dv: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
-    <span class="hljs-keyword">new</span> Vec2  Math.abs(@x - v.x) Math.abs(@y - v.y)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-20">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
-              </div>
-              <p>dist - return the distance between this and another vector (v)</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  dist: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
-    Vec2.sub(@,v).length()</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-21">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
-              </div>
-              <p>distSquared - return the distance squared between this and another vector (v)</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  distSquared: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
-    Vec2.sub(@,v).lengthSquared()</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-22">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
-              </div>
-              <p>div - divide by another vector n </p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  div: <span class="hljs-function"><span class="hljs-params">(n)</span> -&gt;</span>
-    [@x,@y] = [@x/n.x,@y/n.y]
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-23">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
-              </div>
-              <p>mult - multiply by another vector v </p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  mult: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
-    [@x,@y] = [@x*v.x,@y*v.y]
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-24">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
-              </div>
-              <p>multScalar - multiply by a scalar n</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  multScalar: <span class="hljs-function"><span class="hljs-params">(n)</span> -&gt;</span>
-    [@x,@y] = [@x*n,@y*n]
-    @</pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
-              <p>equals - are these two vectors equal in size/direction</p>
+              <p><strong>dv</strong> - return a new vector being the difference between this vector and another</p>
+<ul>
+<li><strong>v</strong> - a Vec2</li>
+<li>returns a new Vec2</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  equals: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
-    @x == v.x <span class="hljs-keyword">and</span> @y == v.y</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  dv: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> Vec2  Math.abs(@x - v.x) Math.abs(@y - v.y)</pre></div></div>
             
         </li>
         
@@ -509,12 +533,16 @@ A two component vector with x,y</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
-              <p>dot - return the dot porduct between this and v</p>
+              <p><strong>dist</strong> - return the distance between this and another vector</p>
+<ul>
+<li><strong>v</strong> - a Vec2</li>
+<li>returns a Number</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  dot: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
-    @x*v.x + @y*v.y</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  dist: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
+    Vec2.sub(@,v).length()</pre></div></div>
             
         </li>
         
@@ -525,12 +553,16 @@ A two component vector with x,y</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
-              <p>invalid - is this vector actually valid</p>
+              <p><strong>distSquared</strong> - return the distance squared between this and another vector</p>
+<ul>
+<li><strong>v</strong> - a Vec2</li>
+<li>returns a Number</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  invalid: <span class="hljs-function">-&gt;</span>
-    <span class="hljs-keyword">return</span> (@x == Infinity) || isNaN(@x) || @y == Infinity || isNaN(@y)</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  distSquared: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
+    Vec2.sub(@,v).lengthSquared()</pre></div></div>
             
         </li>
         
@@ -541,12 +573,17 @@ A two component vector with x,y</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
-              <p>flatten - used by shaders to get a nice list</p>
+              <p><strong>div</strong> - divide by another vector n</p>
+<ul>
+<li><strong>n</strong> - a Vec2</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  flatten: <span class="hljs-function">-&gt;</span>
-    [@x,@y]</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  div: <span class="hljs-function"><span class="hljs-params">(n)</span> -&gt;</span>
+    [@x,@y] = [@x/n.x,@y/n.y]
+    @</pre></div></div>
             
         </li>
         
@@ -557,11 +594,16 @@ A two component vector with x,y</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
-              <p>Short-hand to set the values in one go</p>
+              <p><strong>mult</strong> - multiply by another vector v</p>
+<ul>
+<li><strong>v</strong> - a Vec2</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  set : <span class="hljs-function"><span class="hljs-params">(@x, @y)</span> -&gt;</span>
+            <div class="content"><div class='highlight'><pre>  mult: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
+    [@x,@y] = [@x*v.x,@y*v.y]
     @</pre></div></div>
             
         </li>
@@ -573,15 +615,16 @@ A two component vector with x,y</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
-              <p>##Edge2###
-A container for two vertices, ordered as start and finish - directed</p>
+              <p><strong>multScalar</strong> - multiply by a scalar n</p>
+<ul>
+<li><strong>n</strong> - a Vec2</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Edge2</span></span>
-
-  constructor: <span class="hljs-function"><span class="hljs-params">(@start, @end)</span> -&gt;</span>
+            <div class="content"><div class='highlight'><pre>  multScalar: <span class="hljs-function"><span class="hljs-params">(n)</span> -&gt;</span>
+    [@x,@y] = [@x*n,@y*n]
     @</pre></div></div>
             
         </li>
@@ -593,12 +636,16 @@ A container for two vertices, ordered as start and finish - directed</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
-              <p>Convert this edge to a line in the form ax + by + c = 0</p>
+              <p><strong>equals</strong> - are these two vectors equal in size/direction</p>
+<ul>
+<li><strong>v</strong> a Vec2</li>
+<li>returns a boolean</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  equation : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
-    [@start.y - @end.y, @end.x - @start.x, @start.x*@end.y - @end.x*@start.y]</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  equals: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
+    @x == v.x <span class="hljs-keyword">and</span> @y == v.y</pre></div></div>
             
         </li>
         
@@ -609,17 +656,16 @@ A container for two vertices, ordered as start and finish - directed</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
-              <p>TODO - Hold these for speed?</p>
+              <p><strong>dot</strong> - return the dot product between this and v</p>
+<ul>
+<li><strong>v</strong> a Vec2</li>
+<li>returns a Number</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>
-  sample : <span class="hljs-function"><span class="hljs-params">(x)</span> -&gt;</span>
-    [a,b,c] = @equation()
-    (-a*x-c) / b
-
-  length : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
-    @end.dist @start</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  dot: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
+    @x*v.x + @y*v.y</pre></div></div>
             
         </li>
         
@@ -630,12 +676,15 @@ A container for two vertices, ordered as start and finish - directed</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
-              <h2 id="halfedge2">HalfEdge2</h2>
-<p>An edge structure that points to the two faces it is connected to
-start / end are vertices and @face0, @face1 are either triangles
-or quads at present</p>
+              <p><strong>invalid</strong> - is this vector actually valid</p>
+<ul>
+<li>returns a boolean</li>
+</ul>
 
             </div>
+            
+            <div class="content"><div class='highlight'><pre>  invalid: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">return</span> (@x == Infinity) || isNaN(@x) || @y == Infinity || isNaN(@y)</pre></div></div>
             
         </li>
         
@@ -646,16 +695,15 @@ or quads at present</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
-              <p>TODO - the relationship between math things and primitives is getting blurred. We need to 
-sort that out.</p>
+              <p><strong>flatten</strong> - used by shaders to get a nice list</p>
+<ul>
+<li>returns a List of Number</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HalfEdge2</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Edge2</span></span>
-  constructor : <span class="hljs-function"><span class="hljs-params">(@start, @end, @face0, @face1)</span> -&gt;</span>
-    <span class="hljs-keyword">super</span>(@start, @end)
-    @</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  flatten: <span class="hljs-function">-&gt;</span>
+    [@x,@y]</pre></div></div>
             
         </li>
         
@@ -666,15 +714,17 @@ sort that out.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
-              <p>##Vec3###
-A 3 dimension vector (x,y,z)</p>
+              <p><strong>set</strong> - Short-hand to set the values in one go</p>
+<ul>
+<li><strong>x</strong> - Number</li>
+<li><strong>y</strong> - Number</li>
+<li>returns a Number</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Vec3</span></span>
-
-  DIM : <span class="hljs-number">3</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>  set : <span class="hljs-function"><span class="hljs-params">(@x, @y)</span> -&gt;</span>
+    @</pre></div></div>
             
         </li>
         
@@ -685,12 +735,13 @@ A 3 dimension vector (x,y,z)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
-              <p>@sub - static function - non destructive subtraction.</p>
+              <h2 id="edge2">Edge2</h2>
+<p>A container for two vertices, ordered as start and finish - directed</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  @sub:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
-    a.copy()[<span class="hljs-string">"sub"</span>](b)</pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Edge2</span></span></pre></div></div>
             
         </li>
         
@@ -701,12 +752,16 @@ A 3 dimension vector (x,y,z)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
-              <p>@add - static function - non destructive addition.</p>
+              <p><strong>constructor</strong> </p>
+<ul>
+<li><strong>start</strong> - a Vec2</li>
+<li><strong>end</strong> - a Vec2</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  @add:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
-    a.copy()[<span class="hljs-string">"add"</span>](b)</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  constructor: <span class="hljs-function"><span class="hljs-params">(@start, @end)</span> -&gt;</span>
+    @</pre></div></div>
             
         </li>
         
@@ -717,12 +772,15 @@ A 3 dimension vector (x,y,z)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
-              <p>@cross - static function - return the cross product.</p>
+              <p><strong>equation</strong> - Convert this edge to a line in the form ax + by + c = 0</p>
+<ul>
+<li>returns a List of Number</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  @cross:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
-    a.copy()[<span class="hljs-string">"cross"</span>](b)</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  equation : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    [@start.y - @end.y, @end.x - @start.x, @start.x*@end.y - @end.x*@start.y]</pre></div></div>
             
         </li>
         
@@ -733,12 +791,17 @@ A 3 dimension vector (x,y,z)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
-              <p>@div - static function - non destructive division.</p>
+              <p><strong>sample</strong> - point on the line given x</p>
+<ul>
+<li><strong>x</strong> - Number</li>
+<li>returns a Number</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  @div:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
-    a.copy()[<span class="hljs-string">"div"</span>](b)</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  sample : <span class="hljs-function"><span class="hljs-params">(x)</span> -&gt;</span>
+    [a,b,c] = @equation()
+    (-a*x-c) / b</pre></div></div>
             
         </li>
         
@@ -749,12 +812,15 @@ A 3 dimension vector (x,y,z)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
-              <p>@mult - static function - non destructive multiplication.</p>
+              <p><strong>length</strong> - return the length of this edge</p>
+<ul>
+<li>returns a Number</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  @mult:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
-    a.copy()[<span class="hljs-string">"mult"</span>](b)</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  length : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    @end.dist @start</pre></div></div>
             
         </li>
         
@@ -765,12 +831,21 @@ A 3 dimension vector (x,y,z)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
-              <p>@multScalar - static function - non destructive multiplication by a scalar</p>
+              <h2 id="halfedge2">HalfEdge2</h2>
+<p><strong>Incomplete</strong>
+An edge structure that points to the two faces it is connected to
+start / end are vertices and @face0, @face1 are either triangles
+or quads at present</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  @multScalar:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
-    a.copy()[<span class="hljs-string">"multScalar"</span>](b)</pre></div></div>
+            <div class="content"><div class='highlight'><pre>
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HalfEdge2</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Edge2</span></span>
+
+  constructor : <span class="hljs-function"><span class="hljs-params">(@start, @end, @face0, @face1)</span> -&gt;</span>
+    <span class="hljs-keyword">super</span>(@start, @end)
+    @</pre></div></div>
             
         </li>
         
@@ -781,12 +856,14 @@ A 3 dimension vector (x,y,z)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
-              <p>@normalize - static function - non destructive normalization.</p>
+              <h2 id="vec3">Vec3</h2>
+<p>A 3 dimension vector (x,y,z)</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  @normalize:<span class="hljs-function"><span class="hljs-params">(a)</span> -&gt;</span>
-    a.copy()[<span class="hljs-string">"normalize"</span>]()</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Vec3</span></span>
+
+  DIM : <span class="hljs-number">3</span></pre></div></div>
             
         </li>
         
@@ -797,15 +874,17 @@ A 3 dimension vector (x,y,z)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
-              <p>@dot - static function - return the dot product.</p>
+              <p><strong>@sub</strong> - static function - non destructive subtraction.</p>
+<ul>
+<li><strong>a</strong> - a Vec3</li>
+<li><strong>b</strong> - a Vec3</li>
+<li>returns a new Vec3</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  @dot:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
-    a.dot(b)
-      
-  constructor: <span class="hljs-function"><span class="hljs-params">(x=<span class="hljs-number">0</span>,y=<span class="hljs-number">0</span>,z=<span class="hljs-number">0</span>)</span> -&gt;</span>
-  	[@x,@y,@z] = [x,y,z]</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  @sub:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
+    a.copy()[<span class="hljs-string">"sub"</span>](b)</pre></div></div>
             
         </li>
         
@@ -816,12 +895,17 @@ A 3 dimension vector (x,y,z)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
-              <p>copy - make a copy of this vector</p>
+              <p><strong>@add</strong> - static function - non destructive addition.</p>
+<ul>
+<li><strong>a</strong> - a Vec3</li>
+<li><strong>b</strong> - a Vec3</li>
+<li>returns a new Vec3</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  copy: <span class="hljs-function">-&gt;</span>
-    <span class="hljs-keyword">new</span> Vec3(@x,@y,@z)</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  @add:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
+    a.copy()[<span class="hljs-string">"add"</span>](b)</pre></div></div>
             
         </li>
         
@@ -832,7 +916,173 @@ A 3 dimension vector (x,y,z)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-45">&#182;</a>
               </div>
-              <p>copyFrom - copy the value from another vector</p>
+              <p><strong>@cross</strong> - static function - return the cross product.</p>
+<ul>
+<li><strong>a</strong> - a Vec3</li>
+<li><strong>b</strong> - a Vec3</li>
+<li>returns a new Vec3</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  @cross:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
+    a.copy()[<span class="hljs-string">"cross"</span>](b)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-46">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-46">&#182;</a>
+              </div>
+              <p><strong>@div</strong> - static function - non destructive division.</p>
+<ul>
+<li><strong>a</strong> - a Vec3</li>
+<li><strong>b</strong> - a Vec3</li>
+<li>returns a new Vec3</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  @div:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
+    a.copy()[<span class="hljs-string">"div"</span>](b)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-47">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-47">&#182;</a>
+              </div>
+              <p><strong>@mult</strong> - static function - non destructive multiplication.</p>
+<ul>
+<li><strong>a</strong> - a Vec3</li>
+<li><strong>b</strong> - a Vec3</li>
+<li>returns a new Vec3</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  @mult:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
+    a.copy()[<span class="hljs-string">"mult"</span>](b)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-48">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-48">&#182;</a>
+              </div>
+              <p><strong>@multScalar</strong> - static function - non destructive multiplication by a scalar</p>
+<ul>
+<li><strong>a</strong> - a Vec3</li>
+<li><strong>b</strong> - a Vec3</li>
+<li>returns a Number</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  @multScalar:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
+    a.copy()[<span class="hljs-string">"multScalar"</span>](b)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-49">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-49">&#182;</a>
+              </div>
+              <p><strong>@normalize</strong> - static function - non destructive normalization.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  @normalize:<span class="hljs-function"><span class="hljs-params">(a)</span> -&gt;</span>
+    a.copy()[<span class="hljs-string">"normalize"</span>]()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-50">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-50">&#182;</a>
+              </div>
+              <p><strong>@dot</strong> - static function - return the dot product.</p>
+<ul>
+<li><strong>a</strong> - a Vec3</li>
+<li><strong>b</strong> - a Vec3</li>
+<li>returns a Number</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  @dot:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
+    a.dot(b)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-51">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-51">&#182;</a>
+              </div>
+              <p><strong>constructor</strong></p>
+<ul>
+<li><strong>x</strong> - a Number</li>
+<li><strong>y</strong> - a Number</li>
+<li><strong>z</strong> - a Number</li>
+<li>returns a new Vec3</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  constructor: <span class="hljs-function"><span class="hljs-params">(x=<span class="hljs-number">0</span>,y=<span class="hljs-number">0</span>,z=<span class="hljs-number">0</span>)</span> -&gt;</span>
+  	[@x,@y,@z] = [x,y,z]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-52">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-52">&#182;</a>
+              </div>
+              <p><strong>copy</strong> - make a copy of this vector</p>
+<ul>
+<li>returns a new Vec3</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  copy: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> Vec3(@x,@y,@z)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-53">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-53">&#182;</a>
+              </div>
+              <p><strong>copyFrom</strong> - copy the value from another vector</p>
+<ul>
+<li><strong>a</strong> - a Vec3</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -845,13 +1095,16 @@ A 3 dimension vector (x,y,z)</p>
         </li>
         
         
-        <li id="section-46">
+        <li id="section-54">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-46">&#182;</a>
+                <a class="pilcrow" href="#section-54">&#182;</a>
               </div>
-              <p>xy - a basic swizzle returning a new Vec2</p>
+              <p><strong>xy</strong> - a basic swizzle returning a new Vec2 from x and y</p>
+<ul>
+<li>returns a Vec2</li>
+</ul>
 
             </div>
             
@@ -861,13 +1114,16 @@ A 3 dimension vector (x,y,z)</p>
         </li>
         
         
-        <li id="section-47">
+        <li id="section-55">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-47">&#182;</a>
+                <a class="pilcrow" href="#section-55">&#182;</a>
               </div>
-              <p>length - return the length of this vector</p>
+              <p><strong>length</strong> - return the length of this vector</p>
+<ul>
+<li>returns a Number</li>
+</ul>
 
             </div>
             
@@ -877,13 +1133,16 @@ A 3 dimension vector (x,y,z)</p>
         </li>
         
         
-        <li id="section-48">
+        <li id="section-56">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-48">&#182;</a>
+                <a class="pilcrow" href="#section-56">&#182;</a>
               </div>
-              <p>lengthSquared - return the squared length of this vector</p>
+              <p><strong>lengthSquared</strong> - return the squared length of this vector</p>
+<ul>
+<li>returns a Number</li>
+</ul>
 
             </div>
             
@@ -893,13 +1152,16 @@ A 3 dimension vector (x,y,z)</p>
         </li>
         
         
-        <li id="section-49">
+        <li id="section-57">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-49">&#182;</a>
+                <a class="pilcrow" href="#section-57">&#182;</a>
               </div>
-              <p>normalize - normalize - destructive</p>
+              <p><strong>normalize</strong> - normalize - destructive</p>
+<ul>
+<li>returns a Number</li>
+</ul>
 
             </div>
             
@@ -911,13 +1173,17 @@ A 3 dimension vector (x,y,z)</p>
         </li>
         
         
-        <li id="section-50">
+        <li id="section-58">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-50">&#182;</a>
+                <a class="pilcrow" href="#section-58">&#182;</a>
               </div>
-              <p>sub - subtract another vector - destructive</p>
+              <p><strong>sub</strong> - subtract another vector - destructive</p>
+<ul>
+<li><strong>v</strong> - a Vec3</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -930,13 +1196,17 @@ A 3 dimension vector (x,y,z)</p>
         </li>
         
         
-        <li id="section-51">
+        <li id="section-59">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-51">&#182;</a>
+                <a class="pilcrow" href="#section-59">&#182;</a>
               </div>
-              <p>add - add another vector - destructive</p>
+              <p><strong>add</strong> - add another vector - destructive</p>
+<ul>
+<li><strong>v</strong> - Vec3</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -949,13 +1219,17 @@ A 3 dimension vector (x,y,z)</p>
         </li>
         
         
-        <li id="section-52">
+        <li id="section-60">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-52">&#182;</a>
+                <a class="pilcrow" href="#section-60">&#182;</a>
               </div>
-              <p>cross - cross this vector with another vector - destructive</p>
+              <p><strong>cross</strong> - cross this vector with another vector - destructive</p>
+<ul>
+<li><strong>v</strong> - Vec3</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -971,149 +1245,25 @@ A 3 dimension vector (x,y,z)</p>
         </li>
         
         
-        <li id="section-53">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-53">&#182;</a>
-              </div>
-              <p>dv - return a new vector being the difference between this vector and another (v)</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  dv: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
-    <span class="hljs-keyword">new</span> Vec3  Math.abs(@x - v.x) Math.abs(@y - v.y) Math.abs(@z - v.z)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-54">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-54">&#182;</a>
-              </div>
-              <p>dist - return the distance between this and another vector (v)</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  dist: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
-    Vec3.sub(@,v).length()</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-55">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-55">&#182;</a>
-              </div>
-              <p>distSquared - return the distance squared between this and another vector (v)</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  distSquared: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
-    Vec3.sub(@,v).lengthSquared()</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-56">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-56">&#182;</a>
-              </div>
-              <p>div - divide by another vector n </p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  div: <span class="hljs-function"><span class="hljs-params">(n)</span> -&gt;</span>
-    [@x,@y,@z] = [@x/n.x,@y/n.y,@z/n.z]
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-57">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-57">&#182;</a>
-              </div>
-              <p>mult - multiply by another vector v </p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  mult: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
-    [@x,@y,@z] = [@x*v.x,@y*v.y,@z*v.z]
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-58">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-58">&#182;</a>
-              </div>
-              <p>multScalar - multiply by a scalar n</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  multScalar: <span class="hljs-function"><span class="hljs-params">(n)</span> -&gt;</span>
-    [@x,@y,@z] = [@x*n,@y*n,@z*n]
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-59">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-59">&#182;</a>
-              </div>
-              <p>equals - are these two vectors equal in size/direction</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  equals: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
-    @x == v.x <span class="hljs-keyword">and</span> @y == v.y <span class="hljs-keyword">and</span> @z == v.z</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-60">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-60">&#182;</a>
-              </div>
-              <p>dot - return the dot porduct between this and v</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  dot: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
-    @x*v.x + @y*v.y + @z*v.z</pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-61">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-61">&#182;</a>
               </div>
-              <p>invalid - is this vector actually valid</p>
+              <p><strong>dv</strong> - return a new vector being the difference between this vector and another (v)</p>
+<ul>
+<li><strong>v</strong> - Vec3</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  invalid: <span class="hljs-function">-&gt;</span>
-    <span class="hljs-keyword">return</span> (@x == Infinity) || isNaN(@x) || @y == Infinity || isNaN(@y) || @z == Infinity || isNaN(@z)</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  dv: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
+    @x = Math.abs(@x - v.x)
+    @y = Math.abs(@y - v.y)
+    @z = Math.abs(@z - v.z)
+    @</pre></div></div>
             
         </li>
         
@@ -1124,12 +1274,16 @@ A 3 dimension vector (x,y,z)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-62">&#182;</a>
               </div>
-              <p>flatten - used by shaders to get a nice list</p>
+              <p><strong>dist</strong> - return the distance between this and another vector (v)</p>
+<ul>
+<li><strong>v</strong> - Vec3</li>
+<li>returns a Number</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  flatten: <span class="hljs-function">-&gt;</span>
-    [@x,@y,@z]</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  dist: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
+    Vec3.sub(@,v).length()</pre></div></div>
             
         </li>
         
@@ -1140,12 +1294,16 @@ A 3 dimension vector (x,y,z)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-63">&#182;</a>
               </div>
-              <p>Short-hand to set the values in one go</p>
+              <p><strong>distSquared</strong> - return the distance squared between this and another vector (v)</p>
+<ul>
+<li><strong>v</strong> - Vec3</li>
+<li>returns a Number</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  set : <span class="hljs-function"><span class="hljs-params">(@x, @y, @z)</span> -&gt;</span>
-    @</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  distSquared: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
+    Vec3.sub(@,v).lengthSquared()</pre></div></div>
             
         </li>
         
@@ -1156,8 +1314,171 @@ A 3 dimension vector (x,y,z)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-64">&#182;</a>
               </div>
-              <p>##Vec4###
-A four dimensional vector (x,y,z,w)</p>
+              <p><strong>div</strong> - divide by another vector n </p>
+<ul>
+<li><strong>n</strong> - Vec3</li>
+<li>returns this</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  div: <span class="hljs-function"><span class="hljs-params">(n)</span> -&gt;</span>
+    [@x,@y,@z] = [@x/n.x,@y/n.y,@z/n.z]
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-65">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-65">&#182;</a>
+              </div>
+              <p><strong>mult</strong> - multiply by another vector v </p>
+<ul>
+<li><strong>v</strong> - Vec3</li>
+<li>returns this</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  mult: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
+    [@x,@y,@z] = [@x*v.x,@y*v.y,@z*v.z]
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-66">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-66">&#182;</a>
+              </div>
+              <p><strong>multScalar</strong> - multiply by a scalar n</p>
+<ul>
+<li><strong>n</strong> - Number</li>
+<li>returns this</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  multScalar: <span class="hljs-function"><span class="hljs-params">(n)</span> -&gt;</span>
+    [@x,@y,@z] = [@x*n,@y*n,@z*n]
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-67">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-67">&#182;</a>
+              </div>
+              <p><strong>equals</strong> - are these two vectors equal in size/direction</p>
+<ul>
+<li><strong>v</strong> - Vec3
+returns boolean</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  equals: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
+    @x == v.x <span class="hljs-keyword">and</span> @y == v.y <span class="hljs-keyword">and</span> @z == v.z</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-68">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-68">&#182;</a>
+              </div>
+              <p>dot - return the dot product between this and v</p>
+<ul>
+<li><strong>v</strong> - Vec3</li>
+<li>return this</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  dot: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
+    @x*v.x + @y*v.y + @z*v.z</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-69">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-69">&#182;</a>
+              </div>
+              <p><strong>invalid</strong> - is this vector actually valid</p>
+<ul>
+<li>returns boolean</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  invalid: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">return</span> (@x == Infinity) || isNaN(@x) || @y == Infinity || isNaN(@y) || @z == Infinity || isNaN(@z)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-70">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-70">&#182;</a>
+              </div>
+              <p><strong>flatten</strong> - used by shaders to get a nice list</p>
+<ul>
+<li>returns List of Number</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  flatten: <span class="hljs-function">-&gt;</span>
+    [@x,@y,@z]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-71">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-71">&#182;</a>
+              </div>
+              <p><strong>set</strong> - Short-hand to set the values in one go</p>
+<ul>
+<li><strong>x</strong> - Number</li>
+<li><strong>y</strong> - Number</li>
+<li><strong>z</strong> - Number</li>
+<li>returns this</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  set : <span class="hljs-function"><span class="hljs-params">(@x, @y, @z)</span> -&gt;</span>
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-72">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-72">&#182;</a>
+              </div>
+              <h2 id="vec4">Vec4</h2>
+<p>A four dimensional vector (x,y,z,w)</p>
 
             </div>
             
@@ -1169,149 +1490,23 @@ A four dimensional vector (x,y,z,w)</p>
         </li>
         
         
-        <li id="section-65">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-65">&#182;</a>
-              </div>
-              <p>@sub - static function - non destructive subtraction.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  @sub:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
-    a.copy()[<span class="hljs-string">"sub"</span>](b)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-66">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-66">&#182;</a>
-              </div>
-              <p>@add - static function - non destructive addition.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  @add:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
-    a.copy()[<span class="hljs-string">"add"</span>](b)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-67">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-67">&#182;</a>
-              </div>
-              <p>@cross - static function - return the cross product.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  @cross:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
-    a.copy()[<span class="hljs-string">"cross"</span>](b)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-68">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-68">&#182;</a>
-              </div>
-              <p>@div - static function - non destructive division.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  @div:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
-    a.copy()[<span class="hljs-string">"div"</span>](b)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-69">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-69">&#182;</a>
-              </div>
-              <p>@mult - static function - non destructive multiplication.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  @mult:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
-    a.copy()[<span class="hljs-string">"mult"</span>](b)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-70">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-70">&#182;</a>
-              </div>
-              <p>@multScalar - static function - non destructive multiplication by a scalar</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  @multScalar:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
-    a.copy()[<span class="hljs-string">"multScalar"</span>](b)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-71">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-71">&#182;</a>
-              </div>
-              <p>@normalize - static function - non destructive normalization.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  @normalize:<span class="hljs-function"><span class="hljs-params">(a)</span> -&gt;</span>
-    a.copy()[<span class="hljs-string">"normalize"</span>]()</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-72">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-72">&#182;</a>
-              </div>
-              <p>@dot - static function - return the dot product.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  @dot:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
-    a.dot(b)
-
-  constructor: <span class="hljs-function"><span class="hljs-params">(x=<span class="hljs-number">0</span>,y=<span class="hljs-number">0</span>,z=<span class="hljs-number">0</span>,w=<span class="hljs-number">1</span>)</span> -&gt;</span>
-  	[@x,@y,@z,@w] = [x,y,z,w]</pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-73">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-73">&#182;</a>
               </div>
-              <p>copy - make a copy of this vector</p>
+              <p><strong>@sub</strong> - static function - non destructive subtraction.</p>
+<ul>
+<li><strong>a</strong> - Vec4</li>
+<li><strong>b</strong> - Vec4</li>
+<li>returns new Vec4</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  copy: <span class="hljs-function">-&gt;</span>
-    <span class="hljs-keyword">new</span> Vec4(@x,@y,@z,@w)</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  @sub:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
+    a.copy()[<span class="hljs-string">"sub"</span>](b)</pre></div></div>
             
         </li>
         
@@ -1322,7 +1517,198 @@ A four dimensional vector (x,y,z,w)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-74">&#182;</a>
               </div>
-              <p>copyFrom - copy the value from another vector</p>
+              <p><strong>@add</strong> - static function - non destructive addition.</p>
+<ul>
+<li><strong>a</strong> - Vec4</li>
+<li><strong>b</strong> - Vec4</li>
+<li>returns new Vec4</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  @add:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
+    a.copy()[<span class="hljs-string">"add"</span>](b)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-75">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-75">&#182;</a>
+              </div>
+              <p><strong>@cross</strong> - static function - return the cross product.</p>
+<ul>
+<li><strong>a</strong> - Vec4</li>
+<li><strong>b</strong> - Vec4</li>
+<li>returns new Vec4</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  @cross:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
+    a.copy()[<span class="hljs-string">"cross"</span>](b)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-76">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-76">&#182;</a>
+              </div>
+              <p><strong>@div</strong> - static function - non destructive division.</p>
+<ul>
+<li><strong>a</strong> - Vec4</li>
+<li><strong>b</strong> - Vec4</li>
+<li>returns new Vec4</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  @div:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
+    a.copy()[<span class="hljs-string">"div"</span>](b)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-77">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-77">&#182;</a>
+              </div>
+              <p><strong>@mult</strong> - static function - non destructive multiplication.</p>
+<ul>
+<li><strong>a</strong> - Vec4</li>
+<li><strong>b</strong> - Vec4</li>
+<li>returns new Vec4</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  @mult:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
+    a.copy()[<span class="hljs-string">"mult"</span>](b)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-78">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-78">&#182;</a>
+              </div>
+              <p><strong>@multScalar</strong> - static function - non destructive multiplication by a scalar</p>
+<ul>
+<li><strong>a</strong> - Vec4</li>
+<li><strong>b</strong> - Number</li>
+<li>returns Number</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  @multScalar:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
+    a.copy()[<span class="hljs-string">"multScalar"</span>](b)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-79">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-79">&#182;</a>
+              </div>
+              <p><strong>@normalize</strong> - static function - non destructive normalization.</p>
+<ul>
+<li><strong>a</strong> - Vec4</li>
+<li>returns new Vec4</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  @normalize:<span class="hljs-function"><span class="hljs-params">(a)</span> -&gt;</span>
+    a.copy()[<span class="hljs-string">"normalize"</span>]()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-80">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-80">&#182;</a>
+              </div>
+              <p><strong>@dot</strong> - static function - return the dot product.</p>
+<ul>
+<li><strong>a</strong> - Vec4</li>
+<li><strong>b</strong> - Vec4</li>
+<li>returns Number</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  @dot:<span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
+    a.dot(b)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-81">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-81">&#182;</a>
+              </div>
+              <p><strong>constructor</strong></p>
+<ul>
+<li><strong>x</strong> - Number - optional - default 0</li>
+<li><strong>y</strong> - Number - optional - default 0</li>
+<li><strong>z</strong> - Number - optional - default 0</li>
+<li><strong>w</strong> - Number - optional - default 1</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  constructor: <span class="hljs-function"><span class="hljs-params">(x=<span class="hljs-number">0</span>,y=<span class="hljs-number">0</span>,z=<span class="hljs-number">0</span>,w=<span class="hljs-number">1</span>)</span> -&gt;</span>
+  	[@x,@y,@z,@w] = [x,y,z,w]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-82">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-82">&#182;</a>
+              </div>
+              <p><strong>copy</strong> - make a copy of this vector</p>
+<ul>
+<li>returns new Vec4</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  copy: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">new</span> Vec4(@x,@y,@z,@w)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-83">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-83">&#182;</a>
+              </div>
+              <p><strong>copyFrom</strong> - copy the value from another vector</p>
+<ul>
+<li><strong>a</strong> - Vec4</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -1336,13 +1722,16 @@ A four dimensional vector (x,y,z,w)</p>
         </li>
         
         
-        <li id="section-75">
+        <li id="section-84">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-75">&#182;</a>
+                <a class="pilcrow" href="#section-84">&#182;</a>
               </div>
-              <p>xyz - a basic swizzle returning a new Vec3</p>
+              <p><strong>xyz</strong> - a basic swizzle returning a new Vec3</p>
+<ul>
+<li>returns new Vec3</li>
+</ul>
 
             </div>
             
@@ -1352,13 +1741,16 @@ A four dimensional vector (x,y,z,w)</p>
         </li>
         
         
-        <li id="section-76">
+        <li id="section-85">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-76">&#182;</a>
+                <a class="pilcrow" href="#section-85">&#182;</a>
               </div>
-              <p>length - return the length of this vector</p>
+              <p><strong>length</strong> - return the length of this vector</p>
+<ul>
+<li>returns Number</li>
+</ul>
 
             </div>
             
@@ -1368,13 +1760,16 @@ A four dimensional vector (x,y,z,w)</p>
         </li>
         
         
-        <li id="section-77">
+        <li id="section-86">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-77">&#182;</a>
+                <a class="pilcrow" href="#section-86">&#182;</a>
               </div>
-              <p>lengthSquared - return the squared length of this vector</p>
+              <p><strong>lengthSquared</strong> - return the squared length of this vector</p>
+<ul>
+<li>returns Number</li>
+</ul>
 
             </div>
             
@@ -1384,13 +1779,16 @@ A four dimensional vector (x,y,z,w)</p>
         </li>
         
         
-        <li id="section-78">
+        <li id="section-87">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-78">&#182;</a>
+                <a class="pilcrow" href="#section-87">&#182;</a>
               </div>
-              <p>normalize - normalize - destructive</p>
+              <p><strong>normalize</strong> - normalize - destructive</p>
+<ul>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -1402,13 +1800,17 @@ A four dimensional vector (x,y,z,w)</p>
         </li>
         
         
-        <li id="section-79">
+        <li id="section-88">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-79">&#182;</a>
+                <a class="pilcrow" href="#section-88">&#182;</a>
               </div>
-              <p>sub - subtract another vector - destructive</p>
+              <p><strong>sub</strong> - subtract another vector - destructive</p>
+<ul>
+<li><strong>v</strong> - Vec4</li>
+<li>returns this  </li>
+</ul>
 
             </div>
             
@@ -1422,13 +1824,17 @@ A four dimensional vector (x,y,z,w)</p>
         </li>
         
         
-        <li id="section-80">
+        <li id="section-89">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-80">&#182;</a>
+                <a class="pilcrow" href="#section-89">&#182;</a>
               </div>
-              <p>equals - are these two vectors equal in size/direction</p>
+              <p><strong>equals</strong> - are these two vectors equal in size/direction</p>
+<ul>
+<li><strong>v</strong> - Vec4</li>
+<li>returns boolean</li>
+</ul>
 
             </div>
             
@@ -1438,13 +1844,17 @@ A four dimensional vector (x,y,z,w)</p>
         </li>
         
         
-        <li id="section-81">
+        <li id="section-90">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-81">&#182;</a>
+                <a class="pilcrow" href="#section-90">&#182;</a>
               </div>
-              <p>add - add another vector - destructive</p>
+              <p><strong>add</strong> - add another vector - destructive</p>
+<ul>
+<li><strong>v</strong> - Vec4</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -1458,13 +1868,17 @@ A four dimensional vector (x,y,z,w)</p>
         </li>
         
         
-        <li id="section-82">
+        <li id="section-91">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-82">&#182;</a>
+                <a class="pilcrow" href="#section-91">&#182;</a>
               </div>
-              <p>cross - cross this vector with another vector - destructive</p>
+              <p><em>cross</em> - cross this vector with another vector - destructive</p>
+<ul>
+<li><strong>v</strong> - Vec4</li>
+<li>return this</li>
+</ul>
 
             </div>
             
@@ -1473,11 +1887,11 @@ A four dimensional vector (x,y,z,w)</p>
         </li>
         
         
-        <li id="section-83">
+        <li id="section-92">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-83">&#182;</a>
+                <a class="pilcrow" href="#section-92">&#182;</a>
               </div>
               <p>No idea what to do with W here! :S</p>
 
@@ -1494,164 +1908,25 @@ A four dimensional vector (x,y,z,w)</p>
         </li>
         
         
-        <li id="section-84">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-84">&#182;</a>
-              </div>
-              <p>dv - return a new vector being the difference between this vector and another (v)</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  dv: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
-    <span class="hljs-keyword">new</span> Vec4  Math.abs(@x - v.x) Math.abs(@y - v.y) Math.abs(@z - v.z) Math.abs(@w - v.w)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-85">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-85">&#182;</a>
-              </div>
-              <p>dist - return the distance between this and another vector (v)</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  dist: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
-    Vec4.sub(@,v).length()</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-86">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-86">&#182;</a>
-              </div>
-              <p>distSquared - return the distance squared between this and another vector (v)</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  distSquared: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
-    Vec4.sub(@,v).lengthSquared()</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-87">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-87">&#182;</a>
-              </div>
-              <p>div - divide by another vector n </p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  div: <span class="hljs-function"><span class="hljs-params">(n)</span> -&gt;</span>
-    [@x,@y,@z,@w] = [@x/n.x,@y/n.y,@z/n.z,@w/n.w]
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-88">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-88">&#182;</a>
-              </div>
-              <p>mult - multiply by another vector v </p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  mult: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
-    [@x,@y,@z,@w] = [@x*v.x,@y*v.y,@z*v.z,@w*v.w]
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-89">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-89">&#182;</a>
-              </div>
-              <p>multScalar - multiply by a scalar n</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  multScalar: <span class="hljs-function"><span class="hljs-params">(n)</span> -&gt;</span>
-    [@x,@y,@z,@w] = [@x*n,@y*n,@z*n,@w*n]
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-90">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-90">&#182;</a>
-              </div>
-              <p>dot - return the dot porduct between this and v</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  dot: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
-    @x*v.x + @y*v.y + @z*v.z + @w*v.w</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-91">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-91">&#182;</a>
-              </div>
-              <p>invalid - is this vector actually valid</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  invalid: <span class="hljs-function">-&gt;</span>
-    <span class="hljs-keyword">return</span> (@x == Infinity) || isNaN(@x) || @y == Infinity || isNaN(@y) || @z == Infinity || isNaN(@z) || @w == Infinity || isNaN(@w)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-92">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-92">&#182;</a>
-              </div>
-              <p>flatten - used by shaders to get a nice list</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  flatten: <span class="hljs-function">-&gt;</span>
-    [@x,@y,@z,@w]</pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-93">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-93">&#182;</a>
               </div>
-              <p>Short-hand to set the values in one go</p>
+              <p><strong>dv</strong> - set this vector to the difference between this vector and another (v)</p>
+<ul>
+<li><strong>v</strong> - Vec4</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  set : <span class="hljs-function"><span class="hljs-params">(@x, @y, @z, @w)</span> -&gt;</span>
+            <div class="content"><div class='highlight'><pre>  dv: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
+    @x = Math.abs(@x - v.x)
+    @y = Math.abs(@y - v.y)
+    @z = Math.abs(@z - v.z)
+    @w = Math.abs(@w - v.w) 
     @</pre></div></div>
             
         </li>
@@ -1663,8 +1938,191 @@ A four dimensional vector (x,y,z,w)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-94">&#182;</a>
               </div>
-              <p>##Matrix2###
-A 2x2 matrix in Column Major Format</p>
+              <p><strong>dist</strong> - return the distance between this and another vector (v)</p>
+<ul>
+<li><strong>v</strong> - Vec4</li>
+<li>returns Number</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  dist: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
+    Vec4.sub(@,v).length()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-95">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-95">&#182;</a>
+              </div>
+              <p><strong>distSquared</strong> - return the distance squared between this and another vector (v)</p>
+<ul>
+<li><strong>v</strong> - Vec4</li>
+<li>returns Number</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  distSquared: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
+    Vec4.sub(@,v).lengthSquared()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-96">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-96">&#182;</a>
+              </div>
+              <p><strong>div</strong> - divide by another vector n</p>
+<ul>
+<li><strong>n</strong> - Vec4</li>
+<li>returns this </li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  div: <span class="hljs-function"><span class="hljs-params">(n)</span> -&gt;</span>
+    [@x,@y,@z,@w] = [@x/n.x,@y/n.y,@z/n.z,@w/n.w]
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-97">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-97">&#182;</a>
+              </div>
+              <p><strong>mult</strong> - multiply by another vector v </p>
+<ul>
+<li><strong>v</strong> - Vec4</li>
+<li>returns this</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  mult: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
+    [@x,@y,@z,@w] = [@x*v.x,@y*v.y,@z*v.z,@w*v.w]
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-98">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-98">&#182;</a>
+              </div>
+              <p><strong>multScalar</strong> - multiply by a scalar n</p>
+<ul>
+<li><strong>n</strong> - Number</li>
+<li>returns this</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  multScalar: <span class="hljs-function"><span class="hljs-params">(n)</span> -&gt;</span>
+    [@x,@y,@z,@w] = [@x*n,@y*n,@z*n,@w*n]
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-99">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-99">&#182;</a>
+              </div>
+              <p><strong>dot</strong> - return the dot porduct between this and v</p>
+<ul>
+<li><strong>v</strong> - Vec4</li>
+<li>returns this</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  dot: <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
+    @x*v.x + @y*v.y + @z*v.z + @w*v.w</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-100">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-100">&#182;</a>
+              </div>
+              <p><strong>invalid</strong> - is this vector actually valid</p>
+<ul>
+<li>returns boolean</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  invalid: <span class="hljs-function">-&gt;</span>
+    <span class="hljs-keyword">return</span> (@x == Infinity) || isNaN(@x) || @y == Infinity || isNaN(@y) || @z == Infinity || isNaN(@z) || @w == Infinity || isNaN(@w)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-101">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-101">&#182;</a>
+              </div>
+              <p><strong>flatten</strong> - used by shaders to get a nice list</p>
+<ul>
+<li>returns List of Number</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  flatten: <span class="hljs-function">-&gt;</span>
+    [@x,@y,@z,@w]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-102">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-102">&#182;</a>
+              </div>
+              <p><strong>set</strong> - Short-hand to set the values in one go</p>
+<ul>
+<li><strong>x</strong> - Number</li>
+<li><strong>y</strong> - Number</li>
+<li><strong>z</strong> - Number</li>
+<li><strong>w</strong> - Number</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  set : <span class="hljs-function"><span class="hljs-params">(@x, @y, @z, @w)</span> -&gt;</span>
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-103">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-103">&#182;</a>
+              </div>
+              <h2 id="matrix2">Matrix2</h2>
+<p>A 2x2 matrix in Column Major Format</p>
 
             </div>
             
@@ -1676,13 +2134,18 @@ A 2x2 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-95">
+        <li id="section-104">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-95">&#182;</a>
+                <a class="pilcrow" href="#section-104">&#182;</a>
               </div>
-              <p>@addScalar - static function - add a scalar to every element in this matrix</p>
+              <p><strong>@addScalar</strong> - static function - add a scalar to every element in this matrix</p>
+<ul>
+<li><strong>a</strong> - Matrix2</li>
+<li><strong>b</strong> - Number</li>
+<li>returns new Matrix2</li>
+</ul>
 
             </div>
             
@@ -1692,13 +2155,18 @@ A 2x2 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-96">
+        <li id="section-105">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-96">&#182;</a>
+                <a class="pilcrow" href="#section-105">&#182;</a>
               </div>
-              <p>@subScalar - static function - subtract a scalar from every element in this matrix</p>
+              <p><strong>@subScalar</strong> - static function - subtract a scalar from every element in this matrix</p>
+<ul>
+<li><strong>a</strong> - Matrix2</li>
+<li><strong>b</strong> - Number</li>
+<li>returns new Matrix2</li>
+</ul>
 
             </div>
             
@@ -1708,13 +2176,18 @@ A 2x2 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-97">
+        <li id="section-106">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-97">&#182;</a>
+                <a class="pilcrow" href="#section-106">&#182;</a>
               </div>
-              <p>@multScalar - static function - multiply every element in this matrix by a scalar</p>
+              <p><strong>@multScalar</strong> - static function - multiply every element in this matrix by a scalar</p>
+<ul>
+<li><strong>a</strong> - Matrix2</li>
+<li><strong>b</strong> - Number</li>
+<li>returns new Matrix2</li>
+</ul>
 
             </div>
             
@@ -1724,13 +2197,18 @@ A 2x2 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-98">
+        <li id="section-107">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-98">&#182;</a>
+                <a class="pilcrow" href="#section-107">&#182;</a>
               </div>
-              <p>@divScalar - static function - divide every element in this matrix by a scalar</p>
+              <p><strong>@divScalar</strong> - static function - divide every element in this matrix by a scalar</p>
+<ul>
+<li><strong>a</strong> - Matrix2</li>
+<li><strong>b</strong> - Number</li>
+<li>returns new Matrix2</li>
+</ul>
 
             </div>
             
@@ -1740,13 +2218,18 @@ A 2x2 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-99">
+        <li id="section-108">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-99">&#182;</a>
+                <a class="pilcrow" href="#section-108">&#182;</a>
               </div>
-              <p>@mult - static function - multiply this matrix by another matrix</p>
+              <p><strong>@mult</strong> - static function - multiply this matrix by another matrix</p>
+<ul>
+<li><strong>a</strong> - Matrix2</li>
+<li><strong>b</strong> - Matrix2</li>
+<li>returns new Matrix2</li>
+</ul>
 
             </div>
             
@@ -1756,13 +2239,18 @@ A 2x2 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-100">
+        <li id="section-109">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-100">&#182;</a>
+                <a class="pilcrow" href="#section-109">&#182;</a>
               </div>
-              <p>@multVec - static function - multiply a vector by this matrix, returning a new vector</p>
+              <p><strong>@multVec</strong> - static function - multiply a vector by this matrix, returning a new vector</p>
+<ul>
+<li><strong>m</strong> - Matrix2</li>
+<li><strong>v</strong> - Vec2</li>
+<li>returns new Vec2</li>
+</ul>
 
             </div>
             
@@ -1774,13 +2262,17 @@ A 2x2 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-101">
+        <li id="section-110">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-101">&#182;</a>
+                <a class="pilcrow" href="#section-110">&#182;</a>
               </div>
-              <p>@transpose - static function - return the transpose of this matrix</p>
+              <p><strong>@transpose</strong> - static function - return the transpose of this matrix</p>
+<ul>
+<li><strong>a</strong> - Matrix2</li>
+<li>returns new Matrix2</li>
+</ul>
 
             </div>
             
@@ -1790,13 +2282,16 @@ A 2x2 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-102">
+        <li id="section-111">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-102">&#182;</a>
+                <a class="pilcrow" href="#section-111">&#182;</a>
               </div>
-              <p>Take a list in column major format</p>
+              <p><strong>constructor</strong> Take a list in column major format</p>
+<ul>
+<li><strong>a</strong> - List of Number - Length 4 - Optional - Default [1,0,0,1]</li>
+</ul>
 
             </div>
             
@@ -1809,13 +2304,16 @@ A 2x2 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-103">
+        <li id="section-112">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-103">&#182;</a>
+                <a class="pilcrow" href="#section-112">&#182;</a>
               </div>
-              <p>copy - return a copy of this matrix</p>
+              <p><strong>copy</strong> - return a copy of this matrix</p>
+<ul>
+<li>returns new Matrix2</li>
+</ul>
 
             </div>
             
@@ -1825,13 +2323,17 @@ A 2x2 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-104">
+        <li id="section-113">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-104">&#182;</a>
+                <a class="pilcrow" href="#section-113">&#182;</a>
               </div>
-              <p>copyFrom - copy all the values from another matrix, a</p>
+              <p><strong>copyFrom</strong> - copy all the values from another matrix, a</p>
+<ul>
+<li><strong>a</strong> Matrix2</li>
+<li></li>
+</ul>
 
             </div>
             
@@ -1843,13 +2345,13 @@ A 2x2 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-105">
+        <li id="section-114">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-105">&#182;</a>
+                <a class="pilcrow" href="#section-114">&#182;</a>
               </div>
-              <p>multScalar - multiply this matrix by a scalar</p>
+              <p><strong>multScalar</strong> - multiply this matrix by a scalar</p>
 
             </div>
             
@@ -1860,13 +2362,13 @@ A 2x2 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-106">
+        <li id="section-115">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-106">&#182;</a>
+                <a class="pilcrow" href="#section-115">&#182;</a>
               </div>
-              <p>addScalar - add a scalar to every element</p>
+              <p><strong>addScalar</strong> - add a scalar to every element</p>
 
             </div>
             
@@ -1877,13 +2379,13 @@ A 2x2 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-107">
+        <li id="section-116">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-107">&#182;</a>
+                <a class="pilcrow" href="#section-116">&#182;</a>
               </div>
-              <p>subScalar - remove a scalar from every element</p>
+              <p><strong>subScalar</strong> - remove a scalar from every element</p>
 
             </div>
             
@@ -1894,13 +2396,13 @@ A 2x2 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-108">
+        <li id="section-117">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-108">&#182;</a>
+                <a class="pilcrow" href="#section-117">&#182;</a>
               </div>
-              <p>divScalar - divide every element by a scalar</p>
+              <p><strong>divScalar</strong> - divide every element by a scalar</p>
 
             </div>
             
@@ -1911,13 +2413,13 @@ A 2x2 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-109">
+        <li id="section-118">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-109">&#182;</a>
+                <a class="pilcrow" href="#section-118">&#182;</a>
               </div>
-              <p>identity - set this matrix to be the identity matrix</p>
+              <p><strong>identity</strong> - set this matrix to be the identity matrix</p>
 
             </div>
             
@@ -1928,13 +2430,13 @@ A 2x2 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-110">
+        <li id="section-119">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-110">&#182;</a>
+                <a class="pilcrow" href="#section-119">&#182;</a>
               </div>
-              <p>at - return the element at the row and column specified</p>
+              <p><strong>at</strong> - return the element at the row and column specified</p>
 
             </div>
             
@@ -1944,13 +2446,13 @@ A 2x2 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-111">
+        <li id="section-120">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-111">&#182;</a>
+                <a class="pilcrow" href="#section-120">&#182;</a>
               </div>
-              <p>mult - multiply this matrix by matrix m</p>
+              <p><strong>mult</strong> - multiply this matrix by matrix m</p>
 
             </div>
             
@@ -1970,11 +2472,11 @@ A 2x2 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-112">
+        <li id="section-121">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-112">&#182;</a>
+                <a class="pilcrow" href="#section-121">&#182;</a>
               </div>
               <p>multVec - multiply vector v by this matrix - destructive to v</p>
 
@@ -1994,11 +2496,11 @@ A 2x2 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-113">
+        <li id="section-122">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-113">&#182;</a>
+                <a class="pilcrow" href="#section-122">&#182;</a>
               </div>
               <p>getCol - return a column from this matrix as a Vec2</p>
 
@@ -2011,11 +2513,11 @@ A 2x2 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-114">
+        <li id="section-123">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-114">&#182;</a>
+                <a class="pilcrow" href="#section-123">&#182;</a>
               </div>
               <p>getRow - return a row from this matrix as a Vec2</p>
 
@@ -2027,11 +2529,11 @@ A 2x2 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-115">
+        <li id="section-124">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-115">&#182;</a>
+                <a class="pilcrow" href="#section-124">&#182;</a>
               </div>
               <p>transpose - transpose this matrix</p>
 
@@ -2044,11 +2546,11 @@ A 2x2 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-116">
+        <li id="section-125">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-116">&#182;</a>
+                <a class="pilcrow" href="#section-125">&#182;</a>
               </div>
               <p>print - print this matrix to the console</p>
 
@@ -2061,11 +2563,11 @@ A 2x2 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-117">
+        <li id="section-126">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-117">&#182;</a>
+                <a class="pilcrow" href="#section-126">&#182;</a>
               </div>
               <p>rotate - given an angle in radians, set this as a rotation matrix</p>
 
@@ -2088,11 +2590,11 @@ A 2x2 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-118">
+        <li id="section-127">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-118">&#182;</a>
+                <a class="pilcrow" href="#section-127">&#182;</a>
               </div>
               <p>scale - given a Vec3, create a scaling matrix</p>
 
@@ -2103,11 +2605,11 @@ A 2x2 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-119">
+        <li id="section-128">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-119">&#182;</a>
+                <a class="pilcrow" href="#section-128">&#182;</a>
               </div>
               <p>Leave w</p>
 
@@ -2123,11 +2625,11 @@ A 2x2 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-120">
+        <li id="section-129">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-120">&#182;</a>
+                <a class="pilcrow" href="#section-129">&#182;</a>
               </div>
               <p>##Matrix3###
 A 3x3 matrix in Column Major Format</p>
@@ -2142,11 +2644,11 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-121">
+        <li id="section-130">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-121">&#182;</a>
+                <a class="pilcrow" href="#section-130">&#182;</a>
               </div>
               <p>TODO - Euler x,y,z rotations needed? Probably not! :S</p>
 
@@ -2155,13 +2657,13 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-122">
+        <li id="section-131">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-122">&#182;</a>
+                <a class="pilcrow" href="#section-131">&#182;</a>
               </div>
-              <p>@addScalar - static function - add a scalar to every element in this matrix</p>
+              <p><strong>@addScalar</strong> - static function - add a scalar to every element in this matrix</p>
 
             </div>
             
@@ -2171,13 +2673,13 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-123">
+        <li id="section-132">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-123">&#182;</a>
+                <a class="pilcrow" href="#section-132">&#182;</a>
               </div>
-              <p>@subScalar - static function - subtract a scalar from every element in this matrix</p>
+              <p><strong>@subScalar</strong> - static function - subtract a scalar from every element in this matrix</p>
 
             </div>
             
@@ -2187,13 +2689,13 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-124">
+        <li id="section-133">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-124">&#182;</a>
+                <a class="pilcrow" href="#section-133">&#182;</a>
               </div>
-              <p>@multScalar - static function - multiply every element in this matrix by a scalar</p>
+              <p><strong>@multScalar</strong> - static function - multiply every element in this matrix by a scalar</p>
 
             </div>
             
@@ -2203,13 +2705,13 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-125">
+        <li id="section-134">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-125">&#182;</a>
+                <a class="pilcrow" href="#section-134">&#182;</a>
               </div>
-              <p>@divScalar - static function - divide every element in this matrix by a scalar</p>
+              <p><strong>@divScalar</strong> - static function - divide every element in this matrix by a scalar</p>
 
             </div>
             
@@ -2219,13 +2721,13 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-126">
+        <li id="section-135">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-126">&#182;</a>
+                <a class="pilcrow" href="#section-135">&#182;</a>
               </div>
-              <p>@mult - static function - multiply this matrix by another matrix</p>
+              <p><strong>@mult</strong> - static function - multiply this matrix by another matrix</p>
 
             </div>
             
@@ -2235,13 +2737,13 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-127">
+        <li id="section-136">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-127">&#182;</a>
+                <a class="pilcrow" href="#section-136">&#182;</a>
               </div>
-              <p>@invert - static function - return the inverse of this matrix</p>
+              <p><strong>@invert</strong> - static function - return the inverse of this matrix</p>
 
             </div>
             
@@ -2251,13 +2753,13 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-128">
+        <li id="section-137">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-128">&#182;</a>
+                <a class="pilcrow" href="#section-137">&#182;</a>
               </div>
-              <p>@multVec - static function - multiply a vector by this matrix, returning a new vector</p>
+              <p><strong>@multVec</strong> - static function - multiply a vector by this matrix, returning a new vector</p>
 
             </div>
             
@@ -2269,13 +2771,13 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-129">
+        <li id="section-138">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-129">&#182;</a>
+                <a class="pilcrow" href="#section-138">&#182;</a>
               </div>
-              <p>@transpose - static function - return the transpose of this matrix</p>
+              <p><strong>@transpose</strong> - static function - return the transpose of this matrix</p>
 
             </div>
             
@@ -2285,11 +2787,11 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-130">
+        <li id="section-139">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-130">&#182;</a>
+                <a class="pilcrow" href="#section-139">&#182;</a>
               </div>
               <p>Take a list in column major format</p>
 
@@ -2304,11 +2806,11 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-131">
+        <li id="section-140">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-131">&#182;</a>
+                <a class="pilcrow" href="#section-140">&#182;</a>
               </div>
               <p>copy - return a copy of this matrix</p>
 
@@ -2320,11 +2822,11 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-132">
+        <li id="section-141">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-132">&#182;</a>
+                <a class="pilcrow" href="#section-141">&#182;</a>
               </div>
               <p>copyFrom - copy all the values from another matrix, a</p>
 
@@ -2338,11 +2840,11 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-133">
+        <li id="section-142">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-133">&#182;</a>
+                <a class="pilcrow" href="#section-142">&#182;</a>
               </div>
               <p>multScalar - multiply this matrix by a scalar</p>
 
@@ -2355,11 +2857,11 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-134">
+        <li id="section-143">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-134">&#182;</a>
+                <a class="pilcrow" href="#section-143">&#182;</a>
               </div>
               <p>addScalar - add a scalar to every element</p>
 
@@ -2372,11 +2874,11 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-135">
+        <li id="section-144">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-135">&#182;</a>
+                <a class="pilcrow" href="#section-144">&#182;</a>
               </div>
               <p>subScalar - remove a scalar from every element</p>
 
@@ -2389,11 +2891,11 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-136">
+        <li id="section-145">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-136">&#182;</a>
+                <a class="pilcrow" href="#section-145">&#182;</a>
               </div>
               <p>divScalar - divide every element by a scalar</p>
 
@@ -2406,11 +2908,11 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-137">
+        <li id="section-146">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-137">&#182;</a>
+                <a class="pilcrow" href="#section-146">&#182;</a>
               </div>
               <p>identity - set this matrix to be the identity matrix</p>
 
@@ -2423,11 +2925,11 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-138">
+        <li id="section-147">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-138">&#182;</a>
+                <a class="pilcrow" href="#section-147">&#182;</a>
               </div>
               <p>at - return the element at the row and column specified</p>
 
@@ -2439,11 +2941,11 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-139">
+        <li id="section-148">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-139">&#182;</a>
+                <a class="pilcrow" href="#section-148">&#182;</a>
               </div>
               <p>mult - multiply this matrix by matrix m</p>
 
@@ -2474,11 +2976,11 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-140">
+        <li id="section-149">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-140">&#182;</a>
+                <a class="pilcrow" href="#section-149">&#182;</a>
               </div>
               <p>multVec - multiply vector v by this matrix - destructive to v</p>
 
@@ -2500,11 +3002,11 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-141">
+        <li id="section-150">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-141">&#182;</a>
+                <a class="pilcrow" href="#section-150">&#182;</a>
               </div>
               <p>getCol - return a column from this matrix as a Vec3</p>
 
@@ -2517,11 +3019,11 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-142">
+        <li id="section-151">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-142">&#182;</a>
+                <a class="pilcrow" href="#section-151">&#182;</a>
               </div>
               <p>getRow - return a row from this matrix as a Vec3</p>
 
@@ -2533,11 +3035,11 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-143">
+        <li id="section-152">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-143">&#182;</a>
+                <a class="pilcrow" href="#section-152">&#182;</a>
               </div>
               <p>_invert - invert this matrix</p>
 
@@ -2566,11 +3068,11 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-144">
+        <li id="section-153">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-144">&#182;</a>
+                <a class="pilcrow" href="#section-153">&#182;</a>
               </div>
               <p>invert - invert this matrix</p>
 
@@ -2583,11 +3085,11 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-145">
+        <li id="section-154">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-145">&#182;</a>
+                <a class="pilcrow" href="#section-154">&#182;</a>
               </div>
               <p>transpose - transpose this matrix</p>
 
@@ -2600,11 +3102,11 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-146">
+        <li id="section-155">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-146">&#182;</a>
+                <a class="pilcrow" href="#section-155">&#182;</a>
               </div>
               <p>print - print this matrix to the console</p>
 
@@ -2618,11 +3120,11 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-147">
+        <li id="section-156">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-147">&#182;</a>
+                <a class="pilcrow" href="#section-156">&#182;</a>
               </div>
               <p>rotate - given a Vec3 and an angle in radians, create a rotation matrix</p>
 
@@ -2653,11 +3155,11 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-148">
+        <li id="section-157">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-148">&#182;</a>
+                <a class="pilcrow" href="#section-157">&#182;</a>
               </div>
               <p>scale - given a Vec3, create a scaling matrix</p>
 
@@ -2668,11 +3170,11 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-149">
+        <li id="section-158">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-149">&#182;</a>
+                <a class="pilcrow" href="#section-158">&#182;</a>
               </div>
               <p>Leave w</p>
 
@@ -2688,11 +3190,11 @@ A 3x3 matrix in Column Major Format</p>
         </li>
         
         
-        <li id="section-150">
+        <li id="section-159">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-150">&#182;</a>
+                <a class="pilcrow" href="#section-159">&#182;</a>
               </div>
               <p>##Matrix4###
 Our 4x4 matrix</p>
@@ -2706,11 +3208,11 @@ Our 4x4 matrix</p>
         </li>
         
         
-        <li id="section-151">
+        <li id="section-160">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-151">&#182;</a>
+                <a class="pilcrow" href="#section-160">&#182;</a>
               </div>
               <p>TODO - Euler x,y,z rotations needed? Probably not! :S</p>
 
@@ -2719,13 +3221,13 @@ Our 4x4 matrix</p>
         </li>
         
         
-        <li id="section-152">
+        <li id="section-161">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-152">&#182;</a>
+                <a class="pilcrow" href="#section-161">&#182;</a>
               </div>
-              <p>@addScalar - static function - adds a scalar to every element in the matrix</p>
+              <p><strong>@addScalar</strong> - static function - adds a scalar to every element in the matrix</p>
 
             </div>
             
@@ -2735,13 +3237,13 @@ Our 4x4 matrix</p>
         </li>
         
         
-        <li id="section-153">
+        <li id="section-162">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-153">&#182;</a>
+                <a class="pilcrow" href="#section-162">&#182;</a>
               </div>
-              <p>@subScalar - static function - subtract a scalar from every element in this matrix</p>
+              <p><strong>@subScalar</strong> - static function - subtract a scalar from every element in this matrix</p>
 
             </div>
             
@@ -2751,13 +3253,13 @@ Our 4x4 matrix</p>
         </li>
         
         
-        <li id="section-154">
+        <li id="section-163">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-154">&#182;</a>
+                <a class="pilcrow" href="#section-163">&#182;</a>
               </div>
-              <p>@multScalar - static function - multiply every element in this matrix by a scalar</p>
+              <p><strong>@multScalar</strong> - static function - multiply every element in this matrix by a scalar</p>
 
             </div>
             
@@ -2767,13 +3269,13 @@ Our 4x4 matrix</p>
         </li>
         
         
-        <li id="section-155">
+        <li id="section-164">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-155">&#182;</a>
+                <a class="pilcrow" href="#section-164">&#182;</a>
               </div>
-              <p>@divScalar - static function - divide every element in this matrix by a scalar</p>
+              <p><strong>@divScalar</strong> - static function - divide every element in this matrix by a scalar</p>
 
             </div>
             
@@ -2783,13 +3285,13 @@ Our 4x4 matrix</p>
         </li>
         
         
-        <li id="section-156">
+        <li id="section-165">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-156">&#182;</a>
+                <a class="pilcrow" href="#section-165">&#182;</a>
               </div>
-              <p>@mult - static function - multiply this matrix by another matrix</p>
+              <p><strong>@mult</strong> - static function - multiply this matrix by another matrix</p>
 
             </div>
             
@@ -2799,13 +3301,13 @@ Our 4x4 matrix</p>
         </li>
         
         
-        <li id="section-157">
+        <li id="section-166">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-157">&#182;</a>
+                <a class="pilcrow" href="#section-166">&#182;</a>
               </div>
-              <p>@invert - static function - return the inverse of this matrix</p>
+              <p><strong>@invert</strong> - static function - return the inverse of this matrix</p>
 
             </div>
             
@@ -2815,13 +3317,13 @@ Our 4x4 matrix</p>
         </li>
         
         
-        <li id="section-158">
+        <li id="section-167">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-158">&#182;</a>
+                <a class="pilcrow" href="#section-167">&#182;</a>
               </div>
-              <p>@transpose - static function - return the transpose of this matrix</p>
+              <p><strong>@transpose</strong> - static function - return the transpose of this matrix</p>
 
             </div>
             
@@ -2831,13 +3333,13 @@ Our 4x4 matrix</p>
         </li>
         
         
-        <li id="section-159">
+        <li id="section-168">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-159">&#182;</a>
+                <a class="pilcrow" href="#section-168">&#182;</a>
               </div>
-              <p>@multVec - static function - multiply a vector by this matrix, returning a new vector</p>
+              <p><strong>@multVec</strong> - static function - multiply a vector by this matrix, returning a new vector</p>
 
             </div>
             
@@ -2849,11 +3351,11 @@ Our 4x4 matrix</p>
         </li>
         
         
-        <li id="section-160">
+        <li id="section-169">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-160">&#182;</a>
+                <a class="pilcrow" href="#section-169">&#182;</a>
               </div>
               <p>Take a list in column major format</p>
 
@@ -2864,11 +3366,11 @@ Our 4x4 matrix</p>
         </li>
         
         
-        <li id="section-161">
+        <li id="section-170">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-161">&#182;</a>
+                <a class="pilcrow" href="#section-170">&#182;</a>
               </div>
               <p>todo - add checking</p>
 
@@ -2882,11 +3384,11 @@ Our 4x4 matrix</p>
         </li>
         
         
-        <li id="section-162">
+        <li id="section-171">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-162">&#182;</a>
+                <a class="pilcrow" href="#section-171">&#182;</a>
               </div>
               <p>copy - return a copy of this matrix</p>
 
@@ -2898,11 +3400,11 @@ Our 4x4 matrix</p>
         </li>
         
         
-        <li id="section-163">
+        <li id="section-172">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-163">&#182;</a>
+                <a class="pilcrow" href="#section-172">&#182;</a>
               </div>
               <p>copyFrom - copy all the values from another matrix, a</p>
 
@@ -2916,11 +3418,11 @@ Our 4x4 matrix</p>
         </li>
         
         
-        <li id="section-164">
+        <li id="section-173">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-164">&#182;</a>
+                <a class="pilcrow" href="#section-173">&#182;</a>
               </div>
               <p>multScalar - multiply this matrix by a scalar</p>
 
@@ -2933,11 +3435,11 @@ Our 4x4 matrix</p>
         </li>
         
         
-        <li id="section-165">
+        <li id="section-174">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-165">&#182;</a>
+                <a class="pilcrow" href="#section-174">&#182;</a>
               </div>
               <p>addScalar - add a scalar to every element</p>
 
@@ -2950,11 +3452,11 @@ Our 4x4 matrix</p>
         </li>
         
         
-        <li id="section-166">
+        <li id="section-175">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-166">&#182;</a>
+                <a class="pilcrow" href="#section-175">&#182;</a>
               </div>
               <p>subScalar - remove a scalar from every element</p>
 
@@ -2967,11 +3469,11 @@ Our 4x4 matrix</p>
         </li>
         
         
-        <li id="section-167">
+        <li id="section-176">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-167">&#182;</a>
+                <a class="pilcrow" href="#section-176">&#182;</a>
               </div>
               <p>divScalar - divide every element by a scalar</p>
 
@@ -2984,11 +3486,11 @@ Our 4x4 matrix</p>
         </li>
         
         
-        <li id="section-168">
+        <li id="section-177">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-168">&#182;</a>
+                <a class="pilcrow" href="#section-177">&#182;</a>
               </div>
               <p>identity - set this matrix to be the identity matrix</p>
 
@@ -3001,11 +3503,11 @@ Our 4x4 matrix</p>
         </li>
         
         
-        <li id="section-169">
+        <li id="section-178">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-169">&#182;</a>
+                <a class="pilcrow" href="#section-178">&#182;</a>
               </div>
               <p>at - return the element at the row and column specified</p>
 
@@ -3017,11 +3519,11 @@ Our 4x4 matrix</p>
         </li>
         
         
-        <li id="section-170">
+        <li id="section-179">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-170">&#182;</a>
+                <a class="pilcrow" href="#section-179">&#182;</a>
               </div>
               <p>getMatrix3 - return the 3x3 matrix from this 4x4 - top left part</p>
 
@@ -3033,11 +3535,11 @@ Our 4x4 matrix</p>
         </li>
         
         
-        <li id="section-171">
+        <li id="section-180">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-171">&#182;</a>
+                <a class="pilcrow" href="#section-180">&#182;</a>
               </div>
               <p>mult - multiply this matrix by matrix m
 TODO - I wonder if this is the fastest, best way? Probably not &gt;&lt; Not in place :S</p>
@@ -3073,11 +3575,11 @@ TODO - I wonder if this is the fastest, best way? Probably not &gt;&lt; Not in p
         </li>
         
         
-        <li id="section-172">
+        <li id="section-181">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-172">&#182;</a>
+                <a class="pilcrow" href="#section-181">&#182;</a>
               </div>
               <p>multVec - multiply vector v by this matrix - destructive to v</p>
 
@@ -3115,11 +3617,11 @@ TODO - I wonder if this is the fastest, best way? Probably not &gt;&lt; Not in p
         </li>
         
         
-        <li id="section-173">
+        <li id="section-182">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-173">&#182;</a>
+                <a class="pilcrow" href="#section-182">&#182;</a>
               </div>
               <p>getCol - return a column from this matrix as a Vec4</p>
 
@@ -3132,11 +3634,11 @@ TODO - I wonder if this is the fastest, best way? Probably not &gt;&lt; Not in p
         </li>
         
         
-        <li id="section-174">
+        <li id="section-183">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-174">&#182;</a>
+                <a class="pilcrow" href="#section-183">&#182;</a>
               </div>
               <p>getRow - return a row from this matrix as a Vec4</p>
 
@@ -3148,11 +3650,11 @@ TODO - I wonder if this is the fastest, best way? Probably not &gt;&lt; Not in p
         </li>
         
         
-        <li id="section-175">
+        <li id="section-184">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-175">&#182;</a>
+                <a class="pilcrow" href="#section-184">&#182;</a>
               </div>
               <p>_invert - invert this matrix</p>
 
@@ -3204,11 +3706,11 @@ TODO - I wonder if this is the fastest, best way? Probably not &gt;&lt; Not in p
         </li>
         
         
-        <li id="section-176">
+        <li id="section-185">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-176">&#182;</a>
+                <a class="pilcrow" href="#section-185">&#182;</a>
               </div>
               <p>invert - invert this matrix</p>
 
@@ -3221,11 +3723,11 @@ TODO - I wonder if this is the fastest, best way? Probably not &gt;&lt; Not in p
         </li>
         
         
-        <li id="section-177">
+        <li id="section-186">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-177">&#182;</a>
+                <a class="pilcrow" href="#section-186">&#182;</a>
               </div>
               <p>transpose - transpose this matrix</p>
 
@@ -3238,11 +3740,11 @@ TODO - I wonder if this is the fastest, best way? Probably not &gt;&lt; Not in p
         </li>
         
         
-        <li id="section-178">
+        <li id="section-187">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-178">&#182;</a>
+                <a class="pilcrow" href="#section-187">&#182;</a>
               </div>
               <p>translate - multiple this matrix by a translation matrix, formed from the Vec3 v
 TODO - Here is a good example of having a debug build as oppose to a debug flag!</p>
@@ -3266,11 +3768,11 @@ TODO - Here is a good example of having a debug build as oppose to a debug flag!
         </li>
         
         
-        <li id="section-179">
+        <li id="section-188">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-179">&#182;</a>
+                <a class="pilcrow" href="#section-188">&#182;</a>
               </div>
               <p>setPos - Given a vector, sets the translation part of the matrix directly with no multiplication</p>
 
@@ -3285,11 +3787,11 @@ TODO - Here is a good example of having a debug build as oppose to a debug flag!
         </li>
         
         
-        <li id="section-180">
+        <li id="section-189">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-180">&#182;</a>
+                <a class="pilcrow" href="#section-189">&#182;</a>
               </div>
               <p>getPos - return the translation component as a Vec3</p>
 
@@ -3301,11 +3803,11 @@ TODO - Here is a good example of having a debug build as oppose to a debug flag!
         </li>
         
         
-        <li id="section-181">
+        <li id="section-190">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-181">&#182;</a>
+                <a class="pilcrow" href="#section-190">&#182;</a>
               </div>
               <p>print - print this matrix to the console</p>
 
@@ -3320,11 +3822,11 @@ TODO - Here is a good example of having a debug build as oppose to a debug flag!
         </li>
         
         
-        <li id="section-182">
+        <li id="section-191">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-182">&#182;</a>
+                <a class="pilcrow" href="#section-191">&#182;</a>
               </div>
               <p>lookAt - similar to gluLookAt - creates a matrix from an eye, look and up vector (Vec3)</p>
 
@@ -3350,11 +3852,11 @@ TODO - Here is a good example of having a debug build as oppose to a debug flag!
         </li>
         
         
-        <li id="section-183">
+        <li id="section-192">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-183">&#182;</a>
+                <a class="pilcrow" href="#section-192">&#182;</a>
               </div>
               <p>makePerspective - given a field-of-view in degrees, an aspect ratio (w/h) and near and far clip planes
 create a perspective matrix
@@ -3373,11 +3875,11 @@ TODO - Should we not use Radians here a we are using radians everywhere else?</p
         </li>
         
         
-        <li id="section-184">
+        <li id="section-193">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-184">&#182;</a>
+                <a class="pilcrow" href="#section-193">&#182;</a>
               </div>
               <p>makeFrustum - used by makePerspective to create our frustrum </p>
 
@@ -3396,11 +3898,11 @@ TODO - Should we not use Radians here a we are using radians everywhere else?</p
         </li>
         
         
-        <li id="section-185">
+        <li id="section-194">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-185">&#182;</a>
+                <a class="pilcrow" href="#section-194">&#182;</a>
               </div>
               <p>makeOrtho - given left,right,bottom,top, near and far floats, create an orthographic projection</p>
 
@@ -3416,11 +3918,11 @@ TODO - Should we not use Radians here a we are using radians everywhere else?</p
         </li>
         
         
-        <li id="section-186">
+        <li id="section-195">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-186">&#182;</a>
+                <a class="pilcrow" href="#section-195">&#182;</a>
               </div>
               <p>rotate - given a vector and an angle (radians), create the rotation part of this matrix</p>
 
@@ -3451,11 +3953,11 @@ TODO - Should we not use Radians here a we are using radians everywhere else?</p
         </li>
         
         
-        <li id="section-187">
+        <li id="section-196">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-187">&#182;</a>
+                <a class="pilcrow" href="#section-196">&#182;</a>
               </div>
               <p>scale - scale our matrix by a Vec3</p>
 
@@ -3466,11 +3968,11 @@ TODO - Should we not use Radians here a we are using radians everywhere else?</p
         </li>
         
         
-        <li id="section-188">
+        <li id="section-197">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-188">&#182;</a>
+                <a class="pilcrow" href="#section-197">&#182;</a>
               </div>
               <p>Leave w</p>
 
@@ -3486,11 +3988,11 @@ TODO - Should we not use Radians here a we are using radians everywhere else?</p
         </li>
         
         
-        <li id="section-189">
+        <li id="section-198">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-189">&#182;</a>
+                <a class="pilcrow" href="#section-198">&#182;</a>
               </div>
               <p>##Quaternion###
 A quaternion to deal with all our rotations</p>
@@ -3503,13 +4005,13 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-190">
+        <li id="section-199">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-190">&#182;</a>
+                <a class="pilcrow" href="#section-199">&#182;</a>
               </div>
-              <p>@addScalar - static function - add a scalar to every element in this quaternion</p>
+              <p><strong>@addScalar</strong> - static function - add a scalar to every element in this quaternion</p>
 
             </div>
             
@@ -3519,13 +4021,13 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-191">
+        <li id="section-200">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-191">&#182;</a>
+                <a class="pilcrow" href="#section-200">&#182;</a>
               </div>
-              <p>@subScalar - static function - subtract a scalar from every element in this quaternion</p>
+              <p><strong>@subScalar</strong> - static function - subtract a scalar from every element in this quaternion</p>
 
             </div>
             
@@ -3535,13 +4037,13 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-192">
+        <li id="section-201">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-192">&#182;</a>
+                <a class="pilcrow" href="#section-201">&#182;</a>
               </div>
-              <p>@multScalar - static function - multiply every element in this quaternion by a scalar</p>
+              <p><strong>@multScalar</strong> - static function - multiply every element in this quaternion by a scalar</p>
 
             </div>
             
@@ -3551,13 +4053,13 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-193">
+        <li id="section-202">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-193">&#182;</a>
+                <a class="pilcrow" href="#section-202">&#182;</a>
               </div>
-              <p>@divScalar - static function - divide every element in this quaternion by a scalar</p>
+              <p><strong>@divScalar</strong> - static function - divide every element in this quaternion by a scalar</p>
 
             </div>
             
@@ -3567,13 +4069,13 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-194">
+        <li id="section-203">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-194">&#182;</a>
+                <a class="pilcrow" href="#section-203">&#182;</a>
               </div>
-              <p>@conjugate - static function - return the conjugate to this quaternion</p>
+              <p><strong>@conjugate</strong> - static function - return the conjugate to this quaternion</p>
 
             </div>
             
@@ -3583,13 +4085,13 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-195">
+        <li id="section-204">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-195">&#182;</a>
+                <a class="pilcrow" href="#section-204">&#182;</a>
               </div>
-              <p>@mult - static function - multiply this quaternion by another quaternion</p>
+              <p><strong>@mult</strong> - static function - multiply this quaternion by another quaternion</p>
 
             </div>
             
@@ -3599,13 +4101,13 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-196">
+        <li id="section-205">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-196">&#182;</a>
+                <a class="pilcrow" href="#section-205">&#182;</a>
               </div>
-              <p>@invert - static function - return an inverted version</p>
+              <p><strong>@invert</strong> - static function - return an inverted version</p>
 
             </div>
             
@@ -3615,11 +4117,11 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-197">
+        <li id="section-206">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-197">&#182;</a>
+                <a class="pilcrow" href="#section-206">&#182;</a>
               </div>
               <p>transVec3 - static function - given a vector, return a new version of it, transformed by this quaternion</p>
 
@@ -3638,11 +4140,11 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-198">
+        <li id="section-207">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-198">&#182;</a>
+                <a class="pilcrow" href="#section-207">&#182;</a>
               </div>
               <p>fromTo - static function - given two quaternions, return a new one from the first to the second</p>
 
@@ -3656,11 +4158,11 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-199">
+        <li id="section-208">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-199">&#182;</a>
+                <a class="pilcrow" href="#section-208">&#182;</a>
               </div>
               <p>constructor - takes a Vec3 and a w (both optional)</p>
 
@@ -3675,11 +4177,11 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-200">
+        <li id="section-209">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-200">&#182;</a>
+                <a class="pilcrow" href="#section-209">&#182;</a>
               </div>
               <p>copy - return a coy of this Quaternion</p>
 
@@ -3691,11 +4193,11 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-201">
+        <li id="section-210">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-201">&#182;</a>
+                <a class="pilcrow" href="#section-210">&#182;</a>
               </div>
               <p>copyFrom - copy another quaternion into this one</p>
 
@@ -3711,11 +4213,11 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-202">
+        <li id="section-211">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-202">&#182;</a>
+                <a class="pilcrow" href="#section-211">&#182;</a>
               </div>
               <p>axis - return the axis of this Quaternion </p>
 
@@ -3731,11 +4233,11 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-203">
+        <li id="section-212">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-203">&#182;</a>
+                <a class="pilcrow" href="#section-212">&#182;</a>
               </div>
               <p>angle - return the angle of this Quaternion</p>
 
@@ -3748,11 +4250,11 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-204">
+        <li id="section-213">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-204">&#182;</a>
+                <a class="pilcrow" href="#section-213">&#182;</a>
               </div>
               <p>pitch - return the pitch of this Quaternion</p>
 
@@ -3764,11 +4266,11 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-205">
+        <li id="section-214">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-205">&#182;</a>
+                <a class="pilcrow" href="#section-214">&#182;</a>
               </div>
               <p>yaw - return the pitch of this Quaternion</p>
 
@@ -3780,11 +4282,11 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-206">
+        <li id="section-215">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-206">&#182;</a>
+                <a class="pilcrow" href="#section-215">&#182;</a>
               </div>
               <p>roll - return the pitch of this Quaternion</p>
 
@@ -3796,11 +4298,11 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-207">
+        <li id="section-216">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-207">&#182;</a>
+                <a class="pilcrow" href="#section-216">&#182;</a>
               </div>
               <p>dot - return the dot product of this Quaternion with another</p>
 
@@ -3812,11 +4314,11 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-208">
+        <li id="section-217">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-208">&#182;</a>
+                <a class="pilcrow" href="#section-217">&#182;</a>
               </div>
               <p>length - return the length of this Quaternion</p>
 
@@ -3828,11 +4330,11 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-209">
+        <li id="section-218">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-209">&#182;</a>
+                <a class="pilcrow" href="#section-218">&#182;</a>
               </div>
               <p>lengthSquared - return the lengthSquared of this Quaternion</p>
 
@@ -3844,11 +4346,11 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-210">
+        <li id="section-219">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-210">&#182;</a>
+                <a class="pilcrow" href="#section-219">&#182;</a>
               </div>
               <p>Conjugate</p>
 
@@ -3863,11 +4365,11 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-211">
+        <li id="section-220">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-211">&#182;</a>
+                <a class="pilcrow" href="#section-220">&#182;</a>
               </div>
               <p>invert - invert this quaternion</p>
 
@@ -3885,11 +4387,11 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-212">
+        <li id="section-221">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-212">&#182;</a>
+                <a class="pilcrow" href="#section-221">&#182;</a>
               </div>
               <p>add - Add another quaternion to this one</p>
 
@@ -3905,11 +4407,11 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-213">
+        <li id="section-222">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-213">&#182;</a>
+                <a class="pilcrow" href="#section-222">&#182;</a>
               </div>
               <p>sub - Subtract another quaternion from this one</p>
 
@@ -3925,11 +4427,11 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-214">
+        <li id="section-223">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-214">&#182;</a>
+                <a class="pilcrow" href="#section-223">&#182;</a>
               </div>
               <p>multiply - multiply this Quaternion with another</p>
 
@@ -3941,11 +4443,11 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-215">
+        <li id="section-224">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-215">&#182;</a>
+                <a class="pilcrow" href="#section-224">&#182;</a>
               </div>
               <p>mult - multiply this Quaternion with another</p>
 
@@ -3965,11 +4467,11 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-216">
+        <li id="section-225">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-216">&#182;</a>
+                <a class="pilcrow" href="#section-225">&#182;</a>
               </div>
               <p>multScalar - multiply this Quaternion by a scalar</p>
 
@@ -3985,11 +4487,11 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-217">
+        <li id="section-226">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-217">&#182;</a>
+                <a class="pilcrow" href="#section-226">&#182;</a>
               </div>
               <p>transVec3 - Transform a vector by this quaternion</p>
 
@@ -3998,11 +4500,11 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-218">
+        <li id="section-227">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-218">&#182;</a>
+                <a class="pilcrow" href="#section-227">&#182;</a>
               </div>
               <p>TODO - this appears to rotate a vector in the opposite direction to glm and other libs
 We should check the maths on this one</p>
@@ -4025,11 +4527,11 @@ We should check the maths on this one</p>
         </li>
         
         
-        <li id="section-219">
+        <li id="section-228">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-219">&#182;</a>
+                <a class="pilcrow" href="#section-228">&#182;</a>
               </div>
               <p>normalize - normalize this quaternion</p>
 
@@ -4046,11 +4548,11 @@ We should check the maths on this one</p>
         </li>
         
         
-        <li id="section-220">
+        <li id="section-229">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-220">&#182;</a>
+                <a class="pilcrow" href="#section-229">&#182;</a>
               </div>
               <p>log - ?</p>
 
@@ -4075,11 +4577,11 @@ We should check the maths on this one</p>
         </li>
         
         
-        <li id="section-221">
+        <li id="section-230">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-221">&#182;</a>
+                <a class="pilcrow" href="#section-230">&#182;</a>
               </div>
               <p>exp - ?</p>
 
@@ -4101,11 +4603,11 @@ We should check the maths on this one</p>
         </li>
         
         
-        <li id="section-222">
+        <li id="section-231">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-222">&#182;</a>
+                <a class="pilcrow" href="#section-231">&#182;</a>
               </div>
               <p>fromTo - set this quaternion to represent the movement from quaternion to another</p>
 
@@ -4137,11 +4639,11 @@ We should check the maths on this one</p>
         </li>
         
         
-        <li id="section-223">
+        <li id="section-232">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-223">&#182;</a>
+                <a class="pilcrow" href="#section-232">&#182;</a>
               </div>
               <p>fromAxisAngle - create a quaternion that represents rotation around an axis (a) (Vec3) radians (r)</p>
 
@@ -4159,11 +4661,11 @@ We should check the maths on this one</p>
         </li>
         
         
-        <li id="section-224">
+        <li id="section-233">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-224">&#182;</a>
+                <a class="pilcrow" href="#section-233">&#182;</a>
               </div>
               <p>fromRotations - create a Quaternion from rotations around z,y,and x in that order in radians</p>
 
@@ -4192,11 +4694,11 @@ We should check the maths on this one</p>
         </li>
         
         
-        <li id="section-225">
+        <li id="section-234">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-225">&#182;</a>
+                <a class="pilcrow" href="#section-234">&#182;</a>
               </div>
               <p>getAxisAngle - return the axis and angle represented by this quaternion</p>
 
@@ -4212,11 +4714,11 @@ We should check the maths on this one</p>
         </li>
         
         
-        <li id="section-226">
+        <li id="section-235">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-226">&#182;</a>
+                <a class="pilcrow" href="#section-235">&#182;</a>
               </div>
               <p>getMatrix4 - return a matrix4 from this Quaternion</p>
 
@@ -4257,11 +4759,11 @@ We should check the maths on this one</p>
         </li>
         
         
-        <li id="section-227">
+        <li id="section-236">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-227">&#182;</a>
+                <a class="pilcrow" href="#section-236">&#182;</a>
               </div>
               <p>getMatrix3 - return a matrix3 from this Quaternion - The rotation component</p>
 
@@ -4295,11 +4797,11 @@ We should check the maths on this one</p>
         </li>
         
         
-        <li id="section-228">
+        <li id="section-237">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-228">&#182;</a>
+                <a class="pilcrow" href="#section-237">&#182;</a>
               </div>
               <p>lerp - lerp between this quaternion at the start and the one at the ‘end’, t being 0-&gt;1</p>
 
@@ -4318,11 +4820,11 @@ We should check the maths on this one</p>
         </li>
         
         
-        <li id="section-229">
+        <li id="section-238">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-229">&#182;</a>
+                <a class="pilcrow" href="#section-238">&#182;</a>
               </div>
               <p>slerpShortestUnenforced - slerp between this quaternion at the start and the one at the ‘end’, t being 0-&gt;1</p>
 
@@ -4350,11 +4852,11 @@ We should check the maths on this one</p>
         </li>
         
         
-        <li id="section-230">
+        <li id="section-239">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-230">&#182;</a>
+                <a class="pilcrow" href="#section-239">&#182;</a>
               </div>
               <p>slerp - slerp between this quaternion at the start and the one at the ‘end’, t being 0-&gt;1</p>
 
@@ -4393,11 +4895,11 @@ We should check the maths on this one</p>
         </li>
         
         
-        <li id="section-231">
+        <li id="section-240">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-231">&#182;</a>
+                <a class="pilcrow" href="#section-240">&#182;</a>
               </div>
               <p>fromMatrix4 : Create a Quaternion from an existing Matrix4</p>
 

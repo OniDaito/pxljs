@@ -502,7 +502,7 @@ TODO - Shaderpaths could do the same - use names that map to numbers</p>
             
             <div class="content"><div class='highlight'><pre>  @fragment = <span class="hljs-string">"uniform float uUber0;\n"</span>
   @fragment += <span class="hljs-string">"uniform mat4 uModelMatrix;\nvarying vec4 vPosition;\n"</span>
-  @fragment += <span class="hljs-string">"#ifdef BASIC_COLOUR\nuniform vec3 uColour;\n#endif\n"</span>
+  @fragment += <span class="hljs-string">"#ifdef BASIC_COLOUR\nuniform vec4 uColour;\n#endif\n"</span>
   @fragment += <span class="hljs-string">"#ifdef VERTEX_COLOUR\nvarying vec4 vColour;\n#endif\n"</span>
   @fragment += <span class="hljs-string">"#ifdef VERTEX_TEXTURE\nvarying vec2 vTexCoord;\n#endif\n"</span>
   @fragment += <span class="hljs-string">"#ifdef VERTEX_NORMAL\nuniform mat3 uNormalMatrix;\nvarying vec3 vNormal;\nvarying vec4 vTransformedNormal;\n#endif\n"</span>
@@ -584,7 +584,7 @@ TODO - Shaderpaths could do the same - use names that map to numbers</p>
             <div class="content"><div class='highlight'><pre>
   @fragment += <span class="hljs-string">"void main() {\n"</span>
   @fragment += UberShaderPhong.fragment_main
-  @fragment += <span class="hljs-string">"#ifdef BASIC_COLOUR\nif(bitcheck(uUber0,8)) { gl_FragColor = vec4(uColour,1.0); }\n#endif\n"</span>
+  @fragment += <span class="hljs-string">"#ifdef BASIC_COLOUR\nif(bitcheck(uUber0,8)) { gl_FragColor = uColour; }\n#endif\n"</span>
   @fragment += <span class="hljs-string">"#ifdef VERTEX_COLOUR\nif(bitcheck(uUber0,9)) { gl_FragColor = vColour; }\n#endif\n"</span>
   @fragment += <span class="hljs-string">"\n}"</span></pre></div></div>
             

@@ -15,37 +15,27 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 
 http://www.flipcode.com/documents/matrfaq.html
 http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/index.htm
-
-  - Thanks: Tojiro - https://github.com/toji/gl-matrix
-  - Thanks: Cinder for most of the math!
-
-The maths functons in PXLJS work as follows;
-  - Any instance method that doesn't return a different tyoe to the instance, modifies 
-    that instance and returns a reference to the original. For example:
-    Vec3 a(1,0,0); 
-    b = a.add(1,0,0);
-
-    b will be a pointer or reference to a which will now have the value (2,0,0)
-
-  - Class methods do the opposite to the above - they return a new version
-    Vec3 a(1,0,0)
-    Vec3 b(2,0,0)
-    c = Vec3.add(a,b)
-    
-    c is now a new vector in its own right, with value (3,0,0)
-  
-  - Functions that are exceptions to this are things like dot, equals and length which
-  return values that are not copies or references to thing being called upon.
-
-
-- TODO
-  * Matrix mult function for vectors as well as scalars and matrices
-  * Some aliases (like multiply) might be nice
-  * Make functions that multiply other things destructive
-  * We have set/getPos on the matrices but should we have rotation as well?
-  * multiply / divide as well that check the types for eloquence
-
 ###
+
+# The maths functons in PXLjs work as follows;
+# any instance function that doesnt return a different type to the instance, modifies 
+# that instance and returns a reference to the original. For example:
+#
+#     Vec3 a(1,0,0); 
+#     b = a.add(1,0,0);
+
+#  b will be a pointer or reference to a which will now have the value (2,0,0)
+
+# Class fucntions do the opposite to the above - they return a new version
+#
+#     Vec3 a(1,0,0)
+#     Vec3 b(2,0,0)
+#     c = Vec3.add(a,b)
+    
+#  c is now a new vector in its own right, with value (3,0,0)
+  
+# Functions that are exceptions to this are things like dot, equals and length which
+# return values that are not copies or references to thing being called upon.
 
 
 {PXLWarning} = require '../util/log'
@@ -74,250 +64,352 @@ degToRad = (a) ->
   a * 0.017453292523928
 
 
-###Vec2###
+### Vec2 ###
 # A two component vector with x,y
 
 class Vec2
 
   DIM : 2
 
-  # @sub - static function - non destructive subtraction.
+  # **@sub** - static function - non destructive subtraction.
+  # - **a** - Vec2
+  # - **b** - Vec2
+  # - returns a new Vec2
   @sub:(a,b) ->
     a.copy()["sub"](b)
 
-  # @add - static function - non destructive addition.
+  # **@add** - static function - non destructive subtraction.
+  # - **a** - Vec2
+  # - **b** - Vec2
+  # - returns a new Vec2
   @add:(a,b) ->
     a.copy()["add"](b)
 
-  # @div - static function - non destructive division.
+  # **@div** - static function - non destructive division.
+  # - **a** - Vec2
+  # - **b** - Vec2
+  # - returns a new Vec2
   @div:(a,b) ->
     a.copy()["div"](b)
 
-  # @mult - static function - non destructive multiplication.
+  # **@mult** - static function - non destructive multiplication.
+  # - **a** - Vec2
+  # - **b** - Vec2
+  # - returns a new Vec2
   @mult:(a,b) ->
     a.copy()["mult"](b)
 
-  # @multScalar - static function - non destructive multiplication by a scalar
+  # **@multScalar** - static function - non destructive multiplication with a scalar.
+  # - **a** - Vec2
+  # - **b** - Number
+  # - returns a new Vec2
   @multScalar:(a,b) ->
     a.copy()["multScalar"](b)
 
-  # @normalize - static function - non destructive normalization.
+  # **@normalize** static function - non destructive normalization.
+  # - **a** - Vec2
+  # - returns a new Vec2
   @normalize:(a) ->
     a.copy()["normalize"]()
 
-  # @dot - static function - return the dot product.
+  # **@dot** - static function - compute the dot product
+  #  - **a** - Vec2
+  #  - **b** - Vec2
+  #  - returns a Number
   @dot:(a,b) ->
     a.dot(b)
 
+  # **@constructor** - Create a new Vec2
+  # - **x** - Number
+  # - **y** - Number
+  # - returns a new Vec2
   constructor: (x=0,y=0) ->
   	[@x,@y] = [x,y]
 
-  # copy - make a copy of this vector
+  # **copy** - make a copy of this vector
+  # - returns a new Vec2
+
   copy: ->
     new Vec2(@x,@y)
 
-  # copyFrom - copy the value from another vector
+  # **copyFrom** - copy the value from another vector
+  # - **a** - Vec2
+  # - returns this
   copyFrom : (a) ->
     @x = a.x
     @y = a.y
     @
 
-  # length - return the length of this vector
+  # **length** - return the length of this vector
+  # - returns a number
   length: ->
     Math.sqrt @lengthSquared() 
   
-  # lengthSquared - return the squared length of this vector
+  # **lengthSquared** - return the squared length of this vector
+  # - returns a number
   lengthSquared: ->
     @x * @x + @y * @y
 
-  # normalize - normalize - destructive
+  # **normalize** - normalize this vector
+  # - returns this
   normalize: ->
     m = @length()
     @multScalar(1.0/m) if m > 0
     @
 
-  # sub - subtract another vector - destructive
+  # **sub** - subtract another vector from this one
+  # - **v** - a Vec2
+  # - returns this
   sub: (v) ->
     @x -= v.x
     @y -= v.y
     @
 
-  # add - add another vector - destructive
+  # **add** - add another vector to this one
+  # - **v** - a Vec2
+  # - returns this
   add: (v) ->
     @x += v.x
     @y += v.y
     @
 
-  # dv - return a new vector being the difference between this vector and another (v)
+  # **dv** - return a new vector being the difference between this vector and another
+  # - **v** - a Vec2
+  # - returns a new Vec2
   dv: (v) ->
     new Vec2  Math.abs(@x - v.x) Math.abs(@y - v.y) 
 
-  # dist - return the distance between this and another vector (v)
+  # **dist** - return the distance between this and another vector
+  # - **v** - a Vec2
+  # - returns a Number
   dist: (v) ->
     Vec2.sub(@,v).length()
 
-  # distSquared - return the distance squared between this and another vector (v)
+  # **distSquared** - return the distance squared between this and another vector
+  # - **v** - a Vec2
+  # - returns a Number
   distSquared: (v) ->
     Vec2.sub(@,v).lengthSquared()
 
-  # div - divide by another vector n 
+  # **div** - divide by another vector n
+  # - **n** - a Vec2
+  # - returns this
   div: (n) ->
     [@x,@y] = [@x/n.x,@y/n.y]
     @
 
-  # mult - multiply by another vector v 
+  # **mult** - multiply by another vector v
+  # - **v** - a Vec2
+  # - returns this
   mult: (v) ->
     [@x,@y] = [@x*v.x,@y*v.y]
     @
 
-  # multScalar - multiply by a scalar n
+  # **multScalar** - multiply by a scalar n
+  # - **n** - a Vec2
+  # - returns this
   multScalar: (n) ->
     [@x,@y] = [@x*n,@y*n]
     @
 
-  # equals - are these two vectors equal in size/direction
+  # **equals** - are these two vectors equal in size/direction
+  # - **v** a Vec2
+  # - returns a boolean
   equals: (v) ->
     @x == v.x and @y == v.y
 
-  # dot - return the dot porduct between this and v
+  # **dot** - return the dot product between this and v
+  # - **v** a Vec2
+  # - returns a Number
   dot: (v) ->
     @x*v.x + @y*v.y
 
 
-  # invalid - is this vector actually valid
+  # **invalid** - is this vector actually valid
+  # - returns a boolean
   invalid: ->
     return (@x == Infinity) || isNaN(@x) || @y == Infinity || isNaN(@y)
 
-  # flatten - used by shaders to get a nice list
+  # **flatten** - used by shaders to get a nice list
+  # - returns a List of Number
   flatten: ->
     [@x,@y]
 
-  # Short-hand to set the values in one go
+  # **set** - Short-hand to set the values in one go
+  # - **x** - Number
+  # - **y** - Number
+  # - returns a Number
   set : (@x, @y) ->
     @
 
 
-###Edge2###
+### Edge2 ###
 # A container for two vertices, ordered as start and finish - directed
 
 class Edge2
 
+  # **constructor** 
+  # - **start** - a Vec2
+  # - **end** - a Vec2
   constructor: (@start, @end) ->
     @
     
-  # Convert this edge to a line in the form ax + by + c = 0
+  # **equation** - Convert this edge to a line in the form ax + by + c = 0
+  # - returns a List of Number
   equation : () ->
     [@start.y - @end.y, @end.x - @start.x, @start.x*@end.y - @end.x*@start.y]
-    # TODO - Hold these for speed?
 
+  # **sample** - point on the line given x
+  # - **x** - Number
+  # - returns a Number
   sample : (x) ->
     [a,b,c] = @equation()
     (-a*x-c) / b
 
+  # **length** - return the length of this edge
+  # - returns a Number
   length : () ->
     @end.dist @start
 
 
 ### HalfEdge2 ###
+# **Incomplete**
 # An edge structure that points to the two faces it is connected to
 # start / end are vertices and @face0, @face1 are either triangles
 # or quads at present
 
-# TODO - the relationship between math things and primitives is getting blurred. We need to 
-# sort that out.
 
 class HalfEdge2 extends Edge2
+
   constructor : (@start, @end, @face0, @face1) ->
     super(@start, @end)
     @
 
 
-###Vec3###
+### Vec3 ###
 # A 3 dimension vector (x,y,z)
-
 class Vec3
 
   DIM : 3
 
-  # @sub - static function - non destructive subtraction.
+  # **@sub** - static function - non destructive subtraction.
+  # - **a** - a Vec3
+  # - **b** - a Vec3
+  # - returns a new Vec3
   @sub:(a,b) ->
     a.copy()["sub"](b)
 
-  # @add - static function - non destructive addition.
+  # **@add** - static function - non destructive addition.
+  # - **a** - a Vec3
+  # - **b** - a Vec3
+  # - returns a new Vec3
   @add:(a,b) ->
     a.copy()["add"](b)
 
-  # @cross - static function - return the cross product.
+  # **@cross** - static function - return the cross product.
+  # - **a** - a Vec3
+  # - **b** - a Vec3
+  # - returns a new Vec3
   @cross:(a,b) ->
     a.copy()["cross"](b)
 
-  # @div - static function - non destructive division.
+  # **@div** - static function - non destructive division.
+  # - **a** - a Vec3
+  # - **b** - a Vec3
+  # - returns a new Vec3
   @div:(a,b) ->
     a.copy()["div"](b)
 
-  # @mult - static function - non destructive multiplication.
+  # **@mult** - static function - non destructive multiplication.
+  # - **a** - a Vec3
+  # - **b** - a Vec3
+  # - returns a new Vec3
   @mult:(a,b) ->
     a.copy()["mult"](b)
 
-  # @multScalar - static function - non destructive multiplication by a scalar
+  # **@multScalar** - static function - non destructive multiplication by a scalar
+  # - **a** - a Vec3
+  # - **b** - a Vec3
+  # - returns a Number
   @multScalar:(a,b) ->
     a.copy()["multScalar"](b)
 
-  # @normalize - static function - non destructive normalization.
+  # **@normalize** - static function - non destructive normalization.
   @normalize:(a) ->
     a.copy()["normalize"]()
 
-  # @dot - static function - return the dot product.
+  # **@dot** - static function - return the dot product.
+  # - **a** - a Vec3
+  # - **b** - a Vec3
+  # - returns a Number
   @dot:(a,b) ->
     a.dot(b)
       
+  # **constructor**
+  # - **x** - a Number
+  # - **y** - a Number
+  # - **z** - a Number
+  # - returns a new Vec3
   constructor: (x=0,y=0,z=0) ->
   	[@x,@y,@z] = [x,y,z]
 
-  # copy - make a copy of this vector
+  # **copy** - make a copy of this vector
+  # - returns a new Vec3
   copy: ->
     new Vec3(@x,@y,@z)
 
-  # copyFrom - copy the value from another vector
+  # **copyFrom** - copy the value from another vector
+  # - **a** - a Vec3
+  # - returns this
   copyFrom : (a) ->
     @x = a.x
     @y = a.y
     @z = a.z
     @
 
-  # xy - a basic swizzle returning a new Vec2
+  # **xy** - a basic swizzle returning a new Vec2 from x and y
+  # - returns a Vec2
   xy : () ->
     new Vec3 @x, @y
 
-  # length - return the length of this vector
+  # **length** - return the length of this vector
+  # - returns a Number
   length: ->
     Math.sqrt @lengthSquared()  
   
-  # lengthSquared - return the squared length of this vector
+  # **lengthSquared** - return the squared length of this vector
+  # - returns a Number
   lengthSquared: ->
     @x * @x + @y * @y + @z * @z
 
-  # normalize - normalize - destructive
+  # **normalize** - normalize - destructive
+  # - returns a Number
   normalize: ->
     m = @length()
     @multScalar(1.0/m) if m > 0
     @
 
-  # sub - subtract another vector - destructive
+  # **sub** - subtract another vector - destructive
+  # - **v** - a Vec3
+  # - returns this
   sub: (v) ->
     @x -= v.x
     @y -= v.y
     @z -= v.z
     @
 
-  # add - add another vector - destructive
+  # **add** - add another vector - destructive
+  # - **v** - Vec3
+  # - returns this
   add: (v) ->
     @x += v.x
     @y += v.y
     @z += v.z
     @
 
-  # cross - cross this vector with another vector - destructive
+  # **cross** - cross this vector with another vector - destructive
+  # - **v** - Vec3
+  # - returns this
   cross: (v) ->
     x = @y * v.z - @z * v.y 
     y = @z * v.x - @x * v.z 
@@ -327,101 +419,156 @@ class Vec3
     @z = z
     @
 
-  # dv - return a new vector being the difference between this vector and another (v)
+  # **dv** - return a new vector being the difference between this vector and another (v)
+  # - **v** - Vec3
+  # - returns this
   dv: (v) ->
-    new Vec3  Math.abs(@x - v.x) Math.abs(@y - v.y) Math.abs(@z - v.z) 
+    @x = Math.abs(@x - v.x)
+    @y = Math.abs(@y - v.y)
+    @z = Math.abs(@z - v.z)
+    @
 
-  # dist - return the distance between this and another vector (v)
+  # **dist** - return the distance between this and another vector (v)
+  # - **v** - Vec3
+  # - returns a Number
   dist: (v) ->
     Vec3.sub(@,v).length()
 
-  # distSquared - return the distance squared between this and another vector (v)
+  # **distSquared** - return the distance squared between this and another vector (v)
+  # - **v** - Vec3
+  # - returns a Number
   distSquared: (v) ->
     Vec3.sub(@,v).lengthSquared()
 
-  # div - divide by another vector n 
+  # **div** - divide by another vector n 
+  # - **n** - Vec3
+  # - returns this
   div: (n) ->
     [@x,@y,@z] = [@x/n.x,@y/n.y,@z/n.z]
     @
 
-  # mult - multiply by another vector v 
+  # **mult** - multiply by another vector v 
+  # - **v** - Vec3
+  # - returns this
   mult: (v) ->
     [@x,@y,@z] = [@x*v.x,@y*v.y,@z*v.z]
     @
 
-  # multScalar - multiply by a scalar n
+  # **multScalar** - multiply by a scalar n
+  # - **n** - Number
+  # - returns this
   multScalar: (n) ->
     [@x,@y,@z] = [@x*n,@y*n,@z*n]
     @
 
-  # equals - are these two vectors equal in size/direction
+  # **equals** - are these two vectors equal in size/direction
+  # - **v** - Vec3
+  # returns boolean
   equals: (v) ->
     @x == v.x and @y == v.y and @z == v.z
 
-  # dot - return the dot porduct between this and v
+  # dot - return the dot product between this and v
+  # - **v** - Vec3
+  # - return this
   dot: (v) ->
     @x*v.x + @y*v.y + @z*v.z
 
-  # invalid - is this vector actually valid
+  # **invalid** - is this vector actually valid
+  # - returns boolean
   invalid: ->
     return (@x == Infinity) || isNaN(@x) || @y == Infinity || isNaN(@y) || @z == Infinity || isNaN(@z)
 
-  # flatten - used by shaders to get a nice list
+  # **flatten** - used by shaders to get a nice list
+  # - returns List of Number
   flatten: ->
     [@x,@y,@z]
 
-
-  # Short-hand to set the values in one go
+  # **set** - Short-hand to set the values in one go
+  # - **x** - Number
+  # - **y** - Number
+  # - **z** - Number
+  # - returns this
   set : (@x, @y, @z) ->
     @
 
-###Vec4###
+### Vec4 ###
 # A four dimensional vector (x,y,z,w)
 
 class Vec4
 
   DIM : 4
  
-  # @sub - static function - non destructive subtraction.
+  # **@sub** - static function - non destructive subtraction.
+  # - **a** - Vec4
+  # - **b** - Vec4
+  # - returns new Vec4
   @sub:(a,b) ->
     a.copy()["sub"](b)
 
-  # @add - static function - non destructive addition.
+  # **@add** - static function - non destructive addition.
+  # - **a** - Vec4
+  # - **b** - Vec4
+  # - returns new Vec4
   @add:(a,b) ->
     a.copy()["add"](b)
 
-  # @cross - static function - return the cross product.
+  # **@cross** - static function - return the cross product.
+  # - **a** - Vec4
+  # - **b** - Vec4
+  # - returns new Vec4
   @cross:(a,b) ->
     a.copy()["cross"](b)
 
-  # @div - static function - non destructive division.
+  # **@div** - static function - non destructive division.
+  # - **a** - Vec4
+  # - **b** - Vec4
+  # - returns new Vec4
   @div:(a,b) ->
     a.copy()["div"](b)
 
-  # @mult - static function - non destructive multiplication.
+  # **@mult** - static function - non destructive multiplication.
+  # - **a** - Vec4
+  # - **b** - Vec4
+  # - returns new Vec4
   @mult:(a,b) ->
     a.copy()["mult"](b)
 
-  # @multScalar - static function - non destructive multiplication by a scalar
+  # **@multScalar** - static function - non destructive multiplication by a scalar
+  # - **a** - Vec4
+  # - **b** - Number
+  # - returns Number
   @multScalar:(a,b) ->
     a.copy()["multScalar"](b)
 
-  # @normalize - static function - non destructive normalization.
+  # **@normalize** - static function - non destructive normalization.
+  # - **a** - Vec4
+  # - returns new Vec4
   @normalize:(a) ->
     a.copy()["normalize"]()
 
-  # @dot - static function - return the dot product.
+  # **@dot** - static function - return the dot product.
+  # - **a** - Vec4
+  # - **b** - Vec4
+  # - returns Number
   @dot:(a,b) ->
     a.dot(b)
 
+  # **constructor**
+  # - **x** - Number - optional - default 0
+  # - **y** - Number - optional - default 0
+  # - **z** - Number - optional - default 0
+  # - **w** - Number - optional - default 1
   constructor: (x=0,y=0,z=0,w=1) ->
   	[@x,@y,@z,@w] = [x,y,z,w]
 
-  # copy - make a copy of this vector
+  # **copy** - make a copy of this vector
+  # - returns new Vec4
   copy: ->
     new Vec4(@x,@y,@z,@w)
 
-  # copyFrom - copy the value from another vector
+  # **copyFrom** - copy the value from another vector
+  # - **a** - Vec4
+  # - returns this
   copyFrom : (a) ->
     @x = a.x
     @y = a.y
@@ -429,27 +576,33 @@ class Vec4
     @w = a.w
     @
 
-  # xyz - a basic swizzle returning a new Vec3
+  # **xyz** - a basic swizzle returning a new Vec3
+  # - returns new Vec3
   xyz : () ->
     new Vec3 @x, @y, @z
 
 
-  # length - return the length of this vector
+  # **length** - return the length of this vector
+  # - returns Number
   length: ->
     Math.sqrt @lengthSquared() 
   
-  # lengthSquared - return the squared length of this vector
+  # **lengthSquared** - return the squared length of this vector
+  # - returns Number
   lengthSquared: ->
     @x * @x + @y * @y + @z * @z + @w * @w
 
-  # normalize - normalize - destructive
+  # **normalize** - normalize - destructive
+  # - returns this
   normalize: ->
     m = @length()
     @multScalar(1.0/m) if m > 0
     @
 
 
-  # sub - subtract another vector - destructive
+  # **sub** - subtract another vector - destructive
+  # - **v** - Vec4
+  # - returns this  
   sub: (v) ->
     @x -= v.x
     @y -= v.y
@@ -457,11 +610,15 @@ class Vec4
     @w -= v.w
     @
 
-  # equals - are these two vectors equal in size/direction
+  # **equals** - are these two vectors equal in size/direction
+  # - **v** - Vec4
+  # - returns boolean
   equals: (v) ->
     @x == v.x && @y == v.y && @z == v.z && @w == v.w
 
-  # add - add another vector - destructive
+  # **add** - add another vector - destructive
+  # - **v** - Vec4
+  # - returns this
   add: (v) ->
     @x += v.x
     @y += v.y
@@ -469,7 +626,9 @@ class Vec4
     @w += v.w
     @
 
-  # cross - cross this vector with another vector - destructive
+  # *cross* - cross this vector with another vector - destructive
+  # - **v** - Vec4
+  # - return this
   cross: (v) ->
     # No idea what to do with W here! :S
     x = @y * v.z - @z * v.y 
@@ -480,133 +639,182 @@ class Vec4
     @z = z
     @
 
-  # dv - return a new vector being the difference between this vector and another (v)
+  # **dv** - set this vector to the difference between this vector and another (v)
+  # - **v** - Vec4
+  # - returns this
   dv: (v) ->
-    new Vec4  Math.abs(@x - v.x) Math.abs(@y - v.y) Math.abs(@z - v.z) Math.abs(@w - v.w) 
+    @x = Math.abs(@x - v.x)
+    @y = Math.abs(@y - v.y)
+    @z = Math.abs(@z - v.z)
+    @w = Math.abs(@w - v.w) 
+    @
 
-  # dist - return the distance between this and another vector (v)
+
+  # **dist** - return the distance between this and another vector (v)
+  # - **v** - Vec4
+  # - returns Number
   dist: (v) ->
     Vec4.sub(@,v).length()
 
-  # distSquared - return the distance squared between this and another vector (v)
+  # **distSquared** - return the distance squared between this and another vector (v)
+  # - **v** - Vec4
+  # - returns Number
   distSquared: (v) ->
     Vec4.sub(@,v).lengthSquared()
 
-  # div - divide by another vector n 
+  # **div** - divide by another vector n
+  # - **n** - Vec4
+  # - returns this 
   div: (n) ->
     [@x,@y,@z,@w] = [@x/n.x,@y/n.y,@z/n.z,@w/n.w]
     @
 
-  # mult - multiply by another vector v 
+  # **mult** - multiply by another vector v 
+  # - **v** - Vec4
+  # - returns this
   mult: (v) ->
     [@x,@y,@z,@w] = [@x*v.x,@y*v.y,@z*v.z,@w*v.w]
     @ 
 
-  # multScalar - multiply by a scalar n
+  # **multScalar** - multiply by a scalar n
+  # - **n** - Number
+  # - returns this
   multScalar: (n) ->
     [@x,@y,@z,@w] = [@x*n,@y*n,@z*n,@w*n]
     @
 
-  # dot - return the dot porduct between this and v
+  # **dot** - return the dot porduct between this and v
+  # - **v** - Vec4
+  # - returns this
   dot: (v) ->
     @x*v.x + @y*v.y + @z*v.z + @w*v.w
 
-  # invalid - is this vector actually valid
+  # **invalid** - is this vector actually valid
+  # - returns boolean
   invalid: ->
     return (@x == Infinity) || isNaN(@x) || @y == Infinity || isNaN(@y) || @z == Infinity || isNaN(@z) || @w == Infinity || isNaN(@w)
 
-  # flatten - used by shaders to get a nice list
+  # **flatten** - used by shaders to get a nice list
+  # - returns List of Number
   flatten: ->
     [@x,@y,@z,@w]
 
-  # Short-hand to set the values in one go
+  # **set** - Short-hand to set the values in one go
+  # - **x** - Number
+  # - **y** - Number
+  # - **z** - Number
+  # - **w** - Number
   set : (@x, @y, @z, @w) ->
     @
 
-###Matrix2###
+### Matrix2 ###
 # A 2x2 matrix in Column Major Format
 
 class Matrix2
 
   DIM : 2
 
-  # @addScalar - static function - add a scalar to every element in this matrix
+  # **@addScalar** - static function - add a scalar to every element in this matrix
+  # - **a** - Matrix2
+  # - **b** - Number
+  # - returns new Matrix2
   @addScalar:(a,b) ->
     a.copy()["addScalar"](b)
 
-  # @subScalar - static function - subtract a scalar from every element in this matrix
+  # **@subScalar** - static function - subtract a scalar from every element in this matrix
+  # - **a** - Matrix2
+  # - **b** - Number
+  # - returns new Matrix2
   @subScalar:(a,b) ->
     a.copy()["subScalar"](b)
 
-  # @multScalar - static function - multiply every element in this matrix by a scalar
+  # **@multScalar** - static function - multiply every element in this matrix by a scalar
+  # - **a** - Matrix2
+  # - **b** - Number
+  # - returns new Matrix2
   @multScalar:(a,b) ->
     a.copy()["multScalar"](b)
 
-  # @divScalar - static function - divide every element in this matrix by a scalar
+  # **@divScalar** - static function - divide every element in this matrix by a scalar
+  # - **a** - Matrix2
+  # - **b** - Number
+  # - returns new Matrix2
   @divScalar:(a,b) ->
     a.copy()["divScalar"](b)
 
-  # @mult - static function - multiply this matrix by another matrix
+  # **@mult** - static function - multiply this matrix by another matrix
+  # - **a** - Matrix2
+  # - **b** - Matrix2
+  # - returns new Matrix2
   @mult:(a,b) ->
     a.copy()["mult"](b)
 
-  # @multVec - static function - multiply a vector by this matrix, returning a new vector
+  # **@multVec** - static function - multiply a vector by this matrix, returning a new vector
+  # - **m** - Matrix2
+  # - **v** - Vec2
+  # - returns new Vec2
   @multVec: (m,v)->
     tv = v.copy()
     m.multVec(tv)
     tv
 
-  # @transpose - static function - return the transpose of this matrix
+  # **@transpose** - static function - return the transpose of this matrix
+  # - **a** - Matrix2
+  # - returns new Matrix2
   @transpose:(a) ->
     new Matrix2 [a.a[0],a.a[2],a.a[1],a.a[3]]
 
-  # Take a list in column major format
+  # **constructor** Take a list in column major format
+  # - **a** - List of Number - Length 4 - Optional - Default [1,0,0,1]
   constructor: (a=[1,0,0,1]) ->
     if a instanceof Matrix2
       @a = a.a
     else
       @a = new glMatrixArrayType(a)
 
-  # copy - return a copy of this matrix
+  # **copy** - return a copy of this matrix
+  # - returns new Matrix2
   copy : () ->
     new Matrix2(@a)
 
-  # copyFrom - copy all the values from another matrix, a
+  # **copyFrom** - copy all the values from another matrix, a
+  # - **a** Matrix2
+  # - 
   copyFrom : (a) ->
     for i in [0..3]
       @a[i] = a.a[i]
     @
 
-  # multScalar - multiply this matrix by a scalar
+  # **multScalar** - multiply this matrix by a scalar
   multScalar: (n) ->
     @a = ( num * n for num in @a )
     @
 
-  # addScalar - add a scalar to every element
+  # **addScalar** - add a scalar to every element
   addScalar: (n) ->
     @a = ( num + n for num in @a )
     @
 
-  # subScalar - remove a scalar from every element
+  # **subScalar** - remove a scalar from every element
   subScalar: (n) ->
     @a = ( num - n for num in @a )
     @
 
-  # divScalar - divide every element by a scalar
+  # **divScalar** - divide every element by a scalar
   divScalar: (n) ->
     @a = ( num / n for num in @a)
     @
 
-  # identity - set this matrix to be the identity matrix
+  # **identity** - set this matrix to be the identity matrix
   identity : ->
     @a.set([1,0,0,1])
     @
   
-  # at - return the element at the row and column specified
+  # **at** - return the element at the row and column specified
   at : (r,c) ->
     @a[c * 2 + r]
 
-  # mult - multiply this matrix by matrix m
+  # **mult** - multiply this matrix by matrix m
   mult: (m) ->
 
     a = new Matrix2()
@@ -620,7 +828,9 @@ class Matrix2
 
     @
 
-  # multVec - multiply vector v by this matrix - destructive to v
+  # **multVec** - multiply vector v by this matrix - destructive to v
+  # - **v** - Vec2
+  # - returns this
   multVec: (v) ->
     if v.z? or v.w?
       PXLWarning "Mismatched vector and matrix dimensions"
@@ -632,29 +842,36 @@ class Matrix2
     v.y = y
     @
 
-  # getCol - return a column from this matrix as a Vec2
+  # **getCol** - return a column from this matrix as a Vec2
+  # - **c** - Number
+  # - returns List of Number - Length 2
   getCol: (c)->
     c = c * Matrix2.DIM
     Vec2 @a[c + 0] @a[c + 1]
 
-  # getRow - return a row from this matrix as a Vec2
+  # **getRow** - return a row from this matrix as a Vec2
+  # - **r** - Number
+  # - returns List of Number - Length 2
   getRow: (r) ->
     Vec2 @a[r + 0] @a[r + 2]
 
       
-
-  # transpose - transpose this matrix
+  # **transpose** - transpose this matrix
+  # - returns this
   transpose : () ->
     @copyFrom new Matrix2 [@a[0],a[2],@a[1],@a[3]]
     @
 
-  # print - print this matrix to the console
+  # **print** - print this matrix to the console
+  # - returns this
   print: ()->
     console.log @a[0] + "," + @a[2]
     console.log @a[1] + "," + @a[3]
-    
+    @
   
-  # rotate - given an angle in radians, set this as a rotation matrix
+  # **rotate** - given an angle in radians, set this as a rotation matrix
+  # - **a** - Number
+  # - returns this
   rotate: (a) ->
 
     r = new Matrix2()
@@ -669,7 +886,9 @@ class Matrix2
     @mult(r)
     @
 
-  # scale - given a Vec3, create a scaling matrix
+  # **scale** - given a Vec3, create a scaling matrix
+  # - **v** - Vec3
+  # - returns this
   scale: (v) ->
     # Leave w
     r = new Matrix3()
@@ -680,96 +899,135 @@ class Matrix2
     @
 
 
-###Matrix3###
+### Matrix3 ###
 # A 3x3 matrix in Column Major Format
 
 class Matrix3
 
   DIM : 3
-  # TODO - Euler x,y,z rotations needed? Probably not! :S
 
-  # @addScalar - static function - add a scalar to every element in this matrix
+  # **@addScalar** - static function - add a scalar to every element in this matrix
+  # - **a** - Matrix3
+  # - **b** - Number
+  # - returns new Matrix3
   @addScalar:(a,b) ->
     a.copy()["addScalar"](b)
 
-  # @subScalar - static function - subtract a scalar from every element in this matrix
+  # **@subScalar** - static function - subtract a scalar from every element in this matrix
+  # - **a** - Matrix3
+  # - **b** - Number
+  # - returns new Matrix3
   @subScalar:(a,b) ->
     a.copy()["subScalar"](b)
 
-  # @multScalar - static function - multiply every element in this matrix by a scalar
+  # **@multScalar** - static function - multiply every element in this matrix by a scalar
+  # - **a** - Matrix3
+  # - **b** - Number
+  # - returns new Matrix3
   @multScalar:(a,b) ->
     a.copy()["multScalar"](b)
 
-  # @divScalar - static function - divide every element in this matrix by a scalar
+  # **@divScalar** - static function - divide every element in this matrix by a scalar
+  # - **a** - Matrix3
+  # - **b** - Number
+  # - returns new Matrix3
   @divScalar:(a,b) ->
     a.copy()["divScalar"](b)
 
-  # @mult - static function - multiply this matrix by another matrix
+  # **@mult** - static function - multiply this matrix by another matrix
+  # - **a** - Matrix3
+  # - **b** - Matrix3
+  # - returns new Matrix3
   @mult:(a,b) ->
     a.copy()["mult"](b)
 
-  # @invert - static function - return the inverse of this matrix
+  # **@invert** - static function - return the inverse of this matrix
+  # - **a** - Matrix3
+  # - returns new Matrix3
   @invert:(a) ->
     a["_invert"]()
 
-  # @multVec - static function - multiply a vector by this matrix, returning a new vector
+  # **@multVec** - static function - multiply a vector by this matrix, returning a new vector
+  # - **m** - Matrix3
+  # - **v** - Vec3
+  # - returns new Vec3
   @multVec: (m,v)->
     tv = v.copy()
     m.multVec(tv)
     tv
 
-  # @transpose - static function - return the transpose of this matrix
+  # **@transpose** - static function - return the transpose of this matrix
+  # - **a** - Matrix3
+  # - returns new Matrix3
   @transpose:(a) ->
     new Matrix3([ a.a.a.a[0],a.a[3],a.a[6],a.a[1],a.a[4],a.a[7],a.a[2],a.a[5],a.a[8]])
 
 
-  # Take a list in column major format
+  # **constructor**
+  # - a - List of Number - Length 9 - Optional - Default [1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0]
   constructor: (a=[1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0]) ->
     if a instanceof Matrix3
       @a = a.a
     else
       @a = new glMatrixArrayType(a)
 
-  # copy - return a copy of this matrix
+  # **copy** - return a copy of this matrix
+  # - returns new Matrix3
   copy : () ->
     new Matrix3(@a)
 
-  # copyFrom - copy all the values from another matrix, a
+  # **copyFrom** - copy all the values from another matrix, a
+  # - **a** - Matrix3
+  # - returns this
   copyFrom : (a) ->
     for i in [0..8]
       @a[i] = a.a[i]
     @
 
   # multScalar - multiply this matrix by a scalar
+  # - **n** - Number
+  # - returns this
   multScalar: (n) ->
     @a = ( num * n for num in @a )
     @
 
-  # addScalar - add a scalar to every element
+  # **addScalar** - add a scalar to every element
+  # - **n** - Number
+  # - returns this
   addScalar: (n) ->
     @a = ( num + n for num in @a )
     @
 
-  # subScalar - remove a scalar from every element
+  # **subScalar** - remove a scalar from every element
+  # - **n** - Number
+  # - returns this
   subScalar: (n) ->
     @a = ( num - n for num in @a )
     @
 
-  # divScalar - divide every element by a scalar
+  # **divScalar** - divide every element by a scalar
+  # - **n** - Number
+  # - returns this
   divScalar: (n) ->
     @a = ( num / n for num in @a)
     @
 
-  # identity - set this matrix to be the identity matrix
+  # **identity** - set this matrix to be the identity matrix
+  # - returns this
   identity : ->
     @a.set([1.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0])
     @
   
-  # at - return the element at the row and column specified
+  # **at** - return the element at the row and column specified
+  # - **r** - Number
+  # - **c** - Number
+  # - returns Number
   at : (r,c) ->
     @a[c * 3 + r]
 
-  # mult - multiply this matrix by matrix m
+  # **mult** - multiply this matrix by matrix m
+  # - **m** - Matrix3
+  # - returns this
   mult: (m) ->
 
     a = new Matrix3()
@@ -792,7 +1050,9 @@ class Matrix3
 
     @
 
-  # multVec - multiply vector v by this matrix - destructive to v
+  # **multVec** - multiply vector v by this matrix - destructive to v
+  # - **v** - Vec3
+  # - returns this
   multVec: (v) ->
     if not v.z? or v.w?
       PXLWarning "Mismatched vector and matrix dimensions"
@@ -806,16 +1066,21 @@ class Matrix3
     v.z = z
     @
 
-  # getCol - return a column from this matrix as a Vec3
+  # **getCol** - return a column from this matrix as a Vec3
+  # - **c** - Number
+  # - returns Vec3
   getCol: (c)->
     c = c * Matrix3.DIM
     Vec3 @a[c + 0] @a[c + 1] @a[c + 2]
 
   # getRow - return a row from this matrix as a Vec3
+  # - **r** - Number
+  # - returns Vec3
   getRow: (r) ->
     Vec3 @a[r + 0] @a[r + 3] @a[r + 6]
 
-  # _invert - invert this matrix
+  # ***_invert*** - invert this matrix
+  # - Internal
   _invert: () ->
     inv = new Matrix3()
     epsilon = 4.37114e-05
@@ -836,24 +1101,30 @@ class Matrix3
       inv.multScalar(invDet)
     inv
 
-  # invert - invert this matrix
+  # **invert** - invert this matrix
+  # - returns this
   invert: () ->
     @copyFrom @_invert()
     @
 
  
-  # transpose - transpose this matrix
+  # **transpose** - transpose this matrix
+  # - returns this
   transpose : () ->
     @copyFrom new Matrix3([@a[0],@a[3],@a[6], @a[1],@a[4],@a[7], @a[2],@a[5],@a[8]])
     @
 
-  # print - print this matrix to the console
+  # **print** - print this matrix to the console
+  # - returns this
   print: ()->
     console.log @a[0] + "," + @a[3] + "," + @a[6]
     console.log @a[1] + "," + @a[4] + "," + @a[7]
     console.log @a[2] + "," + @a[5] + "," + @a[8]
   
-  # rotate - given a Vec3 and an angle in radians, create a rotation matrix
+  # **rotate** - given a Vec3 and an angle in radians, create a rotation matrix
+  # - **v** - Vec3
+  # - **a** - Number
+  # - returns this
   rotate: (v,a) ->
 
     r = new Matrix3()
@@ -876,7 +1147,9 @@ class Matrix3
     @mult(r)
     @
 
-  # scale - given a Vec3, create a scaling matrix
+  # **scale** - given a Vec3, create a scaling matrix
+  # - **v** - Vec3
+  # - returns this
   scale: (v) ->
     # Leave w
     r = new Matrix3()
@@ -892,98 +1165,133 @@ class Matrix3
 class Matrix4
   DIM : 4
 
-  # TODO - Euler x,y,z rotations needed? Probably not! :S
-
-  # @addScalar - static function - adds a scalar to every element in the matrix
+  # **@addScalar** - static function - adds a scalar to every element in the matrix
+  # - **a** - Matrix4
+  # - **b** - Number
+  # - returns new Matrix4
   @addScalar:(a,b) ->
     a.copy()["addScalar"](b)
 
-  # @subScalar - static function - subtract a scalar from every element in this matrix
+  # **@subScalar** - static function - subtract a scalar from every element in this matrix
+  # - **a** - Matrix4
+  # - **b** - Number
+  # - returns new Matrix4
   @subScalar:(a,b) ->
     a.copy()["subScalar"](b)
 
-  # @multScalar - static function - multiply every element in this matrix by a scalar
+  # **@multScalar** - static function - multiply every element in this matrix by a scalar
+  # - **a** - Matrix4
+  # - **b** - Number
+  # - returns new Matrix4
   @multScalar:(a,b) ->
     a.copy()["multScalar"](b)
 
-  # @divScalar - static function - divide every element in this matrix by a scalar
+  # **@divScalar** - static function - divide every element in this matrix by a scalar
+  # - **a** - Matrix4
+  # - **b** - Number
+  # - returns new Matrix4
   @divScalar:(a,b) ->
     a.copy()["divScalar"](b)
 
-  # @mult - static function - multiply this matrix by another matrix
+  # **@mult** - static function - multiply this matrix by another matrix
+  # - **a** - Matrix4
+  # - **b** - Matrix4
+  # - returns new Matrix4
   @mult:(a,b) ->
     a.copy()["mult"](b)
 
-  # @invert - static function - return the inverse of this matrix
+  # **@invert** - static function - return the inverse of this matrix
+  # - **a** - Matrix4
+  # - returns new Matrix4
   @invert:(a) ->
     a["_invert"]()
 
-  # @transpose - static function - return the transpose of this matrix
+  # **@transpose** - static function - return the transpose of this matrix
+  # - **a** - Matrix4
+  # - returns new Matrix4
   @transpose:(a) ->
     new Matrix4( [ a.a[0], a.a[4], a.a[8], a.a[12], a.a[1], a.a[5], a.a[9], a.a[13], a.a[2], a.a[6], a.a[10], a.a[14], a.a[3], a.a[7], a.a[11], a.a[15] ] )
 
 
-  # @multVec - static function - multiply a vector by this matrix, returning a new vector
+  # **@multVec** - static function - multiply a vector by this matrix, returning a new vector
+  # - **m** - Matrix4
+  # - **v** - Vec4
+  # - returns new Vec4
   @multVec: (m,v)->
     tv = v.copy()
     m.multVec(tv)
     tv
 
-
-
-  # Take a list in column major format
+  # **constructor**
+  # - **a** - List of Number - Length 16 - Optional - Default [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]
   constructor: (a=[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]) ->
-    # todo - add checking
     if a instanceof Matrix4
       @a = a.a
     else
       @a = new glMatrixArrayType(a)
 
-  # copy - return a copy of this matrix
+  # **copy** - return a copy of this matrix
+  # - returns new Matrix4
   copy : () ->
     new Matrix4(@a)
 
-  # copyFrom - copy all the values from another matrix, a
+  # **copyFrom** - copy all the values from another matrix, a
+  # - **a** - Matrix4
+  # - returns this
   copyFrom : (a) ->
     for i in [0..15]
       @a[i] = a.a[i]
     @
 
-  # multScalar - multiply this matrix by a scalar
+  # **multScalar** - multiply this matrix by a scalar
+  # - **n** - Number
+  # - returns this
   multScalar: (n) ->
     @a = ( num * n for num in @a )
     @
 
-  # addScalar - add a scalar to every element
+  # **addScalar** - add a scalar to every element
+  # - **n** - Number
+  # - returns this
   addScalar: (n) ->
     @a = ( num + n for num in @a )
     @
 
-  # subScalar - remove a scalar from every element
+  # **subScalar** - remove a scalar from every element
+  # - **n** - Number
+  # - returns this
   subScalar: (n) ->
     @a = ( num - n for num in @a )
     @
 
-  # divScalar - divide every element by a scalar
+  # **divScalar** - divide every element by a scalar
+  # - **n** - Number
+  # - returns this
   divScalar: (n) ->
     @a = ( num / n for num in @a)
     @
 
-  # identity - set this matrix to be the identity matrix
+  # **identity** - set this matrix to be the identity matrix
+  # - returns this
   identity : ->
     @a.set([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1])
     @
   
-  # at - return the element at the row and column specified
+  # **at** - return the element at the row and column specified
+  # - **r** - Number
+  # - **c** - Number
+  # - returns Number
   at : (r,c) ->
     @a[c * 4 + r]
 
-  # getMatrix3 - return the 3x3 matrix from this 4x4 - top left part
+  # **getMatrix**3 - return the 3x3 matrix from this 4x4 - top left part
+  # - returns new Matrix3
   getMatrix3 : () ->
     new Matrix3([ @a[0],@a[1],@a[2],@a[4],@a[5],@a[6],@a[8],@a[9],@a[10]])
 
-  # mult - multiply this matrix by matrix m
-  # TODO - I wonder if this is the fastest, best way? Probably not >< Not in place :S
+  # **mult** - multiply this matrix by matrix m
+  # - **m** - Matrix4
+  # - returns this
   mult: (m) ->
     a = new Matrix4()
     a.a[ 0] = @a[ 0]*m.a[ 0] + @a[ 4]*m.a[ 1] + @a[ 8]*m.a[ 2] + @a[12]*m.a[ 3]
@@ -1007,10 +1315,11 @@ class Matrix4
     a.a[15] = @a[ 3]*m.a[12] + @a[ 7]*m.a[13] + @a[11]*m.a[14] + @a[15]*m.a[15]
 
     @copyFrom(a)
-
     @
 
-  # multVec - multiply vector v by this matrix - destructive to v
+  # **multVec** - multiply vector v by this matrix - destructive to v
+  # - **v** - Vec4
+  # - returns
   multVec: (v) ->
     if not v.z?
       PXLWarning "Mismatched vector and matrix dimensions"
@@ -1035,21 +1344,27 @@ class Matrix4
       v.w = w
     @
 
-
-
+  # **at** - return the number at row r and column c
+  # - **r** - Number
+  # - **c** - Number
+  # - returns Number
   at: (r,c) ->
     @a[c * 4 + r]
 
-  # getCol - return a column from this matrix as a Vec4
+  # **getCol** - return a column from this matrix as a Vec4
+  # - **c** - Number
+  # - returns Vec4
   getCol: (c)->
     c = c * 4
     Vec4 @a[c + 0] @a[c + 1] @a[c + 2] @a[c + 3]
 
-  # getRow - return a row from this matrix as a Vec4
+  # **getRow** - return a row from this matrix as a Vec4
+  # - **r** - Number
+  # - returns Vec4
   getRow: (r) ->
     Vec4 @a[r + 0] @a[r + 4] @a[r + 8] @a[r + 12]
 
-  # _invert - invert this matrix
+  # **_invert** - internal
   _invert : () ->
 
     inv = new Matrix4()
@@ -1093,19 +1408,22 @@ class Matrix4
     inv.multScalar(invDet)
     inv
 
-  # invert - invert this matrix
+  # **invert** - invert this matrix
+  # - returns this
   invert: () ->
     @copyFrom @_invert() 
     @
 
-  # transpose - transpose this matrix
+  # **transpose** - transpose this matrix
+  # - returns this
   transpose : () ->
     @copyFrom new Matrix4( [ @a[0],@a[4],@a[8],@a[12],@a[1],@a[5],@a[9],@a[13],@a[2],@a[6],@a[10],@a[14],@a[3],@a[7],@a[11],@a[15] ] )
     @
 
 
   # translate - multiple this matrix by a translation matrix, formed from the Vec3 v
-  # TODO - Here is a good example of having a debug build as oppose to a debug flag!
+  # - **v** - Vec3
+  # - returns this
   translate: (v) ->
     if v.DIM? 
       if v.DIM != 3
@@ -1120,23 +1438,28 @@ class Matrix4
       
     @
 
-  # setPos - Given a vector, sets the translation part of the matrix directly with no multiplication
+  # **setPos** - Given a vector, sets the translation part of the matrix directly with no multiplication
+  # - **v** - Vec3
+  # - returns this
   setPos : (v) ->
     @a[12] = v.x if v.x?
     @a[13] = v.y if v.y?
     @a[14] = v.z if v.z?
     @
 
-  # getPos - return the translation component as a Vec3
+  # **getPos** - return the translation component as a Vec3
+  # - returns new Vec3
   getPos : () ->
     return new Vec3 @a[12],@a[13],@a[14]
   
-  # print - print this matrix to the console
+  # **print** - print this matrix to the console
+  # - returns this
   print: ()->
     console.log @a[0] + "," + @a[4] + "," + @a[8] + "," + @a[12]
     console.log @a[1] + "," + @a[5] + "," + @a[9] + "," + @a[13]
     console.log @a[2] + "," + @a[6] + "," + @a[10] + "," + @a[14]
     console.log @a[3] + "," + @a[7] + "," + @a[11] + "," + @a[15]
+    @
 
 
   # lookAt - similar to gluLookAt - creates a matrix from an eye, look and up vector (Vec3)
@@ -1227,31 +1550,31 @@ class Matrix4
 
 class Quaternion
 
-  # @addScalar - static function - add a scalar to every element in this quaternion
+  # **@addScalar** - static function - add a scalar to every element in this quaternion
   @addScalar:(a,b) ->
     a.copy()["addScalar"](b)
 
-  # @subScalar - static function - subtract a scalar from every element in this quaternion
+  # **@subScalar** - static function - subtract a scalar from every element in this quaternion
   @subScalar:(a,b) ->
     a.copy()["subScalar"](b)
 
-  # @multScalar - static function - multiply every element in this quaternion by a scalar
+  # **@multScalar** - static function - multiply every element in this quaternion by a scalar
   @multScalar:(a,b) ->
     a.copy()["multScalar"](b)
 
-  # @divScalar - static function - divide every element in this quaternion by a scalar
+  # **@divScalar** - static function - divide every element in this quaternion by a scalar
   @divScalar:(a,b) ->
     a.copy()["divScalar"](b)
 
-  # @conjugate - static function - return the conjugate to this quaternion
+  # **@conjugate** - static function - return the conjugate to this quaternion
   @conjugate:(a) ->
     a.copy()["conjugate"]()
 
-  # @mult - static function - multiply this quaternion by another quaternion
+  # **@mult** - static function - multiply this quaternion by another quaternion
   @mult:(a,b) ->
     a.copy()["mult"](b)
 
-  # @invert - static function - return an inverted version
+  # **@invert** - static function - return an inverted version
   @invert:(a) ->
     a.copy()["invert"]()
  
