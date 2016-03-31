@@ -214,7 +214,7 @@ class TextureBase
     @
 
 
-###Texture###
+### Texture ###
 # Create a texture from either a provided image or creates a blank one if texdata not provided
 # Params are as the TextureBase class
 
@@ -277,7 +277,7 @@ class Texture extends TextureBase
     gl.bindTexture gl.TEXTURE_2D, null
   @
 
-###textureFromURL###
+### textureFromURL ###
 # Load a texture from a URL - convinience function that wraps a request
 # Takes a url string, a callback, a failure callback. and optional params
 # Saves the current context so we can fire different context requests
@@ -318,10 +318,9 @@ textureFromURL = (url, callback, onerror, params) ->
 
 
        
-###TextureCube###
-# Loads 6 textures for the texture cube. Provide a list (@paths) of 6 paths. Optional params
-# consist of { min,max,wraps,wrapt,unit }
-# Texture cube doesnt keep references to its source images unlike the other textures :S
+### TextureCube ###
+# Loads 6 textures for the texture cube.
+
 
 class TextureCube extends TextureBase
   # constructor - takes an array of 6 paths for the cube

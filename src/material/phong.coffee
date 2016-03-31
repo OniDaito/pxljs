@@ -29,14 +29,13 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 # which can either be a texture or a basic passed in colour. This variable is common throughout all
 # shaders.
 
-###UberShaderPhong###
-# The text for the ubershader when we are using phong materials
-# Hash defines and paths include
-# 
-# MAT_PHONG
-#
 
-class UberShaderPhong
+### PhongMaterial ###
+# A basic material that contains phong elements
+# Requires an existing lighting solution, complete with ambient light
+# We choose the lights using #ifdef statements that we set thus we can set the different lights
+
+class PhongMaterial extends Material
 
   @fragment_head : "#ifdef MAT_PHONG\nuniform vec3 uMaterialAmbientColour;\nuniform float uMaterialShininess;\n" +
     "\nuniform vec3 uMaterialDiffuseColour;\n" + 
@@ -75,14 +74,6 @@ class UberShaderPhong
     "   0.0);\n" +
     "}\n#endif\n#endif\n" 
 
-
-###PhongMaterial###
-# A basic material that contains phong elements
-# Requires an existing lighting solution, complete with ambient light
-# We choose the lights using #ifdef statements that we set thus we can set the different lights
-
-class PhongMaterial extends Material
-
   constructor: (@ambient, @diffuse, @specular, @shine, @emissive) ->
     super()
 
@@ -115,7 +106,7 @@ class PhongMaterial extends Material
     # If not diffuse assume vertex colours
     # TODO - Finish off vertex diffuse colours
     if not @diffuse?
-      @shaderChunks.push ShaderChunkLibrary.VertexColour
+      @_uber_defines += ['VERTEX_COLOUR']
       @_uber0 = uber_vertex_colour true, @_uber0
     else
       # TODO - Occasionally passing in RGBA causes this to fail. Best put a wrapper
@@ -164,4 +155,3 @@ class PhongMaterial extends Material
 
 module.exports =
   PhongMaterial : PhongMaterial
-  UberShaderPhong : UberShaderPhong

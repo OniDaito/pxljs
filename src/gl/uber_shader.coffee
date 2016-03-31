@@ -16,14 +16,15 @@ An Uber shader implementation
 
 ###
 
-{UberShaderPhong} = require "../material/phong"
-{UberShaderForwardLight} = require "../light/light"
+{PhongMaterial} = require "../material/phong"
+{TextureMaterial} = require "../material/basic"
+{PointLight} = require "../light/light"
 {Shader} = require "./shader"
 
 ### UberShader ###
 # An implementation of an Ubershader that uses a uniform to choose the path through the shader
 # and a series of hash defines to sort out what we actually need
-# Hash defines include:
+# Hash defines include the following as well as these in the various material classes:
 #
 # VERTEX_COLOUR
 # VERTEX_TEXTURE
@@ -216,7 +217,7 @@ class UberShader extends Shader
     "attribute vec4 aVertexSkinWeight;\nattribute vec4 aVertexBoneIndex;\n\n" +
     "uniform sampler2D uBonePalette;\nuniform int uBoneTexDim;\n#endif\n"
 
-  @vertex += UberShaderForwardLight.vertex_head
+  @vertex += PointLight.vertex_head
 
   # FUNCTION SECTION
   @vertex +="\n\n"
@@ -316,8 +317,11 @@ class UberShader extends Shader
   @fragment += "#ifdef VERTEX_NORMAL\nuniform mat3 uNormalMatrix;\nvarying vec3 vNormal;\nvarying vec4 vTransformedNormal;\n#endif\n"
   @fragment += "#ifdef VERTEX_TANGENT\nvarying vec3 vTangent;\n#endif\n"
 
-  @fragment += UberShaderPhong.fragment_head
-  @fragment += UberShaderForwardLight.fragment_head
+  # Materials
+
+  @fragment += PhongMaterial.fragment_head
+  @fragment += PointLight.fragment_head
+  @fragment += TextureMaterial.fragment_head
 
   # FUNCTION SECTION
   @fragment +="\n\n"
@@ -367,7 +371,10 @@ class UberShader extends Shader
   # MAIN SECTION
 
   @fragment += "void main() {\n"
-  @fragment += UberShaderPhong.fragment_main
+  # materials
+  @fragment += PhongMaterial.fragment_main
+  @fragment += TextureMaterial.fragment_main
+
   @fragment += "#ifdef BASIC_COLOUR\nif(bitcheck(uUber0,8)) { gl_FragColor = uColour; }\n#endif\n"
   @fragment += "#ifdef VERTEX_COLOUR\nif(bitcheck(uUber0,9)) { gl_FragColor = vColour; }\n#endif\n"
   @fragment += "\n}"

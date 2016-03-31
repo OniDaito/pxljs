@@ -30,22 +30,6 @@ shader which we can modify easily. A user will need to set these if they wish to
 
 LIGHTING_NUM_POINT_LIGHTS = 5
 
-###UberShaderForwardLight###
-# The shader source for our point light solution
-
-class UberShaderForwardLight
-
-  @vertex_head : "#ifdef LIGHTING_POINT\n" +
-    "uniform vec3 uAmbientLightingColour;\n" +
-    "#define LIGHTING_NUM_POINT_LIGHTS " + LIGHTING_NUM_POINT_LIGHTS  + "\n" +
-    "uniform int uPointLightNum;\n" +
-    "uniform vec3 uPointLightPos[LIGHTING_NUM_POINT_LIGHTS];\n" +
-    "uniform vec3 uPointLightColour[LIGHTING_NUM_POINT_LIGHTS];\n" +
-    "uniform vec4 uPointLightAttenuation[LIGHTING_NUM_POINT_LIGHTS];\n" +
-    "#endif"
-
-  @fragment_head : @vertex_head
-
 ###AmbientLight###
 # Basic ambient lighting. Should be included with all basic lights
 
@@ -71,6 +55,17 @@ class AmbientLight
 # lighting solutions.
 
 class PointLight
+
+  @vertex_head : "#ifdef LIGHTING_POINT\n" +
+    "uniform vec3 uAmbientLightingColour;\n" +
+    "#define LIGHTING_NUM_POINT_LIGHTS " + LIGHTING_NUM_POINT_LIGHTS  + "\n" +
+    "uniform int uPointLightNum;\n" +
+    "uniform vec3 uPointLightPos[LIGHTING_NUM_POINT_LIGHTS];\n" +
+    "uniform vec3 uPointLightColour[LIGHTING_NUM_POINT_LIGHTS];\n" +
+    "uniform vec4 uPointLightAttenuation[LIGHTING_NUM_POINT_LIGHTS];\n" +
+    "#endif\n"
+
+  @fragment_head : @vertex_head
 
  
 
@@ -153,4 +148,3 @@ class PointLight
 module.exports = 
   PointLight : PointLight
   AmbientLight : AmbientLight
-  UberShaderForwardLight : UberShaderForwardLight

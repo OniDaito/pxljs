@@ -15,6 +15,9 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 This file holds the values for our ubershader and some useful functions for setting
 the uniform uUber0 that sets the path through the uber shader
 
+At some point these functions will be replace by bit operations (WebGL 3?) or removed
+and uniforms and roles will be set per material
+
 ###
 
 
@@ -24,10 +27,10 @@ the uniform uUber0 that sets the path through the uber shader
 # 1 - camera vertex transform
 # 2 - skinning vertex transform
 # 3 - point lights true
-# 4
+# 4 - texture material true
 # 5
 # 6
-# 7
+# 7 
 # 8 - uniform colour true
 # 9 - vertex colour true
 # 10 - phong diffuse texture true
@@ -40,6 +43,7 @@ uber_path_map:
   vertex_camera: 1
   vertex_skinning : 2
   lighting_point : 3
+  texture_mat : 4
   uniform_colour : 8
   vertex_colour : 9
   phong_diff_tex : 10
@@ -67,6 +71,11 @@ uber_vertex_skinning = (tf, ubervar) ->
   if tf
     return ubervar | 0x4
   ubervar & ~0x4
+
+uber_texture_mat = (tf,ubervar) ->
+  if tf
+    return ubervar | 0x16
+  ubervar & ~0x16
 
 uber_lighting_point = (tf, ubervar) ->
   if tf
@@ -116,4 +125,5 @@ module.exports =
   uber_phong_spec_tex : uber_phong_spec_tex
   uber_phong_emis_tex : uber_phong_emis_tex
   uber_phong_mat : uber_phong_mat
+  uber_texture_mat : uber_texture_mat
 

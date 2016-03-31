@@ -53,7 +53,8 @@ class Request
   # Decide how to parse the data we have
   _parse : (callback) ->
 
-    PXLLog "Request Result of " + @url + " is " + @req.responseType, @
+    # Doesnt seem to output any responses :(
+    #PXLLog "Request Result of " + @url + " is " + @req.responseType, @
     l = @url.length - 1
 
     if @req.responseType == "" or @req.responseType == "text"
