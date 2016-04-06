@@ -220,24 +220,6 @@ class UberShader extends Shader
   @vertex += PointLight.vertex_head
 
   # FUNCTION SECTION
-  @vertex +="\n\n"
-  @vertex +="#ifdef VERTEX_NOISE\n" + UberShader._noise + "\n#endif\n"
-  @vertex += "#ifdef FRAGMENT_DEPTH\n" +
-    "vec4 pack (float depth) {\n" +
-    "  const vec4 bitSh = vec4(256 * 256 * 256,\n"+
-    "  256 * 256,\n"+
-    "  256,\n"+
-    "  1.0);\n"+
-    "  const vec4 bitMsk = vec4(0,\n"+
-    "   1.0 / 256.0,\n"+
-    "   1.0 / 256.0,\n"+
-    "   1.0 / 256.0);\n"+
-    "   vec4 comp = fract(depth * bitSh);\n"+
-    "   comp -= comp.xxyz * bitMsk;\n"+
-    "   return comp;\n"+
-    "  }\n" +
-    "vec4 packDepth() { return pack(gl_FragCoord.z); }\n#endif\n"
-
   @vertex += "#ifdef VERTEX_TANGENT_FRAME\n " + UberShader._tangent_frame + "\n#endif\n"
   @vertex += "#ifdef VERTEX_SOBEL\n " + UberShader._sobel + "\n#endif\n"
 
@@ -316,6 +298,11 @@ class UberShader extends Shader
   @fragment += "#ifdef VERTEX_TEXTURE\nvarying vec2 vTexCoord;\n#endif\n"
   @fragment += "#ifdef VERTEX_NORMAL\nuniform mat3 uNormalMatrix;\nvarying vec3 vNormal;\nvarying vec4 vTransformedNormal;\n#endif\n"
   @fragment += "#ifdef VERTEX_TANGENT\nvarying vec3 vTangent;\n#endif\n"
+  @fragment += "#ifdef ADVANCED_CAMERA\nuniform float uCameraNear;\n" +
+    "uniform float uCameraFar;\n " +
+    "uniform mat4 uCameraInverseMatrix;\n " + 
+    "uniform mat4 uInverseProjectionMatrix;\n" +
+    "varying vec4 vEyePosition;\n#endif\n" 
 
   # Materials
 
@@ -404,17 +391,24 @@ class UberShader extends Shader
       @_traverse child
 
 
-  # The uberconstructor builds a shader at the base node, looking at the entire subtree for all the defines
+  # The uberconstructor builds a shader at the base nodes, looking at the entire subtree for all the defines
   # and such that it needs to set.
-  constructor : (base_node, precision_vertex, precision_fragment) ->
+
+  # **constructor**
+  # - arbitrary number of unnamed arguments - all of class Node 
+  constructor : () ->
     @uber_defines = []
-    @_traverse base_node
+
+
+    for base_node in arguments 
+      @_traverse base_node
 
     def_string = ""
     for def in @uber_defines
       def_string += "#define " + def + "\n"
 
     # We default to high precision for our ubershader
+    # I havent passed in any options for precision yet
 
     @vertex = "#version 100\n" + "precision highp float;\nprecision highp int;\n" + def_string + UberShader.vertex
     @fragment = "#version 100\n" + "precision highp float;\nprecision highp int;\n" + def_string + UberShader.fragment
@@ -422,7 +416,8 @@ class UberShader extends Shader
     super(@vertex, @fragment, undefined)
     @_uber = true
 
-    @_addToNode base_node
+    for base_node in arguments
+      @_addToNode base_node
 
 
 module.exports = 

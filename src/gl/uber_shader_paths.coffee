@@ -44,6 +44,8 @@ uber_path_map:
   vertex_skinning : 2
   lighting_point : 3
   texture_mat : 4
+  depth_set : 5
+  depth_read: 6
   uniform_colour : 8
   vertex_colour : 9
   phong_diff_tex : 10
@@ -76,6 +78,17 @@ uber_texture_mat = (tf,ubervar) ->
   if tf
     return ubervar | 0x16
   ubervar & ~0x16
+
+uber_depth_set = (tf,ubervar) ->
+  if tf
+    return ubervar | 0x20
+  ubervar & ~0x20
+
+uber_depth_read = (tf,ubervar) ->
+  if tf
+    return ubervar | 0x40
+  ubervar & ~0x40
+
 
 uber_lighting_point = (tf, ubervar) ->
   if tf
@@ -126,4 +139,5 @@ module.exports =
   uber_phong_emis_tex : uber_phong_emis_tex
   uber_phong_mat : uber_phong_mat
   uber_texture_mat : uber_texture_mat
-
+  uber_depth_set: uber_depth_set
+  uber_depth_read : uber_depth_read

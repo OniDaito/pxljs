@@ -30,13 +30,17 @@ Remember, NPOT textures are support but not with repeats or mipmapping
 {TextureBase} = require './texture'
 
 
-###Fbo###
+### Fbo ###
 # A class for Framebuffer objects
 # Simply provide the the constructor variables and then bind in order to draw to this
 
 class Fbo
-  # constructor - width and height, the channel (GL.RGBA for example) and the datatype 
-  # (default GL.UNSIGNED_BYTE)
+  # **constructor** - 
+  # - **width** - a Number
+  # - **height** - a Number
+  # - **channels** - gl.R, gl.RGB, gl.RGBA or similar, optional, default gl.RGBA
+  # - **datatype** - gl.UNSIGNED_BYTE or similar, optional, default gl.UNSIGNED_BYTE
+  # - **depth** - a boolean, optional, default true
   constructor: (@width, @height, @channels, @datatype, @depth) ->
     gl = PXL.Context.gl
 

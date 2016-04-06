@@ -45,7 +45,7 @@ util = require '../util/util'
 # - pointLight(s)
 # - skeleton
 
-class Node 
+class Node
   
   # Dont have to pass any of these parameters but they will be inspected
   constructor : (@geometry, @material, @shader) ->
@@ -133,6 +133,9 @@ class Node
 
   # TODO - Eventually redo this function so we create a set of flat objects with 
   # a cache and all the required info.
+  
+  # TODO - we will have replacable draw functions depending on the passes we are making
+  # This one is the default but there will be other draw passes for things like lights
 
   _draw: (node, front) ->
     
@@ -194,11 +197,13 @@ class Node
       front._uber0 = uber.uber_vertex_skinning true, front._uber0
 
     # Material - Call predraw
-    # Materials are inherited but can be overridden
+    # Materials are inherited but certain ones cannot be overridden
     if node.material?
-      node.material._preDraw()
-      front.material = node.material
-      front._uber0 = uber.uber_clear_material(front._uber0) | node.material._uber0
+      if front.material?
+        if not front.material._override
+          node.material._preDraw()
+          front.material = node.material
+          front._uber0 = uber.uber_clear_material(front._uber0) | node.material._uber0
 
     # Copy any user contract items (added to the contract) that have not already been added
     # as users can add data to be passed in the contract (like uColour).
@@ -263,5 +268,5 @@ class Node
 
     node
 
-module.exports = 
+module.exports =
   Node : Node
