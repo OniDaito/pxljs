@@ -18,6 +18,7 @@ An Uber shader implementation
 
 {PhongMaterial} = require "../material/phong"
 {TextureMaterial} = require "../material/basic"
+{DepthMaterial} = require "../material/depth"
 {PointLight} = require "../light/light"
 {Shader} = require "./shader"
 
@@ -306,9 +307,11 @@ class UberShader extends Shader
 
   # Materials
 
+  
   @fragment += PhongMaterial.fragment_head
   @fragment += PointLight.fragment_head
   @fragment += TextureMaterial.fragment_head
+  @fragment += DepthMaterial.fragment_head
 
   # FUNCTION SECTION
   @fragment +="\n\n"
@@ -319,31 +322,7 @@ class UberShader extends Shader
     "  return sqrt((colour.x*colour.x)+(colour.y*colour.y)+(colour.z*colour.z));\n" + 
     "}\n#endif\n"
 
-  @fragment += "#ifdef FRAGMENT_DEPTH\n" +
-  "// Returns the 3D position in eye space.\n" + 
-  "vec3 positionFromDepth(float depth, vec2 texcoord) {\n" +
-
-  "  vec4 position = vec4(texcoord, depth, 1.0);\n" +
-  "  position.xyz = position.xyz*2.0 -1.0;\n" +
-  "  position = uInverseProjectionMatrix*position;\n" +
-  "  position.xyz /= position.w;\n" +
-  "  return position.xyz;\n}\n#endif\n"
-
-  @fragment += "#ifdef FRAGMENT_DEPTH\n" + 
-    "uniform sampler2D uSamplerDepth;\n" +
-    "float unpack (in vec4 colour) {\n" +
-    " const vec4 bitShifts = vec4(1.0 / (256.0 * 256.0 * 256.0),\n" +
-    "    1.0 / (256.0 * 256.0),\n" +
-    "    1.0 / 256.0,\n" +
-    "    1.0);\n" + 
-    "return dot(colour, bitShifts);\n}\n\n"+
-
-    "// Passed in by the coffeegl depth shader. Reproduces from non linear gl_FragCoord.z to linear 0-1\n"+
-    "float readDepth(in vec2 coord)  {\n" +
-    "  vec4 colour = texture2D(uSamplerDepth, coord);\n"+
-    "  float unpacked = unpack(colour);\n" +
-    "  return (uCameraNear * unpacked) / ( uCameraFar - unpacked * (uCameraFar - uCameraNear) );\n"+
-    "}\n#endif\n"
+  
 
   @fragment += "#ifdef FRAGMENT_LUMINANCE\n" +
     "float getLuminance(in vec3 colour) {\n"+
@@ -364,6 +343,8 @@ class UberShader extends Shader
 
   @fragment += "#ifdef BASIC_COLOUR\nif(bitcheck(uUber0,8)) { gl_FragColor = uColour; }\n#endif\n"
   @fragment += "#ifdef VERTEX_COLOUR\nif(bitcheck(uUber0,9)) { gl_FragColor = vColour; }\n#endif\n"
+  @fragment += "#ifdef FRAGMENT_DEPTH\nif(bitcheck(uUber0,5)) { gl_FragColor = packDepth(); }\n#endif\n" 
+  @fragment += "#ifdef FRAGMENT_DEPTH\nif(bitcheck(uUber0,6)) { float d = readDepth(vTexCoord);\ngl_FragColor = vec4(d,d,d,1.0); }\n#endif\n" 
   @fragment += "\n}"
 
   # We run over all the nodes, looking for materials. If we have them, check for defines

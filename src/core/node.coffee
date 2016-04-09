@@ -199,8 +199,7 @@ class Node
     # Material - Call predraw
     # Materials are inherited but certain ones cannot be overridden
     if node.material?
-      if front.material?
-        if not front.material._override
+      if (front.material? and not front.material._override) or not front.material?
           node.material._preDraw()
           front.material = node.material
           front._uber0 = uber.uber_clear_material(front._uber0) | node.material._uber0
