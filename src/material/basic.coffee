@@ -31,6 +31,8 @@ class BasicColourMaterial extends Material
 
   constructor : (@colour) ->
     super()
+    if not @colour?
+      @colour = new RGBA.WHITE()
     if not @colour.a?
       @colour = new RGBA(@colour.r, @colour.g, @colour.b, 1.0)
     @contract.roles.uColour = "colour"

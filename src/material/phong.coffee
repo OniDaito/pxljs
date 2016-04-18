@@ -48,12 +48,13 @@ class PhongMaterial extends Material
   @fragment_main : "#ifdef MAT_PHONG\nvec3 materialDiffuseColour = uMaterialDiffuseColour;\n" +
     "vec3 materialSpecularColour;\n" +
     "vec3 materialEmissiveColour;\n" +
+    "#ifdef VERTEX_TEXTURE\n" +
     "if(bitcheck(uUber0,10)){ materialDiffuseColour = texture2D(uSamplerDiffuse, vTexCoord).rgb;}\n" +
-    "materialSpecularColour = uMaterialSpecularColour;\n" +
     "if(bitcheck(uUber0,11)){ materialSpecularColour = texture2D(uSamplerSpecular, vTexCoord).rgb;}\n" +
-    "materialEmissiveColour = uMaterialEmissiveColour;\n" +
     "if(bitcheck(uUber0,12)){ materialEmissiveColour = texture2D(uSamplerEmissive, vTexCoord).rgb;}\n" +
-
+    "#endif\n" +
+    "materialSpecularColour = uMaterialSpecularColour;\n" +
+    "materialEmissiveColour = uMaterialEmissiveColour;\n" +
     "vec3 specularLightWeighting = vec3(0.0, 0.0, 0.0);\n" +
     "vec3 diffuseLightWeighting = vec3(0.0, 0.0, 0.0);\n" +
     "vec3 materialAmbientColour = uMaterialAmbientColour * uAmbientLightingColour;\n" +
@@ -62,6 +63,8 @@ class PhongMaterial extends Material
     "#ifdef LIGHTING_POINT\n" +
     "for (int i=0; i < LIGHTING_NUM_POINT_LIGHTS; i++) {\n" +
     # TODO could potentially transform the lights in the vertex shader?
+    # TODO - previously we added a break in here for lights - do we keep that?
+    # TODO - attenuation factor
     "  vec3 lightDirection = normalize((uModelMatrix * vec4(uPointLightPos[i],1.0)).xyz - vPosition.xyz);\n" +
     "  vec3 reflectionDirection = reflect(-lightDirection, vTransformedNormal.xyz);\n" +
     "  float specularLightBrightness = pow(max(dot(reflectionDirection, eyeDirection), 0.0), uMaterialShininess);\n" +
@@ -72,7 +75,30 @@ class PhongMaterial extends Material
     "   + materialSpecularColour * specularLightWeighting" +
     "   + materialEmissiveColour," +
     "   0.0);\n" +
-    "}\n#endif\n#endif\n" 
+    "}\n#endif\n" +
+
+    "#ifdef LIGHTING_SPOT\n" +
+    "for (int i=0; i < LIGHTING_NUM_SPOT_LIGHTS; i++) {\n" +
+    "  vec3 lightDirection = normalize(uModelMatrix * vec4(uSpotLightPos[i],1.0)).xyz - vPosition.xyz;\n" +
+    "  float spotFactor = dot ( -lightDirection, uSpotLightDir[i]);\n" +
+    "  if (spotFactor >= cos(uSpotLightAngle[i])){\n" +
+    "    spotFactor = pow(spotFactor, uSpotLightExp[i]);\n" + 
+    "  } else {\n" +
+    "    spotFactor = 0.0;\n" + 
+    "  }\n" +
+    "  vec3 reflectionDirection = reflect(-lightDirection, vTransformedNormal.xyz);\n" +
+    "  float specularLightBrightness = pow(max(dot(reflectionDirection, eyeDirection), 0.0), uMaterialShininess);\n" +
+    "  specularLightWeighting = specularLightWeighting + (uSpotLightColour[i] * specularLightBrightness);\n" +
+    "  float diffuseLightBrightness = max(dot(vTransformedNormal.xyz, lightDirection), 0.0);\n" +
+    "  diffuseLightWeighting = diffuseLightWeighting + (uSpotLightColour[i] * diffuseLightBrightness);\n" +
+    "  specularLightWeighting *= spotFactor;\n" +
+    "  diffuseLightWeighting *= spotFactor; \n" +
+    "  gl_FragColor += vec4( materialDiffuseColour * diffuseLightWeighting " +
+    "   + materialSpecularColour * specularLightWeighting" +
+    "   + materialEmissiveColour," +
+    "   0.0);\n" +
+    "}\n#endif\n" +
+    "#endif\n"
 
   constructor: (@ambient, @diffuse, @specular, @shine, @emissive) ->
     super()
@@ -109,8 +135,9 @@ class PhongMaterial extends Material
       @_uber_defines += ['VERTEX_COLOUR']
       @_uber0 = uber_vertex_colour true, @_uber0
     else
-      # TODO - Occasionally passing in RGBA causes this to fail. Best put a wrapper
-      if @diffuse instanceof RGB
+      if @diffuse instanceof RGB or @diffuse instanceof RGBA
+        # TODO - Eventually put in materials that are transparent
+        @diffuse = new RGB( @diffuse.r, @diffuse.g, @diffuse.b) 
         @contract.roles.uMaterialDiffuseColour  = "diffuse"
         @_uber0 = uber_phong_diff_tex false, @_uber0
       else if @diffuse instanceof Texture

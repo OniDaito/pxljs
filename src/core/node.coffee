@@ -23,7 +23,7 @@ Doesnt have to be drawn per-se
 {Camera} = require '../camera/camera'
 {Material} = require '../material/material'
 {Texture} = require '../gl/texture'
-{PointLight} = require '../light/light'
+{PointLight, SpotLight} = require '../light/light'
 {Geometry} = require '../geometry/primitive'
 {Contract} = require '../gl/contract'
 {PXLWarningOnce} = require '../util/log'
@@ -67,7 +67,8 @@ class Node
                                       # if we add or remove nodes to this node or these above
 
     @pointLights = []
-    
+    @spotLights = []
+
     # TODO - At some point remove textures
     #if not @textures?
     #  @textures = []
@@ -118,6 +119,7 @@ class Node
     front =
       globalMatrix        : new Matrix4()
       pointLights         : []
+      spotLights          : []
       _normalMatrix       : new Matrix4()
       _mvpMatrix          : new Matrix4()
       _uber0              : 0
@@ -165,10 +167,8 @@ class Node
     front._normalMatrix = nm.getMatrix3().invert().transpose()
 
     for light in node.pointLights
-      # As Pointlight contains a static, global array for shader
-      light._preDraw()
       front.pointLights.push light
-
+      
     if node.pointLights.length > 0 
       front._uber0 = uber.uber_lighting_point true, front._uber0
     
@@ -225,6 +225,11 @@ class Node
       # Actual Draw
       # Put a line in here to check we also have a shader on the context
       if front.geometry? and front.shader?
+      
+        # Set the lights here
+        PointLight._preDraw front.pointLights
+        SpotLight._preDraw front.spotLights
+
         PXL.Context.shader = front.shader
         PXL.Context.shader.bind()
 

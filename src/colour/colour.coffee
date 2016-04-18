@@ -49,6 +49,9 @@ class RGBA
   @BLACK : () ->
     new RGBA(0.0,0.0,0.0,1.0)
 
+  @MAGNOLIA : () ->
+    new RGBA(1.0,1.0,0.9,1.0)
+
   copyFrom: (col) ->
     @r = col.r
     @g = col.g
@@ -89,6 +92,10 @@ class RGB
   # @BLACK - Static function that returns all zeros including alpha (not black I guess?)
   @BLACK : () ->
     new RGB(0.0,0.0,0.0)
+
+  @MAGNOLIA : () ->
+    new RGBA(1.0,1.0,0.9)
+
 
   copyFrom : (c) ->
     @r = c.r

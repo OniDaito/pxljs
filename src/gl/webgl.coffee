@@ -223,11 +223,13 @@ _uniformTypeCheckSet = (u,v) ->
 # against the contract. Recursive call down all objects if they
 # have a contract.
 # TODO - is this function better off in the contract class?
-
+# TODO - Possibly could be simplified 
 _joinContracts = (obj, shader_contract) ->
 
   # Attempt to join the contracts
-  Contract.join(shader_contract, obj)
+  if obj.contract?
+    Contract.join(shader_contract, obj)
+  
 
   # This is a bit crap but so far it's the best option to speed things up
   # We sort of need a reserved words on node / object really
@@ -242,9 +244,8 @@ _joinContracts = (obj, shader_contract) ->
 
       else if obj[prop] instanceof Array
         for item in obj[prop]
-          if typeof item == "object" and item.contract?
-            _joinContracts item, shader_contract
-
+          if typeof item == "object"
+              _joinContracts item, shader_contract
   obj
 
 ### matchWithShader ###
@@ -268,18 +269,18 @@ matchWithShader = (obj) ->
   shader_contract = PXL.Context.shader.contract
   shader = PXL.Context.shader
 
-  _joinContracts(obj, shader_contract)   
+  _joinContracts(obj, shader_contract)
       
   # Now we've joined contracts, lets check all the types
   # Hopefully they will be all matched at this point ;)
   # Match the uniforms first
 
-  for u in shader_contract.uniforms    
+  for u in shader_contract.uniforms
     if shader_contract.matches[u.name]?
       _uniformTypeCheckSet(u, shader_contract.matches[u.name])
   
   # Match the attributes
-  for a in shader_contract.attributes    
+  for a in shader_contract.attributes
     if shader_contract.matches[a.name]?
       _attribTypeCheckSet(a, shader_contract.matches[a.name])
 

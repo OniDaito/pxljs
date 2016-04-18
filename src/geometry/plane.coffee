@@ -17,16 +17,20 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 
 {RGBA,RGB} = require '../colour/colour'
 {Matrix4,Vec2,Vec3,Vec4} = require '../math/math'
-{Geometry} = require './primitive'
+{Geometry, Vertex, Quad} = require './primitive'
 
 
-###Plane###
+### Plane ###
 # Basically, a varying resolution Quad made up of quads, -1 to 1, parallel to x/z plane
 # Quads are added but the indices are triangles
+# TODO - faces as quads? Perhaps not the best idea
 
 class Plane extends Geometry 
 
-  constructor: (@xres=1, @zres=1) ->
+  # -**constructor**
+  # -**xres** - a Number
+  # -**yres** - a Number
+  constructor: (xres=1, zres=1) ->
     super()
     @v = []
     @faces = []
@@ -61,7 +65,7 @@ class Plane extends Geometry
         
         @faces.push new Quad @v[row2+x], @v[row2+x+1], @v[row+x+1], @v[row+x]  
 
-###PlaneFlat###
+### PlaneFlat ###
 # Flat refers to the data size being fixed and the arrays already set
 # Vertices are arranged as a triangle strip. Vertices are indexed so 
 # as not to show cracks. We use degenerate triangles in order to create

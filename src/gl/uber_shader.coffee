@@ -19,7 +19,7 @@ An Uber shader implementation
 {PhongMaterial} = require "../material/phong"
 {TextureMaterial} = require "../material/basic"
 {DepthMaterial} = require "../material/depth"
-{PointLight} = require "../light/light"
+{PointLight, SpotLight, AmbientLight} = require "../light/light"
 {Shader} = require "./shader"
 
 ### UberShader ###
@@ -219,6 +219,8 @@ class UberShader extends Shader
     "uniform sampler2D uBonePalette;\nuniform int uBoneTexDim;\n#endif\n"
 
   @vertex += PointLight.vertex_head
+  @vertex += AmbientLight.vertex_head
+  @vertex += SpotLight.vertex_head
 
   # FUNCTION SECTION
   @vertex += "#ifdef VERTEX_TANGENT_FRAME\n " + UberShader._tangent_frame + "\n#endif\n"
@@ -240,7 +242,7 @@ class UberShader extends Shader
     "  vec4 v0 = texture2D(uBonePalette, vec2(x + p0, y + p0));\n" +
     "  vec4 v1 = texture2D(uBonePalette, vec2(x + p1, y + p0));\n" +
     "  vec4 v2 = texture2D(uBonePalette, vec2(x + p2, y + p0));\n" +
-    "  vec4 v3 = texture2D(uBonePalette, vec2(x + p3, y + p0));\n" +
+    "  vec4 v3 = texture2D(uBonePalette, vec2(x + /p3, y + p0));\n" +
     "  mat4 tm = mat4(v0,v1,v2,v3);\n" +
     "  return tm;\n" +
     "}\n#endif\n"
@@ -309,7 +311,9 @@ class UberShader extends Shader
 
   
   @fragment += PhongMaterial.fragment_head
+  @fragment += AmbientLight.fragment_head
   @fragment += PointLight.fragment_head
+  @fragment += SpotLight.fragment_head
   @fragment += TextureMaterial.fragment_head
   @fragment += DepthMaterial.fragment_head
 
@@ -362,8 +366,12 @@ class UberShader extends Shader
     if base_node.camera?
       @uber_defines.push "BASIC_CAMERA" if "BASIC_CAMERA" not in @uber_defines
     
-    if base_node.pointLights.length > 0 or base_node.ambientLight?
+    if base_node.pointLights.length > 0
       @uber_defines.push "LIGHTING_POINT" if "LIGHTING_POINT" not in @uber_defines
+
+  
+    if base_node.spotLights.length > 0 
+      @uber_defines.push "LIGHTING_SPOT" if "LIGHTING_SPOT" not in @uber_defines
 
     if base_node.skeleton?
       @uber_defines.push "SKINNING" if "SKINNING" not in @uber_defines

@@ -30,10 +30,6 @@ describe 'MD5 tests: ', ->
   md5 = new PXLMD5.MD5Model( __dirname + "/../html/models/hellknight/hellknight.md5mesh")
   md5.skeleton.update()
 
-
-  it 'md5 version should be 10', ->
-    md5.version.should.equal "10"
-
   it 'md5 hellknight has 110 joints', ->
     md5.num_joints.should.equal 110
 
