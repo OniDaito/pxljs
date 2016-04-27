@@ -184,9 +184,9 @@ _uniformTypeCheckSet = (u,v) ->
           PXLWarningOnce("Cant set uniform " + u.name + " - no flatten() function")
       else
 
-        if u.type == GL.LOW_FLOAT or u.type == GL.MEDIUM_FLOAT or u.type == GL.HIGH_FLOAT
+        if u.type == GL.LOW_FLOAT or u.type == GL.MEDIUM_FLOAT or u.type == GL.HIGH_FLOAT or u.type == GL.FLOAT
           gl.uniform1fv u.pos, new Float32Array v
-        else if u.type == GL.LOW_INT or u.type == GL.MEDIUM_INT or u.type == GL.HIGH_INT
+        else if u.type == GL.LOW_INT or u.type == GL.MEDIUM_INT or u.type == GL.HIGH_INT or u.type == GL.INT
           gl.uniform1iv u.pos, new Int32Array v # integer
         else if u.type == GL.FLOAT_VEC2
           gl.uniform2fv u.pos, new Float32Array v # Vec2
@@ -200,9 +200,9 @@ _uniformTypeCheckSet = (u,v) ->
           gl.uniformMatrix4fv u.pos, false, new Float32Array v
     
     else if v instanceof Float32Array
-      if u.type == GL.LOW_FLOAT or u.type == GL.MEDIUM_FLOAT or u.type == GL.HIGH_FLOAT
+      if u.type == GL.LOW_FLOAT or u.type == GL.MEDIUM_FLOAT or u.type == GL.HIGH_FLOAT or u.type == GL.FLOAT
         gl.uniform1fv u.pos, v
-     else if u.type == GL.FLOAT_VEC2
+      else if u.type == GL.FLOAT_VEC2
         gl.uniform2fv u.pos, v # Vec2
       else if u.type == GL.FLOAT_VEC3
         gl.uniform3fv u.pos, v #Vec3
@@ -213,6 +213,9 @@ _uniformTypeCheckSet = (u,v) ->
       else if u.type == GL.FLOAT_MAT4
         gl.uniformMatrix4fv u.pos, false, v
 
+    else if v instanceof Int32Array
+      if u.type == GL.LOW_INT or u.type == GL.MEDIUM_INT or u.type == GL.HIGH_INT or u.type == GL.INT
+        gl.uniform1iv u.pos, v # integer
 
   @
 

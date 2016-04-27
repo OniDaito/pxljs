@@ -14,7 +14,6 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 
 ###
 
-
 init = () ->
 
   white = new PXL.Colour.RGBA.WHITE()
@@ -25,18 +24,23 @@ init = () ->
 
   @c = new PXL.Camera.MousePerspCamera()
 
-
-
-  uniformMaterial = new PXL.Material.PhongMaterial white, magnolia, white
+  uniformMaterial = new PXL.Material.PhongMaterial white, magnolia, white, 2
   @n0.add uniformMaterial
 
-  ambientlight = new PXL.Light.AmbientLight new PXL.Colour.RGB(0.01,0.01,0.01)
+  sphere = new PXL.Geometry.Sphere 0.2,10
+  basicMaterial = new PXL.Material.BasicColourMaterial white
+  @n1 = new PXL.Node sphere
+  @n1.matrix.translate new PXL.Math.Vec3(0,2,0)
+  @n1.add basicMaterial
 
-  spotlight = new PXL.Light.SpotLight new PXL.Math.Vec3(0,2,0), white, new PXL.Math.Vec3(0,-1,0.1), PXL.Math.degToRad(10.0)
+  ambientlight = new PXL.Light.AmbientLight new PXL.Colour.RGB(0.001,0.001,0.001)
+
+  spotlight = new PXL.Light.SpotLight new PXL.Math.Vec3(0,2,0), white, new PXL.Math.Vec3(0,-1,0), PXL.Math.degToRad(20.0)
   @n0.add spotlight
 
   @topnode = new PXL.Node
   @topnode.add @n0
+  @topnode.add @n1
   @topnode.add @c
 
   new PXL.GL.UberShader @topnode

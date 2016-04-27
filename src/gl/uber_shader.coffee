@@ -369,7 +369,6 @@ class UberShader extends Shader
     if base_node.pointLights.length > 0
       @uber_defines.push "LIGHTING_POINT" if "LIGHTING_POINT" not in @uber_defines
 
-  
     if base_node.spotLights.length > 0 
       @uber_defines.push "LIGHTING_SPOT" if "LIGHTING_SPOT" not in @uber_defines
 
@@ -379,7 +378,6 @@ class UberShader extends Shader
     for child in base_node.children
       @_traverse child
 
-
   # The uberconstructor builds a shader at the base nodes, looking at the entire subtree for all the defines
   # and such that it needs to set.
 
@@ -387,7 +385,6 @@ class UberShader extends Shader
   # - arbitrary number of unnamed arguments - all of class Node 
   constructor : () ->
     @uber_defines = []
-
 
     for base_node in arguments 
       @_traverse base_node

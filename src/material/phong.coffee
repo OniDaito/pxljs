@@ -79,7 +79,7 @@ class PhongMaterial extends Material
 
     "#ifdef LIGHTING_SPOT\n" +
     "for (int i=0; i < LIGHTING_NUM_SPOT_LIGHTS; i++) {\n" +
-    "  vec3 lightDirection = normalize(uModelMatrix * vec4(uSpotLightPos[i],1.0)).xyz - vPosition.xyz;\n" +
+    "  vec3 lightDirection = normalize((uModelMatrix * vec4(uSpotLightPos[i],1.0)).xyz - vPosition.xyz);\n" +
     "  float spotFactor = dot ( -lightDirection, uSpotLightDir[i]);\n" +
     "  if (spotFactor >= cos(uSpotLightAngle[i])){\n" +
     "    spotFactor = pow(spotFactor, uSpotLightExp[i]);\n" + 

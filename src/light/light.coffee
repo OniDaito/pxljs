@@ -255,7 +255,7 @@ class SpotLight
       @angle = 45.0
     
     if not @exponent?
-      @exponent = 1.0
+      @exponent = 100.0
 
     @idx = -1 # Used to say where in the global array this light is
 

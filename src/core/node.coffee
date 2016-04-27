@@ -173,7 +173,6 @@ class Node
     if node.pointLights.length > 0 
       front._uber0 = uber.uber_lighting_point true, front._uber0
    
-
     for light in node.spotLights
       front.spotLights.push light
       
@@ -181,7 +180,6 @@ class Node
     if node.spotLights.length > 0 
       front._uber0 = uber.uber_lighting_spot true, front._uber0
     
-
     # Overwrite the ambient if there is one closer
     # TODO - combine perhaps?
     if node.ambientLight?

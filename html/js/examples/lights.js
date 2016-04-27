@@ -16,19 +16,25 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 var cgl, draw, init, params;
 
 init = function() {
-  var ambientlight, magnolia, plane, spotlight, uniformMaterial, white;
+  var ambientlight, basicMaterial, magnolia, plane, sphere, spotlight, uniformMaterial, white;
   white = new PXL.Colour.RGBA.WHITE();
   magnolia = new PXL.Colour.RGBA.MAGNOLIA();
   plane = new PXL.Geometry.Plane(10, 10);
   this.n0 = new PXL.Node(plane);
   this.c = new PXL.Camera.MousePerspCamera();
-  uniformMaterial = new PXL.Material.PhongMaterial(white, magnolia, white);
+  uniformMaterial = new PXL.Material.PhongMaterial(white, magnolia, white, 2);
   this.n0.add(uniformMaterial);
-  ambientlight = new PXL.Light.AmbientLight(new PXL.Colour.RGB(0.01, 0.01, 0.01));
-  spotlight = new PXL.Light.SpotLight(new PXL.Math.Vec3(0, 2, 0), white, new PXL.Math.Vec3(0, -1, 0.1), PXL.Math.degToRad(10.0));
+  sphere = new PXL.Geometry.Sphere(0.2, 10);
+  basicMaterial = new PXL.Material.BasicColourMaterial(white);
+  this.n1 = new PXL.Node(sphere);
+  this.n1.matrix.translate(new PXL.Math.Vec3(0, 2, 0));
+  this.n1.add(basicMaterial);
+  ambientlight = new PXL.Light.AmbientLight(new PXL.Colour.RGB(0.001, 0.001, 0.001));
+  spotlight = new PXL.Light.SpotLight(new PXL.Math.Vec3(0, 2, 0), white, new PXL.Math.Vec3(0, -1, 0), PXL.Math.degToRad(20.0));
   this.n0.add(spotlight);
   this.topnode = new PXL.Node;
   this.topnode.add(this.n0);
+  this.topnode.add(this.n1);
   this.topnode.add(this.c);
   return new PXL.GL.UberShader(this.topnode);
 };
