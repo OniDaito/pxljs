@@ -28,9 +28,9 @@ and uniforms and roles will be set per material
 # 2 - skinning vertex transform
 # 3 - point lights true
 # 4 - texture material true
-# 5
-# 6
-# 7 
+# 5 - depth_set
+# 6 - depthread
+# 7 - spot lights true
 # 8 - uniform colour true
 # 9 - vertex colour true
 # 10 - phong diffuse texture true
@@ -46,12 +46,14 @@ uber_path_map:
   texture_mat : 4
   depth_set : 5
   depth_read: 6
+  lighting_spot: 7
   uniform_colour : 8
   vertex_colour : 9
   phong_diff_tex : 10
   phong_spec_tex : 11
   phong_emis_tex : 12
   phong_mat : 13
+  
 
 # Clear the uber flags for materials as we would like to override in the node
 # At the moment, these are 8 to 13 inclusive but WILL change
@@ -89,6 +91,10 @@ uber_depth_read = (tf,ubervar) ->
     return ubervar | 0x40
   ubervar & ~0x40
 
+uber_lighting_spot = (tf,ubervar) ->
+  if tf
+    return ubervar | 0x60
+  ubervar & ~0x60
 
 uber_lighting_point = (tf, ubervar) ->
   if tf
@@ -141,3 +147,4 @@ module.exports =
   uber_texture_mat : uber_texture_mat
   uber_depth_set: uber_depth_set
   uber_depth_read : uber_depth_read
+  uber_lighting_spot : uber_lighting_spot

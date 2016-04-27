@@ -111,9 +111,9 @@ _attribTypeCheckSet = (a, v) ->
       
   gl.bindBuffer(gl.ARRAY_BUFFER, v )
 
-  if a.type == GL.LOW_INT or a.type == GL.MEDIUM_INT or a.type == GL.HIGH_INT
+  if a.type == GL.LOW_INT or a.type == GL.MEDIUM_INT or a.type == GL.HIGH_INT or a.type == GL.INT
     gl.vertexAttribPointer(a.pos, 1, gl.INT, false, 0, 0)
-  else if a.type == GL.LOW_FLOAT or a.type == GL.MEDIUM_FLOAT or a.type == GL.HIGH_FLOAT
+  else if a.type == GL.LOW_FLOAT or a.type == GL.MEDIUM_FLOAT or a.type == GL.HIGH_FLOAT or a.type == GL.FLOAT
     gl.vertexAttribPointer(a.pos, 1, gl.FLOAT, false, 0, 0)
   else if a.type == GL.FLOAT_VEC2
     gl.vertexAttribPointer(a.pos, 2, gl.FLOAT, false, 0, 0)
@@ -134,13 +134,6 @@ _uniformTypeCheckSet = (u,v) ->
   if u.pos == -1
     #PXLWarningOnce "Trying to set the uniform " + u.name + " that isnt used in the bound shader"
     return
-
-  # Check if v is actually a cache_var and if so, check it's dirty flag. If dirty, extract variable
-  if v instanceof CacheVar
-    if not v.isDirty()
-      return
-
-    v = v.get()
 
   gl = PXL.Context.gl
   if u.size == 1
@@ -169,53 +162,58 @@ _uniformTypeCheckSet = (u,v) ->
       gl.uniform1i(u.pos, v)
     # TODO - Sampler cube
 
-  else #if v instanceof Array
-    # Check to see if we are passing objects that have a flatten command
+  else 
     
-    if v[0] instanceof Object
-      t = []
-      if v[0].flatten?
-        t = t.concat x.flatten() for x in v 
-        if u.type == GL.FLOAT_VEC2
-          gl.uniform2fv u.pos, new Float32Array t # Vec2
+    if v instanceof Array
+    
+      if v[0] instanceof Object
+        t = []
+        if v[0].flatten?
+          t = t.concat x.flatten() for x in v
+          if u.type == GL.FLOAT_VEC2
+            gl.uniform2fv u.pos, new Float32Array t # Vec2
+          else if u.type == GL.FLOAT_VEC3
+            gl.uniform3fv u.pos, new Float32Array t #Vec3
+          else if u.type == GL.FLOAT_VEC4
+            gl.uniform4fv u.pos, new Float32Array t
+          else if u.type == GL.FLOAT_MAT3
+            gl.uniformMatrix3fv u.pos, false, new Float32Array t
+          else if u.type == GL.FLOAT_MAT4
+            gl.uniformMatrix4fv u.pos, false, new Float32Array t
+        else
+          PXLWarningOnce("Cant set uniform " + u.name + " - no flatten() function")
+      else
+
+        if u.type == GL.LOW_FLOAT or u.type == GL.MEDIUM_FLOAT or u.type == GL.HIGH_FLOAT
+          gl.uniform1fv u.pos, new Float32Array v
+        else if u.type == GL.LOW_INT or u.type == GL.MEDIUM_INT or u.type == GL.HIGH_INT
+          gl.uniform1iv u.pos, new Int32Array v # integer
+        else if u.type == GL.FLOAT_VEC2
+          gl.uniform2fv u.pos, new Float32Array v # Vec2
         else if u.type == GL.FLOAT_VEC3
-          gl.uniform3fv u.pos, new Float32Array t #Vec3
+          gl.uniform3fv u.pos, new Float32Array v #Vec3
         else if u.type == GL.FLOAT_VEC4
-          gl.uniform4fv u.pos, new Float32Array t
-      else if v[0].a
-        # TODO - This is nasty and we dont want to have to repeat it ><
-      
-        if u.type == GL.FLOAT_MAT3
-          t = new Float32Array(9*v.length)
-          idx = 0
-          for m in v
-            t.set m.a, idx*9
-            idx++
-          gl.uniformMatrix3fv u.pos, false, new Float32Array t
+          gl.uniform4fv u.pos, new Float32Array v # Vec4
+        else if u.type == GL.FLOAT_MAT3
+          gl.uniformMatrix3fv u.pos, false, new Float32Array v
         else if u.type == GL.FLOAT_MAT4
-          t = new Float32Array(16*v.length)
-          idx = 0
-          for m in v
-            t.set m.a, idx*16
-            idx++
-          gl.uniformMatrix4fv u.pos, false, new Float32Array t
-
-    else
-
+          gl.uniformMatrix4fv u.pos, false, new Float32Array v
+    
+    else if v instanceof Float32Array
       if u.type == GL.LOW_FLOAT or u.type == GL.MEDIUM_FLOAT or u.type == GL.HIGH_FLOAT
-        gl.uniform1fv u.pos, new Float32Array v
-      else if u.type == GL.LOW_INT or u.type == GL.MEDIUM_INT or u.type == GL.HIGH_INT
-        gl.uniform1iv u.pos, new Int32Array v # Vec2
-      else if u.type == GL.FLOAT_VEC2
-        gl.uniform2fv u.pos, new Float32Array v # Vec2
+        gl.uniform1fv u.pos, v
+     else if u.type == GL.FLOAT_VEC2
+        gl.uniform2fv u.pos, v # Vec2
       else if u.type == GL.FLOAT_VEC3
-        gl.uniform3fv u.pos, new Float32Array v #Vec3
+        gl.uniform3fv u.pos, v #Vec3
       else if u.type == GL.FLOAT_VEC4
-        gl.uniform4fv u.pos, new Float32Array v # Vec4
+        gl.uniform4fv u.pos, v # Vec4
       else if u.type == GL.FLOAT_MAT3
-        gl.uniformMatrix3fv u.pos, false, new Float32Array v
+        gl.uniformMatrix3fv u.pos, false, v
       else if u.type == GL.FLOAT_MAT4
-        gl.uniformMatrix4fv u.pos, false, new Float32Array v
+        gl.uniformMatrix4fv u.pos, false, v
+
+
   @
 
 ### _joinContracts ###

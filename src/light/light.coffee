@@ -176,7 +176,8 @@ class SpotLight
   @contract.roles.uSpotLightPos = "_posGlobal"
   @contract.roles.uSpotLightColour = "_colourGlobal"
   @contract.roles.uSpotLightAttenuation = "_attenuationGlobal"
-  @contract.roles.uSpotLightangle = "_angleGlobal"
+  @contract.roles.uSpotLightDir = "_dirGlobal"
+  @contract.roles.uSpotLightAngle = "_angleGlobal"
   @contract.roles.uSpotLightExp = "_expGlobal"
   @contract.roles.uSpotLightNum = "_numGlobal"
 
@@ -220,11 +221,11 @@ class SpotLight
   # **constructor** 
   # -**pos** - a Vec3
   # -**colour** - an RGB
-  # -**direction** - a Vec3
+  # -**dir** - a Vec3
   # -**angle** - a Number - radians
   # -**exponent** - a Number
   # -**attentuation** - a List of Number - length 4 - optional - default [100, 1.0, 0.045, 0.0075]
-  constructor : (@pos, @colour, @direction, @angle, @exponent, @attenuation) ->
+  constructor : (@pos, @colour, @dir, @angle, @exponent, @attenuation) ->
 
     @contract = SpotLight.contract
 
@@ -241,14 +242,14 @@ class SpotLight
     if not @colour?
       @colour = RGB.WHITE()
 
-    # Attention has 4 components - range, constant, linear and quadratic
+    # Attenuation has 4 components - range, constant, linear and quadratic
     if not @attenuation?
       @attenuation = [ 100, 1.0, 0.045, 0.0075 ]
   
-    if not @direction?
-      @direction = new Vec3(0,-1,0)
+    if not @dir?
+      @dir = new Vec3(0,-1,0)
 
-    @direction.normalize()
+    @dir.normalize()
 
     if not @angle?
       @angle = 45.0

@@ -168,10 +168,20 @@ class Node
 
     for light in node.pointLights
       front.pointLights.push light
-      
+    
+    uber.uber_lighting_point false, front._uber0
     if node.pointLights.length > 0 
       front._uber0 = uber.uber_lighting_point true, front._uber0
+   
+
+    for light in node.spotLights
+      front.spotLights.push light
+      
+    front._uber0 = uber.uber_lighting_spot false, front._uber0
+    if node.spotLights.length > 0 
+      front._uber0 = uber.uber_lighting_spot true, front._uber0
     
+
     # Overwrite the ambient if there is one closer
     # TODO - combine perhaps?
     if node.ambientLight?
@@ -248,9 +258,12 @@ class Node
     for child in node.children
       # We need to clone front so we dont change it permanently
       # Seems the fastest way is to just copy - json stringify then parse appears not to work
+      # TODO - We keep making a copy of this because of the recursive call but surely theres a
+      # better way?
       front_child = 
         globalMatrix        : front.globalMatrix.copy()
         pointLights         : front.pointLights.slice(0)
+        spotLights          : front.spotLights.slice(0)
         _normalMatrix       : front._normalMatrix.copy()
         _mvpMatrix          : front._mvpMatrix.copy()
         _uber0              : front._uber0

@@ -809,7 +809,11 @@ class Matrix2
   identity : ->
     @a.set([1,0,0,1])
     @
-  
+ 
+  # **flatten** - return the array part of this matrix
+  flatten :() ->
+    @a
+
   # **at** - return the element at the row and column specified
   at : (r,c) ->
     @a[c * 2 + r]
@@ -1049,6 +1053,11 @@ class Matrix3
     @copyFrom(a)
 
     @
+
+ # **flatten** - return the array part of this matrix
+  flatten :() ->
+    @a
+
 
   # **multVec** - multiply vector v by this matrix - destructive to v
   # - **v** - Vec3
@@ -1316,6 +1325,10 @@ class Matrix4
 
     @copyFrom(a)
     @
+
+  # **flatten** - return the array part of this matrix
+  flatten :() ->
+    @a
 
   # **multVec** - multiply vector v by this matrix - destructive to v
   # - **v** - Vec4
