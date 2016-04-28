@@ -160,6 +160,7 @@ class SpotLight
     "uniform vec4 uSpotLightAttenuation[LIGHTING_NUM_SPOT_LIGHTS];\n" +
     "uniform float uSpotLightAngle[LIGHTING_NUM_SPOT_LIGHTS];\n" +
     "uniform float uSpotLightExp[LIGHTING_NUM_SPOT_LIGHTS];\n" +
+    "#ifdef SHADOWMAP\nuniform sampler2D uSamplerPointShadow[LIGHTING_NUM_SPOT_LIGHTS];\n#endif\n" +
     "#endif\n"
 
   @fragment_head : @vertex_head

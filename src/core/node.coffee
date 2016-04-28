@@ -61,7 +61,6 @@ class Node
     
     @_cached = null                   # TODO A pointer to a cached version of this node. This is invalidated
                                       # if we add or remove nodes to this node or these above
-
     @pointLights = []
     @spotLights = []
 

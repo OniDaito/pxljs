@@ -20,6 +20,7 @@ A set of draw paths for the node - effectively render paths
 {matchWithShader} = require '../gl/webgl'
 {Camera} = require '../camera/camera'
 {Material} = require '../material/material'
+{DepthMaterial} = require "../material/depth"
 {Texture} = require '../gl/texture'
 {PointLight, SpotLight} = require '../light/light'
 {Geometry} = require '../geometry/primitive'
@@ -72,6 +73,8 @@ class Front
     c
 
 
+_shadow_map_material = new DepthMaterial()
+
 # **shadomap_create_draw**
 # -**node** - a Node
 # -**front** - An Object based on Node
@@ -84,9 +87,19 @@ shadowmap_create_draw = (node, front) ->
 
   nm = node.globalMatrix.clone()
 
+  front.material = _shadow_map_material
+  #front.material._preDraw()
 
+  front._uber0 = front.material._uber0
+
+  for child in node.children
+    # We need to clone front so we dont change it permanently
+    # Seems the fastest way is to just copy - json stringify then parse appears not to work
+    # TODO - We keep making a copy of this because of the recursive call but surely theres a
+    # better way?
+    front_child = front.clone()
+    shadowmap_create_draw(child, front_child)
     
-  
   node
 
 
@@ -140,9 +153,7 @@ main_draw = (node, front) ->
     front._uber0 = uber.uber_lighting_point true, front._uber0
  
   for light in node.spotLights
-  
-    shadowmap_create_draw node, front
-
+    shadowmap_create_draw node, front.clone()
     front.spotLights.push light
     
   front._uber0 = uber.uber_lighting_spot false, front._uber0
