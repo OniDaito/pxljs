@@ -224,8 +224,9 @@ class SpotLight
   # -**dir** - a Vec3
   # -**angle** - a Number - radians
   # -**exponent** - a Number
+  # -**shadowmap** - a Boolean
   # -**attentuation** - a List of Number - length 4 - optional - default [100, 1.0, 0.045, 0.0075]
-  constructor : (@pos, @colour, @dir, @angle, @exponent, @attenuation) ->
+  constructor : (@pos, @colour, @dir, @angle, @exponent, @shadowmap,  @attenuation) ->
 
     @contract = SpotLight.contract
 
@@ -235,12 +236,18 @@ class SpotLight
     @_dirGlobal = SpotLight._dirGlobal
     @_angleGlobal = SpotLight._angleGlobal
     @_expGlobal = SpotLight._expGlobal
-
+    
     if not @pos?
       @pos = new Vec3(1,1,1)
     
     if not @colour?
       @colour = RGB.WHITE()
+
+    if not @shadowmap?
+      @shadowmap = false
+
+    if @shadowmap
+      @_shadowmap_fbo = new Fbo(640,640,GL.R)
 
     # Attenuation has 4 components - range, constant, linear and quadratic
     if not @attenuation?

@@ -104,7 +104,7 @@ class Camera
     
     l.add @look
 
-    @pos.copyFrom l
+    @pos.copy l
 
     @update()  
 

@@ -43,21 +43,21 @@ class Bone
       @rotation_relative = Quaternion.invert(@parent.rotation_pose).mult(@rotation_pose)
       @rotation_relative.normalize()
 
-      tp = @position_pose.copy().sub(@parent.position_pose)
+      tp = @position_pose.clone().sub(@parent.position_pose)
       @parent.rotation_pose.transVec3(tp)
       @position_relative = tp
 
     else
-      @rotation_relative = @rotation_pose.copy()
-      @position_relative = @position_pose.copy()
+      @rotation_relative = @rotation_pose.clone()
+      @position_relative = @position_pose.clone()
 
   
     @inverse_bind_pose = new Matrix4()
     @inverse_bind_pose.translate(@position_pose).mult(@rotation_pose.getMatrix4())
     @inverse_bind_pose.invert()
 
-    @rotation_global = @rotation_pose.copy()
-    @position_global = @position_pose.copy()
+    @rotation_global = @rotation_pose.clone()
+    @position_global = @position_pose.clone()
 
     @skinned_matrix = new Matrix4() # Final matrix sent to the shader
 
@@ -201,13 +201,12 @@ class  Skeleton
         b.rotation_global = b.rotation_relative
         b.position_global = b.position_relative
       else
-        #b.rotation_global.copyFrom(b.rotation_relative).mult(b.parent.rotation_global).normalize() 
-        b.rotation_global.copyFrom(b.parent.rotation_global).mult(b.rotation_relative).normalize()
-        tp = b.position_relative.copy()
+        b.rotation_global.copy(b.parent.rotation_global).mult(b.rotation_relative).normalize()
+        tp = b.position_relative.clone()
         tm = Quaternion.invert(b.parent.rotation_global)
         tm.transVec3(tp)
         tp.add(b.parent.position_global)
-        b.position_global.copyFrom(tp)
+        b.position_global.copy(tp)
 
     idx = 0
 
@@ -217,7 +216,7 @@ class  Skeleton
     
       # Update the palette/texture going to the shader
       if PXL?
-        for i in [0..15]        
+        for i in [0..15]
           @_tdata[idx * 16 + i] = b.skinned_matrix.a[i]
 
         idx += 1

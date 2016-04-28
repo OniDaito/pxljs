@@ -426,7 +426,7 @@ class MD5Model extends Node
               tw.push w.bias
               ti.push w.bone
 
-              bp = w.position.copy()
+              bp = w.position.clone()
 
               # So inverting here seems to work which it really shouldnt >< 
               # I suspect this may or may not work with the animaion file :S
@@ -445,7 +445,7 @@ class MD5Model extends Node
           # Create and add the actual first vertex, built from our bind pose
           vertex = new Vertex(
             p : pos
-            t : temp_verts[i].u.copy()
+            t : temp_verts[i].u.clone()
             w : new Vec4 tw[0], tw[1], tw[2], tw[3]
             i : new Vec4 ti[0], ti[1], ti[2], ti[3]
             n : new Vec3 0, 0, 0

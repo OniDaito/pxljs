@@ -158,7 +158,7 @@ class Geometry
       else
         return @vertices.length / 3
 
-###Vertex###
+### Vertex ###
 # Lowest class. We use this because we need to do things on a vertex basis when we brew
 # We need position as a minimum. Optional Colour, Normal and texture and tangent
 # vertices essentially copy by reference unless a Vec or similar is not copied. This is

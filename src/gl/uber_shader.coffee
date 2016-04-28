@@ -242,7 +242,7 @@ class UberShader extends Shader
     "  vec4 v0 = texture2D(uBonePalette, vec2(x + p0, y + p0));\n" +
     "  vec4 v1 = texture2D(uBonePalette, vec2(x + p1, y + p0));\n" +
     "  vec4 v2 = texture2D(uBonePalette, vec2(x + p2, y + p0));\n" +
-    "  vec4 v3 = texture2D(uBonePalette, vec2(x + /p3, y + p0));\n" +
+    "  vec4 v3 = texture2D(uBonePalette, vec2(x + p3, y + p0));\n" +
     "  mat4 tm = mat4(v0,v1,v2,v3);\n" +
     "  return tm;\n" +
     "}\n#endif\n"

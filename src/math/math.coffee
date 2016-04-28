@@ -76,41 +76,41 @@ class Vec2
   # - **b** - Vec2
   # - returns a new Vec2
   @sub:(a,b) ->
-    a.copy()["sub"](b)
+    a.clone()["sub"](b)
 
   # **@add** - static function - non destructive subtraction.
   # - **a** - Vec2
   # - **b** - Vec2
   # - returns a new Vec2
   @add:(a,b) ->
-    a.copy()["add"](b)
+    a.clone()["add"](b)
 
   # **@div** - static function - non destructive division.
   # - **a** - Vec2
   # - **b** - Vec2
   # - returns a new Vec2
   @div:(a,b) ->
-    a.copy()["div"](b)
+    a.clone()["div"](b)
 
   # **@mult** - static function - non destructive multiplication.
   # - **a** - Vec2
   # - **b** - Vec2
   # - returns a new Vec2
   @mult:(a,b) ->
-    a.copy()["mult"](b)
+    a.clone()["mult"](b)
 
   # **@multScalar** - static function - non destructive multiplication with a scalar.
   # - **a** - Vec2
   # - **b** - Number
   # - returns a new Vec2
   @multScalar:(a,b) ->
-    a.copy()["multScalar"](b)
+    a.clone()["multScalar"](b)
 
   # **@normalize** static function - non destructive normalization.
   # - **a** - Vec2
   # - returns a new Vec2
   @normalize:(a) ->
-    a.copy()["normalize"]()
+    a.clone()["normalize"]()
 
   # **@dot** - static function - compute the dot product
   #  - **a** - Vec2
@@ -126,16 +126,16 @@ class Vec2
   constructor: (x=0,y=0) ->
   	[@x,@y] = [x,y]
 
-  # **copy** - make a copy of this vector
+  # **clone** - make a clone of this vector
   # - returns a new Vec2
 
-  copy: ->
+  clone: ->
     new Vec2(@x,@y)
 
-  # **copyFrom** - copy the value from another vector
+  # **copy** - copy the value from another vector
   # - **a** - Vec2
   # - returns this
-  copyFrom : (a) ->
+  copy: (a) ->
     @x = a.x
     @y = a.y
     @
@@ -297,46 +297,46 @@ class Vec3
   # - **b** - a Vec3
   # - returns a new Vec3
   @sub:(a,b) ->
-    a.copy()["sub"](b)
+    a.clone()["sub"](b)
 
   # **@add** - static function - non destructive addition.
   # - **a** - a Vec3
   # - **b** - a Vec3
   # - returns a new Vec3
   @add:(a,b) ->
-    a.copy()["add"](b)
+    a.clone()["add"](b)
 
   # **@cross** - static function - return the cross product.
   # - **a** - a Vec3
   # - **b** - a Vec3
   # - returns a new Vec3
   @cross:(a,b) ->
-    a.copy()["cross"](b)
+    a.clone()["cross"](b)
 
   # **@div** - static function - non destructive division.
   # - **a** - a Vec3
   # - **b** - a Vec3
   # - returns a new Vec3
   @div:(a,b) ->
-    a.copy()["div"](b)
+    a.clone()["div"](b)
 
   # **@mult** - static function - non destructive multiplication.
   # - **a** - a Vec3
   # - **b** - a Vec3
   # - returns a new Vec3
   @mult:(a,b) ->
-    a.copy()["mult"](b)
+    a.clone()["mult"](b)
 
   # **@multScalar** - static function - non destructive multiplication by a scalar
   # - **a** - a Vec3
   # - **b** - a Vec3
   # - returns a Number
   @multScalar:(a,b) ->
-    a.copy()["multScalar"](b)
+    a.clone()["multScalar"](b)
 
   # **@normalize** - static function - non destructive normalization.
   @normalize:(a) ->
-    a.copy()["normalize"]()
+    a.clone()["normalize"]()
 
   # **@dot** - static function - return the dot product.
   # - **a** - a Vec3
@@ -353,15 +353,15 @@ class Vec3
   constructor: (x=0,y=0,z=0) ->
   	[@x,@y,@z] = [x,y,z]
 
-  # **copy** - make a copy of this vector
+  # **clone** - make a clone of this vector
   # - returns a new Vec3
-  copy: ->
+  clone: ->
     new Vec3(@x,@y,@z)
 
-  # **copyFrom** - copy the value from another vector
+  # **copy** - copy the value from another vector
   # - **a** - a Vec3
   # - returns this
-  copyFrom : (a) ->
+  copy: (a) ->
     @x = a.x
     @y = a.y
     @z = a.z
@@ -503,48 +503,48 @@ class Vec4
   # - **b** - Vec4
   # - returns new Vec4
   @sub:(a,b) ->
-    a.copy()["sub"](b)
+    a.clone()["sub"](b)
 
   # **@add** - static function - non destructive addition.
   # - **a** - Vec4
   # - **b** - Vec4
   # - returns new Vec4
   @add:(a,b) ->
-    a.copy()["add"](b)
+    a.clone()["add"](b)
 
   # **@cross** - static function - return the cross product.
   # - **a** - Vec4
   # - **b** - Vec4
   # - returns new Vec4
   @cross:(a,b) ->
-    a.copy()["cross"](b)
+    a.clone()["cross"](b)
 
   # **@div** - static function - non destructive division.
   # - **a** - Vec4
   # - **b** - Vec4
   # - returns new Vec4
   @div:(a,b) ->
-    a.copy()["div"](b)
+    a.clone()["div"](b)
 
   # **@mult** - static function - non destructive multiplication.
   # - **a** - Vec4
   # - **b** - Vec4
   # - returns new Vec4
   @mult:(a,b) ->
-    a.copy()["mult"](b)
+    a.clone()["mult"](b)
 
   # **@multScalar** - static function - non destructive multiplication by a scalar
   # - **a** - Vec4
   # - **b** - Number
   # - returns Number
   @multScalar:(a,b) ->
-    a.copy()["multScalar"](b)
+    a.clone()["multScalar"](b)
 
   # **@normalize** - static function - non destructive normalization.
   # - **a** - Vec4
   # - returns new Vec4
   @normalize:(a) ->
-    a.copy()["normalize"]()
+    a.clone()["normalize"]()
 
   # **@dot** - static function - return the dot product.
   # - **a** - Vec4
@@ -561,15 +561,15 @@ class Vec4
   constructor: (x=0,y=0,z=0,w=1) ->
   	[@x,@y,@z,@w] = [x,y,z,w]
 
-  # **copy** - make a copy of this vector
+  # **clone** - make a clone of this vector
   # - returns new Vec4
-  copy: ->
+  clone: ->
     new Vec4(@x,@y,@z,@w)
 
-  # **copyFrom** - copy the value from another vector
+  # **copy** - copy the value from another vector
   # - **a** - Vec4
   # - returns this
-  copyFrom : (a) ->
+  copy: (a) ->
     @x = a.x
     @y = a.y
     @z = a.z
@@ -719,42 +719,42 @@ class Matrix2
   # - **b** - Number
   # - returns new Matrix2
   @addScalar:(a,b) ->
-    a.copy()["addScalar"](b)
+    a.clone()["addScalar"](b)
 
   # **@subScalar** - static function - subtract a scalar from every element in this matrix
   # - **a** - Matrix2
   # - **b** - Number
   # - returns new Matrix2
   @subScalar:(a,b) ->
-    a.copy()["subScalar"](b)
+    a.clone()["subScalar"](b)
 
   # **@multScalar** - static function - multiply every element in this matrix by a scalar
   # - **a** - Matrix2
   # - **b** - Number
   # - returns new Matrix2
   @multScalar:(a,b) ->
-    a.copy()["multScalar"](b)
+    a.clone()["multScalar"](b)
 
   # **@divScalar** - static function - divide every element in this matrix by a scalar
   # - **a** - Matrix2
   # - **b** - Number
   # - returns new Matrix2
   @divScalar:(a,b) ->
-    a.copy()["divScalar"](b)
+    a.clone()["divScalar"](b)
 
   # **@mult** - static function - multiply this matrix by another matrix
   # - **a** - Matrix2
   # - **b** - Matrix2
   # - returns new Matrix2
   @mult:(a,b) ->
-    a.copy()["mult"](b)
+    a.clone()["mult"](b)
 
   # **@multVec** - static function - multiply a vector by this matrix, returning a new vector
   # - **m** - Matrix2
   # - **v** - Vec2
   # - returns new Vec2
   @multVec: (m,v)->
-    tv = v.copy()
+    tv = v.clone()
     m.multVec(tv)
     tv
 
@@ -772,15 +772,15 @@ class Matrix2
     else
       @a = new glMatrixArrayType(a)
 
-  # **copy** - return a copy of this matrix
+  # **clone** - return a clone of this matrix
   # - returns new Matrix2
-  copy : () ->
+  clone: () ->
     new Matrix2(@a)
 
-  # **copyFrom** - copy all the values from another matrix, a
+  # **copy** - copy all the values from another matrix, a
   # - **a** Matrix2
   # - 
-  copyFrom : (a) ->
+  copy: (a) ->
     for i in [0..3]
       @a[i] = a.a[i]
     @
@@ -828,7 +828,7 @@ class Matrix2
     a.a[ 2] = @a[ 0]*m.a[ 2] + @a[ 2]*m.a[ 3]
     a.a[ 3] = @a[ 1]*m.a[ 2] + @a[ 3]*m.a[ 3]
    
-    @copyFrom(a)
+    @copy(a)
 
     @
 
@@ -863,7 +863,7 @@ class Matrix2
   # **transpose** - transpose this matrix
   # - returns this
   transpose : () ->
-    @copyFrom new Matrix2 [@a[0],a[2],@a[1],@a[3]]
+    @copy new Matrix2 [@a[0],a[2],@a[1],@a[3]]
     @
 
   # **print** - print this matrix to the console
@@ -915,35 +915,35 @@ class Matrix3
   # - **b** - Number
   # - returns new Matrix3
   @addScalar:(a,b) ->
-    a.copy()["addScalar"](b)
+    a.clone()["addScalar"](b)
 
   # **@subScalar** - static function - subtract a scalar from every element in this matrix
   # - **a** - Matrix3
   # - **b** - Number
   # - returns new Matrix3
   @subScalar:(a,b) ->
-    a.copy()["subScalar"](b)
+    a.clone()["subScalar"](b)
 
   # **@multScalar** - static function - multiply every element in this matrix by a scalar
   # - **a** - Matrix3
   # - **b** - Number
   # - returns new Matrix3
   @multScalar:(a,b) ->
-    a.copy()["multScalar"](b)
+    a.clone()["multScalar"](b)
 
   # **@divScalar** - static function - divide every element in this matrix by a scalar
   # - **a** - Matrix3
   # - **b** - Number
   # - returns new Matrix3
   @divScalar:(a,b) ->
-    a.copy()["divScalar"](b)
+    a.clone()["divScalar"](b)
 
   # **@mult** - static function - multiply this matrix by another matrix
   # - **a** - Matrix3
   # - **b** - Matrix3
   # - returns new Matrix3
   @mult:(a,b) ->
-    a.copy()["mult"](b)
+    a.clone()["mult"](b)
 
   # **@invert** - static function - return the inverse of this matrix
   # - **a** - Matrix3
@@ -956,7 +956,7 @@ class Matrix3
   # - **v** - Vec3
   # - returns new Vec3
   @multVec: (m,v)->
-    tv = v.copy()
+    tv = v.clone()
     m.multVec(tv)
     tv
 
@@ -975,15 +975,15 @@ class Matrix3
     else
       @a = new glMatrixArrayType(a)
 
-  # **copy** - return a copy of this matrix
+  # **clone** - return a clone of this matrix
   # - returns new Matrix3
-  copy : () ->
+  clone: () ->
     new Matrix3(@a)
 
-  # **copyFrom** - copy all the values from another matrix, a
+  # **copy** - copy all the values from another matrix, a
   # - **a** - Matrix3
   # - returns this
-  copyFrom : (a) ->
+  copy: (a) ->
     for i in [0..8]
       @a[i] = a.a[i]
     @
@@ -1050,7 +1050,7 @@ class Matrix3
     a.a[ 7] = @a[ 1]*m.a[ 6] + @a[ 4]*m.a[ 7] + @a[ 7]*m.a[ 8]
     a.a[ 8] = @a[ 2]*m.a[ 6] + @a[ 5]*m.a[ 7] + @a[ 8]*m.a[ 8]
    
-    @copyFrom(a)
+    @copy(a)
 
     @
 
@@ -1113,14 +1113,14 @@ class Matrix3
   # **invert** - invert this matrix
   # - returns this
   invert: () ->
-    @copyFrom @_invert()
+    @copy @_invert()
     @
 
  
   # **transpose** - transpose this matrix
   # - returns this
   transpose : () ->
-    @copyFrom new Matrix3([@a[0],@a[3],@a[6], @a[1],@a[4],@a[7], @a[2],@a[5],@a[8]])
+    @copy new Matrix3([@a[0],@a[3],@a[6], @a[1],@a[4],@a[7], @a[2],@a[5],@a[8]])
     @
 
   # **print** - print this matrix to the console
@@ -1179,35 +1179,35 @@ class Matrix4
   # - **b** - Number
   # - returns new Matrix4
   @addScalar:(a,b) ->
-    a.copy()["addScalar"](b)
+    a.clone()["addScalar"](b)
 
   # **@subScalar** - static function - subtract a scalar from every element in this matrix
   # - **a** - Matrix4
   # - **b** - Number
   # - returns new Matrix4
   @subScalar:(a,b) ->
-    a.copy()["subScalar"](b)
+    a.clone()["subScalar"](b)
 
   # **@multScalar** - static function - multiply every element in this matrix by a scalar
   # - **a** - Matrix4
   # - **b** - Number
   # - returns new Matrix4
   @multScalar:(a,b) ->
-    a.copy()["multScalar"](b)
+    a.clone()["multScalar"](b)
 
   # **@divScalar** - static function - divide every element in this matrix by a scalar
   # - **a** - Matrix4
   # - **b** - Number
   # - returns new Matrix4
   @divScalar:(a,b) ->
-    a.copy()["divScalar"](b)
+    a.clone()["divScalar"](b)
 
   # **@mult** - static function - multiply this matrix by another matrix
   # - **a** - Matrix4
   # - **b** - Matrix4
   # - returns new Matrix4
   @mult:(a,b) ->
-    a.copy()["mult"](b)
+    a.clone()["mult"](b)
 
   # **@invert** - static function - return the inverse of this matrix
   # - **a** - Matrix4
@@ -1227,7 +1227,7 @@ class Matrix4
   # - **v** - Vec4
   # - returns new Vec4
   @multVec: (m,v)->
-    tv = v.copy()
+    tv = v.clone()
     m.multVec(tv)
     tv
 
@@ -1239,15 +1239,15 @@ class Matrix4
     else
       @a = new glMatrixArrayType(a)
 
-  # **copy** - return a copy of this matrix
+  # **clone** - return a clone of this matrix
   # - returns new Matrix4
-  copy : () ->
+  clone: () ->
     new Matrix4(@a)
 
-  # **copyFrom** - copy all the values from another matrix, a
+  # **copy** - copy all the values from another matrix, a
   # - **a** - Matrix4
   # - returns this
-  copyFrom : (a) ->
+  copy: (a) ->
     for i in [0..15]
       @a[i] = a.a[i]
     @
@@ -1323,7 +1323,7 @@ class Matrix4
     a.a[14] = @a[ 2]*m.a[12] + @a[ 6]*m.a[13] + @a[10]*m.a[14] + @a[14]*m.a[15]
     a.a[15] = @a[ 3]*m.a[12] + @a[ 7]*m.a[13] + @a[11]*m.a[14] + @a[15]*m.a[15]
 
-    @copyFrom(a)
+    @copy(a)
     @
 
   # **flatten** - return the array part of this matrix
@@ -1342,7 +1342,7 @@ class Matrix4
       x = @a[ 0]*v.x + @a[ 4]*v.y + @a[ 8]*v.z + @a[12]
       y = @a[ 1]*v.x + @a[ 5]*v.y + @a[ 9]*v.z + @a[13]
       z = @a[ 2]*v.x + @a[ 6]*v.y + @a[10]*v.z + @a[14]
-      w = @a[ 3]*v.x + @a[ 7]*v.y + @a[11]*v.z + @a[15] 
+      w = @a[ 3]*v.x + @a[ 7]*v.y + @a[11]*v.z + @a[15]
       v.x = x/w
       v.y = y/w
       v.z = z/w
@@ -1424,13 +1424,13 @@ class Matrix4
   # **invert** - invert this matrix
   # - returns this
   invert: () ->
-    @copyFrom @_invert() 
+    @copy @_invert() 
     @
 
   # **transpose** - transpose this matrix
   # - returns this
   transpose : () ->
-    @copyFrom new Matrix4( [ @a[0],@a[4],@a[8],@a[12],@a[1],@a[5],@a[9],@a[13],@a[2],@a[6],@a[10],@a[14],@a[3],@a[7],@a[11],@a[15] ] )
+    @copy new Matrix4( [ @a[0],@a[4],@a[8],@a[12],@a[1],@a[5],@a[9],@a[13],@a[2],@a[6],@a[10],@a[14],@a[3],@a[7],@a[11],@a[15] ] )
     @
 
 
@@ -1438,7 +1438,7 @@ class Matrix4
   # - **v** - Vec3
   # - returns this
   translate: (v) ->
-    if v.DIM? 
+    if v.DIM?
       if v.DIM != 3
         PXLWarning "Mismatched vector and matrix dimensions"
         return @
@@ -1480,7 +1480,7 @@ class Matrix4
 
     f = Vec3.sub(look,eye)
     f.normalize()
-    u = up.copy()
+    u = up.clone()
     u.normalize()
 
     s = Vec3.cross(f,u)
@@ -1490,7 +1490,7 @@ class Matrix4
     t = new Matrix4([1,0,0,0,0,1,0,0,0,0,1,0, -eye.x,-eye.y,-eye.z,1])
 
     m.mult(t)
-    @copyFrom(m)
+    @copy(m)
     @
 
 
@@ -1565,35 +1565,35 @@ class Quaternion
 
   # **@addScalar** - static function - add a scalar to every element in this quaternion
   @addScalar:(a,b) ->
-    a.copy()["addScalar"](b)
+    a.clone()["addScalar"](b)
 
   # **@subScalar** - static function - subtract a scalar from every element in this quaternion
   @subScalar:(a,b) ->
-    a.copy()["subScalar"](b)
+    a.clone()["subScalar"](b)
 
   # **@multScalar** - static function - multiply every element in this quaternion by a scalar
   @multScalar:(a,b) ->
-    a.copy()["multScalar"](b)
+    a.clone()["multScalar"](b)
 
   # **@divScalar** - static function - divide every element in this quaternion by a scalar
   @divScalar:(a,b) ->
-    a.copy()["divScalar"](b)
+    a.clone()["divScalar"](b)
 
   # **@conjugate** - static function - return the conjugate to this quaternion
   @conjugate:(a) ->
-    a.copy()["conjugate"]()
+    a.clone()["conjugate"]()
 
   # **@mult** - static function - multiply this quaternion by another quaternion
   @mult:(a,b) ->
-    a.copy()["mult"](b)
+    a.clone()["mult"](b)
 
   # **@invert** - static function - return an inverted version
   @invert:(a) ->
-    a.copy()["invert"]()
+    a.clone()["invert"]()
  
   # transVec3 - static function - given a vector, return a new version of it, transformed by this quaternion
   @transVec3:(q,v) ->
-    tv = v.copy()
+    tv = v.clone()
     q.transVec3(tv)
     tv
 
@@ -1615,12 +1615,12 @@ class Quaternion
     @z = 0 if not @z?
     @w = 1 if not @w?
 
-  # copy - return a coy of this Quaternion
-  copy : () ->
+  # clone - return a coy of this Quaternion
+  clone: () ->
     new Quaternion @x, @y, @z, @w
  
-  # copyFrom - copy another quaternion into this one
-  copyFrom : (q) ->
+  # copy - copy another quaternion into this one
+  copy: (q) ->
     @x = q.x
     @y = q.y
     @z = q.z
@@ -1709,7 +1709,7 @@ class Quaternion
     y = -@x * q.z + @y * q.w + @z * q.x + @w * q.y
     z = @x * q.y - @y * q.x + @z * q.w + @w * q.z
     @w = w
-    @x = x 
+    @x = x
     @y = y
     @z = z
     @
@@ -1740,11 +1740,11 @@ class Quaternion
     @
 
   # normalize - normalize this quaternion
-  normalize : () ->  
+  normalize : () ->
     len = 1.0 / @length()
     @w *= len
     @x *= len
-    @y *= len      
+    @y *= len
     @z *= len
     @
 
@@ -1840,13 +1840,13 @@ class Quaternion
     r = Math.acos(ca) * 2
     invlen = 1.0 / Math.sqrt(1.0 - ca * ca)
 
-    [new Vec3(@x * invlen, @y * invlen, @z * invlen), r] 
+    [new Vec3(@x * invlen, @y * invlen, @z * invlen), r]
 
 
   # getMatrix4 - return a matrix4 from this Quaternion
   getMatrix4 : () ->
 
-    xs = @x + @x   
+    xs = @x + @x
     ys = @y + @y
     zs = @z + @z
     wx = @w * xs
@@ -1879,7 +1879,7 @@ class Quaternion
   # getMatrix3 - return a matrix3 from this Quaternion - The rotation component
   getMatrix3 : () ->
 
-    xs = @x + @x   
+    xs = @x + @x
     ys = @y + @y
     zs = @z + @z
     wx = @w * xs
@@ -1909,26 +1909,26 @@ class Quaternion
     costheta = end.dot()
     result = Quaternion.multScalar(end,t)
     if costheta >= EPSILON
-      result.add (result.multScalar(1.0 - t)) 
+      result.add (result.multScalar(1.0 - t))
     else
       result.add (result.multScalar(t - 1.0))
     result
 
   # slerpShortestUnenforced - slerp between this quaternion at the start and the one at the 'end', t being 0->1
   slerpShortestUnenforced : (t,end) ->
-    d = @copy()
+    d = @clone()
     d.sub(end)
     lengthD = Math.sqrt(@dot(end))
-    st = @copy()
+    st = @clone()
     st.add(end)
     lengthS = Math.sqrt(st.dot(st))
 
     a = 2 * Math.atan2(lengthD,lengthS)
     s = 1 - t
 
-    q = @copy()
+    q = @clone()
     q.multScalar(( sinx_over_x( s * a ) / sinx_over_x( a ) * s ) )
-    e = end.copy()
+    e = end.clone()
     e.multScalar(( sinx_over_x( t * a ) / sinx_over_x( a ) * t ))
     q.add(e)
     q.normalize()
@@ -1952,18 +1952,18 @@ class Quaternion
         theta = Math.acos(-cosTheta)
         recipSinTheta = 1.0 / Math.sin(theta)
         startInterp = Math.sin((t - 1.0) * theta ) * recipSinTheta
-        endInterp = Math.sin(t*theta) * recipSinTheta       
+        endInterp = Math.sin(t*theta) * recipSinTheta
       
       else
         startInterp = t -1.0
         endInterp = t
    
-    q = @copy()
+    q = @clone()
     q.mult(startInterp)
-    e = end.copy()
+    e = end.clone()
     e.mult(endInterp)
     q.add(e)
-    q 
+    q
 
   # fromMatrix4 : Create a Quaternion from an existing Matrix4
   fromMatrix4 : (m) ->

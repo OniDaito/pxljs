@@ -302,13 +302,13 @@ class OBJModel extends Node
               idx_n = parseInt(bobs[i][2]) - 1
 
               if idx_n < normals.length
-                v.n = normals[idx_n].copy()
+                v.n = normals[idx_n].clone()
 
             # tex coord lookup
             if bobs[i][1] != ""
               idx_t = parseInt(bobs[i][1]) - 1
               if idx_t < texcoords.length
-                v.t = texcoords[idx_t].copy()
+                v.t = texcoords[idx_t].clone()
 
             vertices.push v
 
@@ -329,13 +329,13 @@ class OBJModel extends Node
               idx_n = parseInt(bobs[i][2]) - 1
 
               if idx_n < normals.length
-                v.n = normals[idx_n].copy()
+                v.n = normals[idx_n].clone()
             
             # tex coord lookup
             if bobs[i][1] != ""
               idx_t = parseInt(bobs[i][1]) - 1
               if idx_t < texcoords.length
-                v.t = texcoords[idx_t].copy()
+                v.t = texcoords[idx_t].clone()
 
             vertices.push v
 
