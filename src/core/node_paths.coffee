@@ -18,7 +18,7 @@ A set of draw paths for the node - effectively render paths
 
 {Vec3, Vec4, Matrix3, Matrix4} = require '../math/math'
 {matchWithShader} = require '../gl/webgl'
-{Camera} = require '../camera/camera'
+{Camera, PerspCamera} = require '../camera/camera'
 {Material} = require '../material/material'
 {DepthMaterial} = require "../material/depth"
 {Texture} = require '../gl/texture'
@@ -72,25 +72,83 @@ class Front
 
     c
 
-
+# TODO - this should really live somewhere else
 _shadow_map_material = new DepthMaterial()
 
 # **shadomap_create_draw**
 # -**node** - a Node
 # -**front** - An Object based on Node
+# -**light** -  a SpotLight (eventually all lights)
 
 # Called when we find a spotLight that casts shadows
+# A Camera should have been set on the front before this function is called - dont like that :S
 
-shadowmap_create_draw = (node, front) ->
+shadowmap_create_draw = (node, front, light) ->
   
   front.globalMatrix = Matrix4.mult front.globalMatrix, node.matrix
 
   nm = node.globalMatrix.clone()
 
   front.material = _shadow_map_material
-  #front.material._preDraw()
+  front.material._preDraw()
 
   front._uber0 = front.material._uber0
+  front._uber0 = uber.uber_depth_set(true, front._uber0)
+  front._uber0 = uber.uber_vertex_camera true, front._uber0
+
+  # Sort of assuming we have a nice ubershader already
+  if node.shader?
+    front.shader = node.shader
+  
+  # Create a precomputed model/view/perspective matrix for speed
+  nm = Matrix4.mult(front.camera.m, nm)
+ 
+  # Possibly only needs to be done when we actually need to draw or bind
+  front._mvpMatrix.copy nm
+  front._mvpMatrix.mult front.camera.m
+  front._mvpMatrix.mult front.camera.p
+
+  front._normalMatrix = nm.getMatrix3().invert().transpose()
+
+  if node.geometry?
+    if not node.geometry.brewed
+      node.geometry.brew()
+    front.geometry = node.geometry
+
+  # This contract probably needs a lot of trimming given the material we 
+  # are using and nothing else
+
+  for key of node.contract.roles
+    if not front[key]?
+      front[key] = node[key]
+
+  front.contract = node.contract
+
+  # Pass down skeletons
+  if node.skeleton?
+    node.skeleton._preDraw()
+    front.skeleton = node.skeleton
+    front._uber0 = uber.uber_vertex_skinning true, front._uber0
+
+  # Only draw if we have the context (think tests and the like)
+  if PXL.Context.gl?
+
+    # Actual Draw
+    # Put a line in here to check we also have a shader on the context
+    if front.geometry? and front.shader?
+
+      PXL.Context.shader = front.shader
+      PXL.Context.shader.bind()
+
+      matchWithShader(front)
+
+      # Quick check for unbound uniforms
+      if PXL.Context.debug
+        for u in PXL.Context.shader.contract.findUnmatched()
+          PXLWarningOnce("Unmatched uniform/attribute in shader: " + u.name)
+               
+      front.geometry.drawGL()
+
 
   for child in node.children
     # We need to clone front so we dont change it permanently
@@ -98,7 +156,7 @@ shadowmap_create_draw = (node, front) ->
     # TODO - We keep making a copy of this because of the recursive call but surely theres a
     # better way?
     front_child = front.clone()
-    shadowmap_create_draw(child, front_child)
+    shadowmap_create_draw(child, front_child, light)
     
   node
 
@@ -112,9 +170,6 @@ shadowmap_create_draw = (node, front) ->
 # TODO - Eventually redo this function so we create a set of flat objects with 
 # a cache and all the required info.
   
-# TODO - we will have replacable draw functions depending on the passes we are making
-# This one is the default but there will be other draw passes for things like lights
-
 # **main_draw**
 # -**node** - a Node
 # -**front** - An Object based on Node
@@ -138,8 +193,6 @@ main_draw = (node, front) ->
     front._mvpMatrix.copy nm
     front._mvpMatrix.mult front.camera.m
     front._mvpMatrix.mult front.camera.p
-  else
-    front._mvpMatrix.copy nm
 
   # TODO - Normal Matrix calculation better GPU or CPU side? 
   # TODO - We need to be careful about scaling here as well :S
@@ -153,7 +206,22 @@ main_draw = (node, front) ->
     front._uber0 = uber.uber_lighting_point true, front._uber0
  
   for light in node.spotLights
-    shadowmap_create_draw node, front.clone()
+    # shadowmap jumping off point
+    if light.shadowmap
+      if PXL.Context.gl?
+        fc = front.clone()
+        # Create the camera we shall use
+        # Shouldnt really do this all the time if not needed :S      
+        fc.camera = new PerspCamera light.pos, Vec3.add(light.pos, light.dir), Vec3.perp(light.dir), light.angle, 0.1, 100.0 
+       
+        # Begin the creation of a shadowmap for this light source
+        light._shadowmap_fbo.bind()
+        fc.camera.update()
+        GL.clearColor(0.0, 0.0, 0.0, 0.0)
+        GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT)
+        shadowmap_create_draw node, fc, light
+        light._shadowmap_fbo.unbind()
+
     front.spotLights.push light
     
   front._uber0 = uber.uber_lighting_spot false, front._uber0
@@ -208,8 +276,6 @@ main_draw = (node, front) ->
   # Only draw if we have the context (think tests and the like)
   if PXL.Context.gl?
 
-    gl = PXL.Context.gl
-
     # Actual Draw
     # Put a line in here to check we also have a shader on the context
     if front.geometry? and front.shader?
@@ -221,7 +287,7 @@ main_draw = (node, front) ->
       PXL.Context.shader = front.shader
       PXL.Context.shader.bind()
 
-      matchWithShader front
+      matchWithShader(front)
       # Quick check for unbound uniforms
       if PXL.Context.debug
         for u in PXL.Context.shader.contract.findUnmatched()
@@ -229,7 +295,7 @@ main_draw = (node, front) ->
                
       front.geometry.drawGL()
 
-      # unbind
+      # unbind - TODO - do we really need to unbind?
       PXL.Context.shader.unbind()
       PXL.Context.shader = undefined
 

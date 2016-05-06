@@ -327,6 +327,12 @@ class Vec3
   @mult:(a,b) ->
     a.clone()["mult"](b)
 
+  # **@perp** - static function - non destructive perpendicular.
+  # - **a** - a Vec3
+  # - returns a new Vec3
+  @perp:(a) ->
+    a.clone()["perp"]()
+
   # **@multScalar** - static function - non destructive multiplication by a scalar
   # - **a** - a Vec3
   # - **b** - a Vec3
@@ -446,6 +452,25 @@ class Vec3
   div: (n) ->
     [@x,@y,@z] = [@x/n.x,@y/n.y,@z/n.z]
     @
+
+  # **perp** - set this vector to one perpendicular to itself 
+  # - returns this
+  perp : () ->
+    if @z != 0
+      @z = (-@x * 2.0 - @y) / @z
+      @x = 2.0
+      @y = 1.0
+    else if @y != 0
+      @y = (-@x * 2.0 - @z) / @y
+      @x = 2.0
+      @z = 1.0
+    else if @x != 0
+      @x = (-@y * 2.0 - @z) / @x
+      @y = 2.0
+      @z = 1.0
+
+    @ 
+
 
   # **mult** - multiply by another vector v 
   # - **v** - Vec3
@@ -1496,9 +1521,9 @@ class Matrix4
 
   # makePerspective - given a field-of-view in degrees, an aspect ratio (w/h) and near and far clip planes
   # create a perspective matrix
-  # TODO - Should we not use Radians here a we are using radians everywhere else?
+
   makePerspective: (fovy,aspect,znear,zfar) ->
-    ymax = znear * Math.tan(fovy * Math.PI / 360.0)
+    ymax = znear * Math.tan(fovy)
     ymin = -ymax;
     xmin = ymin * aspect
     xmax = ymax * aspect

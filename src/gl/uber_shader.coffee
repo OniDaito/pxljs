@@ -14,6 +14,10 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 
 An Uber shader implementation
 
+TODO - There is an issue that the uber shader will attempt to match its larger contract each time
+even with nodes and contracts that dont have related uniforms, because the path through the uber shader
+that is being taken doesnt need these uniforms
+
 ###
 
 {PhongMaterial} = require "../material/phong"

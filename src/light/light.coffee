@@ -26,6 +26,7 @@ shader which we can modify easily. A user will need to set these if they wish to
 {Matrix4, Vec2, Vec3, Vec4} = require '../math/math'
 {RGB,RGBA} = require '../colour/colour'
 {Contract} = require '../gl/contract'
+{Fbo} = require '../gl/fbo'
 
 # These are set in stone and are the actual values passed to the
 # shader. Ideally we'd reference them, but the are basically a cache
@@ -227,7 +228,7 @@ class SpotLight
   # -**exponent** - a Number
   # -**shadowmap** - a Boolean
   # -**attentuation** - a List of Number - length 4 - optional - default [100, 1.0, 0.045, 0.0075]
-  constructor : (@pos, @colour, @dir, @angle, @exponent, @shadowmap,  @attenuation) ->
+  constructor : (@pos, @colour, @dir, @angle, @shadowmap, @exponent, @attenuation) ->
 
     @contract = SpotLight.contract
 
@@ -248,7 +249,7 @@ class SpotLight
       @shadowmap = false
 
     if @shadowmap
-      @_shadowmap_fbo = new Fbo(640,640,GL.R)
+      @_shadowmap_fbo = new Fbo(640,640)
 
     # Attenuation has 4 components - range, constant, linear and quadratic
     if not @attenuation?
