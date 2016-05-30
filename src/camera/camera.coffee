@@ -33,7 +33,7 @@ https://gist.github.com/eligrey/384583 - useful for changes to pos,look etc?
 {makeMouseListener} = require '../interact/mouse'
 {Contract} = require '../gl/contract'
 
-### Camera ###
+# **Camera** #
 # The base class for cameras - provides base functionality to the other cameras
 
 class Camera
@@ -143,7 +143,7 @@ class Camera
     @
 
 
-### OrthoCamera ###
+# **OrthoCamera** 
 # An orthographic camera. This class calls makeOrtho on its perspective matrix
 # Orthographic Camera uses 1 pixel as 1 world unit
 
@@ -167,7 +167,7 @@ class OrthoCamera extends Camera
     @
     
 
-### PerspCamera ###
+# **PerspCamera**
 # An perspective camera. This class calls makePerspective on its perspective matrix
 # TODO - Not sure we need zoom here. Should probably have a spaceball class
 
@@ -251,7 +251,7 @@ class PerspCamera extends Camera
     @
 
 
-### MousePerspCamera ###
+# **MousePerspCamera**
 # Camera that listens for mouse input and moves when the user moves the mouse around
 
 class MousePerspCamera extends PerspCamera
@@ -350,7 +350,7 @@ class MousePerspCamera extends PerspCamera
       [@px, @py] = [event.mouseX, event.mouseY]
 
 
-### TouchPerspCamera ###
+# **TouchPerspCamera**
 # Camera that listens for both mouse input and touch gestures
 
 class TouchPerspCamera extends MousePerspCamera

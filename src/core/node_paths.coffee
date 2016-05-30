@@ -34,6 +34,7 @@ util = require '../util/util'
 ### Front ###
 # A stripped down version of the Node Class that just copies the data, and amalgamates
 # node data as we traverse the tree
+# There is a problem here - as we change node, what happen to front? Better design needed here?
 
 class Front
   constructor : () ->
@@ -74,6 +75,7 @@ class Front
 
 # TODO - this should really live somewhere else
 _shadow_map_material = new DepthMaterial()
+_shadow_map_camera = new PerspCamera new Vec3(0,1,0), new Vec3(0,0,0), new Vec3(1,0,0), 3.0, 0.1, 100.0 
 
 # **shadomap_create_draw**
 # -**node** - a Node
@@ -83,7 +85,31 @@ _shadow_map_material = new DepthMaterial()
 # Called when we find a spotLight that casts shadows
 # A Camera should have been set on the front before this function is called - dont like that :S
 
-shadowmap_create_draw = (node, front, light) ->
+shadowmap_create_draw = (node,front,light) -> 
+
+  fc = front.clone()
+  # Create the camera we shall use
+  # Shouldnt really do this all the time if not needed :S      
+
+  _shadow_map_camera.pos.copy light.pos
+  _shadow_map_camera.look.copy Vec3.add(light.pos, light.dir)
+  _shadow_map_camera.up.copy Vec3.perp(light.dir)
+  _shadow_map_camera.angle = light.angle
+ 
+  fc.camera = _shadow_map_camera
+  # Begin the creation of a shadowmap for this light source
+  light._shadowmap_fbo.bind()
+  fc.camera.update()
+  GL.clearColor(0.0, 0.0, 0.0, 0.0)
+  GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT)
+  _shadowmap_create_draw node, fc, light
+  light._shadowmap_fbo.unbind()
+
+
+# **_shadowmap_create_draw **
+# Internal recursive function
+
+_shadowmap_create_draw = (node, front, light) ->
   
   front.globalMatrix = Matrix4.mult front.globalMatrix, node.matrix
 
@@ -156,7 +182,7 @@ shadowmap_create_draw = (node, front, light) ->
     # TODO - We keep making a copy of this because of the recursive call but surely theres a
     # better way?
     front_child = front.clone()
-    shadowmap_create_draw(child, front_child, light)
+    _shadowmap_create_draw(child, front_child, light)
     
   node
 
@@ -209,20 +235,8 @@ main_draw = (node, front) ->
     # shadowmap jumping off point
     if light.shadowmap
       if PXL.Context.gl?
-        fc = front.clone()
-        # Create the camera we shall use
-        # Shouldnt really do this all the time if not needed :S      
-        fc.camera = new PerspCamera light.pos, Vec3.add(light.pos, light.dir), Vec3.perp(light.dir), light.angle, 0.1, 100.0 
-       
-        # Begin the creation of a shadowmap for this light source
-        light._shadowmap_fbo.bind()
-        fc.camera.update()
-        GL.clearColor(0.0, 0.0, 0.0, 0.0)
-        GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT)
-        shadowmap_create_draw node, fc, light
-        light._shadowmap_fbo.unbind()
-
-    front.spotLights.push light
+        shadowmap_create_draw node, front, light
+        front.spotLights.push light
     
   front._uber0 = uber.uber_lighting_spot false, front._uber0
   if node.spotLights.length > 0 
