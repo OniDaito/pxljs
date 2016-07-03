@@ -22,7 +22,7 @@ that is being taken doesnt need these uniforms
 
 {PhongMaterial} = require "../material/phong"
 {TextureMaterial} = require "../material/basic"
-{DepthMaterial} = require "../material/depth"
+{DepthMaterial, ViewDepthMaterial} = require "../material/depth"
 {PointLight, SpotLight, AmbientLight} = require "../light/light"
 {Shader} = require "./shader"
 
@@ -41,7 +41,8 @@ that is being taken doesnt need these uniforms
 #
 # FRAGMENT_NOISE
 # FRAGMENT_INTENSITY
-# FRAGMENT_DEPTH
+# FRAGMENT_DEPTH_IN
+# FRAGMENT_DEPTH_OUT
 # FRAGMENT_LUMINANCE
 # FRAGMENT_TANGENT_FRAME
 # FRAGMENT_SOBEL
@@ -319,6 +320,7 @@ class UberShader extends Shader
   @fragment += SpotLight.fragment_head
   @fragment += TextureMaterial.fragment_head
   @fragment += DepthMaterial.fragment_head
+  @fragment += ViewDepthMaterial.fragment_head
 
   # FUNCTION SECTION
   @fragment +="\n\n"
@@ -350,8 +352,8 @@ class UberShader extends Shader
 
   @fragment += "#ifdef BASIC_COLOUR\nif(bitcheck(uUber0,8)) { gl_FragColor = uColour; }\n#endif\n"
   @fragment += "#ifdef VERTEX_COLOUR\nif(bitcheck(uUber0,9)) { gl_FragColor = vColour; }\n#endif\n"
-  @fragment += "#ifdef FRAGMENT_DEPTH\nif(bitcheck(uUber0,5)) { gl_FragColor = packDepth(); }\n#endif\n" 
-  @fragment += "#ifdef FRAGMENT_DEPTH\nif(bitcheck(uUber0,6)) { float d = readDepth(vTexCoord);\ngl_FragColor = vec4(d,d,d,1.0); }\n#endif\n" 
+  @fragment += "#ifdef FRAGMENT_DEPTH_OUT\nif(bitcheck(uUber0,5)) { gl_FragColor = packDepth(); }\n#endif\n" 
+  @fragment += "#ifdef FRAGMENT_DEPTH_IN\nif(bitcheck(uUber0,6)) { float d = readDepth(vTexCoord);\ngl_FragColor = vec4(d,d,d,1.0); }\n#endif\n" 
   @fragment += "\n}"
 
   # We run over all the nodes, looking for materials. If we have them, check for defines
@@ -379,7 +381,7 @@ class UberShader extends Shader
       for light in base_node.spotLights
         if light.shadowmap
           @uber_defines.push "SHADOWMAP" if "SHADOWMAP" not in @uber_defines
-
+          @uber_defines.push "FRAGMENT_DEPTH_OUT" if "FRAGMENT_DEPTH_OUT" not in @uber_defines
     if base_node.skeleton?
       @uber_defines.push "SKINNING" if "SKINNING" not in @uber_defines
 

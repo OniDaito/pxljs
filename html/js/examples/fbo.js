@@ -34,7 +34,7 @@ draw = function() {
   GL.clearColor(0.15, 0.15, 0.15, 1.0);
   GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT);
   this.fbo.bind();
-  GL.clearColor(0.15, 0.0, 0.0, 1.0);
+  GL.clearColor(0.0, 0.0, 0.0, 1.0);
   GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT);
   this.sphere_node.draw();
   this.fbo.unbind();

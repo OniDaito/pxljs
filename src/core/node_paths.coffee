@@ -75,7 +75,7 @@ class Front
 
 # TODO - this should really live somewhere else
 _shadow_map_material = new DepthMaterial()
-_shadow_map_camera = new PerspCamera new Vec3(0,1,0), new Vec3(0,0,0), new Vec3(1,0,0), 3.0, 0.1, 100.0 
+_shadow_map_camera = new PerspCamera new Vec3(0,1,0), new Vec3(0,0,0), new Vec3(1,0,0), 3.0, 0.1, 100.0
 
 # **shadomap_create_draw**
 # -**node** - a Node
@@ -95,15 +95,18 @@ shadowmap_create_draw = (node,front,light) ->
   _shadow_map_camera.look.copy Vec3.add(light.pos, light.dir)
   _shadow_map_camera.up.copy Vec3.perp(light.dir)
   _shadow_map_camera.angle = light.angle
- 
+  #_shadow_map_camera.near = 0.1
+  _shadow_map_camera.far = light.attenuation[0]
+
   fc.camera = _shadow_map_camera
+
   # Begin the creation of a shadowmap for this light source
-  light._shadowmap_fbo.bind()
+  light.shadowmap_fbo.bind()
   fc.camera.update()
   GL.clearColor(0.0, 0.0, 0.0, 0.0)
   GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT)
   _shadowmap_create_draw node, fc, light
-  light._shadowmap_fbo.unbind()
+  light.shadowmap_fbo.unbind()
 
 
 # **_shadowmap_create_draw **
@@ -119,14 +122,15 @@ _shadowmap_create_draw = (node, front, light) ->
   front.material._preDraw()
 
   front._uber0 = front.material._uber0
-  front._uber0 = uber.uber_depth_set(true, front._uber0)
+  #front._uber0 = uber.uber_depth_set true, front._uber0
   front._uber0 = uber.uber_vertex_camera true, front._uber0
 
   # Sort of assuming we have a nice ubershader already
-  if node.shader?
-    front.shader = node.shader
+  # Not needed I believe as the shader should exist on front before it's cloned and passed in
+  #if node.shader?
+  #  front.shader = node.shader
   
-  # Create a precomputed model/view/perspective matrix for speed
+  # Create a precomputed model/view/perspecti:ve matrix for speed
   nm = Matrix4.mult(front.camera.m, nm)
  
   # Possibly only needs to be done when we actually need to draw or bind

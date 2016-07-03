@@ -1475,6 +1475,21 @@ class Matrix4
     @mult(r)
       
     @
+  # translatePart - set the translation part of this matrixfrom the Vec3 v
+  # - **v** - Vec3
+  # - returns this
+  translatePart: (v) ->
+    if v.DIM?
+      if v.DIM != 3
+        PXLWarning "Mismatched vector and matrix dimensions"
+        return @
+
+    @a[12] = v.x
+    @a[13] = v.y
+    @a[14] = v.z
+      
+    @
+
 
   # **setPos** - Given a vector, sets the translation part of the matrix directly with no multiplication
   # - **v** - Vec3

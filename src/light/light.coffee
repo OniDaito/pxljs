@@ -249,11 +249,11 @@ class SpotLight
       @shadowmap = false
 
     if @shadowmap
-      @_shadowmap_fbo = new Fbo(640,640)
+      @shadowmap_fbo = new Fbo(640,640)
 
     # Attenuation has 4 components - range, constant, linear and quadratic
     if not @attenuation?
-      @attenuation = [ 100, 1.0, 0.045, 0.0075 ]
+      @attenuation = [ 10, 1.0, 0.045, 0.0075 ]
   
     if not @dir?
       @dir = new Vec3(0,-1,0)
