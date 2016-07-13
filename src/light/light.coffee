@@ -161,11 +161,23 @@ class SpotLight
     "uniform vec4 uSpotLightAttenuation[LIGHTING_NUM_SPOT_LIGHTS];\n" +
     "uniform float uSpotLightAngle[LIGHTING_NUM_SPOT_LIGHTS];\n" +
     "uniform float uSpotLightExp[LIGHTING_NUM_SPOT_LIGHTS];\n" +
-    "#ifdef SHADOWMAP\nuniform sampler2D uSamplerPointShadow[LIGHTING_NUM_SPOT_LIGHTS];\n#endif\n" +
+    "#ifdef SHADOWMAP\nuniform sampler2D uSamplerPointShadow[LIGHTING_NUM_SPOT_LIGHTS];\n" +
+    "uniform mat4 uSpotLightInvMatrix[LIGHTING_NUM_SPOT_LIGHTS];\n" +
+    "varying vec4 vShadowTexCoord[LIGHTING_NUM_SPOT_LIGHTS];\n" + # TODO - does this need to be vec4?
+    "#endif\n" +
     "#endif\n"
 
   @fragment_head : @vertex_head
 
+  @vertex_main = "#ifdef LIGHTING_SPOT\n" +
+    "#ifdef SHADOWMAP\n" +
+    "if(bitcheck(uUber0,14)){\n"+
+    "  for (int i=0; i < LIGHTING_NUM_SPOT_LIGHTS; i++) {\n" +
+    "    vShadowTexCoord[i] = uSpotLightInvMatrix[i] * vec4(aVertexPosition, 1.0);\n" +
+    "  }\n"+
+    "}\n" +
+    "#endif\n" +
+    "#endif\n"
 
   @_posGlobal = new Float32Array(LIGHTING_NUM_SPOT_LIGHTS * 3)
   @_colourGlobal = new Float32Array(LIGHTING_NUM_SPOT_LIGHTS * 3)
@@ -173,6 +185,7 @@ class SpotLight
   @_dirGlobal = new Float32Array(LIGHTING_NUM_SPOT_LIGHTS * 3)
   @_angleGlobal = new Float32Array(LIGHTING_NUM_SPOT_LIGHTS)
   @_expGlobal = new Float32Array(LIGHTING_NUM_SPOT_LIGHTS)
+  @_invMatrix = new Float32Array(LIGHTING_NUM_SPOT_LIGHTS * 16)
 
   @contract = new Contract()
   @contract.roles.uSpotLightPos = "_posGlobal"
@@ -182,6 +195,7 @@ class SpotLight
   @contract.roles.uSpotLightAngle = "_angleGlobal"
   @contract.roles.uSpotLightExp = "_expGlobal"
   @contract.roles.uSpotLightNum = "_numGlobal"
+  @contract.roles.uSpotLightInvMatrix = "_invMatrix"
 
   # called internally - sets up the global contract array
   @_preDraw : (lights) ->
@@ -211,6 +225,9 @@ class SpotLight
       SpotLight._angleGlobal[idx] = light.angle
       SpotLight._expGlobal[idx] = light.exponent
       
+      for i in [0..15]
+        SpotLight._invMatrix[idx*16+i] = light.invMatrix.a[i]
+
       idx += 1
 
     SpotLight.numGlobal = lights.length
@@ -250,7 +267,8 @@ class SpotLight
 
     if @shadowmap
       @shadowmap_fbo = new Fbo(640,640)
-
+      @invMatrix = new Matrix4()
+    
     # Attenuation has 4 components - range, constant, linear and quadratic
     if not @attenuation?
       @attenuation = [ 10, 1.0, 0.045, 0.0075 ]

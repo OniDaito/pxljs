@@ -332,7 +332,6 @@ class UberShader extends Shader
     "}\n#endif\n"
 
   
-
   @fragment += "#ifdef FRAGMENT_LUMINANCE\n" +
     "float getLuminance(in vec3 colour) {\n"+
     "  vec3 lumcoeff = vec3(0.299,0.587,0.114);\n"+
@@ -352,6 +351,7 @@ class UberShader extends Shader
 
   @fragment += "#ifdef BASIC_COLOUR\nif(bitcheck(uUber0,8)) { gl_FragColor = uColour; }\n#endif\n"
   @fragment += "#ifdef VERTEX_COLOUR\nif(bitcheck(uUber0,9)) { gl_FragColor = vColour; }\n#endif\n"
+   
   @fragment += "#ifdef FRAGMENT_DEPTH_OUT\nif(bitcheck(uUber0,5)) { gl_FragColor = packDepth(); }\n#endif\n"
   @fragment += "#ifdef FRAGMENT_DEPTH_IN\nif(bitcheck(uUber0,6)) { float d = readDepth(vTexCoord);\ngl_FragColor = vec4(d,d,d,1.0); }\n#endif\n"
   @fragment += "\n}"

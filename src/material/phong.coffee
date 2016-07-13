@@ -29,6 +29,7 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 # which can either be a texture or a basic passed in colour. This variable is common throughout all
 # shaders.
 
+# TODO - eventually most of this will be in a textfile that we process into javascript at build time
 
 ### PhongMaterial ###
 # A basic material that contains phong elements
@@ -76,8 +77,21 @@ class PhongMaterial extends Material
     "   0.0);\n" +
     "}\n#endif\n" +
 
+    # Really annoyingly, in earlier browser releases we have to manually unroll. This suggests some kind of auto
+    # shader pre-build step using gulp or similar
+    # This means all spotlight work must be unrolled
     "#ifdef LIGHTING_SPOT\n" +
     "for (int i=0; i < LIGHTING_NUM_SPOT_LIGHTS; i++) {\n" +
+    "#ifdef SHADOWMAP\n" +
+    "  if(bitcheck(uUber0,14)){\n"+
+    "    vec4 lightdepth = texture2D(uSamplerPointShadow[i],vShadowTexCoord[i].xy);\n" +
+    "    \n"+
+    "    if(lightdepth.x > gl_FragCoord.z ){\n"+
+    "      continue;\n"+
+    "    }\n" +
+    "  }\n"+
+    "\n"+
+    "#endif\n" +
     "  vec3 lightDirection = normalize((uModelMatrix * vec4(uSpotLightPos[i],1.0)).xyz - vPosition.xyz);\n" +
     "  float spotFactor = dot ( -lightDirection, uSpotLightDir[i]);\n" +
     "  if (spotFactor >= cos(uSpotLightAngle[i])){\n" +

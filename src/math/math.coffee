@@ -38,6 +38,8 @@ http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/index.
 # return values that are not copies or references to thing being called upon.
 
 
+# TODO if we have Vec3 we should also have Mat3 instead of Matrix3
+
 {PXLWarning} = require '../util/log'
 
 if typeof Float32Array?

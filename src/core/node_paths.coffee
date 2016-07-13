@@ -88,9 +88,11 @@ _shadow_map_camera = new PerspCamera new Vec3(0,1,0), new Vec3(0,0,0), new Vec3(
 shadowmap_create_draw = (node,front,light) -> 
 
   fc = front.clone()
-  fc._uber0 = 0
   # Create the camera we shall use
-  # Shouldnt really do this all the time if not needed :S      
+  # Shouldnt really do this all the time if not needed :S
+  # Rather than recreate this matrix in the shader, we pass it in as a uniform for now
+  # This will be awkward as we are setting values on node objects and looking at modelviews
+  # and all the rest. Very cross cutting this ><
 
   _shadow_map_camera.pos.copy light.pos
   _shadow_map_camera.look.copy Vec3.add(light.pos, light.dir)
@@ -98,8 +100,14 @@ shadowmap_create_draw = (node,front,light) ->
   _shadow_map_camera.angle = light.angle
   #_shadow_map_camera.near = 0.1
   _shadow_map_camera.far = light.attenuation[0]
-
   fc.camera = _shadow_map_camera
+
+  # Create the inverse matrix making sure to multiply by the current modelview matrix
+  icm = front.globalMatrix.clone()
+  icm.mult _shadow_map_camera.m
+  icm.mult _shadow_map_camera.p
+  #icm.invert()
+  light.invMatrix.copy icm
 
   # Begin the creation of a shadowmap for this light source
   light.shadowmap_fbo.bind()
@@ -236,15 +244,17 @@ main_draw = (node, front) ->
   if node.pointLights.length > 0
     front._uber0 = uber.uber_lighting_point true, front._uber0
  
+  front._uber0 = uber.uber_lighting_spot false, front._uber0
+  
   for light in node.spotLights
     # shadowmap jumping off point
     if light.shadowmap
       if PXL.Context.gl?
         shadowmap_create_draw node, front, light
         front.spotLights.push light
-    
-  front._uber0 = uber.uber_lighting_spot false, front._uber0
-  if node.spotLights.length > 0
+      
+      front._uber0 = uber.uber_shadowmap true, front.uber0 # we want shadowmapping
+  
     front._uber0 = uber.uber_lighting_spot true, front._uber0
   
   # Overwrite the ambient if there is one closer
