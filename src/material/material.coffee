@@ -23,8 +23,11 @@ class Material
 
   constructor : () ->
     @contract = new Contract()
+
+    # TODO - these are per class not instance so we can change that
     @_uber0 = 0 # Settings to be OR'd with the ubershader uniform
     @_uber_defines = [] # uber shader looks for this for the defines to add
+    
     @_override = false # if set, this material overides all these below it
 
   _addToNode : (node) ->

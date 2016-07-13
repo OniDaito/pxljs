@@ -80,7 +80,7 @@ _shadow_map_camera = new PerspCamera new Vec3(0,1,0), new Vec3(0,0,0), new Vec3(
 # **shadomap_create_draw**
 # -**node** - a Node
 # -**front** - An Object based on Node
-# -**light** -  a SpotLight (eventually all lights)
+# -**light** - a SpotLight (eventually all lights)
 
 # Called when we find a spotLight that casts shadows
 # A Camera should have been set on the front before this function is called - dont like that :S
@@ -88,6 +88,7 @@ _shadow_map_camera = new PerspCamera new Vec3(0,1,0), new Vec3(0,0,0), new Vec3(
 shadowmap_create_draw = (node,front,light) -> 
 
   fc = front.clone()
+  fc._uber0 = 0
   # Create the camera we shall use
   # Shouldnt really do this all the time if not needed :S      
 
@@ -232,7 +233,7 @@ main_draw = (node, front) ->
     front.pointLights.push light
   
   uber.uber_lighting_point false, front._uber0
-  if node.pointLights.length > 0 
+  if node.pointLights.length > 0
     front._uber0 = uber.uber_lighting_point true, front._uber0
  
   for light in node.spotLights
@@ -243,7 +244,7 @@ main_draw = (node, front) ->
         front.spotLights.push light
     
   front._uber0 = uber.uber_lighting_spot false, front._uber0
-  if node.spotLights.length > 0 
+  if node.spotLights.length > 0
     front._uber0 = uber.uber_lighting_spot true, front._uber0
   
   # Overwrite the ambient if there is one closer
@@ -277,7 +278,7 @@ main_draw = (node, front) ->
         node.material._preDraw()
         front.material = node.material
         front._uber0 = uber.uber_clear_material(front._uber0) | node.material._uber0
-
+        
   # Copy any user contract items (added to the contract) that have not already been added
   # as users can add data to be passed in the contract (like uColour).
   # Do this by reference for now.

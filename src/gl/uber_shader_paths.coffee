@@ -18,6 +18,8 @@ the uniform uUber0 that sets the path through the uber shader
 At some point these functions will be replace by bit operations (WebGL 3?) or removed
 and uniforms and roles will be set per material
 
+There is probably a more elegant way of doing this but it works for now
+
 ###
 
 
@@ -56,9 +58,9 @@ uber_path_map:
   
 
 # Clear the uber flags for materials as we would like to override in the node
-# At the moment, these are 8 to 13 inclusive but WILL change
+# At the moment, these are 8 to 13 inclusive and 5-6 but WILL change
 uber_clear_material = (ubervar) ->
-  ubervar & ~0x3F00
+  ubervar & ~0x3F60
 
 # set the tranform to be just straight through
 uber_vertex_flat = (tf,ubervar) ->

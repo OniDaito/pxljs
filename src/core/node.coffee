@@ -51,7 +51,7 @@ class Node
     @_normalMatrix = new Matrix3()    # Used for the normal matrix should we need it 
     @_mvpMatrix = new Matrix4()       # Combines with the camera to speed up certain operations
     @children = []
-
+    
     @contract = new Contract()        # Create a contract for this node with the basic contract items
     
     @contract.roles.uModelMatrix      = "globalMatrix"
@@ -65,6 +65,7 @@ class Node
     @spotLights = []
 
     @spotLightShadowMaps = []
+
 
   # add - Add things to this node, like geometry, materials or other nodes
   # TODO - we need a flag set here for _dirty and then run shader_automagic again

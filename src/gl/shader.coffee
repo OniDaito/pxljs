@@ -48,7 +48,7 @@ class Shader
     gl = PXL.Context.gl # Global / Current context
     
     # Create the Vertex Shader
-    @vertexShader = gl.createShader(gl.VERTEX_SHADER);
+    @vertexShader = gl.createShader(gl.VERTEX_SHADER)
     if not @vertexShader
       PXLError "No vertex shader object could be created"
 
@@ -62,7 +62,7 @@ class Shader
     gl.shaderSource @vertexShader, sv
     gl.compileShader @vertexShader
 
-    if not gl.getShaderParameter @vertexShader, gl.COMPILE_STATUS  
+    if not gl.getShaderParameter @vertexShader, gl.COMPILE_STATUS
       @_printLog @vertexShader, sv, "vertex"
 
     gl.shaderSource @fragmentShader, sf
@@ -226,8 +226,8 @@ class Shader
         if i > 0
           tn = u.name.slice(0,i)
 
-        uniform = 
-          name : tn 
+        uniform =
+          name : tn
           pos : @._getLocation u.name
           type : u.type # TODO - test this
           size : u.size # TODO - test this
@@ -252,9 +252,9 @@ class Shader
    # _parseShader - Given a token, a line basically, parse the line and get the types (vec3 etc)
   _parseShader : (token) ->
     data = []
-    lines = @sv.split(";").concat(@sf.split(";"));
+    lines = @sv.split(";").concat(@sf.split(";"))
     for l in lines
-      re = RegExp("\\b" + token + "\\b"); 
+      re = RegExp("\\b" + token + "\\b")
       if l.match(re)?
         tokens  = l.split(" ")
         finals = []
@@ -280,7 +280,7 @@ class Shader
           attr.type = finals[1]
           attr.pos = -1
           attr.size = finals[3]
-          data.push attr 
+          data.push attr
 
     data
 
@@ -332,18 +332,18 @@ class Shader
   setUniform3v: (name,v) ->
     gl = PXL.Context.gl
     gl.uniform3f(@_getLocation(name),v.x,v.y,v.z)
-    @ 
+    @
 
   # setUniform3f - Given 3 floats, set this uniform
   setUniform3f: (name,a,b,c) ->
     gl = PXL.Context.gl
     gl.uniform3f(@_getLocation(name),a,b,c)
-    @ 
+    @
 
   # setUniform4f - Given a uniform name and four floats, set this uniform
   setUniform4f: (name,a,b,c,d) ->
     gl = PXL.Context.gl
-    gl.uniform4f(@_getLocation(name),a,b,c,d) 
+    gl.uniform4f(@_getLocation(name),a,b,c,d)
     @
 
 
@@ -351,7 +351,7 @@ class Shader
   setUniform4v: (name,v) ->
     gl = PXL.Context.gl
     gl.uniform4f(@_getLocation(name),v.x,v.y,v.z,v.w)
-    @ 
+    @
 
   # setUniform4fv - Given a uniform name and an array of floats, grouped in fours, set this uniform
   setUniform4fv : (name, a) ->
@@ -387,7 +387,7 @@ class Shader
 
 ### shaderFromText ###
 # Create a shader from a block of text and an optional contract
-
+# TODO - old and not used at present but could be handy later
 shaderFromText = ( text, contract ) ->
 
   _splitShader = (s) ->
@@ -485,11 +485,9 @@ shaderFromText = ( text, contract ) ->
 
   chunks.push new ShaderChunk {func : sv, main_func : main_vertex}, {func : sf, main_func : main_fragment}
 
-  shader = new Shader chunks, contract, precision_vertex, precision_fragment
- 
+  shader = new Shader chunks, contract, precision_vertex, precision_fragment 
   shader
 
-
-module.exports = 
+module.exports =
   Shader : Shader
   shaderFromText : shaderFromText

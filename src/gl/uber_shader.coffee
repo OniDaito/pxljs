@@ -308,9 +308,9 @@ class UberShader extends Shader
   @fragment += "#ifdef VERTEX_TANGENT\nvarying vec3 vTangent;\n#endif\n"
   @fragment += "#ifdef ADVANCED_CAMERA\nuniform float uCameraNear;\n" +
     "uniform float uCameraFar;\n " +
-    "uniform mat4 uCameraInverseMatrix;\n " + 
+    "uniform mat4 uCameraInverseMatrix;\n " +
     "uniform mat4 uInverseProjectionMatrix;\n" +
-    "varying vec4 vEyePosition;\n#endif\n" 
+    "varying vec4 vEyePosition;\n#endif\n"
 
   # Materials
 
@@ -326,9 +326,9 @@ class UberShader extends Shader
   @fragment +="\n\n"
   @fragment +="#ifdef FRAGMENT_NOISE\n" + UberShader._noise + "\n#endif\n"
 
-  @fragment += "#ifdef FRAGMENT_INTENSITY\n" + 
-    "float intensity(in vec4 colour) {\n" + 
-    "  return sqrt((colour.x*colour.x)+(colour.y*colour.y)+(colour.z*colour.z));\n" + 
+  @fragment += "#ifdef FRAGMENT_INTENSITY\n" +
+    "float intensity(in vec4 colour) {\n" +
+    "  return sqrt((colour.x*colour.x)+(colour.y*colour.y)+(colour.z*colour.z));\n" +
     "}\n#endif\n"
 
   
@@ -352,8 +352,8 @@ class UberShader extends Shader
 
   @fragment += "#ifdef BASIC_COLOUR\nif(bitcheck(uUber0,8)) { gl_FragColor = uColour; }\n#endif\n"
   @fragment += "#ifdef VERTEX_COLOUR\nif(bitcheck(uUber0,9)) { gl_FragColor = vColour; }\n#endif\n"
-  @fragment += "#ifdef FRAGMENT_DEPTH_OUT\nif(bitcheck(uUber0,5)) { gl_FragColor = packDepth(); }\n#endif\n" 
-  @fragment += "#ifdef FRAGMENT_DEPTH_IN\nif(bitcheck(uUber0,6)) { float d = readDepth(vTexCoord);\ngl_FragColor = vec4(d,d,d,1.0); }\n#endif\n" 
+  @fragment += "#ifdef FRAGMENT_DEPTH_OUT\nif(bitcheck(uUber0,5)) { gl_FragColor = packDepth(); }\n#endif\n"
+  @fragment += "#ifdef FRAGMENT_DEPTH_IN\nif(bitcheck(uUber0,6)) { float d = readDepth(vTexCoord);\ngl_FragColor = vec4(d,d,d,1.0); }\n#endif\n"
   @fragment += "\n}"
 
   # We run over all the nodes, looking for materials. If we have them, check for defines
@@ -382,6 +382,7 @@ class UberShader extends Shader
         if light.shadowmap
           @uber_defines.push "SHADOWMAP" if "SHADOWMAP" not in @uber_defines
           @uber_defines.push "FRAGMENT_DEPTH_OUT" if "FRAGMENT_DEPTH_OUT" not in @uber_defines
+    
     if base_node.skeleton?
       @uber_defines.push "SKINNING" if "SKINNING" not in @uber_defines
 
@@ -396,7 +397,7 @@ class UberShader extends Shader
   constructor : () ->
     @uber_defines = []
 
-    for base_node in arguments 
+    for base_node in arguments
       @_traverse base_node
 
     def_string = ""
@@ -416,5 +417,5 @@ class UberShader extends Shader
       @_addToNode base_node
 
 
-module.exports = 
+module.exports =
   UberShader : UberShader

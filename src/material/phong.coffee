@@ -38,7 +38,7 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 class PhongMaterial extends Material
 
   @fragment_head : "#ifdef MAT_PHONG\nuniform vec3 uMaterialAmbientColour;\nuniform float uMaterialShininess;\n" +
-    "\nuniform vec3 uMaterialDiffuseColour;\n" + 
+    "\nuniform vec3 uMaterialDiffuseColour;\n" +
     "\nuniform sampler2D uSamplerDiffuse;\n" +
     "\nuniform vec3 uMaterialSpecularColour;\n" +
     "\nuniform sampler2D uSamplerSpecular;\n" +
@@ -46,19 +46,18 @@ class PhongMaterial extends Material
     "\nuniform sampler2D uSamplerEmissive;\n#endif\n"
 
   @fragment_main : "#ifdef MAT_PHONG\nvec3 materialDiffuseColour = uMaterialDiffuseColour;\n" +
-    "vec3 materialSpecularColour;\n" +
-    "vec3 materialEmissiveColour;\n" +
+    "vec3 materialSpecularColour = uMaterialSpecularColour;\n" +
+    "vec3 materialEmissiveColour = uMaterialEmissiveColour;\n" +
+ 
     "#ifdef VERTEX_TEXTURE\n" +
     "if(bitcheck(uUber0,10)){ materialDiffuseColour = texture2D(uSamplerDiffuse, vTexCoord).rgb;}\n" +
     "if(bitcheck(uUber0,11)){ materialSpecularColour = texture2D(uSamplerSpecular, vTexCoord).rgb;}\n" +
     "if(bitcheck(uUber0,12)){ materialEmissiveColour = texture2D(uSamplerEmissive, vTexCoord).rgb;}\n" +
     "#endif\n" +
-    "materialSpecularColour = uMaterialSpecularColour;\n" +
-    "materialEmissiveColour = uMaterialEmissiveColour;\n" +
     "vec3 specularLightWeighting = vec3(0.0, 0.0, 0.0);\n" +
     "vec3 diffuseLightWeighting = vec3(0.0, 0.0, 0.0);\n" +
     "vec3 materialAmbientColour = uMaterialAmbientColour * uAmbientLightingColour;\n" +
-    "gl_FragColor = vec4(materialAmbientColour, 1.0);\n" + 
+    "gl_FragColor = vec4(materialAmbientColour, 1.0);\n" +
     "vec3 eyeDirection = normalize(-vPosition.xyz);\n" +
     "#ifdef LIGHTING_POINT\n" +
     "for (int i=0; i < LIGHTING_NUM_POINT_LIGHTS; i++) {\n" +
@@ -82,9 +81,9 @@ class PhongMaterial extends Material
     "  vec3 lightDirection = normalize((uModelMatrix * vec4(uSpotLightPos[i],1.0)).xyz - vPosition.xyz);\n" +
     "  float spotFactor = dot ( -lightDirection, uSpotLightDir[i]);\n" +
     "  if (spotFactor >= cos(uSpotLightAngle[i])){\n" +
-    "    spotFactor = pow(spotFactor, uSpotLightExp[i]);\n" + 
+    "    spotFactor = pow(spotFactor, uSpotLightExp[i]);\n" +
     "  } else {\n" +
-    "    spotFactor = 0.0;\n" + 
+    "    spotFactor = 0.0;\n" +
     "  }\n" +
     "  vec3 reflectionDirection = reflect(-lightDirection, vTransformedNormal.xyz);\n" +
     "  float specularLightBrightness = pow(max(dot(reflectionDirection, eyeDirection), 0.0), uMaterialShininess);\n" +
@@ -137,7 +136,7 @@ class PhongMaterial extends Material
     else
       if @diffuse instanceof RGB or @diffuse instanceof RGBA
         # TODO - Eventually put in materials that are transparent
-        @diffuse = new RGB( @diffuse.r, @diffuse.g, @diffuse.b) 
+        @diffuse = new RGB( @diffuse.r, @diffuse.g, @diffuse.b)
         @contract.roles.uMaterialDiffuseColour  = "diffuse"
         @_uber0 = uber_phong_diff_tex false, @_uber0
       else if @diffuse instanceof Texture
