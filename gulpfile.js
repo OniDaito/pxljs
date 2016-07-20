@@ -29,6 +29,34 @@ gulp.task('guide', function(){
   
 });
 
+// compile the shader chunks for all the various parts of the code so
+// we can then build the uber shader - essentially convert them to
+// javascript variables and the like - cheap autogen
+
+gulp.task('shader_chunks', function() {
+
+  var through2 = require('through2')
+
+  var _parse_chunk = function(file, encoding, callback) {
+    var x = String(file.contents);
+    x = x + "BLAH";
+    file.contents = new Buffer(x);
+    callback(null,file);
+  }; 
+
+  var parse_chunk = through2.obj(_parse_chunk);
+
+  gulp.src("./src/shaders/chunks/*")
+  .pipe(parse_chunk)
+  .pipe(gulp.dest('./build/src/shaders/chunks'))
+
+});
+
+gulp.task('shaders', function() {
+  gulp.src("./shaders/glsl/*.glsl")
+
+});
+
 // Make ready for the web
 // TODO - Turn on or off DEBUG gulp builds
 
@@ -121,7 +149,7 @@ gulp.task('test', function(cb) {
 // Source maps are built inline for now
 // TODO - Turn this off for release build
 
-gulp.task('build', ['clean'], function(){
+gulp.task('build', ['clean','shader_chunks','shaders'], function(){
   return gulp.src(["./src/**/*.coffee"],{base: "."})
     .pipe(sourcemaps.init())
     .pipe(coffee({bare: true, map: true}).on('error',gutil.log))
