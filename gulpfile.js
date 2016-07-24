@@ -12,6 +12,7 @@ var register = require('coffee-script/register');
 var del = require('del');
 var sourcemaps = require('gulp-sourcemaps');
 var budo = require('budo')
+var shader_builder = require('./shader_builder');
 
 //var transform = require('vinyl-transform'); - previously used but doesnt work :S
 //var watchify = require('watchify'); // TODO - Eventually use watchify
@@ -33,36 +34,21 @@ gulp.task('guide', function(){
 // we can then build the uber shader - essentially convert them to
 // javascript variables and the like - cheap autogen
 
-gulp.task('shader_chunks', function() {
-
-  var through2 = require('through2')
-
-  var _parse_chunk = function(file, encoding, callback) {
-    var x = String(file.contents);
-    x = x + "BLAH";
-    file.contents = new Buffer(x);
-    callback(null,file);
-  }; 
-
-  var parse_chunk = through2.obj(_parse_chunk);
-
-  gulp.src("./src/shaders/chunks/*")
-  .pipe(parse_chunk)
-  .pipe(gulp.dest('./build/src/shaders/chunks'))
-
-});
-
 gulp.task('shaders', function() {
-  gulp.src("./shaders/glsl/*.glsl")
-
+  return gulp.src("./src/shaders/*.glsl")
+  .pipe(shader_builder())
+  .pipe(rename(function (path) {path.extname = ".js"} ))
+  .pipe(gulp.dest('./build/src/shaders'));
 });
+
+
 
 // Make ready for the web
 // TODO - Turn on or off DEBUG gulp builds
 
 gulp.task('web', ['build'], function(){
 
-  // As far as I can tell, vinyl-transform is fucking retarded
+  // As far as I can tell, vinyl-transform is f**king retarded
   // and doesnt work properly so I've implemented what should
   // work here instead. This vinylizeBrowserify is basically
   // vinyl transform but with a few silly breaking lines removed
@@ -132,7 +118,8 @@ gulp.task('web', ['build'], function(){
 
 // Clean by removing the build directories
 gulp.task('clean', function(cb) {
-  return del(['build'], cb);
+  del.sync(['build']);
+  return cb();  
 });
 
 
@@ -149,7 +136,7 @@ gulp.task('test', function(cb) {
 // Source maps are built inline for now
 // TODO - Turn this off for release build
 
-gulp.task('build', ['clean','shader_chunks','shaders'], function(){
+gulp.task('build', ['clean','shaders'], function(){
   return gulp.src(["./src/**/*.coffee"],{base: "."})
     .pipe(sourcemaps.init())
     .pipe(coffee({bare: true, map: true}).on('error',gutil.log))
