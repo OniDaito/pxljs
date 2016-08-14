@@ -1,0 +1,14 @@
+#ifdef FRAGMENT_DEPTH_IN
+uniform sampler2D uSamplerDepth;
+float unpack (in vec4 colour) {
+  const vec4 bitShifts = vec4(1.0 / (256.0 * 256.0 * 256.0), 1.0 / (256.0 * 256.0), 1.0 / 256.0, 1.0); 
+  return dot(colour, bitShifts);
+}
+
+// Passed in by the coffeegl depth shader. Reproduces from non linear gl_FragCoord.z to linear 0-1
+float readDepth(in vec2 coord)  {
+  vec4 colour = texture2D(uSamplerDepth, coord);
+  float unpacked = unpack(colour);
+  return (uCameraNear * unpacked) / ( uCameraFar - unpacked * (uCameraFar - uCameraNear) );
+}
+#endif

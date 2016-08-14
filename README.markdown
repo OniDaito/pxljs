@@ -5,17 +5,17 @@
 
 ![Build Status Images](https://travis-ci.org/OniDaito/PXLjs.svg)
 
-## A WebGL Library for CoffeeScript.
+## A WebGL Library for CoffeeScript and Vanilla Javascript.
 
 
-PXLjs is a WebGL Library designed to help programmers create 3D programs for the World-Wide-Web using [CoffeeScript](http://coffeescript.org). This project is open-source and designed to provide useful functions for beginners without restricting the option to program in raw WebGL.
+PXLjs is a WebGL Library designed to help programmers create 3D programs for the World-Wide-Web using [CoffeeScript](http://coffeescript.org) or normal Javscript. This project is open-source and designed to provide useful functions for beginners without restricting the option to program in raw WebGL.
 
 
 ## Download and Installation
 
 You can get PXLjs in a variety of ways: 
 
-* As a [zip direct download](http://www.coffeegl.com/coffeegl.zip).
+* As a [zip direct download](http://www.pxljs.com/pxljs.zip).
 * Visit the [Github page](https://www.github.com/OniDaito/PXLjs) and clone the respository.
 * Directly through npm using the command below.
 
@@ -37,10 +37,9 @@ mocha and chai are only needed to run the tests (which is a good idea if you are
 
 ## Getting Started
 
-
 ### Starting a new project.
 
-First, create a new folder for your project. Into this we will place our **index.html** and the coffeegl library file, **coffeegl.min.js** which you can find in the lib directory.
+First, create a new folder for your project. Into this we will place our **index.html** and the pxljs library file, **pxljs.min.js** which you can find in the lib directory.
 
 Your HTML page should look something like this:
 
@@ -78,7 +77,7 @@ Lets start by writing two basic functions, our init and draw functions. Create a
     v1 = new PXLjs.Vertex(new PXLjs.Vec3(0,1,0), new PXLjs.Colour.RGBA.WHITE())
     v2 = new PXLjs.Vertex(new PXLjs.Vec3(1,-1,0), new PXLjs.Colour.RGBA.WHITE())
 
-    t = new PXLjs.Triangle(v0,v1,v2)
+    t = new PXLjs.Geometry.Triangle(v0,v1,v2)
 
     r = new PXLjs.Request('basic_vertex_colour.glsl')
     r.get (data) =>
@@ -97,7 +96,14 @@ Lets start by writing two basic functions, our init and draw functions. Create a
     GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT)
     @node.draw()
 
-  cgl = new PXLjs.App('webgl-canvas', this, init, draw)
+  params = 
+    canvas : 'webgl-canvas'
+    context : @
+    init : init
+    debug : true
+    draw : draw
+
+  cgl = new PXL.App params
 
 </pre>
 

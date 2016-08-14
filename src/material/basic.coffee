@@ -56,9 +56,6 @@ class VertexColourMaterial extends Material
 
 class TextureMaterial extends Material
 
-  @fragment_head : "#ifdef MAT_TEXTURE\nuniform sampler2D uSamplerTexture;\n#endif\n"
-  @fragment_main : "#ifdef MAT_TEXTURE\nif(bitcheck(uUber0,4)) { gl_FragColor = texture2D(uSamplerTexture, vTexCoord); }\n#endif\n"
-
   # **constructor**
   # - **texture** - a Texture
   constructor : (@texture) ->

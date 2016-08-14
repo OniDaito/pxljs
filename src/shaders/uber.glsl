@@ -1,6 +1,9 @@
 // The ubershader used in pxljs
 
 ##>VERTEX
+#version 100
+precision highp float;
+precision highp int;
 
 uniform float uUber0;
 attribute vec3 aVertexPosition;
@@ -58,7 +61,7 @@ uniform int uBoneTexDim;
 #endif
 
 #ifdef VERTEX_SOBEL
-{{ShaderChunk.tangent_sobel}}
+{{ShaderChunk.sobel}}
 #endif
 
 #ifdef SKINNING 
@@ -150,6 +153,10 @@ void main() {
 
 
 ##>FRAGMENT
+#version 100
+precision highp float;
+precision highp int;
+
 uniform float uUber0;
 uniform mat4 uModelMatrix;
 varying vec4 vPosition;
@@ -195,9 +202,6 @@ bool bitcheck(in float fcheck, in int bitpos) {
 }
 
 {{ShaderChunk.phong_material_fragment_head}}
-{{ShaderChunk.ambient_light_fragment_head}}
-{{ShaderChunk.point_light_fragment_head}}
-{{ShaderChunk.spot_light_fragment_head}}
 {{ShaderChunk.texture_material_fragment_head}}
 {{ShaderChunk.depth_material_fragment_head}}
 {{ShaderChunk.view_material_fragment_head}}
@@ -221,6 +225,7 @@ float getLuminance(in vec3 colour) {
 
 #ifdef FRAGMENT_TANGENT_FRAME
 {{ShaderChunk.tangent_frame}}
+#endif
 
 #ifdef FRAGMENT_SOBEL
 {{ShaderChunk.sobel}}

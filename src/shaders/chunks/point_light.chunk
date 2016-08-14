@@ -1,0 +1,7 @@
+#ifdef LIGHTING_POINT
+#define LIGHTING_NUM_POINT_LIGHTS 5
+uniform int uPointLightNum;
+uniform vec3 uPointLightPos[LIGHTING_NUM_POINT_LIGHTS];
+uniform vec3 uPointLightColour[LIGHTING_NUM_POINT_LIGHTS];
+uniform vec4 uPointLightAttenuation[LIGHTING_NUM_POINT_LIGHTS];
+#endif

@@ -1,0 +1,10 @@
+ #ifdef MAT_PHONG
+uniform vec3 uMaterialAmbientColour;
+uniform float uMaterialShininess;
+uniform vec3 uMaterialDiffuseColour;
+uniform sampler2D uSamplerDiffuse;
+uniform vec3 uMaterialSpecularColour;
+uniform sampler2D uSamplerSpecular;
+uniform vec3 uMaterialEmissiveColour;
+uniform sampler2D uSamplerEmissive;
+#endif

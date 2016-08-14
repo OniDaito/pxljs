@@ -40,10 +40,6 @@ LIGHTING_NUM_SPOT_LIGHTS = 5
 
 class AmbientLight
 
-  @vertex_head : "uniform vec3 uAmbientLightingColour;\n"
-  
-  @fragment_head : @vertex_head
-
   constructor : (@colour) ->
     if not @colour?
       @colour = new RGB(0,0,0)
@@ -67,17 +63,6 @@ class AmbientLight
 # shader in the end. That way, they can be passed as arrays and looped over
 
 class PointLight
-
-  @vertex_head : "#ifdef LIGHTING_POINT\n" +
-    "#define LIGHTING_NUM_POINT_LIGHTS " + LIGHTING_NUM_POINT_LIGHTS  + "\n" +
-    "uniform int uPointLightNum;\n" +
-    "uniform vec3 uPointLightPos[LIGHTING_NUM_POINT_LIGHTS];\n" +
-    "uniform vec3 uPointLightColour[LIGHTING_NUM_POINT_LIGHTS];\n" +
-    "uniform vec4 uPointLightAttenuation[LIGHTING_NUM_POINT_LIGHTS];\n" +
-    "#endif\n"
-
-  @fragment_head : @vertex_head
-
  
   @_posGlobal = new Float32Array(LIGHTING_NUM_POINT_LIGHTS * 3)
   @_colourGlobal = new Float32Array(LIGHTING_NUM_POINT_LIGHTS * 3)
@@ -151,23 +136,6 @@ class PointLight
 # A SpotLight with a direction and angle (which represents how wide the beam is)
 # Just as in PointLight, the spotlight prototype records all spots
 class SpotLight
-
-  @vertex_head : "#ifdef LIGHTING_SPOT\n" +
-    "#define LIGHTING_NUM_SPOT_LIGHTS " + LIGHTING_NUM_SPOT_LIGHTS  + "\n" +
-    "uniform int uSpotLightNum;\n" +
-    "uniform vec3 uSpotLightPos[LIGHTING_NUM_SPOT_LIGHTS];\n" +
-    "uniform vec3 uSpotLightColour[LIGHTING_NUM_SPOT_LIGHTS];\n" +
-    "uniform vec3 uSpotLightDir[LIGHTING_NUM_SPOT_LIGHTS];\n" + # TODO - if normalised can reduce down - optimise
-    "uniform vec4 uSpotLightAttenuation[LIGHTING_NUM_SPOT_LIGHTS];\n" +
-    "uniform float uSpotLightAngle[LIGHTING_NUM_SPOT_LIGHTS];\n" +
-    "uniform float uSpotLightExp[LIGHTING_NUM_SPOT_LIGHTS];\n" +
-    "#ifdef SHADOWMAP\nuniform sampler2D uSamplerPointShadow[LIGHTING_NUM_SPOT_LIGHTS];\n" +
-    "uniform mat4 uSpotLightInvMatrix[LIGHTING_NUM_SPOT_LIGHTS];\n" +
-    "varying vec4 vShadowTexCoord[LIGHTING_NUM_SPOT_LIGHTS];\n" + # TODO - does this need to be vec4?
-    "#endif\n" +
-    "#endif\n"
-
-  @fragment_head : @vertex_head
 
   @vertex_main = "#ifdef LIGHTING_SPOT\n" +
     "#ifdef SHADOWMAP\n" +

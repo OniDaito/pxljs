@@ -20,11 +20,8 @@ that is being taken doesnt need these uniforms
 
 ###
 
-{PhongMaterial} = require "../material/phong"
-{TextureMaterial} = require "../material/basic"
-{DepthMaterial, ViewDepthMaterial} = require "../material/depth"
-{PointLight, SpotLight, AmbientLight} = require "../light/light"
 {Shader} = require "./shader"
+uber = require "../shaders/uber" # this is automatically built via gulp
 
 ### UberShader ###
 # An implementation of an Ubershader that uses a uniform to choose the path through the shader
@@ -60,7 +57,6 @@ that is being taken doesnt need these uniforms
 # TODO - Shaderpaths could do the same - use names that map to numbers
 
 class UberShader extends Shader
-
 
 
   # final transform if nothing else
@@ -124,8 +120,11 @@ class UberShader extends Shader
     # We default to high precision for our ubershader
     # I havent passed in any options for precision yet
 
-    @vertex = "#version 100\n" + "precision highp float;\nprecision highp int;\n" + def_string + UberShader.vertex
-    @fragment = "#version 100\n" + "precision highp float;\nprecision highp int;\n" + def_string + UberShader.fragment
+    @vertex = uber.vertex;
+    @fragment = uber.fragment;
+
+    #@vertex = "#version 100\n" + "precision highp float;\nprecision highp int;\n" + def_string + UberShader.vertex
+    #@fragment = "#version 100\n" + "precision highp float;\nprecision highp int;\n" + def_string + UberShader.fragment
 
     super(@vertex, @fragment, undefined)
     @_uber = true

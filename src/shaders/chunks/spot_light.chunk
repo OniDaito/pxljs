@@ -1,0 +1,15 @@
+#ifdef LIGHTING_SPOT
+#define LIGHTING_NUM_SPOT_LIGHTS 5 
+uniform int uSpotLightNum;
+uniform vec3 uSpotLightPos[LIGHTING_NUM_SPOT_LIGHTS];
+uniform vec3 uSpotLightColour[LIGHTING_NUM_SPOT_LIGHTS];
+uniform vec3 uSpotLightDir[LIGHTING_NUM_SPOT_LIGHTS]; // TODO - if normalised can reduce down - optimise
+uniform vec4 uSpotLightAttenuation[LIGHTING_NUM_SPOT_LIGHTS];
+uniform float uSpotLightAngle[LIGHTING_NUM_SPOT_LIGHTS];
+uniform float uSpotLightExp[LIGHTING_NUM_SPOT_LIGHTS];
+#ifdef SHADOWMAP
+uniform sampler2D uSamplerPointShadow[LIGHTING_NUM_SPOT_LIGHTS];
+uniform mat4 uSpotLightInvMatrix[LIGHTING_NUM_SPOT_LIGHTS];
+varying vec4 vShadowTexCoord[LIGHTING_NUM_SPOT_LIGHTS]; // TODO - does this need to be vec4?
+#endif
+#endif
