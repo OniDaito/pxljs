@@ -44,7 +44,11 @@ _________  __|  |
 
 This software <span class="hljs-keyword">is</span> released under the MIT Licence. See LICENCE.txt <span class="hljs-keyword">for</span> details
 
-An Uber shader implementation</pre></div></div>
+An Uber shader implementation
+
+TODO - There <span class="hljs-keyword">is</span> an issue that the uber shader will attempt to match its larger contract each time
+even with nodes <span class="hljs-keyword">and</span> contracts that dont have related uniforms, because the path through the uber shader
+that <span class="hljs-keyword">is</span> being taken doesnt need these uniforms</pre></div></div>
             
         </li>
         
@@ -60,9 +64,8 @@ An Uber shader implementation</pre></div></div>
             </div>
             
             <div class="content"><div class='highlight'><pre>
-{UberShaderPhong} = <span class="hljs-built_in">require</span> <span class="hljs-string">"../material/phong"</span>
-{UberShaderForwardLight} = <span class="hljs-built_in">require</span> <span class="hljs-string">"../light/light"</span>
-{Shader} = <span class="hljs-built_in">require</span> <span class="hljs-string">"./shader"</span></pre></div></div>
+{Shader} = <span class="hljs-built_in">require</span> <span class="hljs-string">"./shader"</span>
+uber = <span class="hljs-built_in">require</span> <span class="hljs-string">"../shaders/uber"</span> <span class="hljs-comment"># this is automatically built via gulp</span></pre></div></div>
             
         </li>
         
@@ -76,7 +79,7 @@ An Uber shader implementation</pre></div></div>
               <h2 id="ubershader">UberShader</h2>
 <p>An implementation of an Ubershader that uses a uniform to choose the path through the shader
 and a series of hash defines to sort out what we actually need
-Hash defines include:</p>
+Hash defines include the following as well as these in the various material classes:</p>
 <p>VERTEX_COLOUR
 VERTEX_TEXTURE
 VERTEX_NORMAL
@@ -86,7 +89,8 @@ VERTEX_TANGENT_FRAME
 VERTEX_SOBEL</p>
 <p>FRAGMENT_NOISE
 FRAGMENT_INTENSITY
-FRAGMENT_DEPTH
+FRAGMENT_DEPTH_IN
+FRAGMENT_DEPTH_OUT
 FRAGMENT_LUMINANCE
 FRAGMENT_TANGENT_FRAME
 FRAGMENT_SOBEL</p>
@@ -138,99 +142,10 @@ TODO - Shaderpaths could do the same - use names that map to numbers</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>Functions that can appear in both</p>
+              <p>final transform if nothing else
+FRAGMENT SHADER</p>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>  @_noise = <span class="hljs-string">"vec3 mod289(vec3 x) {\n"</span> +
-    <span class="hljs-string">"  return x - floor(x * (1.0 / 289.0)) * 289.0;\n"</span> +
-    <span class="hljs-string">"}\n\n"</span> +
-
-    <span class="hljs-string">"vec4 mod289(vec4 x) {\n"</span> + 
-    <span class="hljs-string">"  return x - floor(x * (1.0 / 289.0)) * 289.0;\n"</span> +
-    <span class="hljs-string">"}\n\n"</span> +
-
-    <span class="hljs-string">"vec4 permute(vec4 x) {\n"</span> +
-    <span class="hljs-string">"     return mod289(((x*34.0)+1.0)*x);\n"</span> +
-    <span class="hljs-string">"}\n\n"</span> +
-
-    <span class="hljs-string">"vec4 taylorInvSqrt(vec4 r) {\n"</span> +
-    <span class="hljs-string">"  return 1.79284291400159 - 0.85373472095314 * r;\n"</span> +
-    <span class="hljs-string">"}\n\n"</span> +
-
-    <span class="hljs-string">"float snoise(vec3 v) {\n"</span> + 
-      <span class="hljs-string">"const vec2  C = vec2(1.0/6.0, 1.0/3.0) ;\n"</span> +
-      <span class="hljs-string">"const vec4  D = vec4(0.0, 0.5, 1.0, 2.0);\n"</span> +
-
-      <span class="hljs-string">"// First corner\n"</span> +
-      <span class="hljs-string">"vec3 i  = floor(v + dot(v, C.yyy) );\n"</span> +
-      <span class="hljs-string">"vec3 x0 =   v - i + dot(i, C.xxx) ;\n"</span> +
-
-      <span class="hljs-string">"// Other corners\n"</span> +
-      <span class="hljs-string">"vec3 g = step(x0.yzx, x0.xyz);\n"</span> +
-      <span class="hljs-string">"vec3 l = 1.0 - g;\n"</span> +
-      <span class="hljs-string">"vec3 i1 = min( g.xyz, l.zxy );\n"</span> +
-      <span class="hljs-string">"vec3 i2 = max( g.xyz, l.zxy );\n"</span> +
-
-      <span class="hljs-string">"//   x0 = x0 - 0.0 + 0.0 * C.xxx;\n "</span> +
-      <span class="hljs-string">"//   x1 = x0 - i1  + 1.0 * C.xxx;\n "</span> +
-      <span class="hljs-string">"//   x2 = x0 - i2  + 2.0 * C.xxx;\n "</span> +
-      <span class="hljs-string">"//   x3 = x0 - 1.0 + 3.0 * C.xxx;\n "</span> +
-      <span class="hljs-string">"vec3 x1 = x0 - i1 + C.xxx;\n"</span> +
-      <span class="hljs-string">"vec3 x2 = x0 - i2 + C.yyy; // 2.0*C.x = 1/3 = C.y\n"</span> +
-      <span class="hljs-string">"vec3 x3 = x0 - D.yyy;      // -1.0+3.0*C.x = -0.5 = -D.y\n\n"</span> +
-
-      <span class="hljs-string">"// Permutations\n"</span> +
-      <span class="hljs-string">"i = mod289(i);\n"</span> + 
-      <span class="hljs-string">"vec4 p = permute( permute( permute( \n"</span> +
-      <span class="hljs-string">"           i.z + vec4(0.0, i1.z, i2.z, 1.0 ))\n"</span> +
-      <span class="hljs-string">"         + i.y + vec4(0.0, i1.y, i2.y, 1.0 ))\n"</span> + 
-      <span class="hljs-string">"         + i.x + vec4(0.0, i1.x, i2.x, 1.0 ));\n\n"</span> +
-
-      <span class="hljs-string">"// Gradients: 7x7 points over a square, mapped onto an octahedron.\n"</span> +
-      <span class="hljs-string">"// The ring size 17*17 = 289 is close to a multiple of 49 (49*6 = 294)\n"</span> +
-      <span class="hljs-string">"float n_ = 0.142857142857; // 1.0/7.0\n"</span> +
-      <span class="hljs-string">"vec3  ns = n_ * D.wyz - D.xzx;\n\n"</span> +
-
-      <span class="hljs-string">"vec4 j = p - 49.0 * floor(p * ns.z * ns.z);  //  mod(p,7*7)\n\n"</span> + 
-
-      <span class="hljs-string">"vec4 x_ = floor(j * ns.z);\n"</span> +
-      <span class="hljs-string">"vec4 y_ = floor(j - 7.0 * x_ );    // mod(j,N)\n\n"</span> +
-
-      <span class="hljs-string">"vec4 x = x_ *ns.x + ns.yyyy;\n"</span> + 
-      <span class="hljs-string">"vec4 y = y_ *ns.x + ns.yyyy;\n "</span> + 
-      <span class="hljs-string">"vec4 h = 1.0 - abs(x) - abs(y);\n\n"</span> + 
-
-      <span class="hljs-string">"vec4 b0 = vec4( x.xy, y.xy );\n"</span> + 
-      <span class="hljs-string">"vec4 b1 = vec4( x.zw, y.zw );\n\n"</span> + 
-
-      <span class="hljs-string">"//vec4 s0 = vec4(lessThan(b0,0.0))*2.0 - 1.0;\n"</span> + 
-      <span class="hljs-string">"//vec4 s1 = vec4(lessThan(b1,0.0))*2.0 - 1.0;\n"</span> +
-      <span class="hljs-string">"vec4 s0 = floor(b0)*2.0 + 1.0;\n"</span> +
-      <span class="hljs-string">"vec4 s1 = floor(b1)*2.0 + 1.0;\n"</span> +
-      <span class="hljs-string">"vec4 sh = -step(h, vec4(0.0));\n\n"</span> +
-
-      <span class="hljs-string">"vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy ;\n"</span> +
-      <span class="hljs-string">"vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww ;\n\n"</span> +
-
-      <span class="hljs-string">"vec3 p0 = vec3(a0.xy,h.x);\n"</span> +
-      <span class="hljs-string">"vec3 p1 = vec3(a0.zw,h.y);\n"</span> +
-      <span class="hljs-string">"vec3 p2 = vec3(a1.xy,h.z);\n"</span> +
-      <span class="hljs-string">"vec3 p3 = vec3(a1.zw,h.w);\n\n"</span> +
-
-      <span class="hljs-string">"//Normalise gradients\n"</span> +
-      <span class="hljs-string">"vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));\n"</span> +
-      <span class="hljs-string">"p0 *= norm.x;\n"</span> +
-      <span class="hljs-string">"p1 *= norm.y;\n"</span> +
-      <span class="hljs-string">"p2 *= norm.z;\n"</span> +
-      <span class="hljs-string">"p3 *= norm.w;\n\n"</span> +
-
-      <span class="hljs-string">"// Mix final noise value\n"</span> +
-      <span class="hljs-string">"vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);\n"</span> +
-      <span class="hljs-string">"m = m * m;\n"</span> +
-      <span class="hljs-string">"return 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1),\n"</span> + 
-                                    <span class="hljs-string">"dot(p2,x2), dot(p3,x3) ) );\n"</span> +
-    <span class="hljs-string">"}\n"</span></pre></div></div>
             
         </li>
         
@@ -241,57 +156,11 @@ TODO - Shaderpaths could do the same - use names that map to numbers</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p><a href="http://www.thetenthplanet.de/archives/1180">http://www.thetenthplanet.de/archives/1180</a></p>
+              <p>HEAD SECTION of fragment Shader
+Materials
+FUNCTION SECTION</p>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>  @_tangent_frame = <span class="hljs-string">"mat3 computeTangentFrame(vec3 N, vec3 p, vec2 uv) {\n"</span> + 
-    <span class="hljs-string">" // get edge vectors of the @fragment triangle\n"</span> + 
-    <span class="hljs-string">" vec3 dp1 = dFdx( p );\n"</span> + 
-    <span class="hljs-string">" vec3 dp2 = dFdy( p );\n"</span> + 
-    <span class="hljs-string">" vec2 duv1 = dFdx( uv );\n"</span> + 
-    <span class="hljs-string">" vec2 duv2 = dFdy( uv );\n"</span> + 
- 
-    <span class="hljs-string">" // solve the linear system\n"</span> + 
-    <span class="hljs-string">" vec3 dp2perp = cross( dp2, N );\n"</span> + 
-    <span class="hljs-string">" vec3 dp1perp = cross( N, dp1 );\n"</span> + 
-    <span class="hljs-string">" vec3 T = dp2perp * duv1.x + dp1perp * duv2.x;\n"</span> + 
-    <span class="hljs-string">" vec3 B = dp2perp * duv1.y + dp1perp * duv2.y;\n"</span> + 
- 
-    <span class="hljs-string">" // construct a scale-invariant frame \n"</span> + 
-    <span class="hljs-string">" float invmax = inversesqrt( max( dot(T,T), dot(B,B) ) );\n"</span> + 
-    <span class="hljs-string">" return mat3( T * invmax, B * invmax, N );\n"</span> + 
-    <span class="hljs-string">"}\n"</span>
-
-  @_sobel =  <span class="hljs-string">"vec3 sobel(float step, vec2 center, float limit) {\n"</span> + 
-    <span class="hljs-string">"  // get samples around @fragment\n"</span> + 
-    <span class="hljs-string">"  float tleft = intensity(texture2D(uSampler,center + vec2(-step,step)));\n"</span> + 
-    <span class="hljs-string">"  float left = intensity(texture2D(uSampler,center + vec2(-step,0)));\n"</span> + 
-    <span class="hljs-string">"  float bleft = intensity(texture2D(uSampler,center + vec2(-step,-step)));\n"</span> + 
-    <span class="hljs-string">"  float top = intensity(texture2D(uSampler,center + vec2(0,step)));\n"</span> + 
-    <span class="hljs-string">"  float bottom = intensity(texture2D(uSampler,center + vec2(0,-step)));\n"</span> + 
-    <span class="hljs-string">"  float tright = intensity(texture2D(uSampler,center + vec2(step,step)));\n"</span> + 
-    <span class="hljs-string">"  float right = intensity(texture2D(uSampler,center + vec2(step,0)));\n"</span> + 
-    <span class="hljs-string">"  float bright = intensity(texture2D(uSampler,center + vec2(step,-step)));\n"</span> + 
-   
-    <span class="hljs-string">"  // Sobel masks (to estimate gradient)\n"</span> + 
-    <span class="hljs-string">"  //        1 0 -1     -1 -2 -1\n"</span> + 
-    <span class="hljs-string">"  //    X = 2 0 -2  Y = 0  0  0\n"</span> + 
-    <span class="hljs-string">"  //        1 0 -1      1  2  1\n"</span> + 
-   
-    <span class="hljs-string">"  float x = tleft + 2.0*left + bleft - tright - 2.0*right - bright;\n"</span> + 
-    <span class="hljs-string">"  float y = -tleft - 2.0*top - tright + bleft + 2.0 * bottom + bright;\n"</span> + 
-    <span class="hljs-string">"  float color = sqrt((x*x) + (y*y));\n"</span> + 
-    <span class="hljs-string">"  if (color &lt; limit){return vec3(0.0,0.0,0.0);}\n"</span> + 
-    <span class="hljs-string">"  return vec3(1.0,1.0,1.0);\n}\n"</span>
-
-  @_bitcheck = <span class="hljs-string">"bool bitcheck(in float fcheck, in int bitpos) { \n"</span> +
-  <span class="hljs-string">"  int fsi = int(fcheck);\n"</span> +
-  <span class="hljs-string">"  for (int i = 0; i &lt; 32; i++) { \n"</span> +
-  <span class="hljs-string">"    if (i &gt;= bitpos) return fract(float(fsi) / 2.0) != 0.0;\n"</span> +
-  <span class="hljs-string">"    fsi = fsi / 2; \n"</span> +
-  <span class="hljs-string">"  }\n"</span> + 
-  <span class="hljs-string">"  return false;\n}\n"</span></pre></div></div>
             
         </li>
         
@@ -302,7 +171,7 @@ TODO - Shaderpaths could do the same - use names that map to numbers</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>VERTEX SHADER</p>
+              <p>MAIN SECTION</p>
 
             </div>
             
@@ -314,288 +183,6 @@ TODO - Shaderpaths could do the same - use names that map to numbers</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
-              </div>
-              <p>HEAD SECTION</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  @vertex = <span class="hljs-string">"uniform float uUber0;\n"</span>
-  @vertex += <span class="hljs-string">"attribute vec3 aVertexPosition;\nuniform mat4 uModelMatrix;\nvarying vec4 vPosition;\n"</span>
-  @vertex += <span class="hljs-string">"#ifdef VERTEX_COLOUR\nattribute vec4 aVertexColour;\nvarying vec4 vColour;\n#endif\n"</span> 
-  @vertex += <span class="hljs-string">"#ifdef VERTEX_TEXTURE\nattribute vec2 aVertexTexCoord;\nvarying vec2 vTexCoord;\n#endif\n"</span>
-  @vertex += <span class="hljs-string">"#ifdef BASIC_CAMERA\nuniform mat4 uCameraMatrix;\nuniform mat4 uProjectionMatrix;\n#endif\n"</span>
-  @vertex += <span class="hljs-string">"#ifdef ADVANCED_CAMERA\nuniform float uCameraNear;\n"</span> +
-    <span class="hljs-string">"uniform float uCameraFar;\n "</span> +
-    <span class="hljs-string">"uniform mat4 uCameraInverseMatrix;\n "</span> + 
-    <span class="hljs-string">"uniform mat4 uInverseProjectionMatrix;\n"</span> +
-    <span class="hljs-string">"varying vec4 vEyePosition;\n#endif\n"</span> 
-  @vertex += <span class="hljs-string">"#ifdef VERTEX_NORMAL\nattribute vec3 aVertexNormal;\nvarying vec3 vNormal;\n "</span> + 
-    <span class="hljs-string">"uniform mat3 uNormalMatrix;\nvarying vec4 vTransformedNormal;\n#endif\n"</span>
-
-  @vertex += <span class="hljs-string">"#ifdef VERTEX_TANGENT\n attribute vec3 aVertexTangent;\nvarying vec3 vTangent;\n#endif\n"</span>
-
-  @vertex += <span class="hljs-string">"#ifdef SKINNING\n"</span> + 
-    <span class="hljs-string">"attribute vec4 aVertexSkinWeight;\nattribute vec4 aVertexBoneIndex;\n\n"</span> +
-    <span class="hljs-string">"uniform sampler2D uBonePalette;\nuniform int uBoneTexDim;\n#endif\n"</span>
-
-  @vertex += UberShaderForwardLight.vertex_head</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-10">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
-              </div>
-              <p>FUNCTION SECTION</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  @vertex +=<span class="hljs-string">"\n\n"</span>
-  @vertex +=<span class="hljs-string">"#ifdef VERTEX_NOISE\n"</span> + UberShader._noise + <span class="hljs-string">"\n#endif\n"</span>
-  @vertex += <span class="hljs-string">"#ifdef FRAGMENT_DEPTH\n"</span> +
-    <span class="hljs-string">"vec4 pack (float depth) {\n"</span> +
-    <span class="hljs-string">"  const vec4 bitSh = vec4(256 * 256 * 256,\n"</span>+
-    <span class="hljs-string">"  256 * 256,\n"</span>+
-    <span class="hljs-string">"  256,\n"</span>+
-    <span class="hljs-string">"  1.0);\n"</span>+
-    <span class="hljs-string">"  const vec4 bitMsk = vec4(0,\n"</span>+
-    <span class="hljs-string">"   1.0 / 256.0,\n"</span>+
-    <span class="hljs-string">"   1.0 / 256.0,\n"</span>+
-    <span class="hljs-string">"   1.0 / 256.0);\n"</span>+
-    <span class="hljs-string">"   vec4 comp = fract(depth * bitSh);\n"</span>+
-    <span class="hljs-string">"   comp -= comp.xxyz * bitMsk;\n"</span>+
-    <span class="hljs-string">"   return comp;\n"</span>+
-    <span class="hljs-string">"  }\n"</span> +
-    <span class="hljs-string">"vec4 packDepth() { return pack(gl_FragCoord.z); }\n#endif\n"</span>
-
-  @vertex += <span class="hljs-string">"#ifdef VERTEX_TANGENT_FRAME\n "</span> + UberShader._tangent_frame + <span class="hljs-string">"\n#endif\n"</span>
-  @vertex += <span class="hljs-string">"#ifdef VERTEX_SOBEL\n "</span> + UberShader._sobel + <span class="hljs-string">"\n#endif\n"</span>
-
-  @vertex += <span class="hljs-string">"#ifdef SKINNING\n"</span> + 
-    <span class="hljs-string">"vec3 qtransform( vec4 q, vec3 v ){\n"</span> + 
-    <span class="hljs-string">"  return v + 2.0 * cross(cross(v, q.xyz ) + q.w*v, q.xyz);\n"</span> +
-    <span class="hljs-string">"}\n\n"</span> +
-    <span class="hljs-string">"mat4 sample_palette(const in float idx) {\n"</span> +
-    <span class="hljs-string">"  float tt = float(uBoneTexDim) / 4.0;\n"</span> +
-    <span class="hljs-string">"  float dd = 1.0 / float(uBoneTexDim);\n"</span> +
-    <span class="hljs-string">"  float p0 = 0.5 * dd;\n"</span> +
-    <span class="hljs-string">"  float p1 = 1.0 * dd;\n"</span> +
-    <span class="hljs-string">"  float p2 = 2.5 * dd;\n"</span> +
-    <span class="hljs-string">"  float p3 = 3.5 * dd;\n"</span> +
-    <span class="hljs-string">"  float x = float(mod(idx, tt)) * dd * 4.0;\n"</span> +
-    <span class="hljs-string">"  float y = floor(float(idx / tt )) * dd;\n"</span> +
-    <span class="hljs-string">"  vec4 v0 = texture2D(uBonePalette, vec2(x + p0, y + p0));\n"</span> +
-    <span class="hljs-string">"  vec4 v1 = texture2D(uBonePalette, vec2(x + p1, y + p0));\n"</span> +
-    <span class="hljs-string">"  vec4 v2 = texture2D(uBonePalette, vec2(x + p2, y + p0));\n"</span> +
-    <span class="hljs-string">"  vec4 v3 = texture2D(uBonePalette, vec2(x + p3, y + p0));\n"</span> +
-    <span class="hljs-string">"  mat4 tm = mat4(v0,v1,v2,v3);\n"</span> +
-    <span class="hljs-string">"  return tm;\n"</span> +
-    <span class="hljs-string">"}\n#endif\n"</span>
-
-  @vertex += UberShader._bitcheck</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-11">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
-              </div>
-              <p>MAIN SECTION</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-12">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
-              </div>
-              <p>final transform if nothing else</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  @vertex += <span class="hljs-string">"void main() {\n"</span>
-  @vertex += <span class="hljs-string">"#ifdef VERTEX_COLOUR\nvColour = aVertexColour;\n#endif\n"</span>
-  @vertex += <span class="hljs-string">"#ifdef VERTEX_TEXTURE\nvTexCoord = aVertexTexCoord;\n#endif\n"</span>
-  @vertex += <span class="hljs-string">"#ifdef VERTEX_NORMAL\nvNormal = aVertexNormal;\nvTransformedNormal = vec4(uNormalMatrix * aVertexNormal,1.0);\n#endif\n"</span>
-  @vertex += <span class="hljs-string">"#ifdef VERTEX_TANGENT\nvTangent = aVertexTangent;\n#endif\n"</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-13">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
-              </div>
-              <p>TODO - could speed up here by elsing with the skinning</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  @vertex += <span class="hljs-string">"vPosition = uModelMatrix * vec4(aVertexPosition, 1.0);\n"</span>
-
-  @vertex += <span class="hljs-string">"#ifdef SKINNING\n"</span> + 
-    <span class="hljs-string">"if(bitcheck(uUber0,2)) {\n"</span> +
-    <span class="hljs-string">"  vPosition = vec4(0.0,0.0,0.0,1.0);\n"</span> +
-    <span class="hljs-string">"  float bias = aVertexSkinWeight.x;\n"</span> +
-    <span class="hljs-string">"  mat4 tm = sample_palette(aVertexBoneIndex.x);\n"</span> +
-    <span class="hljs-string">"  vec4 bp = tm * vec4(aVertexPosition,1.0) * bias;\n"</span> +
-    <span class="hljs-string">"  vPosition += bp;\n"</span> +
-    <span class="hljs-string">"  bias = aVertexSkinWeight.y;\n"</span> +
-    <span class="hljs-string">"  tm = sample_palette(aVertexBoneIndex.y);\n"</span> +
-    <span class="hljs-string">"  bp = tm * vec4(aVertexPosition,1.0) * bias;\n"</span> +
-    <span class="hljs-string">"  vPosition += bp;\n"</span> +
-    <span class="hljs-string">"  bias = aVertexSkinWeight.z;\n"</span> +
-    <span class="hljs-string">"  tm = sample_palette(aVertexBoneIndex.z);\n"</span> +
-    <span class="hljs-string">"  bp = tm * vec4(aVertexPosition,1.0) * bias;\n"</span> +
-    <span class="hljs-string">"  vPosition += bp;\n"</span> +
-    <span class="hljs-string">"  bias = aVertexSkinWeight.w;\n"</span> +
-    <span class="hljs-string">"  tm = sample_palette(aVertexBoneIndex.w);\n"</span> +
-    <span class="hljs-string">"  bp = tm * vec4(aVertexPosition,1.0) * bias;\n"</span> +
-    <span class="hljs-string">"  vPosition += bp;\n"</span> +
-    <span class="hljs-string">"  vPosition.w = 1.0;\n"</span> +
-    <span class="hljs-string">"  vPosition = uModelMatrix * vPosition;\n"</span> +
-    <span class="hljs-string">"}\n"</span> + 
-    <span class="hljs-string">"\n#endif\n"</span>
-
-  
-  @vertex += <span class="hljs-string">"#ifdef ADVANCED_CAMERA\n vEyePosition = uCameraInverseMatrix * uModelMatrix * vPosition;\n#endif\n"</span>
-  @vertex += <span class="hljs-string">"#ifdef BASIC_CAMERA\ngl_Position = uProjectionMatrix * uCameraMatrix * vPosition;\n#endif\n"</span>
-
-  @vertex += <span class="hljs-string">"\n}"</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-14">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
-              </div>
-              <p>FRAGMENT SHADER</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-15">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
-              </div>
-              <p>HEAD SECTION of fragment Shader</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  @fragment = <span class="hljs-string">"uniform float uUber0;\n"</span>
-  @fragment += <span class="hljs-string">"uniform mat4 uModelMatrix;\nvarying vec4 vPosition;\n"</span>
-  @fragment += <span class="hljs-string">"#ifdef BASIC_COLOUR\nuniform vec4 uColour;\n#endif\n"</span>
-  @fragment += <span class="hljs-string">"#ifdef VERTEX_COLOUR\nvarying vec4 vColour;\n#endif\n"</span>
-  @fragment += <span class="hljs-string">"#ifdef VERTEX_TEXTURE\nvarying vec2 vTexCoord;\n#endif\n"</span>
-  @fragment += <span class="hljs-string">"#ifdef VERTEX_NORMAL\nuniform mat3 uNormalMatrix;\nvarying vec3 vNormal;\nvarying vec4 vTransformedNormal;\n#endif\n"</span>
-  @fragment += <span class="hljs-string">"#ifdef VERTEX_TANGENT\nvarying vec3 vTangent;\n#endif\n"</span>
-
-  @fragment += UberShaderPhong.fragment_head
-  @fragment += UberShaderForwardLight.fragment_head</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-16">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
-              </div>
-              <p>FUNCTION SECTION</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  @fragment +=<span class="hljs-string">"\n\n"</span>
-  @fragment +=<span class="hljs-string">"#ifdef FRAGMENT_NOISE\n"</span> + UberShader._noise + <span class="hljs-string">"\n#endif\n"</span>
-
-  @fragment += <span class="hljs-string">"#ifdef FRAGMENT_INTENSITY\n"</span> + 
-    <span class="hljs-string">"float intensity(in vec4 colour) {\n"</span> + 
-    <span class="hljs-string">"  return sqrt((colour.x*colour.x)+(colour.y*colour.y)+(colour.z*colour.z));\n"</span> + 
-    <span class="hljs-string">"}\n#endif\n"</span>
-
-  @fragment += <span class="hljs-string">"#ifdef FRAGMENT_DEPTH\n"</span> +
-  <span class="hljs-string">"// Returns the 3D position in eye space.\n"</span> + 
-  <span class="hljs-string">"vec3 positionFromDepth(float depth, vec2 texcoord) {\n"</span> +
-
-  <span class="hljs-string">"  vec4 position = vec4(texcoord, depth, 1.0);\n"</span> +
-  <span class="hljs-string">"  position.xyz = position.xyz*2.0 -1.0;\n"</span> +
-  <span class="hljs-string">"  position = uInverseProjectionMatrix*position;\n"</span> +
-  <span class="hljs-string">"  position.xyz /= position.w;\n"</span> +
-  <span class="hljs-string">"  return position.xyz;\n}\n#endif\n"</span>
-
-  @fragment += <span class="hljs-string">"#ifdef FRAGMENT_DEPTH\n"</span> + 
-    <span class="hljs-string">"uniform sampler2D uSamplerDepth;\n"</span> +
-    <span class="hljs-string">"float unpack (in vec4 colour) {\n"</span> +
-    <span class="hljs-string">" const vec4 bitShifts = vec4(1.0 / (256.0 * 256.0 * 256.0),\n"</span> +
-    <span class="hljs-string">"    1.0 / (256.0 * 256.0),\n"</span> +
-    <span class="hljs-string">"    1.0 / 256.0,\n"</span> +
-    <span class="hljs-string">"    1.0);\n"</span> + 
-    <span class="hljs-string">"return dot(colour, bitShifts);\n}\n\n"</span>+
-
-    <span class="hljs-string">"// Passed in by the coffeegl depth shader. Reproduces from non linear gl_FragCoord.z to linear 0-1\n"</span>+
-    <span class="hljs-string">"float readDepth(in vec2 coord)  {\n"</span> +
-    <span class="hljs-string">"  vec4 colour = texture2D(uSamplerDepth, coord);\n"</span>+
-    <span class="hljs-string">"  float unpacked = unpack(colour);\n"</span> +
-    <span class="hljs-string">"  return (uCameraNear * unpacked) / ( uCameraFar - unpacked * (uCameraFar - uCameraNear) );\n"</span>+
-    <span class="hljs-string">"}\n#endif\n"</span>
-
-  @fragment += <span class="hljs-string">"#ifdef FRAGMENT_LUMINANCE\n"</span> +
-    <span class="hljs-string">"float getLuminance(in vec3 colour) {\n"</span>+
-    <span class="hljs-string">"  vec3 lumcoeff = vec3(0.299,0.587,0.114);\n"</span>+
-    <span class="hljs-string">"  return dot(colour, lumcoeff);\n}\n#endif\n"</span>
-
-  @fragment += <span class="hljs-string">"#ifdef FRAGMENT_TANGENT_FRAME\n "</span> + UberShader._tangent_frame + <span class="hljs-string">"\n#endif\n"</span>
-  @fragment += <span class="hljs-string">"#ifdef FRAGMENT_SOBEL\n "</span> + UberShader._sobel + <span class="hljs-string">"\n#endif\n"</span>
-
-  @fragment += UberShader._bitcheck</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-17">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
-              </div>
-              <p>MAIN SECTION</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  @fragment += <span class="hljs-string">"void main() {\n"</span>
-  @fragment += UberShaderPhong.fragment_main
-  @fragment += <span class="hljs-string">"#ifdef BASIC_COLOUR\nif(bitcheck(uUber0,8)) { gl_FragColor = uColour; }\n#endif\n"</span>
-  @fragment += <span class="hljs-string">"#ifdef VERTEX_COLOUR\nif(bitcheck(uUber0,9)) { gl_FragColor = vColour; }\n#endif\n"</span>
-  @fragment += <span class="hljs-string">"\n}"</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-18">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>We run over all the nodes, looking for materials. If we have them, check for defines
 Defines can also occur depending on what we have in the node structure, like point-lights and 
@@ -614,11 +201,11 @@ runtime changes each frame, whereas ubershader deals with defines that should on
         </li>
         
         
-        <li id="section-19">
+        <li id="section-10">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <p>Things to add, depening on whether or not things exist on a node</p>
 
@@ -627,9 +214,30 @@ runtime changes each frame, whereas ubershader deals with defines that should on
             <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> base_node.camera?
       @uber_defines.push <span class="hljs-string">"BASIC_CAMERA"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"BASIC_CAMERA"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> @uber_defines
     
-    <span class="hljs-keyword">if</span> base_node.pointLights.length &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> base_node.ambientLight?
+    <span class="hljs-keyword">if</span> base_node.pointLights.length &gt; <span class="hljs-number">0</span>
       @uber_defines.push <span class="hljs-string">"LIGHTING_POINT"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"LIGHTING_POINT"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> @uber_defines
 
+    <span class="hljs-keyword">if</span> base_node.spotLights.length &gt; <span class="hljs-number">0</span>
+      @uber_defines.push <span class="hljs-string">"LIGHTING_SPOT"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"LIGHTING_SPOT"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> @uber_defines</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Checking for shadowmaps</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">for</span> light <span class="hljs-keyword">in</span> base_node.spotLights
+        <span class="hljs-keyword">if</span> light.shadowmap
+          @uber_defines.push <span class="hljs-string">"SHADOWMAP"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"SHADOWMAP"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> @uber_defines
+          @uber_defines.push <span class="hljs-string">"FRAGMENT_DEPTH_OUT"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"FRAGMENT_DEPTH_OUT"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> @uber_defines
+    
     <span class="hljs-keyword">if</span> base_node.skeleton?
       @uber_defines.push <span class="hljs-string">"SKINNING"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"SKINNING"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> @uber_defines
 
@@ -639,20 +247,38 @@ runtime changes each frame, whereas ubershader deals with defines that should on
         </li>
         
         
-        <li id="section-20">
+        <li id="section-12">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <p>The uberconstructor builds a shader at the base node, looking at the entire subtree for all the defines
+              <p>The uberconstructor builds a shader at the base nodes, looking at the entire subtree for all the defines
 and such that it needs to set.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  constructor : <span class="hljs-function"><span class="hljs-params">(base_node, precision_vertex, precision_fragment)</span> -&gt;</span>
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p><strong>constructor</strong></p>
+<ul>
+<li>arbitrary number of unnamed arguments - all of class Node </li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  constructor : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
     @uber_defines = []
-    @_traverse base_node
+
+    <span class="hljs-keyword">for</span> base_node <span class="hljs-keyword">in</span> arguments
+      @_traverse base_node
 
     def_string = <span class="hljs-string">""</span>
     <span class="hljs-keyword">for</span> def <span class="hljs-keyword">in</span> @uber_defines
@@ -661,27 +287,44 @@ and such that it needs to set.</p>
         </li>
         
         
-        <li id="section-21">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
-              <p>We default to high precision for our ubershader</p>
+              <p>We default to high precision for our ubershader
+I havent passed in any options for precision yet</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>
-    @vertex = <span class="hljs-string">"#version 100\n"</span> + <span class="hljs-string">"precision highp float;\nprecision highp int;\n"</span> + def_string + UberShader.vertex
-    @fragment = <span class="hljs-string">"#version 100\n"</span> + <span class="hljs-string">"precision highp float;\nprecision highp int;\n"</span> + def_string + UberShader.fragment
+    @vertex = def_string + uber.vertex
+    @fragment = def_string + uber.fragment</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>@vertex = “#version 100\n” + “precision highp float;\nprecision highp int;\n” + def_string + UberShader.vertex
+@fragment = “#version 100\n” + “precision highp float;\nprecision highp int;\n” + def_string + UberShader.fragment</p>
 
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
     <span class="hljs-keyword">super</span>(@vertex, @fragment, <span class="hljs-literal">undefined</span>)
     @_uber = <span class="hljs-literal">true</span>
 
-    @_addToNode base_node
+    <span class="hljs-keyword">for</span> base_node <span class="hljs-keyword">in</span> arguments
+      @_addToNode base_node
 
 
-<span class="hljs-built_in">module</span>.exports = 
+<span class="hljs-built_in">module</span>.exports =
   UberShader : UberShader</pre></div></div>
             
         </li>

@@ -77,12 +77,7 @@ Each material has a list of shaderChunks that contribute to the final shader</p>
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Material</span></span>
 
   constructor : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
-    @contract = <span class="hljs-keyword">new</span> Contract()
-    @_uber0 = <span class="hljs-number">0</span> <span class="hljs-comment"># Settings to be OR'd with the ubershader uniform</span>
-    @_uber_defines = [] <span class="hljs-comment"># uber shader looks for this for the defines to add</span>
-
-  _addToNode : <span class="hljs-function"><span class="hljs-params">(node)</span> -&gt;</span>
-    node.material = @</pre></div></div>
+    @contract = <span class="hljs-keyword">new</span> Contract()</pre></div></div>
             
         </li>
         
@@ -92,6 +87,27 @@ Each material has a list of shaderChunks that contribute to the final shader</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>TODO - these are per class not instance so we can change that</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    @_uber0 = <span class="hljs-number">0</span> <span class="hljs-comment"># Settings to be OR'd with the ubershader uniform</span>
+    @_uber_defines = [] <span class="hljs-comment"># uber shader looks for this for the defines to add</span>
+    
+    @_override = <span class="hljs-literal">false</span> <span class="hljs-comment"># if set, this material overides all these below it</span>
+
+  _addToNode : <span class="hljs-function"><span class="hljs-params">(node)</span> -&gt;</span>
+    node.material = @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
               <p>Called if we need to make any GL Calls before drawing with
 ‘this material’</p>

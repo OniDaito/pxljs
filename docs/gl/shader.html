@@ -127,7 +127,7 @@ for example)</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    @vertexShader = gl.createShader(gl.VERTEX_SHADER);
+            <div class="content"><div class='highlight'><pre>    @vertexShader = gl.createShader(gl.VERTEX_SHADER)
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @vertexShader
       PXLError <span class="hljs-string">"No vertex shader object could be created"</span></pre></div></div>
             
@@ -153,14 +153,16 @@ for example)</p>
     gl.shaderSource @vertexShader, sv
     gl.compileShader @vertexShader
 
-    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> gl.getShaderParameter @vertexShader, gl.COMPILE_STATUS  
-      @_printLog @vertexShader, sv, <span class="hljs-string">"vertex"</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> gl.getShaderParameter @vertexShader, gl.COMPILE_STATUS
+      @_printLog @vertexShader, sv, <span class="hljs-string">"vertex"</span> 
+      PXLError <span class="hljs-string">"Failed to compiled Vertex Shader"</span>
 
     gl.shaderSource @fragmentShader, sf
     gl.compileShader @fragmentShader
 
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> gl.getShaderParameter @fragmentShader, gl.COMPILE_STATUS
       @_printLog @fragmentShader, sf, <span class="hljs-string">"fragment"</span>
+      PXLError <span class="hljs-string">"Failed to compile Fragment Shader"</span>
 
     @shaderProgram = gl.createProgram()
 
@@ -184,12 +186,12 @@ TODO - might need to do something better here but it stops attrib 0 being blank 
             <div class="content"><div class='highlight'><pre>    gl.bindAttribLocation(@shaderProgram, <span class="hljs-number">0</span>, <span class="hljs-string">"aVertexPosition"</span>)
 
     gl.linkProgram(@shaderProgram)
-
+    gl.validateProgram(@shaderProgram)
+    
     success = gl.getProgramParameter(@shaderProgram, gl.LINK_STATUS)
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> success
       PXLWarning gl.getProgramInfoLog @shaderProgram
       PXLError <span class="hljs-string">"Failed to Link Shader"</span>
-
       WebGLActiveInfo</pre></div></div>
             
         </li>
@@ -202,12 +204,11 @@ TODO - might need to do something better here but it stops attrib 0 being blank 
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p>We grab the attributes here and we set their positions to these
-in the contract - order dependent
-Thanks to @Tojiro</p>
+in the contract - order dependent</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>
+            <div class="content"><div class='highlight'><pre>    
     attrs = @_getAttributes()
     <span class="hljs-keyword">for</span> attr <span class="hljs-keyword">in</span> attrs
       gl.bindAttribLocation @shaderProgram, attr.pos, attr.name
@@ -461,8 +462,8 @@ TODO - must check to make sure this is the actual behaviour</p>
         <span class="hljs-keyword">if</span> i &gt; <span class="hljs-number">0</span>
           tn = u.name.slice(<span class="hljs-number">0</span>,i)
 
-        uniform = 
-          name : tn 
+        uniform =
+          name : tn
           pos : @._getLocation u.name
           type : u.type <span class="hljs-comment"># TODO - test this</span>
           size : u.size <span class="hljs-comment"># TODO - test this</span>
@@ -511,9 +512,9 @@ TODO - other samplers? Texture Cube for example?</p>
             
             <div class="content"><div class='highlight'><pre>  _parseShader : <span class="hljs-function"><span class="hljs-params">(token)</span> -&gt;</span>
     data = []
-    lines = @sv.split(<span class="hljs-string">";"</span>).concat(@sf.split(<span class="hljs-string">";"</span>));
+    lines = @sv.split(<span class="hljs-string">";"</span>).concat(@sf.split(<span class="hljs-string">";"</span>))
     <span class="hljs-keyword">for</span> l <span class="hljs-keyword">in</span> lines
-      re = RegExp(<span class="hljs-string">"\\b"</span> + token + <span class="hljs-string">"\\b"</span>); 
+      re = RegExp(<span class="hljs-string">"\\b"</span> + token + <span class="hljs-string">"\\b"</span>)
       <span class="hljs-keyword">if</span> l.match(re)?
         tokens  = l.split(<span class="hljs-string">" "</span>)
         finals = []
@@ -539,7 +540,7 @@ TODO - other samplers? Texture Cube for example?</p>
           attr.type = finals[<span class="hljs-number">1</span>]
           attr.pos = <span class="hljs-number">-1</span>
           attr.size = finals[<span class="hljs-number">3</span>]
-          data.push attr 
+          data.push attr
 
     data</pre></div></div>
             
@@ -720,7 +721,7 @@ TODO - other samplers? Texture Cube for example?</p>
             
             <div class="content"><div class='highlight'><pre>  setUniform4f: <span class="hljs-function"><span class="hljs-params">(name,a,b,c,d)</span> -&gt;</span>
     gl = PXL.Context.gl
-    gl.uniform4f(@_getLocation(name),a,b,c,d) 
+    gl.uniform4f(@_getLocation(name),a,b,c,d)
     @</pre></div></div>
             
         </li>
@@ -841,12 +842,12 @@ TODO - other samplers? Texture Cube for example?</p>
                 <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <h2 id="shaderfromtext">shaderFromText</h2>
-<p>Create a shader from a block of text and an optional contract</p>
+<p>Create a shader from a block of text and an optional contract
+TODO - old and not used at present but could be handy later</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function">
-<span class="hljs-title">shaderFromText</span> = <span class="hljs-params">( text, contract )</span> -&gt;</span>
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-title">shaderFromText</span> = <span class="hljs-params">( text, contract )</span> -&gt;</span>
 <span class="hljs-function">
   <span class="hljs-title">_splitShader</span> = <span class="hljs-params">(s)</span> -&gt;</span>
     
@@ -1041,12 +1042,10 @@ else
 
   chunks.push <span class="hljs-keyword">new</span> ShaderChunk {func : sv, main_func : main_vertex}, {func : sf, main_func : main_fragment}
 
-  shader = <span class="hljs-keyword">new</span> Shader chunks, contract, precision_vertex, precision_fragment
- 
+  shader = <span class="hljs-keyword">new</span> Shader chunks, contract, precision_vertex, precision_fragment 
   shader
 
-
-<span class="hljs-built_in">module</span>.exports = 
+<span class="hljs-built_in">module</span>.exports =
   Shader : Shader
   shaderFromText : shaderFromText</pre></div></div>
             

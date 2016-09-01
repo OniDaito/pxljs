@@ -102,40 +102,9 @@ shaders.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>##UberShaderPhong###
-The text for the ubershader when we are using phong materials
-Hash defines and paths include</p>
-<p>MAT_PHONG</p>
+              <p>TODO - eventually most of this will be in a textfile that we process into javascript at build time</p>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UberShaderPhong</span></span>
-
-  @fragment_head : <span class="hljs-string">"#ifdef MAT_PHONG\nuniform vec3 uMaterialAmbientColour;\nuniform float uMaterialShininess;\n"</span> +
-    <span class="hljs-string">"\nuniform vec3 uMaterialDiffuseColour;\n"</span> + 
-    <span class="hljs-string">"\nuniform sampler2D uSamplerDiffuse;\n"</span> +
-    <span class="hljs-string">"\nuniform vec3 uMaterialSpecularColour;\n"</span> +
-    <span class="hljs-string">"\nuniform sampler2D uSamplerSpecular;\n"</span> +
-    <span class="hljs-string">"\nuniform vec3 uMaterialEmissiveColour;\n"</span> +
-    <span class="hljs-string">"\nuniform sampler2D uSamplerEmissive;\n#endif\n"</span>
-
-  @fragment_main : <span class="hljs-string">"#ifdef MAT_PHONG\nvec3 materialDiffuseColour = uMaterialDiffuseColour;\n"</span> +
-    <span class="hljs-string">"vec3 materialSpecularColour;\n"</span> +
-    <span class="hljs-string">"vec3 materialEmissiveColour;\n"</span> +
-    <span class="hljs-string">"if(bitcheck(uUber0,10)){ materialDiffuseColour = texture2D(uSamplerDiffuse, vTexCoord).rgb;}\n"</span> +
-    <span class="hljs-string">"materialSpecularColour = uMaterialSpecularColour;\n"</span> +
-    <span class="hljs-string">"if(bitcheck(uUber0,11)){ materialSpecularColour = texture2D(uSamplerSpecular, vTexCoord).rgb;}\n"</span> +
-    <span class="hljs-string">"materialEmissiveColour = uMaterialEmissiveColour;\n"</span> +
-    <span class="hljs-string">"if(bitcheck(uUber0,12)){ materialEmissiveColour = texture2D(uSamplerEmissive, vTexCoord).rgb;}\n"</span> +
-
-    <span class="hljs-string">"vec3 specularLightWeighting = vec3(0.0, 0.0, 0.0);\n"</span> +
-    <span class="hljs-string">"vec3 diffuseLightWeighting = vec3(0.0, 0.0, 0.0);\n"</span> +
-    <span class="hljs-string">"vec3 materialAmbientColour = uMaterialAmbientColour * uAmbientLightingColour;\n"</span> +
-    <span class="hljs-string">"gl_FragColor = vec4(materialAmbientColour, 1.0);\n"</span> + 
-    <span class="hljs-string">"vec3 eyeDirection = normalize(-vPosition.xyz);\n"</span> +
-    <span class="hljs-string">"#ifdef LIGHTING_POINT\n"</span> +
-    <span class="hljs-string">"for (int i=0; i &lt; LIGHTING_NUM_POINT_LIGHTS; i++) {\n"</span> +</pre></div></div>
             
         </li>
         
@@ -146,33 +115,8 @@ Hash defines and paths include</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>TODO could potentially transform the lights in the vertex shader?</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-string">"  vec3 lightDirection = normalize((uModelMatrix * vec4(uPointLightPos[i],1.0)).xyz - vPosition.xyz);\n"</span> +
-    <span class="hljs-string">"  vec3 reflectionDirection = reflect(-lightDirection, vTransformedNormal.xyz);\n"</span> +
-    <span class="hljs-string">"  float specularLightBrightness = pow(max(dot(reflectionDirection, eyeDirection), 0.0), uMaterialShininess);\n"</span> +
-    <span class="hljs-string">"  specularLightWeighting = specularLightWeighting + (uPointLightColour[i] * specularLightBrightness);\n"</span> +
-    <span class="hljs-string">"  float diffuseLightBrightness = max(dot(vTransformedNormal.xyz, lightDirection), 0.0);\n"</span> +
-    <span class="hljs-string">"  diffuseLightWeighting = diffuseLightWeighting + (uPointLightColour[i] * diffuseLightBrightness);\n"</span> +
-    <span class="hljs-string">"  gl_FragColor += vec4( materialDiffuseColour * diffuseLightWeighting "</span> +
-    <span class="hljs-string">"   + materialSpecularColour * specularLightWeighting"</span> +
-    <span class="hljs-string">"   + materialEmissiveColour,"</span> +
-    <span class="hljs-string">"   0.0);\n"</span> +
-    <span class="hljs-string">"}\n#endif\n#endif\n"</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
-              </div>
-              <p>##PhongMaterial###
-A basic material that contains phong elements
+              <h2 id="phongmaterial">PhongMaterial</h2>
+<p>A basic material that contains phong elements
 Requires an existing lighting solution, complete with ambient light
 We choose the lights using #ifdef statements that we set thus we can set the different lights</p>
 
@@ -200,11 +144,11 @@ We choose the lights using #ifdef statements that we set thus we can set the dif
         </li>
         
         
-        <li id="section-8">
+        <li id="section-7">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <p>Construct the shader chunks depending on what we are passed in.
 TODO Texture Cube support for phong materials</p>
@@ -214,11 +158,11 @@ TODO Texture Cube support for phong materials</p>
         </li>
         
         
-        <li id="section-9">
+        <li id="section-8">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p>Essentially, given the parameters, we are creating subtly different
 materials. This way is elegant for the end user but perhaps not so
@@ -235,11 +179,11 @@ generated shader will be different.</p>
         </li>
         
         
-        <li id="section-10">
+        <li id="section-9">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
               <p>If not diffuse assume vertex colours
 TODO - Finish off vertex diffuse colours</p>
@@ -247,24 +191,25 @@ TODO - Finish off vertex diffuse colours</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @diffuse?
-      @shaderChunks.push ShaderChunkLibrary.VertexColour
+      @_uber_defines += [<span class="hljs-string">'VERTEX_COLOUR'</span>]
       @_uber0 = uber_vertex_colour <span class="hljs-literal">true</span>, @_uber0
-    <span class="hljs-keyword">else</span></pre></div></div>
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-keyword">if</span> @diffuse <span class="hljs-keyword">instanceof</span> RGB <span class="hljs-keyword">or</span> @diffuse <span class="hljs-keyword">instanceof</span> RGBA</pre></div></div>
             
         </li>
         
         
-        <li id="section-11">
+        <li id="section-10">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>TODO - Occasionally passing in RGBA causes this to fail. Best put a wrapper</p>
+              <p>TODO - Eventually put in materials that are transparent</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> @diffuse <span class="hljs-keyword">instanceof</span> RGB
+            <div class="content"><div class='highlight'><pre>        @diffuse = <span class="hljs-keyword">new</span> RGB( @diffuse.r, @diffuse.g, @diffuse.b)
         @contract.roles.uMaterialDiffuseColour  = <span class="hljs-string">"diffuse"</span>
         @_uber0 = uber_phong_diff_tex <span class="hljs-literal">false</span>, @_uber0
       <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> @diffuse <span class="hljs-keyword">instanceof</span> Texture
@@ -277,11 +222,11 @@ TODO - Finish off vertex diffuse colours</p>
         </li>
         
         
-        <li id="section-12">
+        <li id="section-11">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               <p>TODO - Also texture cube  would be good here as well</p>
 
@@ -318,11 +263,11 @@ TODO - Finish off vertex diffuse colours</p>
         </li>
         
         
-        <li id="section-13">
+        <li id="section-12">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               <p>Override to bind textures if there are any</p>
 
@@ -333,8 +278,7 @@ TODO - Finish off vertex diffuse colours</p>
       func()
 
 <span class="hljs-built_in">module</span>.exports =
-  PhongMaterial : PhongMaterial
-  UberShaderPhong : UberShaderPhong</pre></div></div>
+  PhongMaterial : PhongMaterial</pre></div></div>
             
         </li>
         
