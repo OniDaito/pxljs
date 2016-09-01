@@ -87,7 +87,7 @@ class UberShader extends Shader
     if base_node.pointLights.length > 0
       @uber_defines.push "LIGHTING_POINT" if "LIGHTING_POINT" not in @uber_defines
 
-    if base_node.spotLights.length > 0 
+    if base_node.spotLights.length > 0
       @uber_defines.push "LIGHTING_SPOT" if "LIGHTING_SPOT" not in @uber_defines
       
       # Checking for shadowmaps
@@ -120,8 +120,8 @@ class UberShader extends Shader
     # We default to high precision for our ubershader
     # I havent passed in any options for precision yet
 
-    @vertex = uber.vertex;
-    @fragment = uber.fragment;
+    @vertex = def_string + uber.vertex
+    @fragment = def_string + uber.fragment
 
     #@vertex = "#version 100\n" + "precision highp float;\nprecision highp int;\n" + def_string + UberShader.vertex
     #@fragment = "#version 100\n" + "precision highp float;\nprecision highp int;\n" + def_string + UberShader.fragment

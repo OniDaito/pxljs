@@ -1,7 +1,6 @@
 // The ubershader used in pxljs
 
 ##>VERTEX
-#version 100
 precision highp float;
 precision highp int;
 
@@ -146,14 +145,14 @@ void main() {
   vEyePosition = uCameraInverseMatrix * uModelMatrix * vPosition;
 #endif
 
+  gl_Position = vPosition;
+
 #ifdef BASIC_CAMERA
   gl_Position = uProjectionMatrix * uCameraMatrix * vPosition;
 #endif
 }
 
-
 ##>FRAGMENT
-#version 100
 precision highp float;
 precision highp int;
 

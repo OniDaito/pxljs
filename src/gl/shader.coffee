@@ -63,13 +63,15 @@ class Shader
     gl.compileShader @vertexShader
 
     if not gl.getShaderParameter @vertexShader, gl.COMPILE_STATUS
-      @_printLog @vertexShader, sv, "vertex"
+      @_printLog @vertexShader, sv, "vertex" 
+      PXLError "Failed to compiled Vertex Shader"
 
     gl.shaderSource @fragmentShader, sf
     gl.compileShader @fragmentShader
 
     if not gl.getShaderParameter @fragmentShader, gl.COMPILE_STATUS
       @_printLog @fragmentShader, sf, "fragment"
+      PXLError "Failed to compile Fragment Shader"
 
     @shaderProgram = gl.createProgram()
 
@@ -81,18 +83,17 @@ class Shader
     gl.bindAttribLocation(@shaderProgram, 0, "aVertexPosition")
 
     gl.linkProgram(@shaderProgram)
-
+    gl.validateProgram(@shaderProgram)
+    
     success = gl.getProgramParameter(@shaderProgram, gl.LINK_STATUS)
     if not success
       PXLWarning gl.getProgramInfoLog @shaderProgram
       PXLError "Failed to Link Shader"
-
       WebGLActiveInfo
 
     # We grab the attributes here and we set their positions to these
     # in the contract - order dependent
-    # Thanks to @Tojiro
-
+    
     attrs = @_getAttributes()
     for attr in attrs
       gl.bindAttribLocation @shaderProgram, attr.pos, attr.name
