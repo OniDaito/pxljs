@@ -51,9 +51,17 @@ uniform sampler2D uBonePalette;
 uniform int uBoneTexDim;
 #endif
 
+#ifdef LIGHTING
 {{ShaderChunk.ambient_light}}
+#endif
+
+#ifdef LIGHTING_POINT
 {{ShaderChunk.point_light}}
+#endif
+
+#ifdef LIGHTING_SPOT
 {{ShaderChunk.spot_light}}
+#endif
 
 #ifdef VERTEX_TANGENT_FRAME
 {{ShaderChunk.tangent_frame}}
@@ -190,6 +198,17 @@ uniform mat4 uInverseProjectionMatrix;
 varying vec4 vEyePosition;
 #endif
 
+#ifdef LIGHTING
+{{ShaderChunk.ambient_light}}
+#endif
+
+#ifdef LIGHTING_POINT
+{{ShaderChunk.point_light}}
+#endif
+
+#ifdef LIGHTING_SPOT
+{{ShaderChunk.spot_light}}
+#endif
 
 bool bitcheck(in float fcheck, in int bitpos) { 
   int fsi = int(fcheck);
