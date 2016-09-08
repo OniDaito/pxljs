@@ -653,7 +653,7 @@ class Vec4
     @w += v.w
     @
 
-  # *cross* - cross this vector with another vector - destructive
+  # **cross** - cross this vector with another vector - destructive
   # - **v** - Vec4
   # - return this
   cross: (v) ->
@@ -1195,7 +1195,7 @@ class Matrix3
     @mult(r)
     @
 
-###Matrix4###
+### Matrix4 ###
 # Our 4x4 matrix
 
 class Matrix4
@@ -1461,7 +1461,7 @@ class Matrix4
     @
 
 
-  # translate - multiple this matrix by a translation matrix, formed from the Vec3 v
+  # **translate** - multiple this matrix by a translation matrix, formed from the Vec3 v
   # - **v** - Vec3
   # - returns this
   translate: (v) ->
@@ -1477,7 +1477,8 @@ class Matrix4
     @mult(r)
       
     @
-  # translatePart - set the translation part of this matrixfrom the Vec3 v
+
+  # **translatePart** - set the translation part of this matrixfrom the Vec3 v
   # - **v** - Vec3
   # - returns this
   translatePart: (v) ->
@@ -1517,7 +1518,11 @@ class Matrix4
     @
 
 
-  # lookAt - similar to gluLookAt - creates a matrix from an eye, look and up vector (Vec3)
+  # **lookAt** - similar to gluLookAt - creates a matrix from an eye, look and up vector
+  # - **eye** - Vec3
+  # - **look** - Vec3
+  # - **up** - Vec3
+  # - returns this
   lookAt: (eye,look,up) ->
 
     f = Vec3.sub(look,eye)
@@ -1536,9 +1541,13 @@ class Matrix4
     @
 
 
-  # makePerspective - given a field-of-view in degrees, an aspect ratio (w/h) and near and far clip planes
+  # **makePerspective** - given a field-of-view in degrees, an aspect ratio (w/h) and near and far clip planes
   # create a perspective matrix
-
+  # - **fovy** - Number
+  # - **aspect** - Number
+  # - **znear** - Number
+  # - **zfar** - Number
+  # - returns this
   makePerspective: (fovy,aspect,znear,zfar) ->
     ymax = znear * Math.tan(fovy)
     ymin = -ymax;
@@ -1547,8 +1556,15 @@ class Matrix4
     @makeFrustum(xmin, xmax, ymin, ymax, znear, zfar)
     @
 
-  # makeFrustum - used by makePerspective to create our frustrum 
-  makeFrustum: (left, right,bottom, top, znear, zfar) ->
+  # **makeFrustum** - used by makePerspective to create our frustrum
+  # - **left** - Number
+  # - **right** - Number
+  # - **bottom** - Number
+  # - **top** - Number
+  # - **znear** - Number
+  # - **zfar** - Number  
+  # - returns this
+  makeFrustum: (left, right, bottom, top, znear, zfar) ->
     x = 2*znear/(right-left)
     y = 2*znear/(top-bottom)
     a = (right+left)/(right-left)
@@ -1558,7 +1574,14 @@ class Matrix4
     @a = new glMatrixArrayType([x,0,0,0,0,y,0,0,a,b,c,-1,0,0,d,0])
     @
 
-  # makeOrtho - given left,right,bottom,top, near and far floats, create an orthographic projection
+  # **makeOrtho** - given left,right,bottom,top, near and far floats, create an orthographic projection
+  # - **left** - Number
+  # - **right** - Number
+  # - **bottom** - Number
+  # - **top** - Number
+  # - **znear** - Number
+  # - **zfar** - Number
+  # - returns this
   makeOrtho: (left, right, bottom, top, znear, zfar) ->
     tx = - (right + left) / (right - left)
     ty = - (top + bottom) / (top - bottom)
@@ -1566,7 +1589,10 @@ class Matrix4
     @a = new glMatrixArrayType([2 / (right - left),0,0,0,0, 2 / (top-bottom),0,0,0,0, -2 / (zfar - znear),0,tx,ty,tz,1])
     @
 
-  # rotate - given a vector and an angle (radians), create the rotation part of this matrix
+  # **rotate** - given a vector and an angle (radians), create the rotation part of this matrix
+  # - **v** - a Vec3
+  # - **a** - a Number
+  # - returns this
   rotate: (v,a) ->
 
     r = new Matrix4()
@@ -1589,7 +1615,9 @@ class Matrix4
     @mult(r)
     @
 
-  # scale - scale our matrix by a Vec3
+  # **scale** - scale our matrix by a Vec3 
+  # - **v** - a Vec3
+  # - returns this
   scale: (v) ->
     # Leave w
     r = new Matrix4()
@@ -1600,68 +1628,104 @@ class Matrix4
     @
 
 
-###Quaternion###
+### Quaternion ###
 # A quaternion to deal with all our rotations
 
 class Quaternion
 
   # **@addScalar** - static function - add a scalar to every element in this quaternion
+  # - **a** - a Quaternion
+  # - **b** - a Number
+  # - returns a new Quaternion
   @addScalar:(a,b) ->
     a.clone()["addScalar"](b)
 
   # **@subScalar** - static function - subtract a scalar from every element in this quaternion
+  # - **a** - a Quaternion
+  # - **b** - a Number
+  # - returns a new Quaternion
   @subScalar:(a,b) ->
     a.clone()["subScalar"](b)
 
   # **@multScalar** - static function - multiply every element in this quaternion by a scalar
+  # - **a** - a Quaternion
+  # - **b** - a Number
+  # - returns a new Quaternion 
   @multScalar:(a,b) ->
     a.clone()["multScalar"](b)
 
   # **@divScalar** - static function - divide every element in this quaternion by a scalar
+  # - **a** - a Quaternion
+  # - **b** - a Number
+  # - returns a new Quaternion
   @divScalar:(a,b) ->
     a.clone()["divScalar"](b)
 
   # **@conjugate** - static function - return the conjugate to this quaternion
+  # - **a** - a Quaternion
+  # - returns a new Quaternion
   @conjugate:(a) ->
     a.clone()["conjugate"]()
 
   # **@mult** - static function - multiply this quaternion by another quaternion
+  # - **a** - a Quaternion
+  # - **b** - a Quaternion
+  # - returns a new Quaternion
   @mult:(a,b) ->
     a.clone()["mult"](b)
 
   # **@invert** - static function - return an inverted version
+  # - **a** - a Quaternion
+  # - returns a new Quaternion
   @invert:(a) ->
     a.clone()["invert"]()
  
-  # transVec3 - static function - given a vector, return a new version of it, transformed by this quaternion
+  # **transVec3** - static function - given a vector, return a new version of it, transformed by this quaternion
+  # - **q** - Quaternion
+  # - **v** - Vec3
+  # - returns a new Vec3 
   @transVec3:(q,v) ->
     tv = v.clone()
     q.transVec3(tv)
     tv
-
+  # **fromRotations** - static function - create a Quaternion from x, y and z rotations in radians.
+  # - **x** - Number
+  # - **y** - Number
+  # - **z** - Number
+  # - returns a new Quaternion
   @fromRotations : (x,y,z) ->
     tv = new Quaternion()
     tv.fromRotations x,y,z
     tv
 
-  # fromTo - static function - given two quaternions, return a new one from the first to the second
+  # **fromTo** - static function - given two quaternions, return a new one from the first to the second
+  # - **f** - Quaternion
+  # - **t** - Quaternion
+  # - returns a new Quaternion
   @fromTo: (f,t) ->
     tv = new Quaternion()
     tv.fromTo(f,t)
     tv
   
-  # constructor - takes a Vec3 and a w (both optional)
+  # **constructor** - takes three axis numbers and a w
+  # - **x** - Number - optional - default 0
+  # - **y** - Number - optional - default 0
+  # - **z** - Number - optional - default 0
+  # - **w** - Number - optional - default 1
   constructor : (@x, @y, @z, @w) ->
     @x = 0 if not @x?
     @y = 0 if not @y?
     @z = 0 if not @z?
     @w = 1 if not @w?
 
-  # clone - return a coy of this Quaternion
+  # **clone** - return a coy of this Quaternion
+  # - returns a new Quaternion
   clone: () ->
     new Quaternion @x, @y, @z, @w
  
-  # copy - copy another quaternion into this one
+  # **copy** - copy another quaternion into this one
+  # - **q** - Quaternion
+  # - returns this
   copy: (q) ->
     @x = q.x
     @y = q.y
@@ -1669,52 +1733,63 @@ class Quaternion
     @w = q.w
     @
 
-  # axis - return the axis of this Quaternion 
+  # **axis** - return the axis of this Quaternion 
+  #  - returns a new Vec3
   axis : () ->
     ca = @w
     invlen = 1.0/ Math.sqrt(1.0 - ca * ca)
-    @x *= invlen
-    @y *= invlen
-    @z *= invlen
+    x *= invlen
+    y *= invlen
+    z *= invlen
+    new Vec3(x,y,z)
 
-  # angle - return the angle of this Quaternion
+  # **angle** - return the angle of this Quaternion
+  # - returns a Number
   angle : () ->
-    ca = @w
-    Math.acos(ca) * 2
+    Math.acos(@w) * 2
 
-  # pitch - return the pitch of this Quaternion
+  # **pitch** - return the pitch of this Quaternion
+  # - returns a Number
   pitch : () ->
     Math.atan2(2 * (@y * @z + @w * @x ), @w * @w - @x * @x - @y * @y + @z * @z )
 
-  # yaw - return the pitch of this Quaternion
+  # **yaw** - return the pitch of this Quaternion
+  # - returns a Number
   yaw : () ->
     Math.sin(-2 * ( @x * @z - @w * @y ))
 
-  # roll - return the pitch of this Quaternion
+  # **roll** - return the pitch of this Quaternion
+  # - returns a Number
   roll: () ->
     Math.atan2(2 * ( @x * @y + @w * @z), @w * @w + @x * @x - @y * @y - @z * @z)
 
-  # dot - return the dot product of this Quaternion with another
+  # **dot** - return the dot product of this Quaternion with another
+  # - **a** - Quaternion
+  # - returns a Number
   dot : (a) ->
     @w * a.w + @x * a.x + @y * a.y + @z * a.z
 
-  # length - return the length of this Quaternion
+  # **length** - return the length of this Quaternion
+  # - returns a Number
   length : () ->
     Math.sqrt @lengthSquared()
   
-  # lengthSquared - return the lengthSquared of this Quaternion
+  # **lengthSquared** - return the lengthSquared of this Quaternion
+  # - returns a Number
   lengthSquared : () ->
     @w * @w + @x * @x + @y * @y + @z * @z
 
 
-  # Conjugate
+  # **Conjugate**
+  # - returns this
   conjugate : () ->
     @x = -@x
     @y = -@y
     @z = -@z
     @
 
-  # invert - invert this quaternion
+  # **invert** - invert this quaternion
+  # - returns this
   invert : () ->
     q = Quaternion.conjugate(@)
     q = q.multScalar(1.0 / @lengthSquared())
@@ -1724,7 +1799,9 @@ class Quaternion
     @w = q.w
     @
 
-  # add - Add another quaternion to this one
+  # **add** - Add another quaternion to this one
+  # - **q** - Quaternion
+  # - returns this
   add : (q) ->
     @w += q.w
     @x += q.x
@@ -1732,7 +1809,9 @@ class Quaternion
     @z += q.z
     @
 
-  # sub - Subtract another quaternion from this one
+  # **sub** - Subtract another quaternion from this one
+  # - **q** - Quaternion
+  # - returns this
   sub : (q) ->
     @w -= q.w
     @x -= q.x
@@ -1740,11 +1819,15 @@ class Quaternion
     @z -= q.z
     @
 
-  # multiply - multiply this Quaternion with another
+  # **multiply** - multiply this Quaternion with another
+  # - **q** - Quaternion
+  # - returns this
   multiply : (q) ->
     @mult(q)
 
-  # mult - multiply this Quaternion with another
+  # **mult** - multiply this Quaternion with another
+  # - **q** - Quaternion
+  # - returns this
   mult: (q) ->
     w = -@x * q.x - @y * q.y - @z * q.z + @w * q.w
     x = @x * q.w + @y * q.z - @z * q.y + @w * q.x
@@ -1756,7 +1839,9 @@ class Quaternion
     @z = z
     @
 
-  # multScalar - multiply this Quaternion by a scalar
+  # **multScalar** - multiply this Quaternion by a scalar
+  # - **s** - Number
+  # - returns this
   multScalar : (s) ->
     @w *= s
     @x *= s
@@ -1764,7 +1849,9 @@ class Quaternion
     @z *= s
     @
 
-  # transVec3 - Transform a vector by this quaternion
+  # **transVec3** - Transform a vector by this quaternion
+  # - **v** - Vec3
+  # - returns this
 
   # TODO - this appears to rotate a vector in the opposite direction to glm and other libs
   # We should check the maths on this one
@@ -1781,7 +1868,8 @@ class Quaternion
 
     @
 
-  # normalize - normalize this quaternion
+  # **normalize** - normalize this quaternion
+  # - returns this
   normalize : () ->
     len = 1.0 / @length()
     @w *= len
@@ -1790,7 +1878,8 @@ class Quaternion
     @z *= len
     @
 
-  # log - ?
+  # **log** - ?
+  # - returns this
   log : () ->
     t = 1.0
     if @w < t
@@ -1805,9 +1894,14 @@ class Quaternion
     if Math.abs(sintheta) < 1 and Math.abs(theta) >= 3.402823466e+38 * Math.abs(sintheta)
       k  =1
 
-    new Quaternion @x*k, @y*k, @z*k, 0
+    @x = @x*k
+    @y = @y*k
+    @z = @z*k
+    @w = 0
+    @
 
-  # exp - ?
+  # **exp** - ?
+  # - returns this
   exp : () ->
 
     theta = @v.length()
@@ -1819,9 +1913,15 @@ class Quaternion
 
     costheta = Math.cos(theta)
   
-    new Quaternion @x * k, @y * k, @z * k, costheta
+    @x = @x * k
+    @y = @y * k
+    @z = @z * k
+    @w = costheta
 
-  # fromTo - set this quaternion to represent the movement from quaternion to another
+  # **fromTo** - set this quaternion to represent the movement from quaternion to another
+  # - **f** - Quaternion
+  # - **t** - Quaternion
+  # - returns this
   fromTo : (f,t) ->
     axis = Vec3.cross(f,t)
     @w = f.dot(t)
@@ -1845,7 +1945,10 @@ class Quaternion
       @normalize()
     @
 
-  # fromAxisAngle - create a quaternion that represents rotation around an axis (a) (Vec3) radians (r)
+  # **fromAxisAngle** - create a quaternion that represents rotation around an axis in radians
+  # - **a** - Vec3
+  # - **r** - Number
+  # - returns this
   fromAxisAngle : (a,r) ->
     @w = Math.cos(r / 2)
     v = new Vec3(a.x,a.y,a.z)
@@ -1855,7 +1958,11 @@ class Quaternion
     @z = v.z
     @
 
-  # fromRotations - create a Quaternion from rotations around z,y,and x in that order in radians
+  # **fromRotations** - create a Quaternion from rotations around z,y,and x in that order in radians
+  # - **x** - Number
+  # - **y** - Number
+  # - **z** - Number
+  # - returns this
   fromRotations : (x,y,z) ->
     x *= 0.5
     y *= 0.5
@@ -1876,7 +1983,8 @@ class Quaternion
     @z = cx*cy*sz + sx*sy*cx
     @
 
-  # getAxisAngle - return the axis and angle represented by this quaternion
+  # **getAxisAngle** - return the axis and angle represented by this quaternion
+  # - returns [Vec3, Number]
   getAxisAngle : () ->
     ca = @w
     r = Math.acos(ca) * 2
@@ -1885,7 +1993,8 @@ class Quaternion
     [new Vec3(@x * invlen, @y * invlen, @z * invlen), r]
 
 
-  # getMatrix4 - return a matrix4 from this Quaternion
+  # **getMatrix4** - return a matrix4 from this Quaternion
+  # - returns Matrix4
   getMatrix4 : () ->
 
     xs = @x + @x
@@ -1918,7 +2027,8 @@ class Quaternion
       0,
       1.0])
 
-  # getMatrix3 - return a matrix3 from this Quaternion - The rotation component
+  # **getMatrix3** - return a matrix3 from this Quaternion - The rotation component
+  # - returns Matrix3
   getMatrix3 : () ->
 
     xs = @x + @x
@@ -1945,7 +2055,10 @@ class Quaternion
       1.0 - ( xx + yy )])
 
 
-  # lerp - lerp between this quaternion at the start and the one at the 'end', t being 0->1
+  # **lerp** - lerp between this quaternion at the start and the one at the 'end', t being 0->1
+  # - **t** - Quaternion
+  # - **end** - Number
+  # - returns a new Quaternion
   lerp : (t,end) ->
    
     costheta = end.dot()
@@ -1956,7 +2069,11 @@ class Quaternion
       result.add (result.multScalar(t - 1.0))
     result
 
-  # slerpShortestUnenforced - slerp between this quaternion at the start and the one at the 'end', t being 0->1
+  # **slerpShortestUnenforced** - slerp between this quaternion at the start and the one at the 'end', t being 0->1
+  # - **t** - Quaternion
+  # - **end** - Number
+  # - returns a new Quaternion
+  
   slerpShortestUnenforced : (t,end) ->
     d = @clone()
     d.sub(end)
@@ -1976,7 +2093,11 @@ class Quaternion
     q.normalize()
     q
 
-  # slerp - slerp between this quaternion at the start and the one at the 'end', t being 0->1
+  # **slerp** - slerp between this quaternion at the start and the one at the 'end', t being 0->1
+  # - **t** - Quaternion
+  # - **end** - Number
+  # - returns a new Quaternion
+  
   slerp : (t,end) ->
     cosTheta = @dot( end )
 
@@ -2007,7 +2128,10 @@ class Quaternion
     q.add(e)
     q
 
-  # fromMatrix4 : Create a Quaternion from an existing Matrix4
+  # **fromMatrix4** : Create a Quaternion from an existing Matrix4
+  # - **m** - Matrix4
+  # - returns this
+  
   fromMatrix4 : (m) ->
 
     trace = m.a[0] + m.a[5] + m.a[10]

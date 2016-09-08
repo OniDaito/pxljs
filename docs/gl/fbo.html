@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>fbo.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="../docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>fbo.coffee</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h2 id="about">ABOUT</h2>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>             .__   
+_________  __|  |  
+\____ \  \/  /  |  
+|  |_&gt; &gt;    &lt;|  |__
+|   __<span class="hljs-regexp">/__/</span>\_ \____/
+|__|        \/     js
+
+                    PXL.js
+                    Benjamin Blundell - ben@pxljs.com
+                    http:<span class="hljs-regexp">//</span>pxljs.com
+
+This software <span class="hljs-keyword">is</span> released under the MIT Licence. See LICENCE.txt <span class="hljs-keyword">for</span> details
+
+
+Framebuffer objects - reads the current active context from the exports <span class="hljs-keyword">and</span> creates a FBO
+
+Basic FBO with depth, linear filtering <span class="hljs-keyword">and</span> RGBA with unsigned bytes
+
+Remember, NPOT textures are support but <span class="hljs-keyword">not</span> with repeats <span class="hljs-keyword">or</span> mipmapping
+
+- TODO
+  * Depth options</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>##</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+{PXLError, PXLDebug} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../util/log'</span>
+{RGB,RGBA} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../colour/colour'</span>
+{Vec2} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../math/math'</span>
+{TextureBase} = <span class="hljs-built_in">require</span> <span class="hljs-string">'./texture'</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <h2 id="fbo">Fbo</h2>
+<p>A class for Framebuffer objects
+Simply provide the the constructor variables and then bind in order to draw to this</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Fbo</span></span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p><strong>constructor</strong> - </p>
+<ul>
+<li><strong>width</strong> - a Number</li>
+<li><strong>height</strong> - a Number</li>
+<li><strong>channels</strong> - gl.R, gl.RGB, gl.RGBA or similar, optional, default gl.RGBA</li>
+<li><strong>datatype</strong> - gl.UNSIGNED_BYTE or similar, optional, default gl.UNSIGNED_BYTE</li>
+<li><strong>depth</strong> - a boolean, optional, default true</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  constructor: <span class="hljs-function"><span class="hljs-params">(@width, @height, @channels, @datatype, @depth)</span> -&gt;</span>
+    gl = PXL.Context.gl
+
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> (@width? <span class="hljs-keyword">and</span> @height?)
+      @width =  PXL.Context.width
+      @height =  PXL.Context.height
+
+    @channels= gl.RGBA <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @channels?
+    @datatype = gl.UNSIGNED_BYTE <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @datatype?
+    @depth = <span class="hljs-literal">true</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @depth?
+
+    @framebuffer = gl.createFramebuffer()
+
+    PXLDebug <span class="hljs-string">"Created an FBO  with dimensions: "</span> + @width + <span class="hljs-string">","</span> + @height
+
+    @_build()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>resize - Given width and height (as either a Vec2 or two seperate numbers), resize this FBO</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  resize: <span class="hljs-function"><span class="hljs-params">(w,h)</span> -&gt;</span>
+
+    <span class="hljs-keyword">if</span> w <span class="hljs-keyword">instanceof</span> Vec2
+      @width = w.x
+      @height = w.y
+
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> w? <span class="hljs-keyword">and</span> h? 
+      @width = w
+      @height = h
+    <span class="hljs-keyword">else</span> 
+      <span class="hljs-keyword">return</span> @
+
+    @_build()
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>_build - internal function that actually creates the Fbo</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  _build : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+
+    gl = PXL.Context.gl
+    gl.bindFramebuffer(gl.FRAMEBUFFER,@framebuffer)
+ 
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @texture?
+      params =
+        <span class="hljs-string">"min"</span> : gl.LINEAR
+        <span class="hljs-string">"max"</span> : gl.LINEAR
+        <span class="hljs-string">"wraps"</span> : gl.CLAMP_TO_EDGE
+        <span class="hljs-string">"wrapt"</span> : gl.CLAMP_TO_EDGE
+        <span class="hljs-string">"width"</span> : @width
+        <span class="hljs-string">"height"</span> : @height
+        <span class="hljs-string">"channels"</span> : @channels
+        <span class="hljs-string">"datatype"</span> : @datatype 
+
+      @texture = <span class="hljs-keyword">new</span> TextureBase(params)
+      @texture.build()
+    <span class="hljs-keyword">else</span>
+      @texture.bind()
+      gl.texImage2D(gl.TEXTURE_2D,<span class="hljs-number">0</span>, @channels, @width, @height, <span class="hljs-number">0</span>, @channels, @datatype ,<span class="hljs-literal">null</span>)
+        
+
+    @renderbuffer = gl.createRenderbuffer()
+    
+    gl.bindRenderbuffer(gl.RENDERBUFFER,@renderbuffer)
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, @texture.texture, <span class="hljs-number">0</span>)
+    
+    <span class="hljs-keyword">if</span> @depth
+      gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, @width, @height)
+      gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, @renderbuffer)
+    
+    gl.bindRenderbuffer(gl.RENDERBUFFER,<span class="hljs-literal">null</span>)
+    gl.bindFramebuffer(gl.FRAMEBUFFER,<span class="hljs-literal">null</span>)
+    @texture.unbind()
+
+    <span class="hljs-keyword">if</span> gl.checkFramebufferStatus(gl.FRAMEBUFFER) != gl.FRAMEBUFFER_COMPLETE
+      PXLError <span class="hljs-string">"Failed to Create Framebuffer!"</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>bind - Bind this fbo to the current drawing context</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  bind : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    gl = PXL.Context.gl
+    
+    gl.bindFramebuffer(gl.FRAMEBUFFER,@framebuffer)
+    gl.bindRenderbuffer(gl.RENDERBUFFER,@renderbuffer)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>unbind - remove this fbo from the context</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  unbind: <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    gl = PXL.Context.gl
+    gl.bindFramebuffer(gl.FRAMEBUFFER,<span class="hljs-literal">null</span>)
+    gl.bindRenderbuffer(gl.RENDERBUFFER,<span class="hljs-literal">null</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>clear - Clear the FBO with an optional colour</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  clear : <span class="hljs-function"><span class="hljs-params">(colour)</span> -&gt;</span>
+    gl = PXL.Context.gl
+    
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> colour?
+      gl.clearColor(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>)
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-keyword">if</span> colour <span class="hljs-keyword">instanceof</span> RGBA
+        gl.clearColor(colour.r, colour.g, colour.b, colour.a)
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> colour <span class="hljs-keyword">instanceof</span> RGB
+        gl.clearColor(colour.r, colour.g, colour.b, <span class="hljs-number">1.0</span>)
+    
+    <span class="hljs-keyword">if</span> @depth
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+    <span class="hljs-keyword">else</span>
+      gl.clear gl.COLOR_BUFFER_BIT</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>washUp - delete this Fbo from the Graphics Card</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  washUp : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    gl = PXL.Context.gl
+    gl.deleteFramebuffer(@framebuffer)
+    gl.deleteRenderbuffer(@renderbuffer)
+    gl.deleteTexture(@texture.texture)
+    @
+  
+<span class="hljs-built_in">module</span>.exports = 
+  Fbo : Fbo</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

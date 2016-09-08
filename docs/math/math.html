@@ -3415,8 +3415,8 @@ returns boolean</li>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-163">&#182;</a>
               </div>
-              <p>##Matrix4###
-Our 4x4 matrix</p>
+              <h2 id="matrix4">Matrix4</h2>
+<p>Our 4x4 matrix</p>
 
             </div>
             
@@ -4065,7 +4065,7 @@ Our 4x4 matrix</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-191">&#182;</a>
               </div>
-              <p>translate - multiple this matrix by a translation matrix, formed from the Vec3 v</p>
+              <p><strong>translate</strong> - multiple this matrix by a translation matrix, formed from the Vec3 v</p>
 <ul>
 <li><strong>v</strong> - Vec3</li>
 <li>returns this</li>
@@ -4096,7 +4096,7 @@ Our 4x4 matrix</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-192">&#182;</a>
               </div>
-              <p>translatePart - set the translation part of this matrixfrom the Vec3 v</p>
+              <p><strong>translatePart</strong> - set the translation part of this matrixfrom the Vec3 v</p>
 <ul>
 <li><strong>v</strong> - Vec3</li>
 <li>returns this</li>
@@ -4190,7 +4190,13 @@ Our 4x4 matrix</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-196">&#182;</a>
               </div>
-              <p>lookAt - similar to gluLookAt - creates a matrix from an eye, look and up vector (Vec3)</p>
+              <p><strong>lookAt</strong> - similar to gluLookAt - creates a matrix from an eye, look and up vector</p>
+<ul>
+<li><strong>eye</strong> - Vec3</li>
+<li><strong>look</strong> - Vec3</li>
+<li><strong>up</strong> - Vec3</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -4220,13 +4226,19 @@ Our 4x4 matrix</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-197">&#182;</a>
               </div>
-              <p>makePerspective - given a field-of-view in degrees, an aspect ratio (w/h) and near and far clip planes
+              <p><strong>makePerspective</strong> - given a field-of-view in degrees, an aspect ratio (w/h) and near and far clip planes
 create a perspective matrix</p>
+<ul>
+<li><strong>fovy</strong> - Number</li>
+<li><strong>aspect</strong> - Number</li>
+<li><strong>znear</strong> - Number</li>
+<li><strong>zfar</strong> - Number</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>
-  makePerspective: <span class="hljs-function"><span class="hljs-params">(fovy,aspect,znear,zfar)</span> -&gt;</span>
+            <div class="content"><div class='highlight'><pre>  makePerspective: <span class="hljs-function"><span class="hljs-params">(fovy,aspect,znear,zfar)</span> -&gt;</span>
     ymax = znear * Math.tan(fovy)
     ymin = -ymax;
     xmin = ymin * aspect
@@ -4243,11 +4255,20 @@ create a perspective matrix</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-198">&#182;</a>
               </div>
-              <p>makeFrustum - used by makePerspective to create our frustrum </p>
+              <p><strong>makeFrustum</strong> - used by makePerspective to create our frustrum</p>
+<ul>
+<li><strong>left</strong> - Number</li>
+<li><strong>right</strong> - Number</li>
+<li><strong>bottom</strong> - Number</li>
+<li><strong>top</strong> - Number</li>
+<li><strong>znear</strong> - Number</li>
+<li><strong>zfar</strong> - Number  </li>
+<li>returns this</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  makeFrustum: <span class="hljs-function"><span class="hljs-params">(left, right,bottom, top, znear, zfar)</span> -&gt;</span>
+            <div class="content"><div class='highlight'><pre>  makeFrustum: <span class="hljs-function"><span class="hljs-params">(left, right, bottom, top, znear, zfar)</span> -&gt;</span>
     x = <span class="hljs-number">2</span>*znear/(right-left)
     y = <span class="hljs-number">2</span>*znear/(top-bottom)
     a = (right+left)/(right-left)
@@ -4266,7 +4287,16 @@ create a perspective matrix</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-199">&#182;</a>
               </div>
-              <p>makeOrtho - given left,right,bottom,top, near and far floats, create an orthographic projection</p>
+              <p><strong>makeOrtho</strong> - given left,right,bottom,top, near and far floats, create an orthographic projection</p>
+<ul>
+<li><strong>left</strong> - Number</li>
+<li><strong>right</strong> - Number</li>
+<li><strong>bottom</strong> - Number</li>
+<li><strong>top</strong> - Number</li>
+<li><strong>znear</strong> - Number</li>
+<li><strong>zfar</strong> - Number</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -4286,7 +4316,12 @@ create a perspective matrix</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-200">&#182;</a>
               </div>
-              <p>rotate - given a vector and an angle (radians), create the rotation part of this matrix</p>
+              <p><strong>rotate</strong> - given a vector and an angle (radians), create the rotation part of this matrix</p>
+<ul>
+<li><strong>v</strong> - a Vec3</li>
+<li><strong>a</strong> - a Number</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -4321,7 +4356,11 @@ create a perspective matrix</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-201">&#182;</a>
               </div>
-              <p>scale - scale our matrix by a Vec3</p>
+              <p><strong>scale</strong> - scale our matrix by a Vec3 </p>
+<ul>
+<li><strong>v</strong> - a Vec3</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -4356,8 +4395,8 @@ create a perspective matrix</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-203">&#182;</a>
               </div>
-              <p>##Quaternion###
-A quaternion to deal with all our rotations</p>
+              <h2 id="quaternion">Quaternion</h2>
+<p>A quaternion to deal with all our rotations</p>
 
             </div>
             
@@ -4374,6 +4413,11 @@ A quaternion to deal with all our rotations</p>
                 <a class="pilcrow" href="#section-204">&#182;</a>
               </div>
               <p><strong>@addScalar</strong> - static function - add a scalar to every element in this quaternion</p>
+<ul>
+<li><strong>a</strong> - a Quaternion</li>
+<li><strong>b</strong> - a Number</li>
+<li>returns a new Quaternion</li>
+</ul>
 
             </div>
             
@@ -4390,6 +4434,11 @@ A quaternion to deal with all our rotations</p>
                 <a class="pilcrow" href="#section-205">&#182;</a>
               </div>
               <p><strong>@subScalar</strong> - static function - subtract a scalar from every element in this quaternion</p>
+<ul>
+<li><strong>a</strong> - a Quaternion</li>
+<li><strong>b</strong> - a Number</li>
+<li>returns a new Quaternion</li>
+</ul>
 
             </div>
             
@@ -4406,6 +4455,11 @@ A quaternion to deal with all our rotations</p>
                 <a class="pilcrow" href="#section-206">&#182;</a>
               </div>
               <p><strong>@multScalar</strong> - static function - multiply every element in this quaternion by a scalar</p>
+<ul>
+<li><strong>a</strong> - a Quaternion</li>
+<li><strong>b</strong> - a Number</li>
+<li>returns a new Quaternion </li>
+</ul>
 
             </div>
             
@@ -4422,6 +4476,11 @@ A quaternion to deal with all our rotations</p>
                 <a class="pilcrow" href="#section-207">&#182;</a>
               </div>
               <p><strong>@divScalar</strong> - static function - divide every element in this quaternion by a scalar</p>
+<ul>
+<li><strong>a</strong> - a Quaternion</li>
+<li><strong>b</strong> - a Number</li>
+<li>returns a new Quaternion</li>
+</ul>
 
             </div>
             
@@ -4438,6 +4497,10 @@ A quaternion to deal with all our rotations</p>
                 <a class="pilcrow" href="#section-208">&#182;</a>
               </div>
               <p><strong>@conjugate</strong> - static function - return the conjugate to this quaternion</p>
+<ul>
+<li><strong>a</strong> - a Quaternion</li>
+<li>returns a new Quaternion</li>
+</ul>
 
             </div>
             
@@ -4454,6 +4517,11 @@ A quaternion to deal with all our rotations</p>
                 <a class="pilcrow" href="#section-209">&#182;</a>
               </div>
               <p><strong>@mult</strong> - static function - multiply this quaternion by another quaternion</p>
+<ul>
+<li><strong>a</strong> - a Quaternion</li>
+<li><strong>b</strong> - a Quaternion</li>
+<li>returns a new Quaternion</li>
+</ul>
 
             </div>
             
@@ -4470,6 +4538,10 @@ A quaternion to deal with all our rotations</p>
                 <a class="pilcrow" href="#section-210">&#182;</a>
               </div>
               <p><strong>@invert</strong> - static function - return an inverted version</p>
+<ul>
+<li><strong>a</strong> - a Quaternion</li>
+<li>returns a new Quaternion</li>
+</ul>
 
             </div>
             
@@ -4485,18 +4557,18 @@ A quaternion to deal with all our rotations</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-211">&#182;</a>
               </div>
-              <p>transVec3 - static function - given a vector, return a new version of it, transformed by this quaternion</p>
+              <p><strong>transVec3</strong> - static function - given a vector, return a new version of it, transformed by this quaternion</p>
+<ul>
+<li><strong>q</strong> - Quaternion</li>
+<li><strong>v</strong> - Vec3</li>
+<li>returns a new Vec3 </li>
+</ul>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>  @transVec3:<span class="hljs-function"><span class="hljs-params">(q,v)</span> -&gt;</span>
     tv = v.clone()
     q.transVec3(tv)
-    tv
-
-  @fromRotations : <span class="hljs-function"><span class="hljs-params">(x,y,z)</span> -&gt;</span>
-    tv = <span class="hljs-keyword">new</span> Quaternion()
-    tv.fromRotations x,y,z
     tv</pre></div></div>
             
         </li>
@@ -4508,13 +4580,19 @@ A quaternion to deal with all our rotations</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-212">&#182;</a>
               </div>
-              <p>fromTo - static function - given two quaternions, return a new one from the first to the second</p>
+              <p><strong>fromRotations</strong> - static function - create a Quaternion from x, y and z rotations in radians.</p>
+<ul>
+<li><strong>x</strong> - Number</li>
+<li><strong>y</strong> - Number</li>
+<li><strong>z</strong> - Number</li>
+<li>returns a new Quaternion</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  @fromTo: <span class="hljs-function"><span class="hljs-params">(f,t)</span> -&gt;</span>
+            <div class="content"><div class='highlight'><pre>  @fromRotations : <span class="hljs-function"><span class="hljs-params">(x,y,z)</span> -&gt;</span>
     tv = <span class="hljs-keyword">new</span> Quaternion()
-    tv.fromTo(f,t)
+    tv.fromRotations x,y,z
     tv</pre></div></div>
             
         </li>
@@ -4526,7 +4604,36 @@ A quaternion to deal with all our rotations</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-213">&#182;</a>
               </div>
-              <p>constructor - takes a Vec3 and a w (both optional)</p>
+              <p><strong>fromTo</strong> - static function - given two quaternions, return a new one from the first to the second</p>
+<ul>
+<li><strong>f</strong> - Quaternion</li>
+<li><strong>t</strong> - Quaternion</li>
+<li>returns a new Quaternion</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  @fromTo: <span class="hljs-function"><span class="hljs-params">(f,t)</span> -&gt;</span>
+    tv = <span class="hljs-keyword">new</span> Quaternion()
+    tv.fromTo(f,t)
+    tv</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-214">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-214">&#182;</a>
+              </div>
+              <p><strong>constructor</strong> - takes three axis numbers and a w</p>
+<ul>
+<li><strong>x</strong> - Number - optional - default 0</li>
+<li><strong>y</strong> - Number - optional - default 0</li>
+<li><strong>z</strong> - Number - optional - default 0</li>
+<li><strong>w</strong> - Number - optional - default 1</li>
+</ul>
 
             </div>
             
@@ -4539,13 +4646,16 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-214">
+        <li id="section-215">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-214">&#182;</a>
+                <a class="pilcrow" href="#section-215">&#182;</a>
               </div>
-              <p>clone - return a coy of this Quaternion</p>
+              <p><strong>clone</strong> - return a coy of this Quaternion</p>
+<ul>
+<li>returns a new Quaternion</li>
+</ul>
 
             </div>
             
@@ -4555,13 +4665,17 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-215">
+        <li id="section-216">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-215">&#182;</a>
+                <a class="pilcrow" href="#section-216">&#182;</a>
               </div>
-              <p>copy - copy another quaternion into this one</p>
+              <p><strong>copy</strong> - copy another quaternion into this one</p>
+<ul>
+<li><strong>q</strong> - Quaternion</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -4575,39 +4689,26 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-216">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-216">&#182;</a>
-              </div>
-              <p>axis - return the axis of this Quaternion </p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  axis : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
-    ca = @w
-    invlen = <span class="hljs-number">1.0</span>/ Math.sqrt(<span class="hljs-number">1.0</span> - ca * ca)
-    @x *= invlen
-    @y *= invlen
-    @z *= invlen</pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-217">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-217">&#182;</a>
               </div>
-              <p>angle - return the angle of this Quaternion</p>
+              <p><strong>axis</strong> - return the axis of this Quaternion </p>
+<ul>
+<li>returns a new Vec3</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  angle : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+            <div class="content"><div class='highlight'><pre>  axis : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
     ca = @w
-    Math.acos(ca) * <span class="hljs-number">2</span></pre></div></div>
+    invlen = <span class="hljs-number">1.0</span>/ Math.sqrt(<span class="hljs-number">1.0</span> - ca * ca)
+    x *= invlen
+    y *= invlen
+    z *= invlen
+    <span class="hljs-keyword">new</span> Vec3(x,y,z)</pre></div></div>
             
         </li>
         
@@ -4618,12 +4719,15 @@ A quaternion to deal with all our rotations</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-218">&#182;</a>
               </div>
-              <p>pitch - return the pitch of this Quaternion</p>
+              <p><strong>angle</strong> - return the angle of this Quaternion</p>
+<ul>
+<li>returns a Number</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  pitch : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
-    Math.atan2(<span class="hljs-number">2</span> * (@y * @z + @w * @x ), @w * @w - @x * @x - @y * @y + @z * @z )</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  angle : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    Math.acos(@w) * <span class="hljs-number">2</span></pre></div></div>
             
         </li>
         
@@ -4634,12 +4738,15 @@ A quaternion to deal with all our rotations</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-219">&#182;</a>
               </div>
-              <p>yaw - return the pitch of this Quaternion</p>
+              <p><strong>pitch</strong> - return the pitch of this Quaternion</p>
+<ul>
+<li>returns a Number</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  yaw : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
-    Math.sin(<span class="hljs-number">-2</span> * ( @x * @z - @w * @y ))</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  pitch : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    Math.atan2(<span class="hljs-number">2</span> * (@y * @z + @w * @x ), @w * @w - @x * @x - @y * @y + @z * @z )</pre></div></div>
             
         </li>
         
@@ -4650,12 +4757,15 @@ A quaternion to deal with all our rotations</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-220">&#182;</a>
               </div>
-              <p>roll - return the pitch of this Quaternion</p>
+              <p><strong>yaw</strong> - return the pitch of this Quaternion</p>
+<ul>
+<li>returns a Number</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  roll: <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
-    Math.atan2(<span class="hljs-number">2</span> * ( @x * @y + @w * @z), @w * @w + @x * @x - @y * @y - @z * @z)</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  yaw : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    Math.sin(<span class="hljs-number">-2</span> * ( @x * @z - @w * @y ))</pre></div></div>
             
         </li>
         
@@ -4666,12 +4776,15 @@ A quaternion to deal with all our rotations</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-221">&#182;</a>
               </div>
-              <p>dot - return the dot product of this Quaternion with another</p>
+              <p><strong>roll</strong> - return the pitch of this Quaternion</p>
+<ul>
+<li>returns a Number</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  dot : <span class="hljs-function"><span class="hljs-params">(a)</span> -&gt;</span>
-    @w * a.w + @x * a.x + @y * a.y + @z * a.z</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  roll: <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    Math.atan2(<span class="hljs-number">2</span> * ( @x * @y + @w * @z), @w * @w + @x * @x - @y * @y - @z * @z)</pre></div></div>
             
         </li>
         
@@ -4682,12 +4795,16 @@ A quaternion to deal with all our rotations</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-222">&#182;</a>
               </div>
-              <p>length - return the length of this Quaternion</p>
+              <p><strong>dot</strong> - return the dot product of this Quaternion with another</p>
+<ul>
+<li><strong>a</strong> - Quaternion</li>
+<li>returns a Number</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  length : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
-    Math.sqrt @lengthSquared()</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  dot : <span class="hljs-function"><span class="hljs-params">(a)</span> -&gt;</span>
+    @w * a.w + @x * a.x + @y * a.y + @z * a.z</pre></div></div>
             
         </li>
         
@@ -4698,12 +4815,15 @@ A quaternion to deal with all our rotations</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-223">&#182;</a>
               </div>
-              <p>lengthSquared - return the lengthSquared of this Quaternion</p>
+              <p><strong>length</strong> - return the length of this Quaternion</p>
+<ul>
+<li>returns a Number</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  lengthSquared : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
-    @w * @w + @x * @x + @y * @y + @z * @z</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  length : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    Math.sqrt @lengthSquared()</pre></div></div>
             
         </li>
         
@@ -4714,7 +4834,29 @@ A quaternion to deal with all our rotations</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-224">&#182;</a>
               </div>
-              <p>Conjugate</p>
+              <p><strong>lengthSquared</strong> - return the lengthSquared of this Quaternion</p>
+<ul>
+<li>returns a Number</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  lengthSquared : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    @w * @w + @x * @x + @y * @y + @z * @z</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-225">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-225">&#182;</a>
+              </div>
+              <p><strong>Conjugate</strong></p>
+<ul>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -4727,13 +4869,16 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-225">
+        <li id="section-226">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-225">&#182;</a>
+                <a class="pilcrow" href="#section-226">&#182;</a>
               </div>
-              <p>invert - invert this quaternion</p>
+              <p><strong>invert</strong> - invert this quaternion</p>
+<ul>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -4749,13 +4894,17 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-226">
+        <li id="section-227">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-226">&#182;</a>
+                <a class="pilcrow" href="#section-227">&#182;</a>
               </div>
-              <p>add - Add another quaternion to this one</p>
+              <p><strong>add</strong> - Add another quaternion to this one</p>
+<ul>
+<li><strong>q</strong> - Quaternion</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -4769,13 +4918,17 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-227">
+        <li id="section-228">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-227">&#182;</a>
+                <a class="pilcrow" href="#section-228">&#182;</a>
               </div>
-              <p>sub - Subtract another quaternion from this one</p>
+              <p><strong>sub</strong> - Subtract another quaternion from this one</p>
+<ul>
+<li><strong>q</strong> - Quaternion</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -4789,13 +4942,17 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-228">
+        <li id="section-229">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-228">&#182;</a>
+                <a class="pilcrow" href="#section-229">&#182;</a>
               </div>
-              <p>multiply - multiply this Quaternion with another</p>
+              <p><strong>multiply</strong> - multiply this Quaternion with another</p>
+<ul>
+<li><strong>q</strong> - Quaternion</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -4805,13 +4962,17 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-229">
+        <li id="section-230">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-229">&#182;</a>
+                <a class="pilcrow" href="#section-230">&#182;</a>
               </div>
-              <p>mult - multiply this Quaternion with another</p>
+              <p><strong>mult</strong> - multiply this Quaternion with another</p>
+<ul>
+<li><strong>q</strong> - Quaternion</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -4829,13 +4990,17 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-230">
+        <li id="section-231">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-230">&#182;</a>
+                <a class="pilcrow" href="#section-231">&#182;</a>
               </div>
-              <p>multScalar - multiply this Quaternion by a scalar</p>
+              <p><strong>multScalar</strong> - multiply this Quaternion by a scalar</p>
+<ul>
+<li><strong>s</strong> - Number</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -4849,24 +5014,28 @@ A quaternion to deal with all our rotations</p>
         </li>
         
         
-        <li id="section-231">
+        <li id="section-232">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-231">&#182;</a>
+                <a class="pilcrow" href="#section-232">&#182;</a>
               </div>
-              <p>transVec3 - Transform a vector by this quaternion</p>
+              <p><strong>transVec3</strong> - Transform a vector by this quaternion</p>
+<ul>
+<li><strong>v</strong> - Vec3</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
         </li>
         
         
-        <li id="section-232">
+        <li id="section-233">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-232">&#182;</a>
+                <a class="pilcrow" href="#section-233">&#182;</a>
               </div>
               <p>TODO - this appears to rotate a vector in the opposite direction to glm and other libs
 We should check the maths on this one</p>
@@ -4889,13 +5058,16 @@ We should check the maths on this one</p>
         </li>
         
         
-        <li id="section-233">
+        <li id="section-234">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-233">&#182;</a>
+                <a class="pilcrow" href="#section-234">&#182;</a>
               </div>
-              <p>normalize - normalize this quaternion</p>
+              <p><strong>normalize</strong> - normalize this quaternion</p>
+<ul>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -4910,13 +5082,16 @@ We should check the maths on this one</p>
         </li>
         
         
-        <li id="section-234">
+        <li id="section-235">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-234">&#182;</a>
+                <a class="pilcrow" href="#section-235">&#182;</a>
               </div>
-              <p>log - ?</p>
+              <p><strong>log</strong> - ?</p>
+<ul>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -4934,18 +5109,25 @@ We should check the maths on this one</p>
     <span class="hljs-keyword">if</span> Math.abs(sintheta) &lt; <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> Math.abs(theta) &gt;= <span class="hljs-number">3.402823466e+38</span> * Math.abs(sintheta)
       k  =<span class="hljs-number">1</span>
 
-    <span class="hljs-keyword">new</span> Quaternion @x*k, @y*k, @z*k, <span class="hljs-number">0</span></pre></div></div>
+    @x = @x*k
+    @y = @y*k
+    @z = @z*k
+    @w = <span class="hljs-number">0</span>
+    @</pre></div></div>
             
         </li>
         
         
-        <li id="section-235">
+        <li id="section-236">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-235">&#182;</a>
+                <a class="pilcrow" href="#section-236">&#182;</a>
               </div>
-              <p>exp - ?</p>
+              <p><strong>exp</strong> - ?</p>
+<ul>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -4960,18 +5142,26 @@ We should check the maths on this one</p>
 
     costheta = Math.cos(theta)
   
-    <span class="hljs-keyword">new</span> Quaternion @x * k, @y * k, @z * k, costheta</pre></div></div>
+    @x = @x * k
+    @y = @y * k
+    @z = @z * k
+    @w = costheta</pre></div></div>
             
         </li>
         
         
-        <li id="section-236">
+        <li id="section-237">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-236">&#182;</a>
+                <a class="pilcrow" href="#section-237">&#182;</a>
               </div>
-              <p>fromTo - set this quaternion to represent the movement from quaternion to another</p>
+              <p><strong>fromTo</strong> - set this quaternion to represent the movement from quaternion to another</p>
+<ul>
+<li><strong>f</strong> - Quaternion</li>
+<li><strong>t</strong> - Quaternion</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -5001,13 +5191,18 @@ We should check the maths on this one</p>
         </li>
         
         
-        <li id="section-237">
+        <li id="section-238">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-237">&#182;</a>
+                <a class="pilcrow" href="#section-238">&#182;</a>
               </div>
-              <p>fromAxisAngle - create a quaternion that represents rotation around an axis (a) (Vec3) radians (r)</p>
+              <p><strong>fromAxisAngle</strong> - create a quaternion that represents rotation around an axis in radians</p>
+<ul>
+<li><strong>a</strong> - Vec3</li>
+<li><strong>r</strong> - Number</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -5023,13 +5218,19 @@ We should check the maths on this one</p>
         </li>
         
         
-        <li id="section-238">
+        <li id="section-239">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-238">&#182;</a>
+                <a class="pilcrow" href="#section-239">&#182;</a>
               </div>
-              <p>fromRotations - create a Quaternion from rotations around z,y,and x in that order in radians</p>
+              <p><strong>fromRotations</strong> - create a Quaternion from rotations around z,y,and x in that order in radians</p>
+<ul>
+<li><strong>x</strong> - Number</li>
+<li><strong>y</strong> - Number</li>
+<li><strong>z</strong> - Number</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -5056,13 +5257,16 @@ We should check the maths on this one</p>
         </li>
         
         
-        <li id="section-239">
+        <li id="section-240">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-239">&#182;</a>
+                <a class="pilcrow" href="#section-240">&#182;</a>
               </div>
-              <p>getAxisAngle - return the axis and angle represented by this quaternion</p>
+              <p><strong>getAxisAngle</strong> - return the axis and angle represented by this quaternion</p>
+<ul>
+<li>returns [Vec3, Number]</li>
+</ul>
 
             </div>
             
@@ -5076,13 +5280,16 @@ We should check the maths on this one</p>
         </li>
         
         
-        <li id="section-240">
+        <li id="section-241">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-240">&#182;</a>
+                <a class="pilcrow" href="#section-241">&#182;</a>
               </div>
-              <p>getMatrix4 - return a matrix4 from this Quaternion</p>
+              <p><strong>getMatrix4</strong> - return a matrix4 from this Quaternion</p>
+<ul>
+<li>returns Matrix4</li>
+</ul>
 
             </div>
             
@@ -5121,13 +5328,16 @@ We should check the maths on this one</p>
         </li>
         
         
-        <li id="section-241">
+        <li id="section-242">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-241">&#182;</a>
+                <a class="pilcrow" href="#section-242">&#182;</a>
               </div>
-              <p>getMatrix3 - return a matrix3 from this Quaternion - The rotation component</p>
+              <p><strong>getMatrix3</strong> - return a matrix3 from this Quaternion - The rotation component</p>
+<ul>
+<li>returns Matrix3</li>
+</ul>
 
             </div>
             
@@ -5159,13 +5369,18 @@ We should check the maths on this one</p>
         </li>
         
         
-        <li id="section-242">
+        <li id="section-243">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-242">&#182;</a>
+                <a class="pilcrow" href="#section-243">&#182;</a>
               </div>
-              <p>lerp - lerp between this quaternion at the start and the one at the ‘end’, t being 0-&gt;1</p>
+              <p><strong>lerp</strong> - lerp between this quaternion at the start and the one at the ‘end’, t being 0-&gt;1</p>
+<ul>
+<li><strong>t</strong> - Quaternion</li>
+<li><strong>end</strong> - Number</li>
+<li>returns a new Quaternion</li>
+</ul>
 
             </div>
             
@@ -5182,17 +5397,23 @@ We should check the maths on this one</p>
         </li>
         
         
-        <li id="section-243">
+        <li id="section-244">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-243">&#182;</a>
+                <a class="pilcrow" href="#section-244">&#182;</a>
               </div>
-              <p>slerpShortestUnenforced - slerp between this quaternion at the start and the one at the ‘end’, t being 0-&gt;1</p>
+              <p><strong>slerpShortestUnenforced</strong> - slerp between this quaternion at the start and the one at the ‘end’, t being 0-&gt;1</p>
+<ul>
+<li><strong>t</strong> - Quaternion</li>
+<li><strong>end</strong> - Number</li>
+<li>returns a new Quaternion</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  slerpShortestUnenforced : <span class="hljs-function"><span class="hljs-params">(t,end)</span> -&gt;</span>
+            <div class="content"><div class='highlight'><pre>  
+  slerpShortestUnenforced : <span class="hljs-function"><span class="hljs-params">(t,end)</span> -&gt;</span>
     d = @clone()
     d.sub(end)
     lengthD = Math.sqrt(@dot(end))
@@ -5214,17 +5435,23 @@ We should check the maths on this one</p>
         </li>
         
         
-        <li id="section-244">
+        <li id="section-245">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-244">&#182;</a>
+                <a class="pilcrow" href="#section-245">&#182;</a>
               </div>
-              <p>slerp - slerp between this quaternion at the start and the one at the ‘end’, t being 0-&gt;1</p>
+              <p><strong>slerp</strong> - slerp between this quaternion at the start and the one at the ‘end’, t being 0-&gt;1</p>
+<ul>
+<li><strong>t</strong> - Quaternion</li>
+<li><strong>end</strong> - Number</li>
+<li>returns a new Quaternion</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  slerp : <span class="hljs-function"><span class="hljs-params">(t,end)</span> -&gt;</span>
+            <div class="content"><div class='highlight'><pre>  
+  slerp : <span class="hljs-function"><span class="hljs-params">(t,end)</span> -&gt;</span>
     cosTheta = @dot( end )
 
     <span class="hljs-keyword">if</span> cosTheta &gt;= EPSILON
@@ -5257,17 +5484,22 @@ We should check the maths on this one</p>
         </li>
         
         
-        <li id="section-245">
+        <li id="section-246">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-245">&#182;</a>
+                <a class="pilcrow" href="#section-246">&#182;</a>
               </div>
-              <p>fromMatrix4 : Create a Quaternion from an existing Matrix4</p>
+              <p><strong>fromMatrix4</strong> : Create a Quaternion from an existing Matrix4</p>
+<ul>
+<li><strong>m</strong> - Matrix4</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  fromMatrix4 : <span class="hljs-function"><span class="hljs-params">(m)</span> -&gt;</span>
+            <div class="content"><div class='highlight'><pre>  
+  fromMatrix4 : <span class="hljs-function"><span class="hljs-params">(m)</span> -&gt;</span>
 
     trace = m.a[<span class="hljs-number">0</span>] + m.a[<span class="hljs-number">5</span>] + m.a[<span class="hljs-number">10</span>]
 

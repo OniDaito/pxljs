@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>colour.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="../docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>colour.coffee</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h2 id="about">ABOUT</h2>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>             .__   
+_________  __|  |  
+\____ \  \/  /  |  
+|  |_&gt; &gt;    &lt;|  |__
+|   __<span class="hljs-regexp">/__/</span>\_ \____/
+|__|        \/     js
+
+                    PXL.js
+                    Benjamin Blundell - ben@pxljs.com
+                    http:<span class="hljs-regexp">//</span>pxljs.com
+
+This software <span class="hljs-keyword">is</span> released under the MIT Licence. See LICENCE.txt <span class="hljs-keyword">for</span> details</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>##</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <h2 id="rgba">RGBA</h2>
+<p>The default colour - four floats 0 -&gt; 1 for representing colour</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RGBA</span></span>
+
+  DIM : <span class="hljs-number">4</span> 
+
+  constructor: <span class="hljs-function"><span class="hljs-params">(@r=<span class="hljs-number">1.0</span>, @g=<span class="hljs-number">1.0</span>, @b=<span class="hljs-number">1.0</span>, @a=<span class="hljs-number">1.0</span>)</span> -&gt;</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Check for byte colours</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    
+    <span class="hljs-keyword">if</span> @r &gt; <span class="hljs-number">1.0</span>
+      @r = @r / <span class="hljs-number">255</span>
+
+    <span class="hljs-keyword">if</span> @g &gt; <span class="hljs-number">1.0</span>
+      @g = @g / <span class="hljs-number">255</span>
+
+    <span class="hljs-keyword">if</span> @b &gt; <span class="hljs-number">1.0</span>
+      @b = @b / <span class="hljs-number">255</span>
+
+    <span class="hljs-keyword">if</span> @a &gt; <span class="hljs-number">1.0</span>
+      @a = @a / <span class="hljs-number">255</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>flatten - used in the shader class to flatten the variables into a nice list</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  flatten: <span class="hljs-function">-&gt;</span>
+    [@r,@g,@b,@a]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>@WHITE - Static function that returns the default white</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  @WHITE : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> RGBA(<span class="hljs-number">1.0</span>,<span class="hljs-number">1.0</span>,<span class="hljs-number">1.0</span>,<span class="hljs-number">1.0</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>@BLACK - Static function that returns all zeros including alpha (not black I guess?)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  @BLACK : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> RGBA(<span class="hljs-number">0.0</span>,<span class="hljs-number">0.0</span>,<span class="hljs-number">0.0</span>,<span class="hljs-number">1.0</span>)
+
+  @MAGNOLIA : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> RGBA(<span class="hljs-number">1.0</span>,<span class="hljs-number">1.0</span>,<span class="hljs-number">0.9</span>,<span class="hljs-number">1.0</span>)
+
+  copyFrom: <span class="hljs-function"><span class="hljs-params">(col)</span> -&gt;</span>
+    @r = col.r
+    @g = col.g
+    @b = col.b
+    @a = col.a
+    @
+
+  copy : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> RGBA @r,@g,@b,@a</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <h2 id="rgb">RGB</h2>
+<p>Class for colours with no alpha</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RGB</span> </span>
+
+  DIM : <span class="hljs-number">3</span>
+
+  constructor: <span class="hljs-function"><span class="hljs-params">(@r, @g, @b)</span> -&gt;</span>
+
+    <span class="hljs-keyword">if</span> @r &gt; <span class="hljs-number">1.0</span>
+      @r = @r / <span class="hljs-number">255</span>
+
+    <span class="hljs-keyword">if</span> @b &gt; <span class="hljs-number">1.0</span>
+      @g = @g / <span class="hljs-number">255</span>
+
+    <span class="hljs-keyword">if</span> @g &gt; <span class="hljs-number">1.0</span>
+      @b = @b / <span class="hljs-number">255</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>flatten - used in the shader class to flatten the variables into a nice list</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  flatten: <span class="hljs-function">-&gt;</span>
+    [@r,@g,@b]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>@WHITE - Static function that returns the default white</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  @WHITE : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> RGB(<span class="hljs-number">1.0</span>,<span class="hljs-number">1.0</span>,<span class="hljs-number">1.0</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>@BLACK - Static function that returns all zeros including alpha (not black I guess?)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  @BLACK : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> RGB(<span class="hljs-number">0.0</span>,<span class="hljs-number">0.0</span>,<span class="hljs-number">0.0</span>)
+
+  @MAGNOLIA : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> RGBA(<span class="hljs-number">1.0</span>,<span class="hljs-number">1.0</span>,<span class="hljs-number">0.9</span>)
+
+
+  copyFrom : <span class="hljs-function"><span class="hljs-params">(c)</span> -&gt;</span>
+    @r = c.r
+    @g = c.g
+    @b = c.b
+    @
+
+  copy : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> RGB @r,@g,@b
+
+<span class="hljs-built_in">module</span>.exports = 
+    RGBA: RGBA
+    RGB : RGB</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

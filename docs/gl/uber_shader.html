@@ -216,9 +216,11 @@ runtime changes each frame, whereas ubershader deals with defines that should on
     
     <span class="hljs-keyword">if</span> base_node.pointLights.length &gt; <span class="hljs-number">0</span>
       @uber_defines.push <span class="hljs-string">"LIGHTING_POINT"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"LIGHTING_POINT"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> @uber_defines
+      @uber_defines.push <span class="hljs-string">"LIGHTING"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"LIGHTING"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> @uber_defines
 
     <span class="hljs-keyword">if</span> base_node.spotLights.length &gt; <span class="hljs-number">0</span>
-      @uber_defines.push <span class="hljs-string">"LIGHTING_SPOT"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"LIGHTING_SPOT"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> @uber_defines</pre></div></div>
+      @uber_defines.push <span class="hljs-string">"LIGHTING_SPOT"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"LIGHTING_SPOT"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> @uber_defines
+      @uber_defines.push <span class="hljs-string">"LIGHTING"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"LIGHTING"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> @uber_defines</pre></div></div>
             
         </li>
         

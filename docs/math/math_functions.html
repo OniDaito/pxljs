@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>math_functions.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="../docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>math_functions.coffee</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h2 id="about">ABOUT</h2>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>             .__   
+_________  __|  |  
+\____ \  \/  /  |  
+|  |_&gt; &gt;    &lt;|  |__
+|   __<span class="hljs-regexp">/__/</span>\_ \____/
+|__|        \/     js
+
+                    PXL.js
+                    Benjamin Blundell - ben@pxljs.com
+                    http:<span class="hljs-regexp">//</span>pxljs.com
+
+This software <span class="hljs-keyword">is</span> released under the MIT Licence. See LICENCE.txt <span class="hljs-keyword">for</span> details</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>TODO - this file is sort of a catch all. Could do to be improved</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>##</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+{ Vec2, Vec3, Vec4, Matrix4, PI, EPSILON } = <span class="hljs-built_in">require</span> <span class="hljs-string">'../math/math'</span>
+{ Vertex } = <span class="hljs-built_in">require</span> <span class="hljs-string">'../geometry/primitive'</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <h2 id="rayplaneintersect">rayPlaneIntersect</h2>
+<p>Given 4 Vec3, work out the distance along line_dir where the intersection occurred</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function">
+<span class="hljs-title">rayPlaneIntersect</span> = <span class="hljs-params">(plane_point, plane_normal, line_point, line_dir)</span> -&gt;</span>
+  num = Vec3.dot(plane_normal, Vec3.sub(plane_point, line_point))
+  den = Vec3.dot(plane_normal,line_dir)
+  
+  num/den</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <h2 id="screennodehittest">screenNodeHitTest</h2>
+<p>Given a node, camera &amp; a point on the screen, traverse the hierarchy and find if anything was hit
+This works for brewed geometry only at present (though could work for normal as well im sure)
+Results are returned in ascending order of depth. Back facing and front facing triangles are included.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function">
+
+<span class="hljs-title">screenNodeHitTest</span> = <span class="hljs-params">(sx,sy,camera,node)</span> -&gt;</span>
+
+  results = []
+<span class="hljs-function">  <span class="hljs-title">_rec</span> = <span class="hljs-params">(node, matrix)</span> =&gt;</span>
+
+    ray = camera.castRay(sx,sy)
+   
+    matrix = Matrix4.mult matrix, node.matrix
+
+    <span class="hljs-keyword">if</span> node.geometry?
+
+      indexer = node.geometry.getTrisIndexer()
+      num_tris = node.geometry.getNumTris()
+
+      <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.num_tris<span class="hljs-number">-1</span>]
+
+        [a,b,c] = indexer(i)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Flatten vertices and get their positions</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> a <span class="hljs-keyword">instanceof</span> Vertex
+          a = a.p
+          b = b.p
+          c = c.p</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Some geometries may have degenerate triangles (tri-strip planes for example)
+so quit early if any verts are the same</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> a.equals(b) <span class="hljs-keyword">or</span> b.equals(c) <span class="hljs-keyword">or</span> a.equals(c)
+          <span class="hljs-keyword">continue</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Transform into world space</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        matrix.multVec(a).multVec(b).multVec(c)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Linear algebra barycentric approach
+Real Time Rendering p581 / p750 (3rd ed)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+        e1 = Vec3.sub b,a
+        e2 = Vec3.sub c,a
+        q = ray.xyz().cross e2
+        alpha = e1.dot q
+
+        <span class="hljs-keyword">if</span> alpha &gt; -EPSILON <span class="hljs-keyword">and</span> alpha &lt; EPSILON
+          <span class="hljs-keyword">continue</span>
+
+        f = <span class="hljs-number">1.0</span>/alpha
+        s = Vec3.sub camera.pos, a
+        u = s.dot(q) * f
+        
+        <span class="hljs-keyword">if</span> u &lt; <span class="hljs-number">0.0</span>
+          <span class="hljs-keyword">continue</span>
+
+        r = Vec3.cross s, e1
+        v = ray.xyz().dot(r) * f
+        
+        <span class="hljs-keyword">if</span> v &lt; <span class="hljs-number">0.0</span> <span class="hljs-keyword">or</span> (u + v) &gt; <span class="hljs-number">1.0</span>
+          <span class="hljs-keyword">continue</span>
+
+        t = e2.dot(q) * f</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>TODO - t is the distance along the ray allegedly but it appears not to work :S</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+        ap = a.copy().multScalar(<span class="hljs-number">1</span>-u-v)
+        bp = b.copy().multScalar(u)
+        cp = c.copy().multScalar(v)
+
+        ap.add(bp).add(cp)
+
+        dist = Vec3.sub(ap, camera.pos).length()
+
+        results.push { <span class="hljs-string">"pos"</span> : ap, <span class="hljs-string">"node"</span> :  node, <span class="hljs-string">"index"</span> : i, <span class="hljs-string">"dist"</span> : dist}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>We need to continue with children as one may be infront of the other :P</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    <span class="hljs-keyword">for</span> child <span class="hljs-keyword">in</span> node.children
+      _rec child, matrix
+
+  _rec(node, <span class="hljs-keyword">new</span> Matrix4())
+<span class="hljs-function">
+  <span class="hljs-title">_comp</span> = <span class="hljs-params">(a,b)</span> -&gt;</span>
+    <span class="hljs-keyword">if</span> a.dist &lt; b.dist
+      <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>
+    <span class="hljs-keyword">if</span> a.dist &gt; b.dist
+      <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+    <span class="hljs-number">0</span>
+
+  results.sort(_comp)
+
+  results</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <h2 id="precomputetangent">precomputeTangent</h2>
+<p>Given a face, compute the tangent at each vertex - A face being, in this case, 3 Vec3
+with 3 vertex normals and 3 texture co-ordinates of Vec2
+<a href="http://stackoverflow.com/questions/5255806/how-to-calculate-tangent-and-binormal">http://stackoverflow.com/questions/5255806/how-to-calculate-tangent-and-binormal</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function">
+
+<span class="hljs-title">precomputeTangent</span> = <span class="hljs-params">(a, b, c, na, nb, nc, ta, tb, tc)</span> -&gt;</span>
+
+  [_precomputeTangent(a, b, c, na, ta, tb, tc),
+  _precomputeTangent(b, c, a, nb, tb, tc, ta),
+  _precomputeTangent(c, a, b, nc, tc, ta, tb)]
+<span class="hljs-function">
+
+<span class="hljs-title">_precomputeTangent</span> = <span class="hljs-params">(a, b, c, n, ta, tb, tc)</span> -&gt;</span>
+
+  d = Vec3.sub b,a
+  e = Vec3.sub c,a
+  f = Vec2.sub tb, ta
+  g = Vec2.sub tc, ta
+
+  alpha = <span class="hljs-number">1</span> / (( f.x * g.y ) - (f.y * g.x))
+
+  tx = alpha * ( g.y * d.x  + -f.y * e.x )
+  ty = alpha * ( g.y * d.y  + -f.y * e.y )
+  tz = alpha * ( g.y * d.z  + -f.y * e.z )
+
+  ux = alpha * ( -g.x * d.x +  f.x * e.x )
+  uy = alpha * ( -g.x * d.y +  f.x * e.y )
+  uz = alpha * ( -g.x * d.z +  f.x * e.z )
+
+  tangent = <span class="hljs-keyword">new</span> Vec3 tx,ty,tz
+  binormal = <span class="hljs-keyword">new</span> Vec3 ux,uy,uz</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>We could at this point, compute the whole matrix for this but we dont as 
+this function is just for the tangent as a per vertex operation</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  tangent = tangent.sub( Vec3.multScalar( n, Vec3.dot(n,tangent)))
+  binormal2 = binormal.sub( Vec3.multScalar( n, Vec3.dot(n,binormal)))
+  binormal2 = binormal2.sub( Vec3.multScalar( tangent, Vec3.dot(tangent,binormal)))
+
+  tangent.normalize()
+  binormal2.normalize()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>new Matrix3(tangent, binormal2, n)
+just the tangent for now, not the binormal or matrix</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  tangent</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <h2 id="raycircleintersection">rayCircleIntersection</h2>
+<p>http:#stackoverflow.com/questions/1073336/circle-line-collision-detection
+Given a ray and circle, solve the quadratic and find intersection points</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function">
+<span class="hljs-title">rayCircleIntersection</span> = <span class="hljs-params">(ray_start, ray_dir, circle_centre, circle_radius)</span> -&gt;</span>
+
+  f = PXL.Vec2.sub(ray_start,circle_centre)
+  r = circle_radius
+
+  a = ray_dir.dot( ray_dir )
+  b = <span class="hljs-number">2</span>*f.dot( ray_dir )
+  c = f.dot( f ) - r*r
+
+  v = <span class="hljs-keyword">new</span> PXL.Vec2()
+
+  discriminant = b*b<span class="hljs-number">-4</span>*a*c
+
+  <span class="hljs-keyword">if</span> discriminant != <span class="hljs-number">0</span>
+    discriminant = Math.sqrt(discriminant)
+    t1 = (-b - discriminant)/(<span class="hljs-number">2</span>*a)
+    t2 = (-b + discriminant)/(<span class="hljs-number">2</span>*a)
+
+    t = t2
+    t = t1 <span class="hljs-keyword">if</span> t2 &lt; <span class="hljs-number">0</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>Plug back into our line equation</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    
+    v.copyFrom(ray_start)
+    d2 = PXL.Vec2.multScalar(ray_dir,t)
+    v.add(d2)
+
+  v</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>Scan through points producing an axis aligned bounding box
+Points are a list of Vec2/Vec3</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-title">boundingBox</span> = <span class="hljs-params">(points)</span> -&gt;</span>
+  <span class="hljs-keyword">if</span> points.length
+    <span class="hljs-keyword">if</span> points[<span class="hljs-number">0</span>]._DIM == <span class="hljs-number">3</span>
+      min = <span class="hljs-keyword">new</span> PXL.Vec3(Infinity,Infinity,Infinity)
+      max = <span class="hljs-keyword">new</span> PXL.Vec3(-Infinity,-Infinity,-Infinity) 
+
+      <span class="hljs-keyword">for</span> point <span class="hljs-keyword">in</span> points
+        <span class="hljs-keyword">if</span> point.x &lt; min.x
+          min.x = point.x
+        <span class="hljs-keyword">if</span> point.y &lt; min.y
+          min.y = point.y
+
+        <span class="hljs-keyword">if</span> point.x &gt; max.x
+          max.x = point.x
+
+        <span class="hljs-keyword">if</span> point.y &gt; max.y
+          max.y = point.y
+
+
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> points[<span class="hljs-number">1</span>]._DIM == <span class="hljs-number">2</span>
+      min = <span class="hljs-keyword">new</span> PXL.Vec2(Infinity,Infinity)
+      max = <span class="hljs-keyword">new</span> PXL.Vec2(-Infinity,-Infinity) 
+
+      <span class="hljs-keyword">for</span> point <span class="hljs-keyword">in</span> points
+        <span class="hljs-keyword">if</span> point.x &lt; min.x
+          min.x = point.x
+        <span class="hljs-keyword">if</span> point.y &lt; min.y
+          min.y = point.y
+        <span class="hljs-keyword">if</span> point.z &lt; min.z
+          min.z = point.z
+
+        <span class="hljs-keyword">if</span> point.x &gt; max.x
+          max.x = point.x
+        <span class="hljs-keyword">if</span> point.y &gt; max.y
+          max.y = point.y
+        <span class="hljs-keyword">if</span> point.z &gt; max.z
+          max.z = point.z
+
+
+  [min, max]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>Given two edges, get the perpendicular bisector between them
+This is represented by an edge and assumes that two edges share
+a common point. The edge is normalized
+It ignores the direction - it is only concerned with the join point.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function">
+<span class="hljs-title">edge2Bisector</span> = <span class="hljs-params">(edge0, edge1)</span> -&gt;</span>
+
+  <span class="hljs-keyword">if</span> edge0.start == edge1.start
+    e0 = Vec2.normalize(Vec2.sub(edge0.end, edge0.start))
+    e1 = Vec2.normalize(Vec2.sub(edge1.end, edge1.start))
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-keyword">new</span> Edge2(edge0.start, Vec2.add(edge0.start, Vec2.normalize(e0.add(e1))))
+
+  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> edge0.end == edge1.start
+    e0 = Vec2.normalize(Vec2.sub(edge0.start, edge0.end))
+    e1 = Vec2.normalize(Vec2.sub(edge1.end, edge1.start))
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Edge2(edge0.end, Vec2.add(edge0.end, Vec2.normalize(e0.add(e1))))
+
+  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> edge0.start == edge1.end
+    e0 = Vec2.normalize(Vec2.sub(edge0.end, edge0.start))
+    e1 = Vec2.normalize(Vec2.sub(edge1.start, edge1.end))
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Edge2(edge0.start, Vec2.add(edge0.start, Vec2.normalize(e0.add(e1))))
+
+  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> edge0.end == edge1.end
+    e0 = Vec2.normalize(Vec2.sub(edge0.start, edge0.end))
+    e1 = Vec2.normalize(Vec2.sub(edge1.start, edge1.end))
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Edge2(edge0.end, Vec2.add(edge0.end,Vec2.normalize(e0.add(e1))))
+
+
+  <span class="hljs-keyword">else</span>
+    PXLError <span class="hljs-string">"edge2Bisector - edges must have a common Vec2"</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <h2 id="lerp">LERP</h2>
+<p>A simple function to map between two values returning a value between 0 and 1</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function">
+<span class="hljs-title">lerp</span> = <span class="hljs-params">(bottom,top,value)</span> -&gt;</span>
+  (value - bottom) / (top - bottom)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <h2 id="closestpointline">closestPointLine</h2>
+<p>Returns the closest point to a line.
+a - start of the line
+b - end of the line
+p - the point in question</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function">
+<span class="hljs-title">closestPointLine</span> = <span class="hljs-params">(a,b,p)</span> -&gt;</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>Cx to see the point is actually within limits</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  dir = Vec2.sub b,a
+  perp = <span class="hljs-keyword">new</span> Vec3 dir.y, -dir.x, <span class="hljs-number">0</span>
+  v0 = Vec3.sub <span class="hljs-keyword">new</span> Vec3(b.x, b.y), <span class="hljs-keyword">new</span> Vec3(a.x, a.y)
+  v1 = Vec3.sub <span class="hljs-keyword">new</span> Vec3(a.x, a.y), <span class="hljs-keyword">new</span> Vec3(b.x, b.y)
+
+  cross0 = Vec3.cross perp, v0
+  cross1 = Vec3.cross perp, v1
+  <span class="hljs-keyword">if</span> cross0.z &lt; <span class="hljs-number">0</span>
+    <span class="hljs-keyword">return</span> b
+  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> cross1.z &gt; <span class="hljs-number">0</span>
+    <span class="hljs-keyword">return</span> a</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>Cx for axis</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  dir = Vec2.sub(b,a)
+  <span class="hljs-keyword">if</span> dir.x == <span class="hljs-number">0</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,p.y
+  <span class="hljs-keyword">if</span> dir.y == <span class="hljs-number">0</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Vec3 p.x, <span class="hljs-number">0</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>convert to y = mx + c form</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  
+  m = dir.y / dir.x
+  c = a.y - (m * a.x)
+
+  xp = (m * p.y + p.x - m*c) / (m*m + <span class="hljs-number">1</span>)
+  yp = m*xp + c
+
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> Vec2 xp,yp</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <h2 id="medialaxis2d">medialAxis2D</h2>
+<p>Given a planar polygon (a list of 2D vertices), compute the the medial axis of the polygon
+as a set of pairs of 2D points (edges)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function">
+<span class="hljs-title">medialAxis2D</span> = <span class="hljs-params">(polygon, top, left, bottom, right)</span> -&gt;</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>create pairs / edges</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> polygon.length &lt; <span class="hljs-number">3</span>
+    <span class="hljs-keyword">return</span> []
+
+  edges = []
+  <span class="hljs-keyword">for</span> idx <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.polygon.length<span class="hljs-number">-1</span>]
+    <span class="hljs-keyword">if</span> idx + <span class="hljs-number">1</span> &lt; polygon.length
+      edges.push [ polygon[idx], polygon[idx+<span class="hljs-number">1</span>] ]
+    <span class="hljs-keyword">else</span>
+      edges.push [ polygon[idx], polygon[<span class="hljs-number">0</span>] ]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>find the chains - As we are going clockwise winding, inside is to the right of the vector
+which is a positive cross product with z ( I think!)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  chains = []
+  current_chain = <span class="hljs-keyword">new</span> Array()
+
+  <span class="hljs-keyword">for</span> idx <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.edges.length<span class="hljs-number">-1</span>]
+    
+    e0 = edges[idx]
+    e1 = edges[idx+<span class="hljs-number">1</span>]
+    
+    <span class="hljs-keyword">if</span> idx + <span class="hljs-number">1</span> == edges.length
+      e1 = edges[<span class="hljs-number">0</span>]
+
+    v0 = Vec3.sub <span class="hljs-keyword">new</span> Vec3(e0[<span class="hljs-number">1</span>].x, e0[<span class="hljs-number">1</span>].y), <span class="hljs-keyword">new</span> Vec3(e0[<span class="hljs-number">0</span>].x, e0[<span class="hljs-number">0</span>].y)
+    v1 = Vec3.sub <span class="hljs-keyword">new</span> Vec3(e1[<span class="hljs-number">1</span>].x, e1[<span class="hljs-number">1</span>].y), <span class="hljs-keyword">new</span> Vec3(e1[<span class="hljs-number">0</span>].x, e1[<span class="hljs-number">0</span>].y)
+
+    cross = Vec3.cross v0, v1
+
+    <span class="hljs-keyword">if</span> cross.z &gt; <span class="hljs-number">0</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>Its a reflex angle, therefore a chain</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      
+      <span class="hljs-keyword">if</span> current_chain.length == <span class="hljs-number">0</span>
+        current_chain.push e0
+      
+      current_chain.push [e1[<span class="hljs-number">0</span>]] <span class="hljs-comment"># push the reflex vertex too if chain is greater than one edge</span>
+      current_chain.push e1</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>there is an edge case here whereby the last edge could be in a chain already 
+but I suspect that is rare and can be handled anyway</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    <span class="hljs-keyword">else</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>not a chain</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> current_chain.length == <span class="hljs-number">0</span>
+        current_chain.push e0
+
+      chains.push current_chain
+      current_chain = <span class="hljs-keyword">new</span> Array()
+
+  voronoi = []
+  wedges = []
+  zaxis = <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>)
+  wedge_length =<span class="hljs-number">100.0</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>we now have the chains so we must compute the voronoi diagram for each chain and combine</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">for</span> chain <span class="hljs-keyword">in</span> chains
+    <span class="hljs-keyword">for</span> idx <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.chain.length<span class="hljs-number">-1</span>]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>Wedges denote the area of effect for computing our initial bisectors.
+They are internal and are denoted by a point and a direction vector.
+Each element has two lines that denote a wedge and we want to be inside them</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+      element = chain[idx]
+      wedge = []</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p>compute the initial voronoi graph. The wedges for each element</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> element.length == <span class="hljs-number">2</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>its an edge so two lines perpendicular</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        v0 = Vec3.sub <span class="hljs-keyword">new</span> Vec3(element[<span class="hljs-number">0</span>].x, element[<span class="hljs-number">0</span>].y), <span class="hljs-keyword">new</span> Vec3(element[<span class="hljs-number">1</span>].x, element[<span class="hljs-number">1</span>].y)
+        cross = Vec3.cross v0, zaxis
+        cross.normalize()
+
+        wedge.push [<span class="hljs-keyword">new</span> Vec2(element[<span class="hljs-number">0</span>].x, element[<span class="hljs-number">0</span>].y), <span class="hljs-keyword">new</span> Vec2(element[<span class="hljs-number">0</span>].x - cross.x, element[<span class="hljs-number">0</span>].y - cross.y)]
+        wedge.push [<span class="hljs-keyword">new</span> Vec2(element[<span class="hljs-number">1</span>].x, element[<span class="hljs-number">1</span>].y), <span class="hljs-keyword">new</span> Vec2(element[<span class="hljs-number">1</span>].x - cross.x, element[<span class="hljs-number">1</span>].y - cross.y)]
+
+       
+      <span class="hljs-keyword">else</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p>Its a reflex point so two lines perpendicular to the edges that join it</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        p = idx - <span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> idx == <span class="hljs-number">0</span>
+          p = chain.length - <span class="hljs-number">1</span>
+
+        n = idx + <span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> idx == chain.length - <span class="hljs-number">1</span>
+          n = <span class="hljs-number">0</span>
+
+        pe = chain[p]
+        ne = chain[n]
+
+
+        v0 = Vec3.sub <span class="hljs-keyword">new</span> Vec3(pe[<span class="hljs-number">0</span>].x, pe[<span class="hljs-number">0</span>].y), <span class="hljs-keyword">new</span> Vec3(pe[<span class="hljs-number">1</span>].x, pe[<span class="hljs-number">1</span>].y)
+        cross = Vec3.cross v0, zaxis
+        cross.normalize()
+        wedge.push [<span class="hljs-keyword">new</span> Vec2(element[<span class="hljs-number">0</span>].x, element[<span class="hljs-number">0</span>].y),  <span class="hljs-keyword">new</span> Vec2(element[<span class="hljs-number">0</span>].x - cross.x, element[<span class="hljs-number">0</span>].y - cross.y)]
+
+        v1 = Vec3.sub <span class="hljs-keyword">new</span> Vec3(ne[<span class="hljs-number">0</span>].x, ne[<span class="hljs-number">0</span>].y), <span class="hljs-keyword">new</span> Vec3(ne[<span class="hljs-number">1</span>].x, ne[<span class="hljs-number">1</span>].y)
+        cross = Vec3.cross v1, zaxis
+        cross.normalize()
+        wedge.push [ <span class="hljs-keyword">new</span> Vec2(element[<span class="hljs-number">0</span>].x, element[<span class="hljs-number">0</span>].y),  <span class="hljs-keyword">new</span> Vec2(element[<span class="hljs-number">0</span>].x - cross.x, element[<span class="hljs-number">0</span>].y - cross.y)]
+        
+      wedges.push wedge
+
+  <span class="hljs-built_in">console</span>.log wedges</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <p>For now, compute the voronoi for two chains</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+
+  <span class="hljs-keyword">return</span> wedges
+
+
+<span class="hljs-built_in">module</span>.exports = 
+  rayPlaneIntersect : rayPlaneIntersect
+  rayCircleIntersection : rayCircleIntersection
+  precomputeTangent : precomputeTangent
+  closestPointLine : closestPointLine
+  medialAxis2D : medialAxis2D
+  boundingBox : boundingBox
+  edge2Bisector : edge2Bisector
+  screenNodeHitTest : screenNodeHitTest</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
