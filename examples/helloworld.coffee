@@ -61,7 +61,9 @@ init = () ->
   @topnode.add @n1
   @topnode.add @c
 
-  new PXL.GL.UberShader @topnode
+  uber = new PXL.GL.UberShader @topnode
+  @topnode.add uber
+
 
 draw = () ->
   

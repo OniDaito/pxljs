@@ -27,7 +27,8 @@ class OBJExample
       g.matrix.translate(new PXL.Math.Vec3(0,0,0))
       console.log "OBJ Node added"
       @top_node.add g
-      new PXL.GL.UberShader @top_node
+      uber = new PXL.GL.UberShader @top_node
+      @top_node.add uber
       @obj_node = g
   
     g = new PXL.Import.OBJModel "../models/test.obj", @promise

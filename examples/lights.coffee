@@ -63,8 +63,11 @@ init = () ->
   @topnode.add @light_node
   @topnode.add c
 
-  new PXL.GL.UberShader @topnode
-  new PXL.GL.UberShader @quad_node
+  uber0 = new PXL.GL.UberShader @topnode
+  uber1 = new PXL.GL.UberShader @quad_node
+  @topnode.add uber0
+  @quad_node.add uber1
+
   @step = 0
 
 draw = (dt) ->

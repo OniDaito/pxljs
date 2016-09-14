@@ -47,7 +47,9 @@ class ShapesExample
 
     # Add all the nodes to the top node and call our ubershader
     @top_node.add(cube_node).add(cylinder_node).add(sphere_node)
-    new PXL.GL.UberShader @top_node
+    uber = new PXL.GL.UberShader @top_node
+    @top_node.add uber
+
 
     # Basic GL Functions
     GL.enable(GL.CULL_FACE)

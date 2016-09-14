@@ -1,7 +1,7 @@
 
 # PXLjs 
 
-### v0.0.0
+### v0.1.0
 
 ![Build Status Images](https://travis-ci.org/OniDaito/PXLjs.svg)
 
@@ -24,6 +24,18 @@ You can get PXLjs in a variety of ways:
 ## Requirements
 
 To use PXLjs you just need a good text editor and a recent web-browser. You can use PXLjs either with normal Javascript or CoffeeScript; it is provided ready compiled. However, if you are working on a more complicated project, its useful to work with the non-compiled, coffeescript version using node.
+
+## Building
+
+PXLjs uses [gulp]() as it's build engine. The following command will setup a dev environment for you to play with, including a webserver for testing
+
+    gulp dev
+
+Browse to ...
+     http://localhost:9966/examples/helloworld.html
+... to get started
+
+The [building and developing PXLjs page](https://github.com/OniDaito/pxljs/blob/master/docs/building.markdown) has more.
 
 ## Getting Started
 
@@ -62,45 +74,62 @@ My preference is to use coffeescript to write my code. If you are not familar wi
 Lets start by writing two basic functions, our init and draw functions. Create a new file called **helloworld.coffee.**
 
 <pre>
-  init = () ->
-    white = new PXLjs.Colour.RGBA.WHITE()
 
-    v0 = new PXLjs.Vertex(new PXLjs.Vec3(-1,-1,0), white)
-    v1 = new PXLjs.Vertex(new PXLjs.Vec3(0,1,0), white)
-    v2 = new PXLjs.Vertex(new PXLjs.Vec3(1,-1,0), white)
+init = () ->
+  white = new PXL.Colour.RGBA.WHITE() 
+  
+  v0 = new PXL.Geometry.Vertex 
+    p : new PXL.Math.Vec3(-1,-1,0) 
+    c : white 
 
-    t = new PXLjs.Geometry.Triangle(v0,v1,v2)
+  v1 = new PXL.Geometry.Vertex
+    p : new PXL.Math.Vec3(0,1,0)
+    c : white
 
-    @node = new PXLjs.Node t 
-    @camera = new PXLjs.Camera.PerspCamera()
-    @node.add @camera
+  v2 = new PXL.Geometry.Vertex
+    p : new PXL.Math.Vec3(1,-1,0)
+    c : white
 
-    PXL.GL.UberShader @node
 
-  draw = () ->
-    GL.clearColor(0.15, 0.15, 0.15, 1.0)
-    GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT)
-    @node.draw()
+  t = new PXL.Geometry.Triangle(v0,v1,v2)
 
-  params = 
-    canvas : 'webgl-canvas'
-    context : @
-    init : init
-    debug : true
-    draw : draw
+  vertexMaterial = new PXL.Material.VertexColourMaterial()
+  
+  @node = new PXL.Node t 
+  camera = new PXL.Camera.PerspCamera()
+  
+  @node.add camera
+  @node.add vertexMaterial
+  @node.add new PXL.GL.UberShader(@node)
 
-  cgl = new PXL.App params
+draw = () ->
+  GL.clearColor(0.15, 0.15, 0.15, 1.0)
+  GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT)
+  @node.draw()
+
+params = 
+  canvas : 'webgl-canvas'
+  context : @
+  init : init
+  draw : draw
+
+cgl = new PXL.App params
 
 </pre>
 
 Lets take a closer look at these functions and the lines inside...
 
 <pre>
-  v0 = new PXLjs.Vertex(new PXLjs.Vec3(-1,-1,0), new PXLjs.Colour.RGBA.WHITE())
+  v0 = new PXL.Geometry.Vertex 
+    p : new PXL.Math.Vec3(-1,-1,0) 
+    c : white 
 </pre>
 
 This line creates a new Vertex consisting of a Vec3 and an RGBA Colour. A Vertex is the smallest unit of geometry possible and can contain things like a normal, a tangent, a colour, etc.
-The Vec3 represents a position in space and is part of the PXLjs Maths Library which has many primitives for you to play with. The Colour.RGBA.WHITE() is a 4 component colour, in this case white, that is passed along with the position when creating the vertex.
+
+PXLjs has built-in special names for vertex information. For example **c** refers to the colour attached to this vertext, whereas **p** refers to the position. Others can be found in the [API Docs for Vertex](http://docs.pxljs.com/geometry/primitive.html).
+
+The Vec3 represents a position in space and is part of the [PXLjs Maths Library](http://docs.pxljs.com/math/math.html) which has many primitives for you to play with. The Colour.RGBA.WHITE() is a 4 component colour, in this case white, that is passed along with the position when creating the vertex.
 
 <pre>
     t = new PXLjs.Geometry.Triangle(v0,v1,v2)
@@ -114,15 +143,25 @@ As you may have guessed, a Triangle contains 3 vertices and is a simple collecti
   @node.add @camera
 </pre>
 
-The first line creates a Node object. These are quite useful in PXLjs. They combine geometry with a matrix, shaders, cameras and even other nodes, in order to create a partial scene graph. The node system is fairly flexible and takes care of creating buffers, bind calls and shader uniform calls for you.
+The first line creates a [Node object](https://github.com/OniDaito/pxljs/blob/master/docs/node.markdown). These are quite useful in PXLjs. They combine geometry with a matrix, shaders, cameras and even other nodes, in order to create a partial scene graph. The node system is fairly flexible and takes care of creating buffers, bind calls and shader uniform calls for you.
 
 The second line creates a perspective camera with the default settings. This should allow us to see our first triangle. We attach it to the node in the last line.
 
 <pre>
-  PXL.GL.UberShader @node
+  vertexMaterial = new PXL.Material.VertexColourMaterial()
+</pre>
+
+PXLjs uses the concept of materials. This is fairly common amongst most 3D programs and possibly familiar to many. In this case, we are using a basic material that reads flat colours from the vertices themselves.
+
+<pre>
+  uber = PXL.GL.UberShader @node
 </pre>
 
 PXLjs uses an [ubershader](http://stackoverflow.com/questions/23726421/how-should-i-organize-shader-system-with-opengl) to perform most of it's effects. When you just want things to work as advertised, with lights, shadows and materials and you don't want to have to mess with any shaders, use the built-in ubershade simply by passing in the node you want to shade.
+
+The ubershader is called last. This is important as it scans the nodes you pass to it, in order to detect what shader chunks it needs to include.
+
+You can [create your own shaders](https://github.com/OniDaito/pxljs/blob/master/docs/shaders.markdown) and add these to the node you want to draw. PXLjs creates buffers for you automagically and presents these to the shaders using a [contract](http://docs.pxljs.com/gl/contract.html); a mapping between CPU variables and JS variables. 
 
 <pre>
   draw = () ->
@@ -142,7 +181,7 @@ The final line calls the draw function on our node, actually drawing to the scre
 This last line is the final piece of the puzzle. We create an App that takes a number of parameters...
 
 * The 'webgl-canvas' refers to which canvas object on the page we want to use (by id)
-* this refers to the object to be wrapped by PXLjs (in this case, the global context)
+* context refers to the object to be wrapped by PXLjs (in this case, the global context)
 * init refers to the init method we just defined above.
 * draw refers to which function will be used by PXLjs to draw to the screen.
 
@@ -177,6 +216,7 @@ PXLjs uses [uglify](https://github.com/mishoo/UglifyJS) and [browserify](http://
 #### Same program as above but in Javascript
 
 <pre>
+
 var cgl, draw, init, params;
 
 init = function() {
@@ -205,6 +245,7 @@ params = {
 };
 
 cgl = new PXL.App(params);
+
 
 </pre>
 

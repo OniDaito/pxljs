@@ -16,7 +16,7 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 var cgl, draw, init, params;
 
 init = function() {
-  var q, t, uniformMaterial, v0, v1, v2, vertexMaterial, white;
+  var q, t, uber, uniformMaterial, v0, v1, v2, vertexMaterial, white;
   white = new PXL.Colour.RGBA.WHITE();
   v0 = new PXL.Geometry.Vertex({
     p: new PXL.Math.Vec3(-1, -1, 0)
@@ -49,7 +49,8 @@ init = function() {
   this.topnode.add(this.n0);
   this.topnode.add(this.n1);
   this.topnode.add(this.c);
-  return new PXL.GL.UberShader(this.topnode);
+  uber = new PXL.GL.UberShader(this.topnode);
+  return this.topnode.add(uber);
 };
 
 draw = function() {

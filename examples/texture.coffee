@@ -29,7 +29,7 @@ init = () ->
 
     # Our node is complete - add it to the topnode
     @topnode.add @n0
-    new PXL.GL.UberShader @topnode
+    @topnode.add new PXL.GL.UberShader(@topnode)
 
   @c = new PXL.Camera.PerspCamera()
   @topnode = new PXL.Node

@@ -24,10 +24,12 @@ OBJExample = (function() {
     this.promise = new PXL.Util.Promise();
     this.promise.then((function(_this) {
       return function() {
+        var uber;
         g.matrix.translate(new PXL.Math.Vec3(0, 0, 0));
         console.log("OBJ Node added");
         _this.top_node.add(g);
-        new PXL.GL.UberShader(_this.top_node);
+        uber = new PXL.GL.UberShader(_this.top_node);
+        _this.top_node.add(uber);
         return _this.obj_node = g;
       };
     })(this));

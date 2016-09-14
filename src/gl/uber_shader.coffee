@@ -25,31 +25,8 @@ uber = require "../shaders/uber" # this is automatically built via gulp
 
 ### UberShader ###
 # An implementation of an Ubershader that uses a uniform to choose the path through the shader
-# and a series of hash defines to sort out what we actually need
-# Hash defines include the following as well as these in the various material classes:
+# and a series of hash defines to sort out what we actually need.
 #
-# VERTEX_COLOUR
-# VERTEX_TEXTURE
-# VERTEX_NORMAL
-# VERTEX_TANGENT
-# VERTEX_NOISE
-# VERTEX_TANGENT_FRAME
-# VERTEX_SOBEL
-#
-# FRAGMENT_NOISE
-# FRAGMENT_INTENSITY
-# FRAGMENT_DEPTH_IN
-# FRAGMENT_DEPTH_OUT
-# FRAGMENT_LUMINANCE
-# FRAGMENT_TANGENT_FRAME
-# FRAGMENT_SOBEL
-#
-# BASIC_COLOUR
-# BASIC_CAMERA
-# ADVANCED_CAMERA
-# SKINNING
-# LIGHTING_POINT
-
 # The paths through the shader are defined using the uniform uUber0
 # Its a float whose bits are checked. You can see these in uber_shader_paths
 
@@ -57,17 +34,6 @@ uber = require "../shaders/uber" # this is automatically built via gulp
 # TODO - Shaderpaths could do the same - use names that map to numbers
 
 class UberShader extends Shader
-
-
-  # final transform if nothing else
-  # FRAGMENT SHADER
-
-  # HEAD SECTION of fragment Shader
-  # Materials
-  # FUNCTION SECTION
-
-
-  # MAIN SECTION
 
   # We run over all the nodes, looking for materials. If we have them, check for defines
   # Defines can also occur depending on what we have in the node structure, like point-lights and 
@@ -125,15 +91,8 @@ class UberShader extends Shader
     @vertex = def_string + uber.vertex
     @fragment = def_string + uber.fragment
 
-    #@vertex = "#version 100\n" + "precision highp float;\nprecision highp int;\n" + def_string + UberShader.vertex
-    #@fragment = "#version 100\n" + "precision highp float;\nprecision highp int;\n" + def_string + UberShader.fragment
-
     super(@vertex, @fragment, undefined)
     @_uber = true
-
-    for base_node in arguments
-      @_addToNode base_node
-
 
 module.exports =
   UberShader : UberShader

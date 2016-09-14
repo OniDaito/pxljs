@@ -26,7 +26,8 @@ class MD5Example
       g.matrix.scale new PXL.Math.Vec3 0.1, 0.1, 0.1
       @top_node.add g
       # Create shaders once everything has loaded
-      new PXL.GL.UberShader @top_node
+      uber = new PXL.GL.UberShader 
+      @top_node.add uber
       @g = g
 
 

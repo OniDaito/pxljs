@@ -16,7 +16,7 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 var cgl, draw, init, params;
 
 init = function() {
-  var ambientlight, basicMaterial, c, cp, cube_node, magnolia, plane, q, shadowed_node, sphere, uniformMaterial, white;
+  var ambientlight, basicMaterial, c, cp, cube_node, magnolia, plane, q, shadowed_node, sphere, uber0, uber1, uniformMaterial, white;
   white = new PXL.Colour.RGBA.WHITE();
   magnolia = new PXL.Colour.RGBA.MAGNOLIA();
   plane = new PXL.Geometry.Plane(10, 10);
@@ -46,8 +46,10 @@ init = function() {
   this.topnode.add(shadowed_node);
   this.topnode.add(this.light_node);
   this.topnode.add(c);
-  new PXL.GL.UberShader(this.topnode);
-  new PXL.GL.UberShader(this.quad_node);
+  uber0 = new PXL.GL.UberShader(this.topnode);
+  uber1 = new PXL.GL.UberShader(this.quad_node);
+  this.topnode.add(uber0);
+  this.quad_node.add(uber1);
   return this.step = 0;
 };
 

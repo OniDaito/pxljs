@@ -15,17 +15,31 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 ###
 
 init = () ->
-  v0 = new PXLjs.Vertex(new PXLjs.Vec3(-1,-1,0), new PXLjs.Colour.RGBA.WHITE())
-  v1 = new PXLjs.Vertex(new PXLjs.Vec3(0,1,0), new PXLjs.Colour.RGBA.WHITE())
-  v2 = new PXLjs.Vertex(new PXLjs.Vec3(1,-1,0), new PXLjs.Colour.RGBA.WHITE())
+  white = new PXL.Colour.RGBA.WHITE() 
+  
+  v0 = new PXL.Geometry.Vertex 
+    p : new PXL.Math.Vec3(-1,-1,0) 
+    c : white 
 
-  t = new PXLjs.Geometry.Triangle(v0,v1,v2)
+  v1 = new PXL.Geometry.Vertex
+    p : new PXL.Math.Vec3(0,1,0)
+    c : white
 
-  @node = new PXLjs.Node t 
-  @camera = new PXLjs.Camera.PerspCamera()
-  @node.add @camera
+  v2 = new PXL.Geometry.Vertex
+    p : new PXL.Math.Vec3(1,-1,0)
+    c : white
 
-  new PXL.GL.UberShader @node
+
+  t = new PXL.Geometry.Triangle(v0,v1,v2)
+
+  vertexMaterial = new PXL.Material.VertexColourMaterial()
+  
+  @node = new PXL.Node t 
+  camera = new PXL.Camera.PerspCamera()
+  
+  @node.add camera
+  @node.add vertexMaterial
+  @node.add new PXL.GL.UberShader(@node)
 
 draw = () ->
   GL.clearColor(0.15, 0.15, 0.15, 1.0)

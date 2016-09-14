@@ -16,15 +16,27 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 var cgl, draw, init, params;
 
 init = function() {
-  var t, v0, v1, v2;
-  v0 = new PXLjs.Vertex(new PXLjs.Vec3(-1, -1, 0), new PXLjs.Colour.RGBA.WHITE());
-  v1 = new PXLjs.Vertex(new PXLjs.Vec3(0, 1, 0), new PXLjs.Colour.RGBA.WHITE());
-  v2 = new PXLjs.Vertex(new PXLjs.Vec3(1, -1, 0), new PXLjs.Colour.RGBA.WHITE());
-  t = new PXLjs.Geometry.Triangle(v0, v1, v2);
-  this.node = new PXLjs.Node(t);
-  this.camera = new PXLjs.Camera.PerspCamera();
-  this.node.add(this.camera);
-  return new PXL.GL.UberShader(this.node);
+  var camera, t, v0, v1, v2, vertexMaterial, white;
+  white = new PXL.Colour.RGBA.WHITE();
+  v0 = new PXL.Geometry.Vertex({
+    p: new PXL.Math.Vec3(-1, -1, 0),
+    c: white
+  });
+  v1 = new PXL.Geometry.Vertex({
+    p: new PXL.Math.Vec3(0, 1, 0),
+    c: white
+  });
+  v2 = new PXL.Geometry.Vertex({
+    p: new PXL.Math.Vec3(1, -1, 0),
+    c: white
+  });
+  t = new PXL.Geometry.Triangle(v0, v1, v2);
+  vertexMaterial = new PXL.Material.VertexColourMaterial();
+  this.node = new PXL.Node(t);
+  camera = new PXL.Camera.PerspCamera();
+  this.node.add(camera);
+  this.node.add(vertexMaterial);
+  return this.node.add(new PXL.GL.UberShader(this.node));
 };
 
 draw = function() {

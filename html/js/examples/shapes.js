@@ -21,7 +21,7 @@ ShapesExample = (function() {
   function ShapesExample() {}
 
   ShapesExample.prototype.init = function() {
-    var angle, cube_node, cylinder_node, i, j, sphere_node;
+    var angle, cube_node, cylinder_node, i, j, sphere_node, uber;
     this.top_node = new PXL.Node();
     this.c = new PXL.Camera.MousePerspCamera(new PXL.Math.Vec3(0, 0, 25));
     this.top_node.add(this.c);
@@ -37,7 +37,8 @@ ShapesExample = (function() {
       sphere_node.geometry.vertices[i].c = new PXL.Colour.RGBA(1, 0, 0, 1);
     }
     this.top_node.add(cube_node).add(cylinder_node).add(sphere_node);
-    new PXL.GL.UberShader(this.top_node);
+    uber = new PXL.GL.UberShader(this.top_node);
+    this.top_node.add(uber);
     GL.enable(GL.CULL_FACE);
     GL.cullFace(GL.BACK);
     GL.enable(GL.DEPTH_TEST);

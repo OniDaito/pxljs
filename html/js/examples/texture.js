@@ -23,7 +23,7 @@ init = function() {
     return function(texture) {
       _this.n0.add(new PXL.Material.TextureMaterial(texture));
       _this.topnode.add(_this.n0);
-      return new PXL.GL.UberShader(_this.topnode);
+      return _this.topnode.add(new PXL.GL.UberShader(_this.topnode));
     };
   })(this));
   this.c = new PXL.Camera.PerspCamera();

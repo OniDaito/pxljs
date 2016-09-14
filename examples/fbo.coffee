@@ -32,8 +32,10 @@ init = () ->
  
   @quad_node.add new PXL.Material.ViewDepthMaterial @fbo.texture
   
+  uber = PXL.GL.UberShader @sphere_node, @quad_node
+  @sphere_node.add uber
+  @quad_node.add uber
 
-  new PXL.GL.UberShader @sphere_node, @quad_node
 
 draw = () ->
   

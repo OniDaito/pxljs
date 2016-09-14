@@ -23,10 +23,12 @@ MD5Example = (function() {
     this.promise = new PXL.Util.Promise();
     this.promise.then((function(_this) {
       return function() {
+        var uber;
         g.matrix.rotate(new PXL.Math.Vec3(1, 0, 0), -0.5 * PXL.Math.PI);
         g.matrix.scale(new PXL.Math.Vec3(0.1, 0.1, 0.1));
         _this.top_node.add(g);
-        new PXL.GL.UberShader(_this.top_node);
+        uber = new PXL.GL.UberShader;
+        _this.top_node.add(uber);
         return _this.g = g;
       };
     })(this));
