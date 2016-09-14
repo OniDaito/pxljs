@@ -134,7 +134,8 @@ class MD5Model extends Node
         onsuccess_closure = () =>
           _p = p
           _material_path = material_path
-
+          __material_by_name = @_material_by_name
+          
           return (_texture) =>
             if PXL.Context.debug
               PXLLog "MD5Model Loaded a Texture: " + _material_path
@@ -143,7 +144,7 @@ class MD5Model extends Node
             # TODO Eventually we'll do this properly
             wh = new RGB.WHITE()
             spec = new RGB.BLACK() 
-            @_material_by_name[_material_path] = new PhongMaterial wh, _texture, spec 
+            __material_by_name[_material_path] = new PhongMaterial wh, _texture, spec 
          
             _p.resolve()
 
@@ -151,14 +152,15 @@ class MD5Model extends Node
         onerror_closure = () =>
           _p = p
           _material_path = material_path
-          
+          __material_by_name = @_material_by_name
+
           return (msg) =>
             # ignore and use a normal material
             if PXL.Context.debug
               PXLLog "MD5Model Failed to load a Texture: " + _material_path
 
             wh = new PXL.Colour.RGB 1.0,0.0,0.0
-            @_material_by_name[_material_path] = new BasicColourMaterial wh
+            __material_by_name[_material_path] = new BasicColourMaterial wh
 
             _p.resolve()
 
