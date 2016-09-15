@@ -38,7 +38,7 @@ When applying materials, we may need to AUTOGEN stuff - thats not a bad idea act
 
 util = require '../util/util'
 
-###Geometry###
+### Geometry ###
 # Represents actually geometry - a collection of vertices that can be drawn, with some
 # organisation
 # Geometry is either a set of vertices ready to be flattened into arrays to go onto the
@@ -50,6 +50,8 @@ util = require '../util/util'
 # @layout - gl constant to say how this should be treated (lines etc)
 
 class Geometry
+  
+  # **@constructor**
   constructor : () ->
     @vertices = []
     
@@ -82,33 +84,50 @@ class Geometry
     @brewed = false
 
   _addToNode : (node) ->
-    node.geometry = @  
+    node.geometry = @
     @
 
+  # **flatten** 
+  # - reutns a list of Number - [v0.x, v0.y, v0.z, (v0.w), (v0.r, v0.g, v0.b) ...]
   flatten :() ->
     t = []
     for vertex in @vertices
       t.concat vertex.flatten()
     t
 
+  # **setIndex** - if there are indicies in this geometry, set one here
+  # - **idx** - a Number - Integer - Required
+  # - **value** - a Number- Integer - Required
+  # - returns this
   setIndex : (idx, value) ->
     @indices[idx] = value
     @
 
+  # **setVertex**
+  # - **idx** - a Number - Integer - Required
+  # - **vertex** - a Vertex - Required
+  # - returns this
   setVertex : (idx, vertex) ->
     @vertices[idx] = vertex
     @
 
+  # **addVertex** 
+  # - **v** - a Vertex - Required
+  # - return this
   addVertex : (v) ->
     @vertices.push v
     @
-
+  # **addIndex**
+  # - **idx** -  a Number - Integer - Required
   addIndex : (idx) ->
     @indices.push idx
 
-  # getTrisIndexer - returns a function that allows us to iterate over the triangles
+  # **getTrisIndexer** - returns a function that allows us to iterate over the triangles
   # We look at the instanceof for the organisation of the triangles
   # TODO - Non indexed TRIANGLE_STRIPs need to be sorted
+  # - returns a function with the following parameters
+  # -- **index** - a Number - Integer - Required
+  # -- returns an Array of Vec3 or an Array of Vertex (depending if the geometry is flat)
 
   getTrisIndexer : () ->
   
@@ -140,7 +159,8 @@ class Geometry
       else
         return point_non_indexed_tris
 
-  # Return the number of triangles in this geometry
+  # **getNumTris** - Return the number of triangles in this geometry
+  # returns a Number
   getNumTris : () ->
     if @ instanceof PlaneFlat
       return @indices.length - 2
@@ -177,6 +197,8 @@ class Geometry
 
 class Vertex
   
+  # **@constructor**
+  # - **named_arguments** - an Object with named arguments
   # You can pass in whatever named arguments you want. They will be attached to the 
   # Vertex object. Some of these have default names, such as p for position and 
   # c for colour. So pass in { 'p' :  Vec3(1,1,1) } for example
@@ -191,6 +213,8 @@ class Vertex
     if not @p?
       @p = new Vec3 0,0,0
 
+  # **flatten** - take all the named attributes and call flatten on them
+  # - returns an Array
   flatten: () ->
     t = []
 
@@ -202,12 +226,19 @@ class Vertex
 
 
 
-###Triangle###
+### Triangle ###
 # A triangle. This CAN be extended to be drawn on its own but doesnt have to be
 # TODO - is a Triangle really geometry? It is kinda but since we have loads of triangles
 # in things like a mesh shouldnt we really not do that? :S
 
 class Triangle extends Geometry
+  
+  # **@constructor**
+  # - **p0** - a Vertex - Default v.p (-1,-1,0)
+  # - **p1** - a Vertex - Default v.p (1,-1,0)
+  # - **p2** - a Vertex - Default v.p (0,1,0)
+  # - **n** - a Vec3 - normalised
+  
   constructor: (p0,p1,p2,@n) ->
     super()
     # we dont have 3 vectors, create a unit triangle with -1 to 1 with anticlockwise winding
@@ -226,6 +257,8 @@ class Triangle extends Geometry
 
     @computeFaceNormal() if not @n?
 
+  # **flatten** - squash the vertices into an array
+  # - returns an Array
   flatten: () ->
     t = []
     t = t.concat @vertices[0].flatten()
@@ -233,6 +266,8 @@ class Triangle extends Geometry
     t = t.concat @vertices[2].flatten()
     t
   
+  # **computeFaceNormal** - sets the internal normal based on the points of the triangle
+  # - returns this
   computeFaceNormal: ()->
     l0 = Vec3.sub(@vertices[1].p, @vertices[0].p)
     l1 = Vec3.sub(@vertices[2].p, @vertices[1].p)
@@ -242,11 +277,18 @@ class Triangle extends Geometry
     @
 
 
-###Quad###
+### Quad ###
 # Our basic Quad, drawn as a tristrip. Assume planar triangles
 
 class Quad extends Geometry
-
+  
+  # **@constructor**
+  # - **p0** - a Vertex - Default v.p(-1,1,0), v.c(1,1,1,1), v.n(0,0,1), v.t(0,1) 
+  # - **p1** - a Vertex - Default v.p(-1,-1,0), v.c(1,1,1,1), v.n(0,0,1), v.t(0,0)
+  # - **p2** - a Vertex - Default v.p(1,1,0), v.c(1,1,1,1), v.n(0,0,1), v.t(1,1)
+  # - **p3** - a Vertex - Default v.p(1,-1,0), v.c(1,1,1,1), v.n(0,0,1), v.t(1,0)
+  # - **n** - a Vec3 - normalised - Default Vec3(0,0,1)
+ 
   constructor: (p0,p1,p2,p3,@n) ->
     super()
     # we dont have 4 vectors, create a 2 wide quad with -1 to 1 with anticlockwise winding
@@ -280,7 +322,9 @@ class Quad extends Geometry
     @layout = GL.TRIANGLE_STRIP if GL?
 
     @computeFaceNormal() if not @n?
-  
+ 
+  # **computeFaceNormal** - sets the internal normal based on the points of the triangle
+  # - returns this
   computeFaceNormal: ()->
     l0 = Vec3.sub(@vertices[1].p, @vertices[0].p)
     l1 = Vec3.sub(@vertices[2].p, @vertices[1].p)
@@ -288,7 +332,8 @@ class Quad extends Geometry
     @n.normalize()
    
     @
-
+  # **flatten** - squash the vertices into an array
+  # - returns an Array
   flatten: () ->
     t = []
     t = t.concat @vertices[0].flatten()
@@ -298,14 +343,14 @@ class Quad extends Geometry
     t
 
 
-
-
 ### VertexSoup ###
 # A Place holder class for a collection of non indexed vertices, likely to be drawn out as lines
 # or some arbitrary polygon
 # vertex_list - the list of vertices to make this from
 
 class VertexSoup extends Geometry 
+  # ** constructor **
+  # - **vertex_list** - an Array of Vertex
   constructor: (vertex_list) ->
     super()
     gl = GL
@@ -314,7 +359,7 @@ class VertexSoup extends Geometry
 
 
 
-###TriangleMesh###
+### TriangleMesh ###
 # A mesh made up of triangles that have the same kinds of vertices
 # Can be created in several ways but the outcome is a set of indexed
 # or non indexed buffers
@@ -327,6 +372,8 @@ class TriangleMesh extends Geometry
   # TODO - allow indexing but also allowing passing in indices as well - speeds things 
   # up with the json model
 
+  # **@constructor** 
+  # - **indexed** - a Boolean - Required
   constructor : (indexed) ->
     super()
     @vertices = []
@@ -335,7 +382,9 @@ class TriangleMesh extends Geometry
 
     @layout = GL.TRIANGLES if GL?
 
-  # Add a triangle to this mesh checking for any problems with vertex duplication
+  # **addTriangle** - Add a triangle to this mesh checking for any problems with vertex duplication
+  # - **t** - a Triangle
+  # - returns this
   addTriangle : (t) ->
     if @indexed
       for idx in [0..2]
@@ -359,8 +408,10 @@ class TriangleMesh extends Geometry
 
 
 
-  # If we've added indicies by hand, we can create triangles from these
+  # **addTriangleFromIndices ** If we've added indicies by hand, we can create triangles from these
   # indices. Used in the MD5Model class
+  # - **indices** - an Array of Integer - Required
+  # - returns this
   addTriangleFromIndices : (indices) ->
     if @indexed
       points = []
@@ -371,18 +422,20 @@ class TriangleMesh extends Geometry
           PXLError "Attempting to create a triangle from indicies that dont exist"
 
       t = new Triangle @vertices[points[0]], @vertices[points[1]], @vertices[points[2]]
-      @faces.push t 
+      @faces.push t
 
     @
 
 
 
-  # addQuad - Add a quad, breaking it down into its component parts
+  # **addQuad** - Add a quad, breaking it down into its component parts
+  # - **q** - a Quad
+  # - returns this
   addQuad : (q) ->
 
-    if @indexed? == true     
+    if @indexed? == true
       for idx in [0,1,3]
-        p = @_findV(q.vertices[idx]) 
+        p = @_findV(q.vertices[idx])
         if p == -1
           @vertices.push q.vertices[idx]
           ti = @vertices.length
@@ -393,7 +446,7 @@ class TriangleMesh extends Geometry
           @indices.push(p)
 
       for idx in [2,3,1]
-        p = @_findV(q.vertices[idx]) 
+        p = @_findV(q.vertices[idx])
         if p == -1
           @vertices.push q.vertices[idx]
           ti = @vertices.length

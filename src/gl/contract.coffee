@@ -41,18 +41,23 @@ class Contract
 
       if obj.contract.roles[u.name]?
 
-        obj_var = obj[obj.contract.roles[u.name]] 
+        obj_var = obj[obj.contract.roles[u.name]]
         shader_contract.matches[u.name] = obj_var
         obj.contract.matches[u.name] = obj_var
   
 
     for a in shader_contract.attributes
       if obj.contract.roles[a.name]?
-        obj_var = obj[obj.contract.roles[a.name]] 
+        obj_var = obj[obj.contract.roles[a.name]]
         shader_contract.matches[a.name] = obj_var
-        obj.contract.matches[a.name] = obj_var   
+        obj.contract.matches[a.name] = obj_var
 
     shader_contract
+
+  # **@constructor**
+  # - **attributes** - an Array - Required
+  # - **uniforms** - an Array - Required
+  # - **user_roles** - an Array
 
   constructor : (@attributes, @uniforms, user_roles) ->
 
@@ -71,23 +76,27 @@ class Contract
     # attribute and a node variable. This acts as a cache
     @matches = {}
 
-  # Add a variable to the contract
-  # role - the name of the variable in the shader
-  # varname - the javascript varible providing the data
+  # **add** - Add a variable to the contract
+  # - **role** - a String - Required
+  # - **varname**  - a String - Required
+  #  returns this
   add : (role, varname) ->
     @roles[role] = varname
     @
 
 
  
-  # Check to see if a rolename is listed
+  # **hasRoleValue** - Check to see if a rolename is listed
+  # - **role_name** - a String - Required
+  # - returns a boolean
   hasRoleValue : (role_name) ->
     for key of @roles
       if @roles[key] == role_name
         return true
     false
 
-  # Find any unmatched uniforms or attributes
+  # **findUnmatched** - Find any unmatched uniforms or attributes
+  # - returns an Array of Objects
   findUnmatched : () ->
     unmatched = []
     if @_cached?

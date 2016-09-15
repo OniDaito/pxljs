@@ -92,8 +92,22 @@ There is a problem here - as we change node, what happen to front? Better design
             </div>
             
             <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Front</span></span>
-  constructor : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Front</span></span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p><strong>@constructor</strong> </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  constructor : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
 
     @globalMatrix =  <span class="hljs-keyword">new</span> Matrix4()
     @pointLights = []
@@ -111,11 +125,11 @@ There is a problem here - as we change node, what happen to front? Better design
         </li>
         
         
-        <li id="section-4">
+        <li id="section-5">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
+                <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
               <p>These are copied which suggests a potential
 for modifying down the tree</p>
@@ -132,11 +146,11 @@ for modifying down the tree</p>
         </li>
         
         
-        <li id="section-5">
+        <li id="section-6">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
+                <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
               <p>These are references which reflects the 
 behaviour that cameras, shaders etc, override
@@ -156,11 +170,11 @@ be made more explicit perhaps</p>
         </li>
         
         
-        <li id="section-6">
+        <li id="section-7">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <p>TODO - this should really live somewhere else</p>
 
@@ -172,11 +186,11 @@ _shadow_map_camera = <span class="hljs-keyword">new</span> PerspCamera <span cla
         </li>
         
         
-        <li id="section-7">
+        <li id="section-8">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p><strong>shadomap_create_draw</strong>
 -<strong>node</strong> - a Node
@@ -188,11 +202,11 @@ _shadow_map_camera = <span class="hljs-keyword">new</span> PerspCamera <span cla
         </li>
         
         
-        <li id="section-8">
+        <li id="section-9">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
               <p>Called when we find a spotLight that casts shadows
 A Camera should have been set on the front before this function is called - dont like that :S</p>
@@ -207,11 +221,11 @@ A Camera should have been set on the front before this function is called - dont
         </li>
         
         
-        <li id="section-9">
+        <li id="section-10">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <p>Create the camera we shall use
 Shouldnt really do this all the time if not needed :S
@@ -230,11 +244,11 @@ and all the rest. Very cross cutting this &gt;&lt;</p>
         </li>
         
         
-        <li id="section-10">
+        <li id="section-11">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               <p>_shadow_map_camera.near = 0.1</p>
 
@@ -246,11 +260,11 @@ and all the rest. Very cross cutting this &gt;&lt;</p>
         </li>
         
         
-        <li id="section-11">
+        <li id="section-12">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
               <p>Create the inverse matrix making sure to multiply by the current modelview matrix</p>
 
@@ -263,11 +277,11 @@ and all the rest. Very cross cutting this &gt;&lt;</p>
         </li>
         
         
-        <li id="section-12">
+        <li id="section-13">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p>icm.invert()</p>
 
@@ -278,11 +292,11 @@ and all the rest. Very cross cutting this &gt;&lt;</p>
         </li>
         
         
-        <li id="section-13">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>Begin the creation of a shadowmap for this light source</p>
 
@@ -298,11 +312,11 @@ and all the rest. Very cross cutting this &gt;&lt;</p>
         </li>
         
         
-        <li id="section-14">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p><strong>_shadowmap_create_draw </strong>
 Internal recursive function</p>
@@ -324,11 +338,11 @@ Internal recursive function</p>
         </li>
         
         
-        <li id="section-15">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>front._uber0 = uber.uber_depth_set true, front._uber0</p>
 
@@ -339,11 +353,11 @@ Internal recursive function</p>
         </li>
         
         
-        <li id="section-16">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>Sort of assuming we have a nice ubershader already
 Not needed I believe as the shader should exist on front before it’s cloned and passed in
@@ -355,11 +369,11 @@ if node.shader?
         </li>
         
         
-        <li id="section-17">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>Create a precomputed model/view/perspecti:ve matrix for speed</p>
 
@@ -370,11 +384,11 @@ if node.shader?
         </li>
         
         
-        <li id="section-18">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>Possibly only needs to be done when we actually need to draw or bind</p>
 
@@ -394,11 +408,11 @@ if node.shader?
         </li>
         
         
-        <li id="section-19">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>This contract probably needs a lot of trimming given the material we 
 are using and nothing else</p>
@@ -415,11 +429,11 @@ are using and nothing else</p>
         </li>
         
         
-        <li id="section-20">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>Pass down skeletons</p>
 
@@ -433,11 +447,11 @@ are using and nothing else</p>
         </li>
         
         
-        <li id="section-21">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>Only draw if we have the context (think tests and the like)</p>
 
@@ -448,11 +462,11 @@ are using and nothing else</p>
         </li>
         
         
-        <li id="section-22">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>Actual Draw
 Put a line in here to check we also have a shader on the context</p>
@@ -469,11 +483,11 @@ Put a line in here to check we also have a shader on the context</p>
         </li>
         
         
-        <li id="section-23">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p>Quick check for unbound uniforms</p>
 
@@ -491,11 +505,11 @@ Put a line in here to check we also have a shader on the context</p>
         </li>
         
         
-        <li id="section-24">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>We need to clone front so we dont change it permanently
 Seems the fastest way is to just copy - json stringify then parse appears not to work
@@ -512,29 +526,15 @@ better way?</p>
         </li>
         
         
-        <li id="section-25">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
-              </div>
-              <p>Recursive call to draw. Binds any textures on this node. Sets the lights
-from the parent nodes, all the way down the tree. This node is then 
-attempted to be brewed (if it has geometry) and if brewed, it is webgl drawn</p>
-
-            </div>
-            
-        </li>
-        
-        
         <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
-              <p>TODO - Eventually redo this function so we create a set of flat objects with 
-a cache and all the required info.</p>
+              <p>Recursive call to draw. Binds any textures on this node. Sets the lights
+from the parent nodes, all the way down the tree. This node is then 
+attempted to be brewed (if it has geometry) and if brewed, it is webgl drawn</p>
 
             </div>
             
@@ -546,6 +546,20 @@ a cache and all the required info.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>TODO - Eventually redo this function so we create a set of flat objects with 
+a cache and all the required info.</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p><strong>main_draw</strong>
 -<strong>node</strong> - a Node
@@ -560,11 +574,11 @@ a cache and all the required info.</p>
         </li>
         
         
-        <li id="section-28">
+        <li id="section-29">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p>Setup the normal matrix</p>
 
@@ -575,11 +589,11 @@ a cache and all the required info.</p>
         </li>
         
         
-        <li id="section-29">
+        <li id="section-30">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
               <p>Cameras are also passed down the tree but overidden if local
 Also call update here</p>
@@ -597,11 +611,11 @@ Also call update here</p>
         </li>
         
         
-        <li id="section-30">
+        <li id="section-31">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <p>Create a precomputed model/view/perspective matrix for speed</p>
 
@@ -614,11 +628,11 @@ Also call update here</p>
         </li>
         
         
-        <li id="section-31">
+        <li id="section-32">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <p>TODO - Normal Matrix calculation better GPU or CPU side? 
 TODO - We need to be careful about scaling here as well :S</p>
@@ -630,35 +644,10 @@ TODO - We need to be careful about scaling here as well :S</p>
   <span class="hljs-keyword">for</span> light <span class="hljs-keyword">in</span> node.pointLights
     front.pointLights.push light
   
-  uber.uber_lighting_point <span class="hljs-literal">false</span>, front._uber0
   <span class="hljs-keyword">if</span> node.pointLights.length &gt; <span class="hljs-number">0</span>
     front._uber0 = uber.uber_lighting_point <span class="hljs-literal">true</span>, front._uber0
- 
-  front._uber0 = uber.uber_lighting_spot <span class="hljs-literal">false</span>, front._uber0
   
   <span class="hljs-keyword">for</span> light <span class="hljs-keyword">in</span> node.spotLights</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-32">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
-              </div>
-              <p>shadowmap jumping off point</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> light.shadowmap
-      <span class="hljs-keyword">if</span> PXL.Context.gl?
-        shadowmap_create_draw node, front, light
-        front.spotLights.push light
-      
-      front._uber0 = uber.uber_shadowmap <span class="hljs-literal">true</span>, front.uber0 <span class="hljs-comment"># we want shadowmapping</span>
-  
-    front._uber0 = uber.uber_lighting_spot <span class="hljs-literal">true</span>, front._uber0</pre></div></div>
             
         </li>
         
@@ -668,6 +657,28 @@ TODO - We need to be careful about scaling here as well :S</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>shadowmap jumping off point</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> light.shadowmap
+      <span class="hljs-keyword">if</span> PXL.Context.gl?
+        shadowmap_create_draw node, front, light
+        front.spotLights.push light
+     
+      front._uber0 = uber.uber_shadowmap <span class="hljs-literal">true</span>, front.uber0 <span class="hljs-comment"># we want shadowmapping</span>
+
+    front._uber0 = uber.uber_lighting_spot <span class="hljs-literal">true</span>, front._uber0</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p>Overwrite the ambient if there is one closer
 TODO - combine perhaps?</p>
@@ -680,11 +691,11 @@ TODO - combine perhaps?</p>
         </li>
         
         
-        <li id="section-34">
+        <li id="section-35">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p>Shaders are passed down - if this node has no shader, one further up the
 chain must already be bound but we bind late
@@ -698,11 +709,11 @@ TODO We should check if a user one is bound :S</p>
         </li>
         
         
-        <li id="section-35">
+        <li id="section-36">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <p>TODO - Do we need all these if checks? Just copy null?</p>
 
@@ -717,11 +728,11 @@ TODO We should check if a user one is bound :S</p>
         </li>
         
         
-        <li id="section-36">
+        <li id="section-37">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <p>Pass down skeletons</p>
 
@@ -735,11 +746,11 @@ TODO We should check if a user one is bound :S</p>
         </li>
         
         
-        <li id="section-37">
+        <li id="section-38">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-37">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               <p>Material - Call predraw
 Materials are inherited but certain ones cannot be overridden</p>
@@ -755,11 +766,11 @@ Materials are inherited but certain ones cannot be overridden</p>
         </li>
         
         
-        <li id="section-38">
+        <li id="section-39">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
+                <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
               <p>Copy any user contract items (added to the contract) that have not already been added
 as users can add data to be passed in the contract (like uColour).
@@ -774,11 +785,11 @@ Do this by reference for now.</p>
         </li>
         
         
-        <li id="section-39">
+        <li id="section-40">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
+                <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
               <p>Reference the current node contract.</p>
 
@@ -789,11 +800,11 @@ Do this by reference for now.</p>
         </li>
         
         
-        <li id="section-40">
+        <li id="section-41">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-40">&#182;</a>
+                <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
               <p>Actually make the binds with WebGL here.
 Perhaps better move back to WebGL file?</p>
@@ -803,11 +814,11 @@ Perhaps better move back to WebGL file?</p>
         </li>
         
         
-        <li id="section-41">
+        <li id="section-42">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-41">&#182;</a>
+                <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
               <p>Only draw if we have the context (think tests and the like)</p>
 
@@ -818,11 +829,11 @@ Perhaps better move back to WebGL file?</p>
         </li>
         
         
-        <li id="section-42">
+        <li id="section-43">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-42">&#182;</a>
+                <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
               <p>Actual Draw
 Put a line in here to check we also have a shader on the context</p>
@@ -834,11 +845,11 @@ Put a line in here to check we also have a shader on the context</p>
         </li>
         
         
-        <li id="section-43">
+        <li id="section-44">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-43">&#182;</a>
+                <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
               <p>Set the lights here</p>
 
@@ -855,11 +866,11 @@ Put a line in here to check we also have a shader on the context</p>
         </li>
         
         
-        <li id="section-44">
+        <li id="section-45">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-44">&#182;</a>
+                <a class="pilcrow" href="#section-45">&#182;</a>
               </div>
               <p>Quick check for unbound uniforms</p>
 
@@ -874,11 +885,11 @@ Put a line in here to check we also have a shader on the context</p>
         </li>
         
         
-        <li id="section-45">
+        <li id="section-46">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-45">&#182;</a>
+                <a class="pilcrow" href="#section-46">&#182;</a>
               </div>
               <p>unbind - TODO - do we really need to unbind?</p>
 
@@ -892,11 +903,11 @@ Put a line in here to check we also have a shader on the context</p>
         </li>
         
         
-        <li id="section-46">
+        <li id="section-47">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-46">&#182;</a>
+                <a class="pilcrow" href="#section-47">&#182;</a>
               </div>
               <p>We need to clone front so we dont change it permanently
 Seems the fastest way is to just copy - json stringify then parse appears not to work
@@ -911,11 +922,11 @@ better way?</p>
         </li>
         
         
-        <li id="section-47">
+        <li id="section-48">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-47">&#182;</a>
+                <a class="pilcrow" href="#section-48">&#182;</a>
               </div>
               <p>TODO Pre and post draws should probably be in a class or similar? I.e check all members of the 
 front and see if they have a pre and post</p>

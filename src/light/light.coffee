@@ -137,16 +137,6 @@ class PointLight
 # Just as in PointLight, the spotlight prototype records all spots
 class SpotLight
 
-  @vertex_main = "#ifdef LIGHTING_SPOT\n" +
-    "#ifdef SHADOWMAP\n" +
-    "if(bitcheck(uUber0,14)){\n"+
-    "  for (int i=0; i < LIGHTING_NUM_SPOT_LIGHTS; i++) {\n" +
-    "    vShadowTexCoord[i] = uSpotLightInvMatrix[i] * vec4(aVertexPosition, 1.0);\n" +
-    "  }\n"+
-    "}\n" +
-    "#endif\n" +
-    "#endif\n"
-
   @_posGlobal = new Float32Array(LIGHTING_NUM_SPOT_LIGHTS * 3)
   @_colourGlobal = new Float32Array(LIGHTING_NUM_SPOT_LIGHTS * 3)
   @_attenuationGlobal = new Float32Array(LIGHTING_NUM_SPOT_LIGHTS * 4)

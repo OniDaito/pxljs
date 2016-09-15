@@ -20,15 +20,16 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 {Vec2, Vec3, PI, degToRad} = require '../math/math'
 {Vertex, Triangle, Quad, Geometry} = require './primitive'
 
-###Cuboid###
+### Cuboid ###
 # A basic Cuboid with indices
 
 class Cuboid extends Geometry
   # TODO - Add resolution here?
   # TODO - Add tangents here too?
 
-  # dim - a vec3 representing each of the dimensions
-  # colour (optional) - added to each vertex
+  # **constructor**
+  # - **dim** - a Vec3 - Default Vec3(1,1,1)
+  # - **colour** - a Colour
   
   constructor: (dim, colour) ->
     super()
@@ -95,20 +96,31 @@ class Cuboid extends Geometry
 
 
 
-###Sphere###
+### Sphere ###
 
 # http://local.wasp.uwa.edu.au/~pbourke/texture_colour/spheremap/  Paul Bourke's sphere code
 # We should weigh an alternative that reduces the batch count by using GL_TRIANGLES instead
 # TODO - Add Tangents?
+# TODO - not convinced this generation is correct
 
 class Sphere extends Geometry
 
+  # **@constructor**
+  # - **radius** - a Number - Default 1.0
+  # - **segments** - a Number - Default 10
+  # - **colour** - a Colour
   constructor: (radius, segments, colour) ->
     super()
     gl = PXL.Context.gl # Global / Current context
     @layout = gl.TRIANGLE_STRIP
 
-    if segments? 
+    if radius?
+      if radius < 0
+        radius = 1.0
+    else
+      radius - 1.0
+
+    if segments?
       if segments < 0
         segments = 10
     else
@@ -164,9 +176,15 @@ class Sphere extends Geometry
         v.c = colour
 
 
-###Cylinder###
+### Cylinder ###
 # A basic cylinder
 class Cylinder extends Geometry
+
+  # **@constructor** 
+  # - **radius** - a Number - Default 0.5
+  # - **resolution** - a Number - Default 10
+  # - **height** - a Number - Default 1.0
+  # - **colour** - a Colour
   constructor: (radius, resolution, segments, height, colour) ->
     super()
     @indices = []
@@ -180,13 +198,19 @@ class Cylinder extends Geometry
     else
       radius = 0.5
 
-    if segments? 
+    if resolution?
+      if resolution < 0
+        resolution = 10.0
+    else
+      resolution = 10.0
+
+    if segments?
       if segments < 0
         segments = 10
     else
       segments = 10
 
-    if height? 
+    if height?
       if height < 0
         height = 1.0
     else

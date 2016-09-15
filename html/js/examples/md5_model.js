@@ -27,13 +27,12 @@ MD5Example = (function() {
         g.matrix.rotate(new PXL.Math.Vec3(1, 0, 0), -0.5 * PXL.Math.PI);
         g.matrix.scale(new PXL.Math.Vec3(0.1, 0.1, 0.1));
         _this.top_node.add(g);
-        uber = new PXL.GL.UberShader;
+        uber = new PXL.GL.UberShader(_this.top_node);
         _this.top_node.add(uber);
         return _this.g = g;
       };
     })(this));
     this.top_node = new PXL.Node();
-    g = new PXL.Import.MD5Model("../models/hellknight/hellknight.md5mesh", this.promise);
     this.c = new PXL.Camera.MousePerspCamera(new PXL.Math.Vec3(0, 0, 25));
     this.top_node.add(this.c);
     this.ambientlight = new PXL.Light.AmbientLight(new PXL.Colour.RGB(0.001, 0.001, 0.01));
@@ -47,7 +46,8 @@ MD5Example = (function() {
     this.top_node.add(cuboid_node);
     GL.enable(GL.CULL_FACE);
     GL.cullFace(GL.BACK);
-    return GL.enable(GL.DEPTH_TEST);
+    GL.enable(GL.DEPTH_TEST);
+    return g = new PXL.Import.MD5Model("../models/hellknight/hellknight.md5mesh", this.promise);
   };
 
   MD5Example.prototype.draw = function() {

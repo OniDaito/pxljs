@@ -41,25 +41,23 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 # Taken from http://nokarma.org/2011/02/02/javascript-game-development-the-game-loop/index.html
 
 ### App ###
-
 # The master class in effect. This class takes functions from your application and calls them
 # as and when needed
 # TODO - is Context a better name? I think so. We should change it
 
 class App
 
-  # constructor - Takes an object with the following parameters
-  # 
-  # canvas: canvas element, 
-  # context: the glcontext
-  # init: an init function, called once,
-  # draw:  a draw function (called 60 times a second)
-  # update : update function (called as fast as possible), 
-  # error: an error function and an optional switch for debug mode
-  # delay_start : true/false - dont start automatically
-  # destroy : a funtion that is called when the context is destroyed / shutdown
-  # debug : true / false - set a global debug mode for this context
-
+  # **@constructor** 
+  # - **params** - an Object with the following attributes - Required
+  # -- **canvas** - canvas element - Required
+  # -- **context** - the object to which this App is attached
+  # -- **init** - a Function - Required
+  # -- **draw** - a Function - Required
+  # -- *update** - a Function 
+  # -- **error** - a Function
+  # -- **delay_start** - a Boolean
+  # -- **destroy** - a Function
+  # -- **debug**  - a Boolean
   constructor: (params) ->
     
     # Parse the basic parameters
@@ -340,7 +338,8 @@ class App
       console.log @profile
 
 
-  # run - called by the frame function
+  # **run** - called by the frame function
+  # - returns nothing
   run : () =>
     if @_pause
       return
@@ -354,7 +353,9 @@ class App
     @_draw @getDelta() 
    
 
-  # Pause / un-psue the draw and update loops if needed. force is a boolean and is optional
+  # **Pause** - pause or un-psue the draw and update loops if needed.
+  # - **force** - a Boolean - optional
+  # - returns this
   pause : (force) ->
     if not force?
       @_pause = !@_pause 
@@ -373,13 +374,17 @@ class App
     @
 
   
-  # getDelta - Returns the dt value in milliseconds
+  # **getDelta** - Returns the dt value in milliseconds
+  # - returns a Number
   getDelta : () =>
 
     deltaTime = Date.now() - @oldTime
     @oldTime = Date.now()
     return deltaTime
 
+  # **switchContext**
+  # - **context** - a WebGL Context
+  # - returns this
   switchContext : (context) ->
     if context?
       PXL.Context = context
@@ -390,7 +395,10 @@ class App
         window.GL = @gl if window?
     @
 
-  # Called by the surrounding application javascript should you wish
+  # **resizeCanvas** - Called by the surrounding application javascript should you wish
+  # - **width** - a Number
+  # - **height** - a Number
+  # - returns this
   resizeCanvas: (width, height) ->
     @switchContext()
 
@@ -410,7 +418,8 @@ class App
       @draw.call @app_context, dt
 
  
-  # Stop running the loops and destroy the context
+  # **shutdown** - Stop running the loops and destroy the context
+  # - returns this
   shutdown : () ->
     @pause true
 

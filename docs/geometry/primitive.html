@@ -91,8 +91,8 @@ util = <span class="hljs-built_in">require</span> <span class="hljs-string">'../
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>##Geometry###
-Represents actually geometry - a collection of vertices that can be drawn, with some
+              <h2 id="geometry">Geometry</h2>
+<p>Represents actually geometry - a collection of vertices that can be drawn, with some
 organisation
 Geometry is either a set of vertices ready to be flattened into arrays to go onto the
 GPU or there is a set of existing Float32Arrays with the data
@@ -107,9 +107,7 @@ Context must already be enabled as we are using gl constants (good idea?)
             </div>
             
             <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Geometry</span></span>
-  constructor : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
-    @vertices = []</pre></div></div>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Geometry</span></span></pre></div></div>
             
         </li>
         
@@ -119,6 +117,22 @@ Context must already be enabled as we are using gl constants (good idea?)
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p><strong>@constructor</strong></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  constructor : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    @vertices = []</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
               <p>By using a context here, we do end up needing a context at this point
 we arent really decoupled with our geometry - tough choice really
@@ -138,11 +152,11 @@ TODO - Could just use the numbers? - I think we will :D</p>
         </li>
         
         
-        <li id="section-5">
+        <li id="section-6">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
+                <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
               <p>The default roles
 TODO - Contract should probably be split into user and default with default being
@@ -164,40 +178,125 @@ atm we only check for the named variable ‘contract’ - perhaps there is a bet
     @brewed = <span class="hljs-literal">false</span>
 
   _addToNode : <span class="hljs-function"><span class="hljs-params">(node)</span> -&gt;</span>
-    node.geometry = @  
-    @
+    node.geometry = @
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p><strong>flatten</strong> </p>
+<ul>
+<li>reutns a list of Number - [v0.x, v0.y, v0.z, (v0.w), (v0.r, v0.g, v0.b) …]</li>
+</ul>
 
-  flatten :<span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  flatten :<span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
     t = []
     <span class="hljs-keyword">for</span> vertex <span class="hljs-keyword">in</span> @vertices
       t.concat vertex.flatten()
-    t
+    t</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p><strong>setIndex</strong> - if there are indicies in this geometry, set one here</p>
+<ul>
+<li><strong>idx</strong> - a Number - Integer - Required</li>
+<li><strong>value</strong> - a Number- Integer - Required</li>
+<li>returns this</li>
+</ul>
 
-  setIndex : <span class="hljs-function"><span class="hljs-params">(idx, value)</span> -&gt;</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  setIndex : <span class="hljs-function"><span class="hljs-params">(idx, value)</span> -&gt;</span>
     @indices[idx] = value
-    @
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p><strong>setVertex</strong></p>
+<ul>
+<li><strong>idx</strong> - a Number - Integer - Required</li>
+<li><strong>vertex</strong> - a Vertex - Required</li>
+<li>returns this</li>
+</ul>
 
-  setVertex : <span class="hljs-function"><span class="hljs-params">(idx, vertex)</span> -&gt;</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  setVertex : <span class="hljs-function"><span class="hljs-params">(idx, vertex)</span> -&gt;</span>
     @vertices[idx] = vertex
-    @
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p><strong>addVertex</strong> </p>
+<ul>
+<li><strong>v</strong> - a Vertex - Required</li>
+<li>return this</li>
+</ul>
 
-  addVertex : <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  addVertex : <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
     @vertices.push v
-    @
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p><strong>addIndex</strong></p>
+<ul>
+<li><strong>idx</strong> -  a Number - Integer - Required</li>
+</ul>
 
-  addIndex : <span class="hljs-function"><span class="hljs-params">(idx)</span> -&gt;</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  addIndex : <span class="hljs-function"><span class="hljs-params">(idx)</span> -&gt;</span>
     @indices.push idx</pre></div></div>
             
         </li>
         
         
-        <li id="section-6">
+        <li id="section-12">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <p>getTrisIndexer - returns a function that allows us to iterate over the triangles
+              <p><strong>getTrisIndexer</strong> - returns a function that allows us to iterate over the triangles
 We look at the instanceof for the organisation of the triangles
 TODO - Non indexed TRIANGLE_STRIPs need to be sorted</p>
 
@@ -237,11 +336,11 @@ TODO - Non indexed TRIANGLE_STRIPs need to be sorted</p>
         </li>
         
         
-        <li id="section-7">
+        <li id="section-13">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p>Return the number of triangles in this geometry</p>
 
@@ -254,11 +353,11 @@ TODO - Non indexed TRIANGLE_STRIPs need to be sorted</p>
         </li>
         
         
-        <li id="section-8">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>GL_TRIANGLES Based things</p>
 
@@ -279,11 +378,11 @@ TODO - Non indexed TRIANGLE_STRIPs need to be sorted</p>
         </li>
         
         
-        <li id="section-9">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <h2 id="vertex">Vertex</h2>
 <p>Lowest class. We use this because we need to do things on a vertex basis when we brew
@@ -310,11 +409,11 @@ to a buffer of the same name + “”</p>
         </li>
         
         
-        <li id="section-10">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>You can pass in whatever named arguments you want. They will be attached to the 
 Vertex object. Some of these have default names, such as p for position and 
@@ -327,11 +426,11 @@ c for colour. So pass in { ‘p’ :  Vec3(1,1,1) } for example</p>
         </li>
         
         
-        <li id="section-11">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>Copy the bits over</p>
 
@@ -343,11 +442,11 @@ c for colour. So pass in { ‘p’ :  Vec3(1,1,1) } for example</p>
         </li>
         
         
-        <li id="section-12">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>TODO - We should check the types being passed in, particularly if we are in debug mode</p>
 
@@ -363,11 +462,11 @@ c for colour. So pass in { ‘p’ :  Vec3(1,1,1) } for example</p>
         </li>
         
         
-        <li id="section-13">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>Flatten all keys</p>
 
@@ -381,11 +480,11 @@ c for colour. So pass in { ‘p’ :  Vec3(1,1,1) } for example</p>
         </li>
         
         
-        <li id="section-14">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>##Triangle###
 A triangle. This CAN be extended to be drawn on its own but doesnt have to be
@@ -402,11 +501,11 @@ in things like a mesh shouldnt we really not do that? :S</p>
         </li>
         
         
-        <li id="section-15">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>we dont have 3 vectors, create a unit triangle with -1 to 1 with anticlockwise winding</p>
 
@@ -445,11 +544,11 @@ in things like a mesh shouldnt we really not do that? :S</p>
         </li>
         
         
-        <li id="section-16">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>##Quad###
 Our basic Quad, drawn as a tristrip. Assume planar triangles</p>
@@ -465,11 +564,11 @@ Our basic Quad, drawn as a tristrip. Assume planar triangles</p>
         </li>
         
         
-        <li id="section-17">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>we dont have 4 vectors, create a 2 wide quad with -1 to 1 with anticlockwise winding</p>
 
@@ -525,11 +624,11 @@ Our basic Quad, drawn as a tristrip. Assume planar triangles</p>
         </li>
         
         
-        <li id="section-18">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <h2 id="vertexsoup">VertexSoup</h2>
 <p>A Place holder class for a collection of non indexed vertices, likely to be drawn out as lines
@@ -549,11 +648,11 @@ vertex_list - the list of vertices to make this from</p>
         </li>
         
         
-        <li id="section-19">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>##TriangleMesh###
 A mesh made up of triangles that have the same kinds of vertices
@@ -571,11 +670,11 @@ We can infer the triangles back from this however should we wish</p>
         </li>
         
         
-        <li id="section-20">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <p>TODO - allow indexing but also allowing passing in indices as well - speeds things 
 up with the json model</p>
@@ -594,11 +693,11 @@ up with the json model</p>
         </li>
         
         
-        <li id="section-21">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p>Add a triangle to this mesh checking for any problems with vertex duplication</p>
 
@@ -627,11 +726,11 @@ up with the json model</p>
         </li>
         
         
-        <li id="section-22">
+        <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p>If we’ve added indicies by hand, we can create triangles from these
 indices. Used in the MD5Model class</p>
@@ -655,11 +754,11 @@ indices. Used in the MD5Model class</p>
         </li>
         
         
-        <li id="section-23">
+        <li id="section-29">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p>addQuad - Add a quad, breaking it down into its component parts</p>
 
@@ -702,11 +801,11 @@ indices. Used in the MD5Model class</p>
         </li>
         
         
-        <li id="section-24">
+        <li id="section-30">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
               <p>_findV - Find the position in the array for this vertex
 to speed this up we use a temporary _idx attribute if it exists</p>

@@ -115,21 +115,26 @@ class Fbo
       PXLError "Failed to Create Framebuffer!"
 
 
-  # bind - Bind this fbo to the current drawing context
+  # **bind** - Bind this fbo to the current drawing context
+  # - returns this
   bind : () ->
     gl = PXL.Context.gl
     
     gl.bindFramebuffer(gl.FRAMEBUFFER,@framebuffer)
     gl.bindRenderbuffer(gl.RENDERBUFFER,@renderbuffer)
+    @
 
-
-  # unbind - remove this fbo from the context
+  # **unbind** - remove this fbo from the context
+  # - returns this
   unbind: () ->
     gl = PXL.Context.gl
     gl.bindFramebuffer(gl.FRAMEBUFFER,null)
     gl.bindRenderbuffer(gl.RENDERBUFFER,null)
+    @
 
-  # clear - Clear the FBO with an optional colour
+  # **clear** - Clear the FBO with an optional colour
+  # - **colour** - a Colour
+  # - returns this
   clear : (colour) ->
     gl = PXL.Context.gl
     
@@ -145,8 +150,11 @@ class Fbo
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
     else
       gl.clear gl.COLOR_BUFFER_BIT
+    
+    @
 
-  # washUp - delete this Fbo from the Graphics Card
+  # **washUp** - delete this Fbo from the Graphics Card
+  # - returns this
   washUp : () ->
     gl = PXL.Context.gl
     gl.deleteFramebuffer(@framebuffer)

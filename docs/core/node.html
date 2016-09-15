@@ -80,8 +80,8 @@ util = <span class="hljs-built_in">require</span> <span class="hljs-string">'../
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>##Node###
-Arguably, the most important piece of code. The node represents the combination of all the
+              <h2 id="node">Node</h2>
+<p>Arguably, the most important piece of code. The node represents the combination of all the
 elements required for drawing. It has a matrix as the minimum, but can also accept materials
 a piece of geometry, a shader and several textures and lights. It can have children but only
 one parent. Nodes form the hierarchy/scene graph for PXL.
@@ -110,7 +110,12 @@ Reserved words, or rather, things that can be added to a node and have special m
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>Dont have to pass any of these parameters but they will be inspected</p>
+              <p><strong>@constructor</strong> </p>
+<ul>
+<li><strong>geometry</strong> - a Geometry - Optional</li>
+<li><strong>material</strong> - a Material - Optional</li>
+<li><strong>shader</strong> - a Shader - Optional</li>
+</ul>
 
             </div>
             
@@ -158,8 +163,12 @@ Reserved words, or rather, things that can be added to a node and have special m
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>add - Add things to this node, like geometry, materials or other nodes
+              <p><strong>add</strong> - Add things to this node, like geometry, materials or other nodes
 TODO - we need a flag set here for _dirty and then run shader_automagic again</p>
+<ul>
+<li><strong>p</strong> - an Object that implements _addToNode function</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -176,7 +185,11 @@ TODO - we need a flag set here for _dirty and then run shader_automagic again</p
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>remove - remove a thing from this node</p>
+              <p><strong>remove</strong> - remove a thing from this node</p>
+<ul>
+<li><strong>p</strong> - an Object that implements _addToNode function</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -210,13 +223,16 @@ TODO - we need a flag set here for _dirty and then run shader_automagic again</p
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>return a copy of this node, referencing any geometry.
+              <p><strong>clone</strong> - return a copy of this node, referencing any geometry.
 To duplicate geometry one needs to copy then add a fresh 
 geometry with new to the new node.</p>
+<ul>
+<li>returns a new Node</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  copy : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+            <div class="content"><div class='highlight'><pre>  clone : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
     util.clone @</pre></div></div>
             
         </li>
@@ -228,7 +244,11 @@ geometry with new to the new node.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>Remove from the screen graph</p>
+              <p><strong>del</strong> - Remove from the screen graph</p>
+<ul>
+<li><strong>p</strong> - a Node</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -264,10 +284,13 @@ geometry with new to the new node.</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <p>draw - Draw the current node and all its children - a recursive call
+              <p><strong>draw</strong> - Draw the current node and all its children - a recursive call
 TODO - we should cache the hierarchy, uniforms and textures separately
 for speed. We shouldnt need to rebuild the hierarchy each time in the main
 case so this would be a big saving.</p>
+<ul>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -288,6 +311,7 @@ case so this would be a big saving.</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>    front = <span class="hljs-keyword">new</span> Front()
+    front._uber0 = <span class="hljs-number">0</span> <span class="hljs-comment"># Clear all shader calls and start afresh</span>
     main_draw(@, front )
 
  <span class="hljs-built_in">module</span>.exports =

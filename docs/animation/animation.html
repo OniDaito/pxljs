@@ -79,8 +79,27 @@ TODO - Quaternion’s need to be here and probably just SLERPED</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Interpolation</span></span>
-  constructor : <span class="hljs-function"><span class="hljs-params">(@obj0, @obj1, @curve)</span> -&gt;</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Interpolation</span></span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p><strong>@constructor</strong> - creates a new interpolation object</p>
+<ul>
+<li><strong>obj0</strong> - an object of type Vec3, Vec3, RGB, RGBA, Quaternion or Number</li>
+<li><strong>obj1</strong> - an object of type Vec3, Vec3, RGB, RGBA, Quaternion or Number </li>
+<li><strong>curve</strong> - a Curve</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  constructor : <span class="hljs-function"><span class="hljs-params">(@obj0, @obj1, @curve)</span> -&gt;</span>
   
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @curve?
       @curve = <span class="hljs-keyword">new</span> Curve2()
@@ -92,11 +111,11 @@ TODO - Quaternion’s need to be here and probably just SLERPED</p>
         </li>
         
         
-        <li id="section-4">
+        <li id="section-5">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
+                <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
               <p>could replace this with simply interpolating all dictionary values that are numbers?</p>
 
@@ -123,10 +142,26 @@ TODO - Quaternion’s need to be here and probably just SLERPED</p>
     <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">typeof</span> @obj0 == <span class="hljs-string">'number'</span>
       @_set = @_setScalar
 
+    @_value = <span class="hljs-number">0</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p><strong>set</strong> - set the value of this object</p>
+<ul>
+<li><strong>val</strong> - a Number - 0 to 1 range</li>
+<li>returns a new Object of the same type as obj0 passed into the constructor</li>
+</ul>
 
-    @_value = <span class="hljs-number">0</span>
-
-  set : <span class="hljs-function"><span class="hljs-params">(val)</span> -&gt;</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  set : <span class="hljs-function"><span class="hljs-params">(val)</span> -&gt;</span>
     <span class="hljs-keyword">if</span> val &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> val &gt; <span class="hljs-number">1.0</span>
       PXLWarning(<span class="hljs-string">"Interpolation set val must be between 0 and 1. It was set to "</span> + val)
     @_value = val
@@ -165,11 +200,11 @@ TODO - Quaternion’s need to be here and probably just SLERPED</p>
         </li>
         
         
-        <li id="section-5">
+        <li id="section-7">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <p>for a quaternion, we default to slerping</p>
 
@@ -184,11 +219,11 @@ TODO - Quaternion’s need to be here and probably just SLERPED</p>
         </li>
         
         
-        <li id="section-6">
+        <li id="section-8">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <h1 id="animator">Animator</h1>
 <p>A class that deals with animation. Essentially runs a series of frames at a particular framerate, with start / stop options
@@ -196,7 +231,27 @@ TODO - Lots of testing of copyFrom - we might need to improve on that as its onl
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Animator</span></span>
+            <div class="content"><div class='highlight'><pre><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Animator</span></span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p><strong>@constructor</strong></p>
+<ul>
+<li><strong>num_frames</strong> - a Number</li>
+<li><strong>framerate</strong> - a Number</li>
+<li><strong>label</strong> - a String</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
   constructor : <span class="hljs-function"><span class="hljs-params">(@num_frames, @framerate, @label)</span> -&gt;</span>
 
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @framerate?
@@ -214,13 +269,17 @@ TODO - Lots of testing of copyFrom - we might need to improve on that as its onl
         </li>
         
         
-        <li id="section-7">
+        <li id="section-10">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
+                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>Add a tween to this keyframe</p>
+              <p><strong>addTween</strong> - Add a tween to this keyframe</p>
+<ul>
+<li><strong>tween</strong> - a Tween</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -231,13 +290,16 @@ TODO - Lots of testing of copyFrom - we might need to improve on that as its onl
         </li>
         
         
-        <li id="section-8">
+        <li id="section-11">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              <p>reset</p>
+              <p><strong>reset</strong> - set the animation back to the start position</p>
+<ul>
+<li>returns this </li>
+</ul>
 
             </div>
             
@@ -245,18 +307,23 @@ TODO - Lots of testing of copyFrom - we might need to improve on that as its onl
     @_dt = <span class="hljs-number">0</span>
     @_current_frame = <span class="hljs-number">0</span>
     <span class="hljs-keyword">for</span> tween <span class="hljs-keyword">in</span> @_tweens
-      tween.reset()</pre></div></div>
+      tween.reset()
+    @</pre></div></div>
             
         </li>
         
         
-        <li id="section-9">
+        <li id="section-12">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <p>Call step inside your draw function or similar, passing in dt - time time difference in seconds</p>
+              <p><strong>step</strong> - Call step inside your draw function or similar, passing in dt - time time difference in seconds</p>
+<ul>
+<li><strong>dt</strong> - a Number</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -269,11 +336,11 @@ TODO - Lots of testing of copyFrom - we might need to improve on that as its onl
         </li>
         
         
-        <li id="section-10">
+        <li id="section-13">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <p>dt can be over the next frame by more than half a frame amount so we should think about this</p>
 
@@ -287,16 +354,16 @@ TODO - Lots of testing of copyFrom - we might need to improve on that as its onl
         
       @_process()
       @_dt = @_dt - (ff * @_frover)
-  @</pre></div></div>
+    @</pre></div></div>
             
         </li>
         
         
-        <li id="section-11">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>Internal function that processes the values proper
 We step through each tween and check where we are at with it</p>
@@ -312,11 +379,11 @@ We step through each tween and check where we are at with it</p>
         </li>
         
         
-        <li id="section-12">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <h2 id="keyframe">KeyFrame</h2>
 <p>A reference to an object and the value that object should take at that point.
@@ -331,13 +398,18 @@ Add keyframes to animators with the appropriate values</p>
         </li>
         
         
-        <li id="section-13">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
-              <p>Constructor</p>
+              <p><strong>@constructor</strong></p>
+<ul>
+<li><strong>obj</strong> - an Object</li>
+<li><strong>value</strong> - a Value obj should take</li>
+<li><strong>framenum</strong> - the framenumber at which point this object should take this value</li>
+</ul>
 
             </div>
             
@@ -347,11 +419,11 @@ Add keyframes to animators with the appropriate values</p>
         </li>
         
         
-        <li id="section-14">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <h2 id="tween">Tween</h2>
 <p>A simple class that basically takes two keyframes and uses an interpolator to move between said values</p>
@@ -359,10 +431,28 @@ Add keyframes to animators with the appropriate values</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Tween</span></span>
-  constructor : <span class="hljs-function"><span class="hljs-params">(@f0, @f1, @interp)</span> -&gt;</span>
-    
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Tween</span></span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p><strong>@constructor</strong> </p>
+<ul>
+<li><strong>f0</strong> - a KeyFrame</li>
+<li><strong>f1</strong> - a KeyFrame</li>
+<li><strong>interp</strong> - an Interpolation</li>
+</ul>
 
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  constructor : <span class="hljs-function"><span class="hljs-params">(@f0, @f1, @interp)</span> -&gt;</span>
+    
     <span class="hljs-keyword">if</span> @f0.obj != @f1.obj
       PXLWarning <span class="hljs-string">"Tween Keyframes do not point to the same object"</span>
 
@@ -377,9 +467,25 @@ Add keyframes to animators with the appropriate values</p>
       @_original = @f0
       @reset = <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
         @f0 = @_original
-    @
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p><strong>set</strong></p>
+<ul>
+<li><strong>u</strong> - a Number - 0 to 1 range</li>
+</ul>
 
-  set: <span class="hljs-function"><span class="hljs-params">(u)</span> -&gt;</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  set: <span class="hljs-function"><span class="hljs-params">(u)</span> -&gt;</span>
     <span class="hljs-keyword">if</span> @f0.obj.copyFrom?
       @f0.obj.copyFrom @interp.set(u)
     <span class="hljs-keyword">else</span>

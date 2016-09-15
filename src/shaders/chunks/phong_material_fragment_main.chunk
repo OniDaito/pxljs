@@ -16,6 +16,7 @@ gl_FragColor = vec4(materialAmbientColour, 1.0);
 vec3 eyeDirection = normalize(-vPosition.xyz);
 
 #ifdef LIGHTING_POINT
+
 for (int i=0; i < LIGHTING_NUM_POINT_LIGHTS; i++) {
   // TODO could potentially transform the lights in the vertex shader?
   // TODO - previously we added a break in here for lights - do we keep that?
@@ -33,21 +34,46 @@ for (int i=0; i < LIGHTING_NUM_POINT_LIGHTS; i++) {
 }
 #endif
 
-// Really annoyingly, in earlier browser releases we have to manually unroll. This suggests some kind of auto
-// shader pre-build step using gulp or similar
-// This means all spotlight work must be unrolled
-
 #ifdef LIGHTING_SPOT
+
+// TODO - shadowmap scale might be removed to its own place for use in other materials
+
+vec3 shadow_scale[LIGHTING_NUM_SPOT_LIGHTS];
 for (int i=0; i < LIGHTING_NUM_SPOT_LIGHTS; i++) {
+  shadow_scale[i] = vec3(1.0,1.0,1.0);
+}
+
 #ifdef SHADOWMAP
-/*  if(bitcheck(uUber0,14)){
-    vec4 lightdepth = texture2D(uSamplerPointShadow[i],vShadowTexCoord[i].xy);
-    if(lightdepth.x > gl_FragCoord.z ){
-      continue;
-    }
-  }*/
+// Unflattened texture lookups for now sadly
+if(bitcheck(uUber0,14)) {
+  vec4 lightdepth = texture2D(uSamplerPointShadow[0],vShadowTexCoord[0].xy);
+  if(lightdepth.x < gl_FragCoord.z ){
+    shadow_scale[0] = vec3(0.0,0.0,0.0);
+  }
+  
+  lightdepth = texture2D(uSamplerPointShadow[1],vShadowTexCoord[1].xy);
+  if(lightdepth.x < gl_FragCoord.z ){
+    shadow_scale[1] = vec3(0.0,0.0,0.0);
+  }
+
+  lightdepth = texture2D(uSamplerPointShadow[2],vShadowTexCoord[2].xy);
+  if(lightdepth.x < gl_FragCoord.z ){
+    shadow_scale[2] = vec3(0.0,0.0,0.0);
+  }
+
+  lightdepth = texture2D(uSamplerPointShadow[3],vShadowTexCoord[3].xy);
+  if(lightdepth.x < gl_FragCoord.z ){
+    shadow_scale[3] = vec3(0.0,0.0,0.0);
+  }
+
+  lightdepth = texture2D(uSamplerPointShadow[4],vShadowTexCoord[4].xy);
+  if(lightdepth.x < gl_FragCoord.z ){
+    shadow_scale[4] = vec3(0.0,0.0,0.0);
+  }
+}
 #endif
 
+for (int i=0; i < LIGHTING_NUM_SPOT_LIGHTS; i++) {
   vec3 lightDirection = normalize((uModelMatrix * vec4(uSpotLightPos[i],1.0)).xyz - vPosition.xyz);
   float spotFactor = dot ( -lightDirection, uSpotLightDir[i]);
   if (spotFactor >= cos(uSpotLightAngle[i])){
@@ -61,11 +87,9 @@ for (int i=0; i < LIGHTING_NUM_SPOT_LIGHTS; i++) {
   float diffuseLightBrightness = max(dot(vTransformedNormal.xyz, lightDirection), 0.0);
   diffuseLightWeighting = diffuseLightWeighting + (uSpotLightColour[i] * diffuseLightBrightness);
   specularLightWeighting *= spotFactor;
-  diffuseLightWeighting *= spotFactor; 
-  gl_FragColor += vec4( materialDiffuseColour * diffuseLightWeighting
-   + materialSpecularColour * specularLightWeighting
-   + materialEmissiveColour,
-   0.0);
+  diffuseLightWeighting *= spotFactor;
+  vec3 final =  (materialDiffuseColour * diffuseLightWeighting + materialSpecularColour * specularLightWeighting + materialEmissiveColour) * shadow_scale[i];
+  gl_FragColor += vec4(final,0.0);
 }
 #endif
 #endif

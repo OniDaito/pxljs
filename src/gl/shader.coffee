@@ -29,10 +29,13 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 
 class Shader
 
-  # Constructor. Designed so an object can be built with no parameters 
+  # **@constructor** Designed so an object can be built with no parameters 
   # via functions such as shaderFromText
   # We keep hold of the chunks incase we need to rebuild the shader (changing various defines 
   # for example)
+  # - **vertex_source** - a String - Required
+  # - **fragment_source** - a String - Required
+  # - **user_roles** - an Array
 
   constructor : (@vertex_source, @fragment_source, user_roles) ->
 
@@ -136,19 +139,22 @@ class Shader
   _getLocation : (name) ->
     PXL.Context.gl.getUniformLocation(@shaderProgram, name)
 
-  # bind - bind the shader to the current context
+  # **bind** - bind the shader to the current context
+  # - returns this
   bind: ->
     PXL.Context.gl.useProgram(@shaderProgram);
     PXL.Context.shader = @
     @
 
-  # unbind - Clear the current context so there are no shaders
+  # **unbind** - Clear the current context so there are no shaders
+  # - returns this
   unbind: ->
     PXL.Context.gl.useProgram(null)
     @
 
 
-  # washUp - Remove this shader and destroy it
+  # **washUp** - Remove this shader and destroy it
+  # - returns this
   washUp : ->
     gl = PXL.Context.gl
     gl.detachShader(@shaderProgram, @vertexShader)
@@ -161,7 +167,6 @@ class Shader
     @
 
   _getAttributes : () ->
-
     # Cache attributes as they hopefully wont change!
     if not @attributes?
       gl = PXL.Context.gl
@@ -184,28 +189,26 @@ class Shader
     @attributes
 
 
-  # _getUniforms - Find all the active uniforms in a shader
-  # returns a list of objects :
+  # **_getUniforms** - Find all the active uniforms in a shader
+  # - returns an Array of objects
   # { name, type, pos, size }
   # Types are listed thusly and will need to be changed
-  # /* Uniform Types */
-  ###
-    const GLenum FLOAT_VEC2                     = 0x8B50; 
-    const GLenum FLOAT_VEC3                     = 0x8B51;
-    const GLenum FLOAT_VEC4                     = 0x8B52;
-    const GLenum INT_VEC2                       = 0x8B53;
-    const GLenum INT_VEC3                       = 0x8B54;
-    const GLenum INT_VEC4                       = 0x8B55;
-    const GLenum BOOL                           = 0x8B56;
-    const GLenum BOOL_VEC2                      = 0x8B57;
-    const GLenum BOOL_VEC3                      = 0x8B58;
-    const GLenum BOOL_VEC4                      = 0x8B59;
-    const GLenum FLOAT_MAT2                     = 0x8B5A;
-    const GLenum FLOAT_MAT3                     = 0x8B5B;
-    const GLenum FLOAT_MAT4                     = 0x8B5C;
-    const GLenum SAMPLER_2D                     = 0x8B5E;
-    const GLenum SAMPLER_CUBE                   = 0x8B60;
-  ###
+  # Uniform Types
+  #  - const GLenum FLOAT_VEC2                     = 0x8B50; 
+  #  - const GLenum FLOAT_VEC3                     = 0x8B51;
+  #  - const GLenum FLOAT_VEC4                     = 0x8B52;
+  #  - const GLenum INT_VEC2                       = 0x8B53;
+  #  - const GLenum INT_VEC3                       = 0x8B54;
+  #  - const GLenum INT_VEC4                       = 0x8B55;
+  #  - const GLenum BOOL                           = 0x8B56;
+  #  - const GLenum BOOL_VEC2                      = 0x8B57;
+  #  - const GLenum BOOL_VEC3                      = 0x8B58;
+  #  - const GLenum BOOL_VEC4                      = 0x8B59;
+  #  - const GLenum FLOAT_MAT2                     = 0x8B5A;
+  #  - const GLenum FLOAT_MAT3                     = 0x8B5B;
+  #  - const GLenum FLOAT_MAT4                     = 0x8B5C;
+  #  - const GLenum SAMPLER_2D                     = 0x8B5E;
+  #  - const GLenum SAMPLER_CUBE                   = 0x8B60;
 
   _getUniforms : () ->
     # Cache uniforms as they hopefully wont change!
@@ -286,94 +289,149 @@ class Shader
     data
 
 
-  # setUniform1f - Given a uniform name and one float, set this uniform
+  # **setUniform1f** - Given a uniform name and one float, set this uniform
+  # - **name** - a String - Required
+  # - **a** - a Number - Required
+  # - returns this
   setUniform1f: (name,a) ->
     gl = PXL.Context.gl
     gl.uniform1f(@_getLocation(name),a)
     @
 
-  # setUniform1i - Given a uniform name and one integer, set this uniform
+  # **setUniform1i** - Given a uniform name and one integer, set this uniform
+  # - **name** - a String - Required
+  # - **a** - a Number - Integer - Required
+  # - returns this
   setUniform1i: (name,a) ->
     gl = PXL.Context.gl
     gl.uniform1i(@_getLocation(name),a)
     @
 
-  # setUniform1fv - Given a uniform name and an array of floats, not grouped, set this uniform
+  # **setUniform1fv** - Given a uniform name and an array of floats, not grouped, set this uniform
+  # - **name** - a String - Required
+  # - **a** - an Array of Number - Required
+  # - returns this
   setUniform1fv : (name, a) ->
     gl = PXL.Context.gl
     gl.uniform1fv(@_getLocation(name), a)
     @
 
-  # setUniform2fv - Given a uniform name and an array of floats, grouped in pairs, set this uniform
+  # **setUniform2fv** - Given a uniform name and an array of floats, grouped in pairs, set this uniform
+  # - **name** - a String - Required
+  # - **a** - an Array of Number - Required
+  # - returns this
   setUniform2fv : (name, a) ->
     gl = PXL.Context.gl
     gl.uniform2fv(@_getLocation(name), a)
     @
 
-  # setUniform2v - Given a uniform name and a Vec2, set this uniform
+  # **setUniform2v** - Given a uniform name and a Vec2, set this uniform
+  # - **name** - a String - Required
+  # - **v** - a Vec2 - Required
+  # - returns this
   setUniform2v: (name,v) ->
     gl = PXL.Context.gl
     gl.uniform2f(@_getLocation(name),v.x,v.y)
     @
 
-  # setUniform3f - Given a uniform name and three floats, set this uniform
+  # **setUniform3f** - Given a uniform name and three floats, set this uniform
+  # - **name** - a String - Required
+  # - **a** - a Number - Required 
+  # - **b** - a Number - Required
+  # - **c** - a Number - Required
+  # - returns this
   setUniform3f: (name,a,b,c) ->
     gl = PXL.Context.gl
     gl.uniform3f(@_getLocation(name),a,b,c)
     @
 
-  # setUniform3fv - Given a uniform name and an array of floats, grouped in threes, set this uniform
+  # **setUniform3fv** - Given a uniform name and an array of floats, grouped in threes, set this uniform
+  # - **name** - a String - Required
+  # - **a** - an Array of Number - Required 
+  # - returns this
+ 
   setUniform3fv : (name, a) ->
     gl = PXL.Context.gl
     gl.uniform3fv(@_getLocation(name), a)
     @
 
 
-  # setUniform3v - Given a uniform name and a Vec3, set this uniform
+  # **setUniform3v** - Given a uniform name and a Vec3, set this uniform
+  # - **name** - a String - Required
+  # - **v** - a Vec3 - Required 
+  # - returns this
+ 
   setUniform3v: (name,v) ->
     gl = PXL.Context.gl
     gl.uniform3f(@_getLocation(name),v.x,v.y,v.z)
     @
 
-  # setUniform3f - Given 3 floats, set this uniform
+  # **setUniform3f** - Given 3 floats, set this uniform
+  # - **name** - a String - Required
+  # - **a** - a Number - Required 
+  # - **b** - a Number - Required
+  # - **c** - a Number - Required
+  # - returns this
+ 
   setUniform3f: (name,a,b,c) ->
     gl = PXL.Context.gl
     gl.uniform3f(@_getLocation(name),a,b,c)
     @
 
-  # setUniform4f - Given a uniform name and four floats, set this uniform
+  # **setUniform4f** - Given a uniform name and four floats, set this uniform
+  # - **name** - a String - Required
+  # - **a** - a Number - Required 
+  # - **b** - a Number - Required
+  # - **c** - a Number - Required 
+  # - **d** - a Number - Required
+  # - returns this
+ 
   setUniform4f: (name,a,b,c,d) ->
     gl = PXL.Context.gl
     gl.uniform4f(@_getLocation(name),a,b,c,d)
     @
 
-
-  # setUniform4v - Given a uniform name and a Vec4, set this uniform
+  # **setUniform4v** - Given a uniform name and a Vec4, set this uniform
+  # - **name** - a String - Required
+  # - **v** - a Vec4 - Required 
+  # - returns this
+ 
   setUniform4v: (name,v) ->
     gl = PXL.Context.gl
     gl.uniform4f(@_getLocation(name),v.x,v.y,v.z,v.w)
     @
 
-  # setUniform4fv - Given a uniform name and an array of floats, grouped in fours, set this uniform
+  # **setUniform4fv** - Given a uniform name and an array of floats, grouped in fours, set this uniform
+  # - **name** - a String - Required
+  # - **a** - an Array of Number - Required 
+  # - returns this
+ 
   setUniform4fv : (name, a) ->
     gl = PXL.Context.gl
     gl.uniform4fv(@_getLocation(name), a)
     @
 
-
-  # setMatrix4f - Given a uniform name and a matrix4, set this uniform
+  # setMatrix4f - Given a uniform name and a matrix3, set this uniform
+  # - **name** - a String - Required
+  # - **m** - a Matrix3 - Required 
+  # - returns this
   setMatrix3f: (name, m) ->
     gl = PXL.Context.gl
     gl.uniformMatrix3fv(@_getLocation(name), false, m.a)
     @
 
   # setMatrix4f - Given a uniform name and a matrix4, set this uniform
+  # - **name** - a String - Required
+  # - **m** - a Matrix4 - Required 
+  # - returns this
   setMatrix4f: (name, m) ->
     gl = PXL.Context.gl
     gl.uniformMatrix4fv(@_getLocation(name), false, m.a)
     @
 
-  # enableAttribArray - Enable an attribute array by name
+  # **enableAttribArray** - Enable an attribute array by name
+  # - **name** - a String - Required
+  # - returns this 
   enableAttribArray: (name) ->
     gl = PXL.Context.gl
     position = gl.getAttribLocation(@shaderProgram, name)
@@ -381,6 +439,8 @@ class Shader
     @
 
   # getAttribLocation - Get the location of an attribute
+  # - **name** - a String - Required
+  # - returns a Number 
   getAttribLocation: (name) ->
     gl = PXL.Context.gl
     gl.getAttribLocation(@shaderProgram, name)
@@ -389,6 +449,9 @@ class Shader
 ### shaderFromText ###
 # Create a shader from a block of text and an optional contract
 # TODO - old and not used at present but could be handy later
+#  - **text** - A String - Required
+#  - **contract** - A Contract - Required
+#  - returns a Shader
 shaderFromText = ( text, contract ) ->
 
   _splitShader = (s) ->

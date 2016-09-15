@@ -311,7 +311,8 @@ TODO  - Will need to change this sooner </p>
             <div class="content"><div class='highlight'><pre><span class="hljs-function">        <span class="hljs-title">onsuccess_closure</span> = <span class="hljs-params">()</span> =&gt;</span>
           _p = p
           _material_path = material_path
-
+          __material_by_name = @_material_by_name
+          
           <span class="hljs-keyword">return</span> (_texture) =&gt;
             <span class="hljs-keyword">if</span> PXL.Context.debug
               PXLLog <span class="hljs-string">"MD5Model Loaded a Texture: "</span> + _material_path</pre></div></div>
@@ -332,7 +333,7 @@ TODO Eventually we’ll do this properly</p>
             
             <div class="content"><div class='highlight'><pre>            wh = <span class="hljs-keyword">new</span> RGB.WHITE()
             spec = <span class="hljs-keyword">new</span> RGB.BLACK() 
-            @_material_by_name[_material_path] = <span class="hljs-keyword">new</span> PhongMaterial wh, _texture, spec 
+            __material_by_name[_material_path] = <span class="hljs-keyword">new</span> PhongMaterial wh, _texture, spec 
          
             _p.resolve()</pre></div></div>
             
@@ -352,7 +353,8 @@ TODO Eventually we’ll do this properly</p>
             <div class="content"><div class='highlight'><pre><span class="hljs-function">        <span class="hljs-title">onerror_closure</span> = <span class="hljs-params">()</span> =&gt;</span>
           _p = p
           _material_path = material_path
-          
+          __material_by_name = @_material_by_name
+
           <span class="hljs-keyword">return</span> (msg) =&gt;</pre></div></div>
             
         </li>
@@ -372,7 +374,7 @@ TODO Eventually we’ll do this properly</p>
               PXLLog <span class="hljs-string">"MD5Model Failed to load a Texture: "</span> + _material_path
 
             wh = <span class="hljs-keyword">new</span> PXL.Colour.RGB <span class="hljs-number">1.0</span>,<span class="hljs-number">0.0</span>,<span class="hljs-number">0.0</span>
-            @_material_by_name[_material_path] = <span class="hljs-keyword">new</span> BasicColourMaterial wh
+            __material_by_name[_material_path] = <span class="hljs-keyword">new</span> BasicColourMaterial wh
 
             _p.resolve()
 

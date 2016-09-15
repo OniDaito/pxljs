@@ -69,8 +69,8 @@ This software <span class="hljs-keyword">is</span> released under the MIT Licenc
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>##CurveLine###
-Base class for a curve that is considered drawable to the screen as oppose
+              <h2 id="curveline">CurveLine</h2>
+<p>Base class for a curve that is considered drawable to the screen as oppose
 to a purely mathematical one.
 Pass in a mathematical curve such as a quadratic bezier and this will generate
 the geometry for us. In this case, a line</p>
@@ -78,15 +78,31 @@ the geometry for us. In this case, a line</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CurveLine</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Geometry</span></span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CurveLine</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Geometry</span></span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p><strong>@constructor</strong> </p>
+<ul>
+<li><strong>math_curve</strong> - a Curve</li>
+<li><strong>rez</strong> - a Number - Optional - Default 200</li>
+</ul>
 
-  constructor : <span class="hljs-function"><span class="hljs-params">(math_curve, rez=<span class="hljs-number">200</span>)</span>-&gt;</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  constructor : <span class="hljs-function"><span class="hljs-params">(math_curve, rez=<span class="hljs-number">200</span>)</span>-&gt;</span>
     <span class="hljs-keyword">super</span>()
 
     @indexed = <span class="hljs-literal">false</span>
 
-
-<span class="hljs-built_in">module</span>.exports = 
+<span class="hljs-built_in">module</span>.exports =
   CurveLine: CurveLine</pre></div></div>
             
         </li>

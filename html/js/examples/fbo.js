@@ -27,7 +27,7 @@ init = function() {
   this.quad_node.add(c);
   this.fbo = new PXL.GL.Fbo();
   this.quad_node.add(new PXL.Material.ViewDepthMaterial(this.fbo.texture));
-  uber = PXL.GL.UberShader(this.sphere_node, this.quad_node);
+  uber = new PXL.GL.UberShader(this.sphere_node, this.quad_node);
   this.sphere_node.add(uber);
   return this.quad_node.add(uber);
 };

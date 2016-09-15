@@ -26,17 +26,19 @@ Based largely from the MD5 Parser and the bone structure contained therein
 {Texture} = require '../gl/texture'
 
 
-###Bone### 
+### Bone ### 
 # Represents an actual bone. It contains rotations and positions, both absolute and relative
 # and the pose positions
-# @name - Required text name for the bone
-# @idx - Required numerical id for the bone (unique per skeleton)
-# @parent - Optional parent bone
-# @rotation_pose - Required Quaternion representing the rotation in the bind pose
-# @position_pose - Required Vec3 representing the position of the bone in the bind pose
-
 
 class Bone 
+
+  # **@constructor**
+  # - **name** - a String - Required
+  # - **idx** - a Number - Required - Unique per Skeleton
+  # - **parent** - a Bone - may be null
+  # - **rotation_pose** - a Quaternion - Required
+  # - **position_pose** - a Vec3 - Required
+
   constructor : (@name, @idx, @parent, @rotation_pose, @position_pose) ->
 
     if @parent?
@@ -63,20 +65,21 @@ class Bone
 
     @
 
-  # Given a quaternion, rotate the bone by that amount
+  # **rotate ** - Given a quaternion, rotate the bone by that amount
+  # - **quat** - A Quaternion
   # TODO - Could put update func in here instead of in draw calls?
   rotate : (quat) ->
     @rotation_relative.multiply(quat).normalize()
     @
 
-###SkinIndex###
+### SkinIndex ###
 # Nothng more than a way of recording the pair index and count. Used internally by Skin
 
-class SkinIndex 
+class SkinIndex
   constructor : (@index, @count) ->
     @    
 
-###SkinWeight###
+### SkinWeight ###
 # Another pair of values to record how biased the bone is. Used internally by Skin
 
 class SkinWeight
@@ -84,7 +87,7 @@ class SkinWeight
     @
 
 
-###Skin###
+### Skin ###
 # A collection of weights and indices, based on the md5 model idea. It connects vertices
 # to bones basically. It is temporarily used, with the actual skin weights being held
 # on vertices
@@ -117,7 +120,6 @@ class Skin
 ### Skeleton ###
 # A skeleton is a relationship of bones
 
-
 class  Skeleton 
 
   # Globals, set by the profile in the App class
@@ -127,6 +129,8 @@ class  Skeleton
   @PXL_MAX_BONES = 128
 
 
+  # **@constructor**
+  # - **root** - a Bone - Required
   constructor : (@root) ->
 
     @bones = []
@@ -167,6 +171,9 @@ class  Skeleton
     @_palette.unbind()
     @
 
+  # **addBone** - add a Bone to this skeleton
+  # - **bone** - a Bone
+  # - returns this
   addBone : (bone) ->
     if @bones.length + 1 < Skeleton.PXL_MAX_BONES
       @bones.push bone
@@ -178,22 +185,27 @@ class  Skeleton
     node.skeleton = @
     @
 
-  # Look through the bones and return the one matching the id
+  # **getBone** - Look through the bones and return the one matching the id
+  # - **bone_idx** - a Number - Required
+  # - returns either a Bone or null
   getBone : (bone_idx) ->
     for bone in @bones
       if bone.idx == bone_idx
         return bone
     null
 
-  # Get the bone by looking for the one with the matching name
+  # **getBoneByName** - Get the bone by looking for the one with the matching name
+  # - **bone_name** - a String - Required
+  # - returns either a Bone or null
   getBoneByName : (bone_name) ->
     for bone in @bones
       if bone.name == bone_name
         return bone
     null
 
-  # Called to update all the matrices of the various bones
+  # **update** - Called to update all the matrices of the various bones
   # We make the assumption that all bones are in order with parents first
+  # - returns this
   update : () ->
     
     for b in @bones

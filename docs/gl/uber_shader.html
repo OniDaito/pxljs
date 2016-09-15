@@ -78,27 +78,9 @@ uber = <span class="hljs-built_in">require</span> <span class="hljs-string">"../
               </div>
               <h2 id="ubershader">UberShader</h2>
 <p>An implementation of an Ubershader that uses a uniform to choose the path through the shader
-and a series of hash defines to sort out what we actually need
-Hash defines include the following as well as these in the various material classes:</p>
-<p>VERTEX_COLOUR
-VERTEX_TEXTURE
-VERTEX_NORMAL
-VERTEX_TANGENT
-VERTEX_NOISE
-VERTEX_TANGENT_FRAME
-VERTEX_SOBEL</p>
-<p>FRAGMENT_NOISE
-FRAGMENT_INTENSITY
-FRAGMENT_DEPTH_IN
-FRAGMENT_DEPTH_OUT
-FRAGMENT_LUMINANCE
-FRAGMENT_TANGENT_FRAME
-FRAGMENT_SOBEL</p>
-<p>BASIC_COLOUR
-BASIC_CAMERA
-ADVANCED_CAMERA
-SKINNING
-LIGHTING_POINT</p>
+and a series of hash defines to sort out what we actually need.</p>
+<p>The paths through the shader are defined using the uniform uUber0
+Its a float whose bits are checked. You can see these in uber_shader_paths</p>
 
             </div>
             
@@ -111,20 +93,6 @@ LIGHTING_POINT</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>The paths through the shader are defined using the uniform uUber0
-Its a float whose bits are checked. You can see these in uber_shader_paths</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-5">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
-              </div>
               <p>TODO - Potentially have the defines rigidly set in a class?
 TODO - Shaderpaths could do the same - use names that map to numbers</p>
 
@@ -136,53 +104,11 @@ TODO - Shaderpaths could do the same - use names that map to numbers</p>
         </li>
         
         
-        <li id="section-6">
+        <li id="section-5">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
-              </div>
-              <p>final transform if nothing else
-FRAGMENT SHADER</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
-              </div>
-              <p>HEAD SECTION of fragment Shader
-Materials
-FUNCTION SECTION</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-8">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
-              </div>
-              <p>MAIN SECTION</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-9">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
               <p>We run over all the nodes, looking for materials. If we have them, check for defines
 Defines can also occur depending on what we have in the node structure, like point-lights and 
@@ -201,11 +127,11 @@ runtime changes each frame, whereas ubershader deals with defines that should on
         </li>
         
         
-        <li id="section-10">
+        <li id="section-6">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
               <p>Things to add, depening on whether or not things exist on a node</p>
 
@@ -225,11 +151,11 @@ runtime changes each frame, whereas ubershader deals with defines that should on
         </li>
         
         
-        <li id="section-11">
+        <li id="section-7">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <p>Checking for shadowmaps</p>
 
@@ -249,11 +175,11 @@ runtime changes each frame, whereas ubershader deals with defines that should on
         </li>
         
         
-        <li id="section-12">
+        <li id="section-8">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p>The uberconstructor builds a shader at the base nodes, looking at the entire subtree for all the defines
 and such that it needs to set.</p>
@@ -263,11 +189,11 @@ and such that it needs to set.</p>
         </li>
         
         
-        <li id="section-13">
+        <li id="section-9">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
               <p><strong>constructor</strong></p>
 <ul>
@@ -289,11 +215,11 @@ and such that it needs to set.</p>
         </li>
         
         
-        <li id="section-14">
+        <li id="section-10">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <p>We default to high precision for our ubershader
 I havent passed in any options for precision yet</p>
@@ -302,29 +228,10 @@ I havent passed in any options for precision yet</p>
             
             <div class="content"><div class='highlight'><pre>
     @vertex = def_string + uber.vertex
-    @fragment = def_string + uber.fragment</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-15">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
-              </div>
-              <p>@vertex = “#version 100\n” + “precision highp float;\nprecision highp int;\n” + def_string + UberShader.vertex
-@fragment = “#version 100\n” + “precision highp float;\nprecision highp int;\n” + def_string + UberShader.fragment</p>
+    @fragment = def_string + uber.fragment
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
     <span class="hljs-keyword">super</span>(@vertex, @fragment, <span class="hljs-literal">undefined</span>)
     @_uber = <span class="hljs-literal">true</span>
-
-    <span class="hljs-keyword">for</span> base_node <span class="hljs-keyword">in</span> arguments
-      @_addToNode base_node
-
 
 <span class="hljs-built_in">module</span>.exports =
   UberShader : UberShader</pre></div></div>

@@ -33,25 +33,14 @@ Texture Objects - uses the request object and callbacks. Is bound to a context
 
 {Contract} = require '../gl/contract'
 
-###TextureBase###
+### TextureBase ###
 # Our base texture. It creates a blank set of data bound to a texture
-# Params is a dictionary containing various parameters for textures
-# Accepted values are:
-# min - the min distance filter
-# max - the max distance filter
-# wraps - the s wrap
-# wrapt - the t wrap
-# width
-# height
-# channels - the number of channels such as RGBA
-# datatype - internal datatype such as UNSIGNED_BYTE
-
-
 
 class TextureBase
 
   @UNITS = [] # Which texture unit is free?
 
+  # 
   constructor : (params) ->
 
     if not PXL.Context.gl?

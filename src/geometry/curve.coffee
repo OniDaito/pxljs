@@ -17,7 +17,7 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 
 {Vec2, Vec3, PI, degToRad} = require '../math/math'
 
-###CurveLine###
+### CurveLine ###
 # Base class for a curve that is considered drawable to the screen as oppose
 # to a purely mathematical one.
 # Pass in a mathematical curve such as a quadratic bezier and this will generate
@@ -25,11 +25,13 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 
 class CurveLine extends Geometry
 
+  # **@constructor** 
+  # - **math_curve** - a Curve
+  # - **rez** - a Number - Optional - Default 200
   constructor : (math_curve, rez=200)->
     super()
 
     @indexed = false
 
-
-module.exports = 
+module.exports =
   CurveLine: CurveLine

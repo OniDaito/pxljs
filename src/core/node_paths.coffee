@@ -37,6 +37,7 @@ util = require '../util/util'
 # There is a problem here - as we change node, what happen to front? Better design needed here?
 
 class Front
+  # **@constructor** 
   constructor : () ->
 
     @globalMatrix =  new Matrix4()
@@ -199,9 +200,6 @@ _shadowmap_create_draw = (node, front, light) ->
     
   node
 
-
-
-
 # Recursive call to draw. Binds any textures on this node. Sets the lights
 # from the parent nodes, all the way down the tree. This node is then 
 # attempted to be brewed (if it has geometry) and if brewed, it is webgl drawn
@@ -240,11 +238,8 @@ main_draw = (node, front) ->
   for light in node.pointLights
     front.pointLights.push light
   
-  uber.uber_lighting_point false, front._uber0
   if node.pointLights.length > 0
     front._uber0 = uber.uber_lighting_point true, front._uber0
- 
-  front._uber0 = uber.uber_lighting_spot false, front._uber0
   
   for light in node.spotLights
     # shadowmap jumping off point
@@ -252,9 +247,9 @@ main_draw = (node, front) ->
       if PXL.Context.gl?
         shadowmap_create_draw node, front, light
         front.spotLights.push light
-      
+     
       front._uber0 = uber.uber_shadowmap true, front.uber0 # we want shadowmapping
-  
+
     front._uber0 = uber.uber_lighting_spot true, front._uber0
   
   # Overwrite the ambient if there is one closer

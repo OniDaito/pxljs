@@ -77,6 +77,9 @@ class Plane extends Geometry
 
 class PlaneFlat extends Geometry 
 
+  # **@constructor**
+  # - **xres** - a Number - Optional - Integer - Default 2
+  # - **zres** - a Number - Optional - Integer - Default 2
   constructor: (@xres=2, @zres=2) ->
     super()
     # TODO - Can we have options here?
@@ -146,9 +149,10 @@ class PlaneFlat extends Geometry
           @indices[idx++] = xres * i + j
 
 
-  # Overridden from the Geometry Class as its the only one so far that uses 
-  # a flat tristrip
-
+  # **getTrisIndexer** - Overridden from the Geometry Class as its the only one so far that uses a flat tristrip
+  # - returns a function with the following parameters
+  # -- **index** - a Number - Integer
+  # -- returns a List of Vec3 - Length 3 - [v0,v1,v2]
   getTrisIndexer : () ->
 
     flat_indexed_tristrip = (index) =>
@@ -160,18 +164,21 @@ class PlaneFlat extends Geometry
     return flat_indexed_tristrip
 
 
-###PlaneHexagonFlat###
+### PlaneHexagonFlat ###
 # Very similar to the plane flat, only this one is laid out with pretty
 # triangles as oppose to strips, with a ragged edge, giving regular hexagons
 # Flat refers to the data size being fixed and the arrays already set
 # It is indexed as otherwise, we get cracks.
 # It also include the barycentre for rendering wireframe
 # TODO - Tangents? Options for normals etc?
-
 # TODO - Certain resolutions are causing issues
 
 class PlaneHexagonFlat extends Geometry
 
+  # **@constructor**
+  # - **xres** - a Number - Optional - Integer - Default 2
+  # - **zres** - a Number - Optional - Integer - Default 2
+  # - **indexed** - a Boolean - Optional - Default true
   constructor: (@xres=2, @zres=2, indexed=true) ->
     super()
     # TODO - Can we have options here?

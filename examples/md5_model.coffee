@@ -26,16 +26,14 @@ class MD5Example
       g.matrix.scale new PXL.Math.Vec3 0.1, 0.1, 0.1
       @top_node.add g
       # Create shaders once everything has loaded
-      uber = new PXL.GL.UberShader 
+      uber = new PXL.GL.UberShader(@top_node)
       @top_node.add uber
       @g = g
 
 
     @top_node = new PXL.Node()
 
-    # Create a new model, passing in the promise
-    g = new PXL.Import.MD5Model "../models/hellknight/hellknight.md5mesh", @promise
-    
+   
     # Add a normal camera
     @c = new PXL.Camera.MousePerspCamera new PXL.Math.Vec3(0,0,25)
     @top_node.add @c
@@ -55,8 +53,10 @@ class MD5Example
     GL.enable(GL.CULL_FACE)
     GL.cullFace(GL.BACK)
     GL.enable(GL.DEPTH_TEST)
-
-
+    
+    # Create a new model, passing in the promise
+    g = new PXL.Import.MD5Model "../models/hellknight/hellknight.md5mesh", @promise
+ 
   draw : () ->
 
     GL.clearColor(0.95, 0.95, 0.95, 1.0)
@@ -68,11 +68,11 @@ class MD5Example
     if @g?
       bone = @g.skeleton.getBoneByName "luparm"
       q = PXL.Math.Quaternion.fromRotations 0,0.001,0
-      bone.rotate q    
+      bone.rotate q
 
 example = new MD5Example()
 
-params = 
+params =
   canvas : 'webgl-canvas'
   context : example
   init : example.init

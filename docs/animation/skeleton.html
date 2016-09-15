@@ -78,20 +78,36 @@ Based largely from the MD5 Parser <span class="hljs-keyword">and</span> the bone
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>##Bone### 
-Represents an actual bone. It contains rotations and positions, both absolute and relative
-and the pose positions
-@name - Required text name for the bone
-@idx - Required numerical id for the bone (unique per skeleton)
-@parent - Optional parent bone
-@rotation_pose - Required Quaternion representing the rotation in the bind pose
-@position_pose - Required Vec3 representing the position of the bone in the bind pose</p>
+              <h2 id="bone">Bone</h2>
+<p>Represents an actual bone. It contains rotations and positions, both absolute and relative
+and the pose positions</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Bone</span> </span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p><strong>@constructor</strong></p>
+<ul>
+<li><strong>name</strong> - a String - Required</li>
+<li><strong>idx</strong> - a Number - Required - Unique per Skeleton</li>
+<li><strong>parent</strong> - a Bone - may be null</li>
+<li><strong>rotation_pose</strong> - a Quaternion - Required</li>
+<li><strong>position_pose</strong> - a Vec3 - Required</li>
+</ul>
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Bone</span> </span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
   constructor : <span class="hljs-function"><span class="hljs-params">(@name, @idx, @parent, @rotation_pose, @position_pose)</span> -&gt;</span>
 
     <span class="hljs-keyword">if</span> @parent?
@@ -121,38 +137,22 @@ and the pose positions
         </li>
         
         
-        <li id="section-4">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
-              </div>
-              <p>Given a quaternion, rotate the bone by that amount
-TODO - Could put update func in here instead of in draw calls?</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  rotate : <span class="hljs-function"><span class="hljs-params">(quat)</span> -&gt;</span>
-    @rotation_relative.multiply(quat).normalize()
-    @</pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-5">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>##SkinIndex###
-Nothng more than a way of recording the pair index and count. Used internally by Skin</p>
+              <p><strong>rotate </strong> - Given a quaternion, rotate the bone by that amount</p>
+<ul>
+<li><strong>quat</strong> - A Quaternion
+TODO - Could put update func in here instead of in draw calls?</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SkinIndex</span> </span>
-  constructor : <span class="hljs-function"><span class="hljs-params">(@index, @count)</span> -&gt;</span>
+            <div class="content"><div class='highlight'><pre>  rotate : <span class="hljs-function"><span class="hljs-params">(quat)</span> -&gt;</span>
+    @rotation_relative.multiply(quat).normalize()
     @</pre></div></div>
             
         </li>
@@ -164,14 +164,14 @@ Nothng more than a way of recording the pair index and count. Used internally by
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>##SkinWeight###
-Another pair of values to record how biased the bone is. Used internally by Skin</p>
+              <h2 id="skinindex">SkinIndex</h2>
+<p>Nothng more than a way of recording the pair index and count. Used internally by Skin</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SkinWeight</span></span>
-  constructor : <span class="hljs-function"><span class="hljs-params">(@bone, @bias)</span> -&gt;</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SkinIndex</span></span>
+  constructor : <span class="hljs-function"><span class="hljs-params">(@index, @count)</span> -&gt;</span>
     @</pre></div></div>
             
         </li>
@@ -183,8 +183,27 @@ Another pair of values to record how biased the bone is. Used internally by Skin
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>##Skin###
-A collection of weights and indices, based on the md5 model idea. It connects vertices
+              <h2 id="skinweight">SkinWeight</h2>
+<p>Another pair of values to record how biased the bone is. Used internally by Skin</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SkinWeight</span></span>
+  constructor : <span class="hljs-function"><span class="hljs-params">(@bone, @bias)</span> -&gt;</span>
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <h2 id="skin">Skin</h2>
+<p>A collection of weights and indices, based on the md5 model idea. It connects vertices
 to bones basically. It is temporarily used, with the actual skin weights being held
 on vertices</p>
 
@@ -198,11 +217,11 @@ on vertices</p>
         </li>
         
         
-        <li id="section-8">
+        <li id="section-9">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
               <p>Index is a list of tuples called index and count</p>
 
@@ -213,11 +232,11 @@ on vertices</p>
         </li>
         
         
-        <li id="section-9">
+        <li id="section-10">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <p>Weights is a list of tuples - a link to a bone and a bias</p>
 
@@ -242,11 +261,11 @@ on vertices</p>
         </li>
         
         
-        <li id="section-10">
+        <li id="section-11">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               <h2 id="skeleton">Skeleton</h2>
 <p>A skeleton is a relationship of bones</p>
@@ -254,32 +273,7 @@ on vertices</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>
-
 <span class="hljs-class"><span class="hljs-keyword">class</span>  <span class="hljs-title">Skeleton</span> </span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-11">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
-              </div>
-              <p>Globals, set by the profile in the App class</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  @PXL_MAX_BONES_TEX = <span class="hljs-number">256</span> <span class="hljs-comment"># How many bones in a skeleton if we use textures</span>
-  @PXL_MAX_BONES_UNI = <span class="hljs-number">64</span> <span class="hljs-comment"># How many bones in a skeleton if we use uniforms</span>
-  @PXL_MAX_WEIGHTS = <span class="hljs-number">4</span> <span class="hljs-comment"># How many bones can affect a vertex (set here in stone for now)</span>
-  @PXL_MAX_BONES = <span class="hljs-number">128</span>
-
-
-  constructor : <span class="hljs-function"><span class="hljs-params">(@root)</span> -&gt;</span>
-
-    @bones = []
-    @matrix = <span class="hljs-keyword">new</span> Matrix4()</pre></div></div>
             
         </li>
         
@@ -290,9 +284,14 @@ on vertices</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <p>TODO - static sort </p>
+              <p>Globals, set by the profile in the App class</p>
 
             </div>
+            
+            <div class="content"><div class='highlight'><pre>  @PXL_MAX_BONES_TEX = <span class="hljs-number">256</span> <span class="hljs-comment"># How many bones in a skeleton if we use textures</span>
+  @PXL_MAX_BONES_UNI = <span class="hljs-number">64</span> <span class="hljs-comment"># How many bones in a skeleton if we use uniforms</span>
+  @PXL_MAX_WEIGHTS = <span class="hljs-number">4</span> <span class="hljs-comment"># How many bones can affect a vertex (set here in stone for now)</span>
+  @PXL_MAX_BONES = <span class="hljs-number">128</span></pre></div></div>
             
         </li>
         
@@ -302,6 +301,40 @@ on vertices</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p><strong>@constructor</strong></p>
+<ul>
+<li><strong>root</strong> - a Bone - Required</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  constructor : <span class="hljs-function"><span class="hljs-params">(@root)</span> -&gt;</span>
+
+    @bones = []
+    @matrix = <span class="hljs-keyword">new</span> Matrix4()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>TODO - static sort </p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>A basic contract so we can recurse into the textures and similar</p>
 
@@ -314,11 +347,11 @@ on vertices</p>
         </li>
         
         
-        <li id="section-14">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>Check for the required extension</p>
 
@@ -330,11 +363,11 @@ on vertices</p>
         </li>
         
         
-        <li id="section-15">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>This variable is a texture that saves all the bone positions for the shader
 TODO Double check the dimensions are correct :)</p>
@@ -355,11 +388,11 @@ TODO Double check the dimensions are correct :)</p>
         </li>
         
         
-        <li id="section-16">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>Called in the node loop before drawing
 TODO - Should the user not call the update function? Maybe inkeeping with our â€˜styleâ€™?</p>
@@ -373,9 +406,26 @@ TODO - Should the user not call the update function? Maybe inkeeping with our â€
 
   _postDraw : <span class="hljs-function"><span class="hljs-params">()</span>-&gt;</span>
     @_palette.unbind()
-    @
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p><strong>addBone</strong> - add a Bone to this skeleton</p>
+<ul>
+<li><strong>bone</strong> - a Bone</li>
+<li>returns this</li>
+</ul>
 
-  addBone : <span class="hljs-function"><span class="hljs-params">(bone)</span> -&gt;</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  addBone : <span class="hljs-function"><span class="hljs-params">(bone)</span> -&gt;</span>
     <span class="hljs-keyword">if</span> @bones.length + <span class="hljs-number">1</span> &lt; Skeleton.PXL_MAX_BONES
       @bones.push bone
     <span class="hljs-keyword">else</span>
@@ -389,13 +439,17 @@ TODO - Should the user not call the update function? Maybe inkeeping with our â€
         </li>
         
         
-        <li id="section-17">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
-              <p>Look through the bones and return the one matching the id</p>
+              <p><strong>getBone</strong> - Look through the bones and return the one matching the id</p>
+<ul>
+<li><strong>bone_idx</strong> - a Number - Required</li>
+<li>returns either a Bone or null</li>
+</ul>
 
             </div>
             
@@ -408,13 +462,17 @@ TODO - Should the user not call the update function? Maybe inkeeping with our â€
         </li>
         
         
-        <li id="section-18">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
-              <p>Get the bone by looking for the one with the matching name</p>
+              <p><strong>getBoneByName</strong> - Get the bone by looking for the one with the matching name</p>
+<ul>
+<li><strong>bone_name</strong> - a String - Required</li>
+<li>returns either a Bone or null</li>
+</ul>
 
             </div>
             
@@ -427,14 +485,17 @@ TODO - Should the user not call the update function? Maybe inkeeping with our â€
         </li>
         
         
-        <li id="section-19">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
-              <p>Called to update all the matrices of the various bones
+              <p><strong>update</strong> - Called to update all the matrices of the various bones
 We make the assumption that all bones are in order with parents first</p>
+<ul>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -461,11 +522,11 @@ We make the assumption that all bones are in order with parents first</p>
         </li>
         
         
-        <li id="section-20">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>Update the palette/texture going to the shader</p>
 
@@ -480,11 +541,11 @@ We make the assumption that all bones are in order with parents first</p>
         </li>
         
         
-        <li id="section-21">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p>Update the texture ready for the shader</p>
 

@@ -159,7 +159,8 @@ gulp.task('dev', ['web','examples'], function(cb) {
 
   var watch_src = gulp.watch('src/**/*.coffee', ['web']);
   var watch_examples = gulp.watch('examples/*.coffee', ['examples']);
-
+  var watch_shaders = gulp.watch('src/shaders/**/*', ['web']);
+  
   //dev server
   budo("./html/index.html", {
     stream: process.stdout, // pretty-print requests
@@ -175,7 +176,11 @@ gulp.task('dev', ['web','examples'], function(cb) {
    console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
   });
 
-  
+  watch_shaders.on('change', function(event) {
+   console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
+  });
+
+ 
 
 });
 

@@ -25,6 +25,11 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 # TODO - Quaternion's need to be here and probably just SLERPED
 
 class Interpolation
+
+  # **@constructor** - creates a new interpolation object
+  # - **obj0** - an object of type Vec3, Vec3, RGB, RGBA, Quaternion or Number
+  # - **obj1** - an object of type Vec3, Vec3, RGB, RGBA, Quaternion or Number 
+  # - **curve** - a Curve
   constructor : (@obj0, @obj1, @curve) ->
   
     if not @curve?
@@ -56,9 +61,11 @@ class Interpolation
     else if typeof @obj0 == 'number'
       @_set = @_setScalar
 
-
     @_value = 0
 
+  # **set** - set the value of this object
+  # - **val** - a Number - 0 to 1 range
+  # - returns a new Object of the same type as obj0 passed into the constructor
   set : (val) ->
     if val < 0 or val > 1.0
       PXLWarning("Interpolation set val must be between 0 and 1. It was set to " + val)
@@ -107,6 +114,12 @@ class Interpolation
 # TODO - Lots of testing of copyFrom - we might need to improve on that as its only numbers that violate that rule?
 #
 class Animator
+
+  # **@constructor**
+  # - **num_frames** - a Number
+  # - **framerate** - a Number
+  # - **label** - a String
+
   constructor : (@num_frames, @framerate, @label) ->
 
     if not @framerate?
@@ -121,19 +134,25 @@ class Animator
     @_frover = 1.0 / @framerate
     @_tweens = []
 
-  # Add a tween to this keyframe
+  # **addTween** - Add a tween to this keyframe
+  # - **tween** - a Tween
+  # - returns this
   addTween : (tween) ->
     @_tweens.push tween
     @
 
-  # reset
+  # **reset** - set the animation back to the start position
+  # - returns this 
   reset : () ->
     @_dt = 0
     @_current_frame = 0
     for tween in @_tweens
       tween.reset()
+    @
 
-  # Call step inside your draw function or similar, passing in dt - time time difference in seconds
+  # **step** - Call step inside your draw function or similar, passing in dt - time time difference in seconds
+  # - **dt** - a Number
+  # - returns this
   step : (dt) ->
 
     @_dt += dt
@@ -149,7 +168,7 @@ class Animator
         
       @_process()
       @_dt = @_dt - (ff * @_frover)
-  @
+    @
 
   # Internal function that processes the values proper
   # We step through each tween and check where we are at with it
@@ -167,7 +186,10 @@ class Animator
 # TODO - should we pass in seconds or frames here?
 
 class KeyFrame
-  # Constructor
+  # **@constructor**
+  # - **obj** - an Object
+  # - **value** - a Value obj should take
+  # - **framenum** - the framenumber at which point this object should take this value
   constructor : (@obj, @value, @framenum) ->
     @
 
@@ -175,9 +197,12 @@ class KeyFrame
 # A simple class that basically takes two keyframes and uses an interpolator to move between said values
 
 class Tween
+  # **@constructor** 
+  # - **f0** - a KeyFrame
+  # - **f1** - a KeyFrame
+  # - **interp** - an Interpolation
   constructor : (@f0, @f1, @interp) ->
     
-
     if @f0.obj != @f1.obj
       PXLWarning "Tween Keyframes do not point to the same object"
 
@@ -194,6 +219,8 @@ class Tween
         @f0 = @_original
     @
 
+  # **set**
+  # - **u** - a Number - 0 to 1 range
   set: (u) ->
     if @f0.obj.copyFrom?
       @f0.obj.copyFrom @interp.set(u)

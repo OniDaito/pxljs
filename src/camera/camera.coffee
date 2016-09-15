@@ -33,12 +33,15 @@ https://gist.github.com/eligrey/384583 - useful for changes to pos,look etc?
 {makeMouseListener} = require '../interact/mouse'
 {Contract} = require '../gl/contract'
 
-# **Camera** #
+### Camera ###
 # The base class for cameras - provides base functionality to the other cameras
 
 class Camera
 
-  # constructor - takes a position, look point and an up vector (all Vec3)
+  # **@constructor**
+  # - **pos** - a Vec3
+  # - **look** - a Vec3
+  # - **up** - a Vec3
   constructor: (@pos, @look, @up) ->
     if not @pos?
       @pos = new Vec3 0,0,5
@@ -69,9 +72,12 @@ class Camera
     @contract.roles.uCameraInverseMatrix      = "i"
 
 
-  # update - call this in your update function to update the matrices
+  # **update** - call this in your update function to update the matrices
   # TODO - I wonder if such things should be automatic on our draw / update 
   # paths through the nodes? Needs GL context ideally
+  # - **width** - a Number - default current context width
+  # - **height** - a Number - default current context height
+  # - returns this
 
   update: (width=PXL.Context.width, height=PXL.Context.height) ->
     @m.lookAt @pos, @look, @up
@@ -83,14 +89,26 @@ class Camera
     GL.viewport 0, 0, @width, @height if GL?
     @
 
+
+  # **lookat** - point the camera
+  # - **pos** - a Vec3
+  # - **look** - a Vec3
+  # - **up** - a Vec3
+  # - returns this
   lookAt : (@pos, @look, @up) ->
     @update()
 
-
+  # **setViewport**
+  # - **width** - a Number
+  # - **height** - a Number
+  # - returns this
   setViewport: (@width, @height) ->
     @
     
-  # Rotate the camera around its look point. Axis is a vec3. Angle is in radians
+  # **orbit** -Rotate the camera around its look point.
+  # - **axis** - a Vec3 - Required
+  # - **angle** - a Number - Required - Radians
+  # - returns this
   orbit : (axis, angle) ->
     @q.fromAxisAngle axis, angle
          
@@ -106,10 +124,13 @@ class Camera
 
     @pos.copy l
 
-    @update()  
+    @update()
+    @
 
-
-  # Pan and tilt the camera with an axis and angle notation
+  # **pantilt** - Pan and tilt the camera with an axis and angle notation
+  # - **axis** - a Vec3 - Required
+  # - **angle** - a Number - Required - Radians
+  # - returns this
   pantilt : (axis, angle) ->
 
     @q.fromAxisAngle axis, angle
@@ -125,7 +146,8 @@ class Camera
     q2.transVec3 @look
     q2.transVec3 @up
     
-    @update()  
+    @update()
+    @
 
 
   # _addToNode - a function called when this class is added to a node
@@ -133,7 +155,9 @@ class Camera
     node.camera = @
     @
 
-  # track the camera - v is a vec2 perpendicular to the look/pos dir
+  # **track** - track the camera - v is a vec2 perpendicular to the look/pos dir
+  # - **v** - a Vec2 - Required
+  # - returns this
   track : (v) ->
     g = new Vec4 v.x,v.y,0,0 # non-homogenous vector w = 0
     @i.multVec g
@@ -143,13 +167,18 @@ class Camera
     @
 
 
-# **OrthoCamera** 
+### OrthoCamera ###
 # An orthographic camera. This class calls makeOrtho on its perspective matrix
 # Orthographic Camera uses 1 pixel as 1 world unit
 
 class OrthoCamera extends Camera
 
-  # constructor - Takes a position, look point, up vector (all Vec3), a near plane (float) and a far plane (float)
+  # **@constructor**
+  # - **pos** - a Vec3 - Required
+  # - **look** - a Vec3 - Required
+  # - **up** - a Vec3 - Required
+  # - **near** - a Number
+  # - **far** - a Number
   constructor: (@pos, @look, @up, @near, @far) ->
     super(@pos,@look,@up)
     if not @near?
@@ -158,6 +187,9 @@ class OrthoCamera extends Camera
       @far = 1.0
 
   # update - call with width and height and the matrix will be updated
+  # - **width** - a Number - Default is current context width
+  # - **height** - a Number - Default is current context height
+  # - returns this
   update: (width=PXL.Context.width, height=PXL.Context.height)->
 
     OrthoCamera.__super__.update.call(@, width, height)
@@ -167,13 +199,19 @@ class OrthoCamera extends Camera
     @
     
 
-# **PerspCamera**
+### PerspCamera ###
 # An perspective camera. This class calls makePerspective on its perspective matrix
 # TODO - Not sure we need zoom here. Should probably have a spaceball class
 
 class PerspCamera extends Camera
 
-  # constructor - Takes a position, look point, up vector (all Vec3), a near plane (float) and a far plane (float)
+  # **@constructor** 
+  # - **pos** - a Vec3 - Required
+  # - **look** - a Vec3 - Required
+  # - **up** - a Vec3 - Required
+  # - **angle** - a Number
+  # - **near** - a Number
+  # - **far** - a Number
   constructor: (@pos, @look, @up, @angle, @near, @far) ->
     super(@pos,@look,@up)
     if not @angle?
@@ -186,8 +224,10 @@ class PerspCamera extends Camera
     @zoom_near = @near
     @zoom_far = @far
 
-
   # update - call with width and height and the matrix will be updated
+  # - **width** - a Number - Default is current context width
+  # - **height** - a Number - Default is current context height
+  # - returns this
   update: (width=PXL.Context.width, height=PXL.Context.height)->
   
     PerspCamera.__super__.update.call(@, width, height)
@@ -196,7 +236,12 @@ class PerspCamera extends Camera
   
     @
 
-  # castRay - Given a screen position (in pixels 0 -> dimension), cast a ray through the screen along the frustum from the eye pos
+  # **castRay** - Given a screen position (in pixels 0 -> dimension), cast a ray through the screen along the frustum from the eye pos
+  # - **sx** - a Number - Required - Range 0 to width
+  # - **sy** - a Number - Required - Range 0 to width
+  # - **width** - a Number - Default is current context width
+  # - **height** - a Number - Default is current context height
+  # - returns a Vec4 - Normalised  
 
   castRay : (sx,sy, width=PXL.Context.width, height=PXL.Context.height) ->
   
@@ -221,7 +266,6 @@ class PerspCamera extends Camera
     @i.multVec far_ray_w
     far_ray_w.normalize()
 
-
   # change the zoom as a function of the current percentage of the distance between the near
   # and far clipping planes plus an offset percentage given by dt. Percentages are 0-1
   _zoom : (dt) ->
@@ -236,8 +280,10 @@ class PerspCamera extends Camera
 
     @
 
-  # set the absolute zoom value between 0 and 1 - a percentage of the distance between
+  # **zoom** - set the absolute zoom value between 0 and 1 - a percentage of the distance between
   # the near and far clip planes (by default - these can be changed)
+  # - **z** - a Number - Required - Range 0 to 1
+  # - returns this
   zoom : (z) ->
   
     if z >0 and z < 1
@@ -251,14 +297,20 @@ class PerspCamera extends Camera
     @
 
 
-# **MousePerspCamera**
+### MousePerspCamera ###
 # Camera that listens for mouse input and moves when the user moves the mouse around
 
 class MousePerspCamera extends PerspCamera
   
-  # constructor - Takes a position, look point, up vector (all Vec3), 
-  # a near plane (float) and a far plane (float) and the sensitivity (float / optional)
-
+  # **@constructor**
+  # - **pos** - a Vec3 - Required
+  # - **look** - a Vec3 - Required
+  # - **up** - a Vec3 - Required
+  # - **angle** - a Number
+  # - **near** - a Number
+  # - **far** - a Number
+  # - **sense** - a Number
+  
   constructor: ( @pos, @look, @up, @angle, @near, @far, @sense) ->
     super(@pos, @look, @up, @angle, @near, @far)
     
@@ -281,7 +333,9 @@ class MousePerspCamera extends PerspCamera
     @i = Matrix4.invert(@m)
     @
 
-  # onMouseMove - registered with our signal - called when mouse is moved over canvas
+  # **onMouseMove** - registered with our signal - called when mouse is moved over canvas
+  # - **event** - an Event
+  # - returns this
   onMouseMove : (event)->
 
     x = event.mouseX
@@ -303,7 +357,9 @@ class MousePerspCamera extends PerspCamera
       
     @
   
-  # onMouseDown - registered with our signal - called when mouse button is pressed over canvas
+  # **onMouseDown** - registered with our signal - called when mouse button is pressed over canvas
+  # - **event** - an Event
+  # - returns this
   onMouseDown : (event) ->
 
     x = event.mouseX
@@ -315,12 +371,16 @@ class MousePerspCamera extends PerspCamera
     @
 
  
-  # onMouseUp - registered with our signal - called when mouse button is released over canvas
+  # **onMouseUp** - registered with our signal - called when mouse button is released over canvas
+  # - **event** - an Event
+  # - returns this
   onMouseUp : (event) ->
     @
 
-  # onMouseWheel - registered with our signal - called when mouse wheel is moved over canvas
+  # **onMouseWheel** - registered with our signal - called when mouse wheel is moved over canvas
   # At the moment, this appears to be chrome only
+  # - **event** - an Event
+  # - returns this
   onMouseWheel : (event) ->
 
     dt = event.wheelDelta * 0.01 * @sense
@@ -328,44 +388,59 @@ class MousePerspCamera extends PerspCamera
 
     dp = dt / tl
     @_zoom(dp)
-
     @
 
-  
-  # update - call with width and height and the matrix will be updated
+  # **update** - call with width and height and the matrix will be updated
+  # - **width** - a Number - Default is current context width
+  # - **height** - a Number - Default is current context height
+  # - returns this
   update: (width=PXL.Context.width, height=PXL.Context.height)->
     MousePerspCamera.__super__.update.call(@, width, height)
     @
   
   # onMouseOut - registered with our signal - called when mouse leaves the context
+  # - **event** - an Event
+  # - returns this
   onMouseOut : (event) ->
     @px = 0
     @py = 0
     @dx = 0
     @dy = 0
+    @
 
-  # onMouseOver - registered with our signal - called when mouse enters the context
+  # **onMouseOver** - registered with our signal - called when mouse enters the context
+  # - **event** - an Event
+  # - returns this 
   onMouseOver : (event) ->
     if @px == 0 and @py == 0
       [@px, @py] = [event.mouseX, event.mouseY]
+    @
 
-
-# **TouchPerspCamera**
+### TouchPerspCamera###
 # Camera that listens for both mouse input and touch gestures
 
 class TouchPerspCamera extends MousePerspCamera
   
-  # constructor - Takes a position, look point, up vector (all Vec3), 
-  # a near plane (float) and a far plane (float) and the sensitivity (float / optional)
-
+  # **@constructor**
+  # - **pos** - a Vec3 - Required
+  # - **look** - a Vec3 - Required
+  # - **up** - a Vec3 - Required
+  # - **angle** - a Number
+  # - **near** - a Number
+  # - **far** - a Number
+  # - **sense** - a Number
+ 
   constructor: ( @pos, @look, @up, @angle, @near, @far, @sense) ->
     super(@pos, @look, @up, @angle, @near, @far)
     
     # Listen for the signals on the PXL Context, emitting touch events
     PXL.Context.touchPinch.add @onPinch, @
     PXL.Context.touchSpread.add @onSpread, @
-    PXL.Context.touchSwipe.add @onSwipe, @ 
+    PXL.Context.touchSwipe.add @onSwipe, @
 
+  # **onPinch**
+  # - **event** - an Event
+  # - returns this 
   onPinch : (event) ->
 
     dt = -event.ddist * 0.08 * @sense
@@ -376,6 +451,9 @@ class TouchPerspCamera extends MousePerspCamera
 
     @
 
+  # **onSpread**
+  # - **event** - an Event
+  # - returns this 
   onSpread : (event) ->
     
     dt = -event.ddist * 0.08 * @sense
@@ -386,6 +464,9 @@ class TouchPerspCamera extends MousePerspCamera
 
     @
 
+  # **onSwipe**
+  # - **event** - an Event
+  # - returns this  
   onSwipe : (event) ->
     x = event.currentPos.x
     y = event.currentPos.y
@@ -408,8 +489,6 @@ class TouchPerspCamera extends MousePerspCamera
     else if event.fingers == 2
       @track new Vec2 @dx * @sense * -0.02, @dy * @sense * 0.02
     @
-
-
 
 module.exports = 
     Camera: Camera

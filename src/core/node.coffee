@@ -27,7 +27,7 @@ Doesnt have to be drawn per-se
 
 util = require '../util/util'
 
-###Node###
+### Node ###
 # Arguably, the most important piece of code. The node represents the combination of all the
 # elements required for drawing. It has a matrix as the minimum, but can also accept materials
 # a piece of geometry, a shader and several textures and lights. It can have children but only
@@ -43,7 +43,10 @@ util = require '../util/util'
 
 class Node
   
-  # Dont have to pass any of these parameters but they will be inspected
+  # **@constructor** 
+  # - **geometry** - a Geometry - Optional
+  # - **material** - a Material - Optional
+  # - **shader** - a Shader - Optional
   constructor : (@geometry, @material, @shader) ->
 
     @matrix =  new Matrix4()          # Local matrix for the user to mess with
@@ -67,13 +70,17 @@ class Node
     @spotLightShadowMaps = []
 
 
-  # add - Add things to this node, like geometry, materials or other nodes
+  # **add** - Add things to this node, like geometry, materials or other nodes
   # TODO - we need a flag set here for _dirty and then run shader_automagic again
+  # - **p** - an Object that implements _addToNode function
+  # - returns this
   add : (p) ->
     p._addToNode?(@)
     @
 
-  # remove - remove a thing from this node
+  # **remove** - remove a thing from this node
+  # - **p** - an Object that implements _addToNode function
+  # - returns this
   remove : (p) ->
     p._removeFromNode?(@)
     @
@@ -83,13 +90,16 @@ class Node
     node.children.push @
     @
 
-  # return a copy of this node, referencing any geometry.
+  # **clone** - return a copy of this node, referencing any geometry.
   # To duplicate geometry one needs to copy then add a fresh 
   # geometry with new to the new node.
-  copy : () ->
+  # - returns a new Node
+  clone : () ->
     util.clone @
 
-  # Remove from the screen graph
+  # **del** - Remove from the screen graph
+  # - **p** - a Node
+  # - returns this
   del : (p) ->
     if p in @children
       i = @children.indexOf(p) 
@@ -101,14 +111,16 @@ class Node
     node.del @
     @
 
-  # draw - Draw the current node and all its children - a recursive call
+  # **draw** - Draw the current node and all its children - a recursive call
   # TODO - we should cache the hierarchy, uniforms and textures separately
   # for speed. We shouldnt need to rebuild the hierarchy each time in the main
   # case so this would be a big saving.
+  # - returns this
 
   draw : () ->
     # front is an object that represents the cumulated hierarchy at draw time
     front = new Front()
+    front._uber0 = 0 # Clear all shader calls and start afresh
     main_draw(@, front )
 
  module.exports =
