@@ -24,32 +24,51 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 
 class Curve2
 
+  # **@constructor**
   constructor : () ->
     @
 
-  # Return the point on this curve given u (or x)
+  # **pointOnCurve** - Return the point on this curve given u (or x)
+  # - **u** - a Number - Required
+  # - returns a new Vec2
   pointOnCurve : (u) ->
     new Vec2 u,u
 
-  # Given x give us y 
+  # **y** - Given x give us y
+  # - **x** - a Number - Required
+  # - returns a Number
   y : (x) ->
     x
 
-  # Step along the curve x o
+  # **stepForU** - given U return the step distance 
+  # - **x** - Step along the curve x o
+  # - returns a Number
   stepForU : (x) ->
     x
   
+  # **xForStep** - given d step along the curve give us x
+  # - **d** - a Number
+  # - returns a Number
   xForStep : (d) ->
     x
 
+  # **pointDistance** 
+  # - **d** - a Number
+  # - returns a new Vec2
   pointDistance : (d) ->
     # sqrt(d^2 / 2) = a
     t = Math.sqrt(d*d/2.0)
     new Vec2 t,t
  
+  # **tangentOnCurve**
+  # - **x** - a Number
+  # - returns a new Vec2
   tangentOnCurve : (x) ->
     new Vec2 1,1
 
+  # **tangentDistance**
+  # - **d** - a Number
+  # - returns a new Vec2
   tangentDistance: (d) ->
     new Vec2 1,1
 
@@ -68,6 +87,7 @@ class Curve
   @cache_table = true 
   @cache_size = 200
 
+  # **@constructor**
   constructor : () ->
 
     @length = 0
@@ -86,10 +106,15 @@ class Curve
 
     @
 
+  # **pointOnCurve** - Return the point on this curve given u (or x)
+  # - **u** - a Number - Required
+  # - returns a new Vec3
   pointOnCurve : (u) ->
     new Vec3 0,0,0
 
-  # Given a u, tell us the distance along the curve
+  # **stepForU** - given U return the step distance 
+  # - **x** - Step along the curve x o
+  # - returns a Number
   stepForU : (u) ->
 
     if u == 0
@@ -115,7 +140,10 @@ class Curve
 
     du * (curr_dist - prev_dist) + prev_dist 
 
-  # find the value of u for a given distance
+   
+  # **uForStep** - given a euclidean distance what is the step
+  # - **d** - a Number
+  # - returns a new Vec3
   uForStep : (d) ->
 
     if d == 0
@@ -144,8 +172,9 @@ class Curve
 
     dd * (curr_u - prev_u) + prev_u 
 
-
-  # Given a real distance along the curve, find our point
+  # **pointDistance**
+  # - **d** - a Number - Required
+  # - returns a new Vec3
   pointDistance : (d) ->
     # If we have a cache table step through it and find u
 
@@ -181,7 +210,9 @@ class Curve
     else 
       @pointOnCurve @uForStep d
 
-  # get a tangent from the normalised co-ordinate
+  # **tangentOnCurve** - get a tangent from the normalised co-ordinate
+  # - **u** - a Number - Required
+  # - returns a new Vec3
   tangentOnCurve : (u) ->
     v0 = @pointOnCurve(u) 
     v1 = @pointOnCurve(u + Curve.step_rez / 2)
@@ -192,7 +223,9 @@ class Curve
 
     Vec3.sub(v1,v0).normalize()
 
-  # get a tangent from the distance along the curve
+  # **tangentDistance ** - get a tangent from the distance along the curve
+  # - **d** - a Number
+  # - returns a new Vec3
   tangentDistance : (d) ->
     v0 = @pointDistance(d) 
     v1 = @pointDistance(d + Curve.step_rez / 2)
@@ -204,13 +237,17 @@ class Curve
     Vec3.sub(v1,v0).normalize()
 
 
-
-###BezierCubic3###
+### BezierCubic3 ###
 # A Quadratic, bezier curve with four vectors determining the shape
 # A 3D curve as oppose to 2D
 
 class BezierCubic3 extends Curve
 
+  # **@constructor**
+  # - **v0** - a Vec3 - Required
+  # - **v1** - a Vec3 - Required
+  # - **v2** - a Vec3 - Required
+  # - **v3** - a Vec3 - Required
   constructor : (@v0,@v1,@v2,@v3) ->
     super()
 
@@ -226,7 +263,9 @@ class BezierCubic3 extends Curve
   _B4 : (t) -> 
     (1-t)*(1-t)*(1-t)
 
-  # u is 0-1
+  # **pointOnCurve** 
+  # - **u** - a Number - Range 0 to 1 - Required
+  # - returns a new Vec3
   pointOnCurve: (u) ->
     new Vec3( v0.x*@_B1(u) + v1.x*@_B2(u) + v2.x*@_B3(u) + v3.x*@_B4(u),
       v0.y*@_B1(u) + v1.y*@_B2(u) + v2.y*@_B3(u) + v3.y*@_B4(u),
@@ -246,9 +285,17 @@ class BezierCubic3 extends Curve
 # @c - parameter of the line equation
 
 class Parabola 
+  # **constructor**
+  # - **f** - a Vec2 - Required
+  # - **a** - a Number - Required
+  # - **b** - a Number - Required
+  # - **c** - a Number - Required
   constructor : (@f, @a, @b, @c) ->
     @
 
+  # **sample**
+  # - **x** - a Number - Required
+  # - returns an Array of Number - Length 2
   sample : (x) ->
 
     # Three ways to sample - arbitrary line, x axis or y axis
@@ -297,7 +344,10 @@ class Parabola
       PXLError("Malformed ")
       return [0,0]
 
-  # figure out where a line crosses this parabola given the equation in the form ax + by + c = 0
+  # **lineCrossing** - figure out where a line crosses this parabola given the equation in the form ax + by + c = 0
+  # - **e** - a Number - Required
+  # - **f** - a Number - Required
+  # - **g** - a Number - Required
   lineCrossing : (e,f,g) ->
 
     #[e,f,g] = line.equation()
@@ -335,13 +385,15 @@ class Parabola
     [ new Vec2(x0, (-e*x0-g)/f), new Vec2(x1, (-e*x1-g)/f) ]
 
 
-###CatmullPatch###
+### CatmullPatch ###
 #
 
 class CatmullPatch 
   # TODO - as we are are not keeping a count of the points, we cant really
   # alter the patch on the fly :( 
 
+  # **@constructor**
+  # - **points** - an Array of Vec3 - Length 16 - Required
   # Assume points are given in column major order!
   constructor : (points) ->
     
@@ -374,7 +426,9 @@ class CatmullPatch
     @pz = Matrix4.mult(b,@pz).mult(bt)
 
 
-  # Sample the patch with a vec2 (u,w) to gain the required point 
+  # **sample** - Sample the patch with a vec2 (u,w) to gain the required point 
+  # - **v** - a Vec2 - Required
+  # - returns a new Vec3
   sample : (v) ->
     u1 = v.x
     u2 = u1 * u1
@@ -400,15 +454,21 @@ class CatmullPatch
 
   # TODO - eventually use the proper matrix http://www.cubic.org/docs/hermite.htm
 
-###CubicHermiteSpline###
-#
-
+### CubicHermiteSpline ###
 class CubicHermiteSpline extends Curve
 
+  # **@constructor**
+  # - **p0** - a Vec3 - Required
+  # - **p1** - a Vec3 - Required
+  # - **m0** - a Vec3 - Required
+  # - **m1** - a Vec3 - Required
   constructor : (@p0, @p1, @m0, @m1) ->
     super()
     @
 
+  # **pointOnCurve** - Return the point on this curve given u (or x)
+  # - **u** - a Number - Required
+  # - returns a new Vec3 
   pointOnCurve : (u) ->
 
     t3 = u*u*u 
@@ -421,14 +481,15 @@ class CubicHermiteSpline extends Curve
 
     c0.add(c1).add(c2).add(c3)
 
-###CatmullRomSpline###
+### CatmullRomSpline ###
 # A collection of curves forming a Catmull-rom spline.
 
 class CatmullRomSpline extends Curve
 
   # TODO - as we are are not keeping a count of the points, we cant really
   # alter the spline on the fly :(
-
+  # **@constructor**
+  # - **points** - an Array of Vec3 - Minimum Length 4 - Required
   constructor : (points) ->
 
     if points.length < 4
@@ -449,7 +510,9 @@ class CatmullRomSpline extends Curve
     super()
     @
 
-  # pointOnCurve - return a point on the spline given a value of 0 - 1
+  # **pointOnCurve** - Return the point on this curve given u (or x)
+  # - **u** - a Number - Range 0 to 1 - Required
+  # - returns a new Vec3
   pointOnCurve : (u) ->
 
     # Decide where in spline we are given the numbers we have
@@ -459,7 +522,7 @@ class CatmullRomSpline extends Curve
       @splines[@splines.length-1].pointOnCurve (1.0)
     else if u <= 0
       @splines[0].pointOnCurve(0)
-    else 
+    else
       @splines[segment].pointOnCurve ( (@splines.length * u) - segment)
 
 
@@ -470,10 +533,16 @@ class CatmullRomSpline extends Curve
 
 class CurveSlide 
 
+  # **@constructor**
+  # - **curve** - a Curve - Required
+  # - **normal** - a Vec3 - Required
   constructor : (@curve, @normal) ->
     @reset @normal,0
 
-  # reset the slide starting from distance d, with a starting normal
+  # **reset** - reset the slide starting from distance d, with a starting normal
+  # - **normal** - a Vec3 - Required
+  # - **d** - a Number - Default 0
+  # - returns this
   reset : (@normal, d=0) ->
     @d = d
     @pos = @curve.pointDistance @d
@@ -481,8 +550,11 @@ class CurveSlide
     @bp = Vec3.cross @normal, @tangent
     @np = @normal
     @binormal = @bp
+    @
 
-  # slide along the curve from the starting point by d distance
+  # **slide** - slide along the curve from the starting point by d distance
+  # - **dd** - a Number - Required
+  # - returns this
   slide : (dd) ->
     @d += dd
     if @d > @curve.length
@@ -495,7 +567,9 @@ class CurveSlide
  
     @normal = Vec3.cross @bp, @tangent
     @binormal = Vec3.cross @tangent, @normal
- 
+    @
+
+
 ### NURB ###
 # NURB Class
 # TODO - Most of it - there is still a fair bit to go
@@ -503,8 +577,6 @@ class CurveSlide
 class NURB extends Curve
   constructor : () ->
     @
-
-
 
 module.exports = 
   Curve2 : Curve2

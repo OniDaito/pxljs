@@ -90,8 +90,8 @@ This software <span class="hljs-keyword">is</span> released under the MIT Licenc
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>##Request###
-A class that makes an XMLHTTPRequest for us, given a url</p>
+              <h2 id="request">Request</h2>
+<p>A class that makes an XMLHTTPRequest for us, given a url</p>
 
             </div>
             
@@ -107,12 +107,14 @@ A class that makes an XMLHTTPRequest for us, given a url</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>@url -  the url to file in question</p>
+              <p><strong>@constructor</strong></p>
+<ul>
+<li><strong>url</strong> - a String - Required</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  
-  constructor : <span class="hljs-function"><span class="hljs-params">(@url)</span> -&gt;</span></pre></div></div>
+            <div class="content"><div class='highlight'><pre>  constructor : <span class="hljs-function"><span class="hljs-params">(@url)</span> -&gt;</span></pre></div></div>
             
         </li>
         
@@ -216,11 +218,12 @@ PXLLog “Request Result of “ + @url + “ is “ + @req.responseType, @</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>Actually perform the request. Pass in a callback to handle the data</p>
+              <p><strong>get</strong> - Actually perform the request. Pass in a callback to handle the data</p>
 <ul>
-<li>callback - a function</li>
-<li>onerror - a function called when errors occur</li>
-<li>synchronous - an optional boolean flag to make this call synchronous</li>
+<li><strong>callback</strong> - a Function</li>
+<li><strong>onerror</strong> - a Function</li>
+<li><strong>synchronous</strong> - a Boolean - Default false</li>
+<li>returns this</li>
 </ul>
 
             </div>

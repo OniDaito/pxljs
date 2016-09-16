@@ -141,11 +141,14 @@ cache = []</pre></div></div>
               </div>
               <h2 id="pxlerror">PXLError</h2>
 <p>Thow an exception and print the message </p>
+<ul>
+<li><strong>msg</strong> - a String</li>
+<li>returns throws exception</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function">
-<span class="hljs-title">PXLError</span>  = <span class="hljs-params">(msg)</span> =&gt;</span>
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-title">PXLError</span>  = <span class="hljs-params">(msg)</span> =&gt;</span>
   f = <span class="hljs-string">"PXL Error : "</span> + msg
   <span class="hljs-built_in">console</span>.error (f)
   <span class="hljs-keyword">throw</span> f</pre></div></div>
@@ -161,6 +164,10 @@ cache = []</pre></div></div>
               </div>
               <h2 id="pxlwarning">PXLWarning</h2>
 <p>Thow a warning and print the message </p>
+<ul>
+<li><strong>msg</strong> - a String</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -169,7 +176,8 @@ cache = []</pre></div></div>
   f = <span class="hljs-string">"PXL Warning : "</span> + msg
   
   <span class="hljs-built_in">console</span>.warn (f)
-  <span class="hljs-built_in">console</span>.warn printStackTrace()</pre></div></div>
+  <span class="hljs-built_in">console</span>.warn printStackTrace()
+  @</pre></div></div>
             
         </li>
         
@@ -183,6 +191,10 @@ cache = []</pre></div></div>
               <h2 id="pxlwarningonce">PXLWarningOnce</h2>
 <p>Thow a warning only once and print the message 
 Potentially a warning shouldnt occur more than once ;)</p>
+<ul>
+<li><strong>msg</strong> - a String</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -208,6 +220,10 @@ Potentially a warning shouldnt occur more than once ;)</p>
               </div>
               <h2 id="pxldebug">PXLDebug</h2>
 <p>If in Debug print the message </p>
+<ul>
+<li><strong>msg</strong> - a String</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -216,7 +232,7 @@ Potentially a warning shouldnt occur more than once ;)</p>
   <span class="hljs-keyword">if</span> PXL.Context.debug
     f = <span class="hljs-string">"PXL Debug : "</span> + msg
     <span class="hljs-built_in">console</span>.log (f)
-    @</pre></div></div>
+  @</pre></div></div>
             
         </li>
         
@@ -229,11 +245,14 @@ Potentially a warning shouldnt occur more than once ;)</p>
               </div>
               <h2 id="pxllog">PXLLog</h2>
 <p>Log a message to the console</p>
+<ul>
+<li><strong>msg</strong> - a String</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function">
-<span class="hljs-title">PXLLog</span>  = <span class="hljs-params">(msg)</span> -&gt;</span>
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-title">PXLLog</span>  = <span class="hljs-params">(msg)</span> -&gt;</span>
   f = <span class="hljs-string">"PXL Log : "</span> + msg
 
   myName = arguments.callee.toString()
@@ -241,6 +260,7 @@ Potentially a warning shouldnt occur more than once ;)</p>
   myName = myName.substr(<span class="hljs-number">0</span>, myName.indexOf(<span class="hljs-string">'('</span>))
 
   <span class="hljs-built_in">console</span>.log (f)
+  @
 
 <span class="hljs-built_in">module</span>.exports =
   PXLError : PXLError

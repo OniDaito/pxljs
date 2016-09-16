@@ -22,31 +22,52 @@ Influenced by signals.js - an object where listeners and events may be added
 util = require "./util"
 {Vec2} = require "../math/math"
 
-###Signal###
+### Signal ###
 class Signal
 
+  # **@constructor**
   constructor : () ->
     @listeners = []
     @_pause = false
 
+  # **add** 
+  # - **func** - a Function - Required
+  # - **context** - an Object - Required
+  # - returns this
   add : (func, context) ->
     @listeners.push {f: func, c: context, o: false, g: PXL.Context}
     @
-
+  
+  # **addOnce** 
+  # - **func** - a Function - Required
+  # - **context** - an Object - Required
+  # - returns this
   addOnce : (func, context) ->
     @listeners.push {f: func, c: context, o: true, g: PXL.Context}
     @
 
+  # **remove** 
+  # - **func** - a Function - Required
+  # - **context** - an Object - Required
+  # - returns this
   remove : (func, context) ->
     @del func
     @
 
+  # **pause** 
+  # - **force** - a Boolean 
+  # - returns this
   pause : (force) ->
     if force?
       @_pause = force
     else
       @_pause = !@_pause
+    @
 
+  # **del**
+  # - **func** - a Function - Required
+  # - **context** - an Object - Required 
+  # - returns this
   del : (func, context) ->
     for obj in @listeners
       if obj.c == context
@@ -56,7 +77,8 @@ class Signal
           break
     @
 
-  # dispatch the event. All arguments passed in are sent on to the final function
+  # **dispatch** the event. All arguments passed in are sent on to the final function
+  # - returns this
   dispatch : () ->
     if @_pause
       return @
@@ -74,7 +96,6 @@ class Signal
       @del l
 
     @
-
 
 module.exports = 
   Signal : Signal

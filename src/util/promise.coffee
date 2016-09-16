@@ -25,7 +25,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 {PXLWarning, PXLError, PXLLog} = require '../util/log'
 
 
-###Promise###
+### Promise ###
 # A class to handle the loading of many items asynchronously
 # Promises seem popular but I thought I'd include one anyway as its good
 # to learn and its not in all browsers. This one presents the results in
@@ -33,19 +33,21 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 # doesnt queue - things fire and return whenever.
 # These promises also record the context for WebGL if it exists
 
-
 class Promise
+  # **@constructor**
   constructor : () ->
     @context = PXL.Context if PXL?
     @
 
-
-  # When takes any number of promises. When it's promises are resolved
+  # **when**
+  # when takes any number of promises. When it's promises are resolved
   # this promise then becomes resolved. The function returns the parameters
   # in the same order the promises were passed in
   # TODO = There is potential that a particularly fast function will return 
   # before all this resolved as the function has already started in order to 
   # return its promise
+  # - **arguments** - a variable number of arguments of type Promise
+  # - returns this
 
   when : () ->
     
@@ -78,19 +80,26 @@ class Promise
       promise.then(success_closure(@,fidx), failure)
     @
 
-
+  # **then**
+  # - **onResolved** - a Function 
+  # - **onRejected** - a Function
+  # - returns this
   then : (@onResolved, @onRejected) ->
     PXL.Context.switchContext @context if @context?
     @
-
+ 
+  # **resolve**
+  # - **value** - any data to be passed to onResolved 
   resolve : (value) ->
     PXL.Context.switchContext @context if @context?
     @onResolved value if @onResolved?
-
+  
+  # **reject**
+  # - **value** - any data to be passed to onRejected
   reject : (value) ->
     PXL.Context.switchContext @context if @context?
     @onRejected value if @onRejected?
 
 
-module.exports = 
+module.exports =
   Promise : Promise

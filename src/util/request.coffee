@@ -38,13 +38,13 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 {Signal} = require './signal'
 {PXLWarning, PXLError, PXLLog} = require './log'
 
-###Request###
+### Request ###
 # A class that makes an XMLHTTPRequest for us, given a url
 
 class Request
 
-  # @url -  the url to file in question
-  
+  # **@constructor**
+  # - **url** - a String - Required
   constructor : (@url) ->
     # At the time of construction note down the WebGL context as we will need
     # that as the active context may have changed - async remember
@@ -78,10 +78,11 @@ class Request
     @
 
 
-  # Actually perform the request. Pass in a callback to handle the data
-  # - callback - a function
-  # - onerror - a function called when errors occur
-  # - synchronous - an optional boolean flag to make this call synchronous
+  # **get** - Actually perform the request. Pass in a callback to handle the data
+  # - **callback** - a Function
+  # - **onerror** - a Function
+  # - **synchronous** - a Boolean - Default false
+  # - returns this
 
   get : (callback, onerror, synchronous=false) ->
 

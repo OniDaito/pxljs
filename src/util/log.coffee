@@ -77,7 +77,8 @@ printObjectName = (obj) ->
 
 ### PXLError ###
 # Thow an exception and print the message 
-
+# - **msg** - a String
+# - returns throws exception
 PXLError  = (msg) =>
   f = "PXL Error : " + msg
   console.error (f)
@@ -85,17 +86,21 @@ PXLError  = (msg) =>
 
 ### PXLWarning ###
 # Thow a warning and print the message 
+# - **msg** - a String
+# - returns this
 
 PXLWarning  = (msg) =>
   f = "PXL Warning : " + msg
   
   console.warn (f)
   console.warn printStackTrace()
-
+  @
 
 ### PXLWarningOnce ###
 # Thow a warning only once and print the message 
 # Potentially a warning shouldnt occur more than once ;)
+# - **msg** - a String
+# - returns this
 
 PXLWarningOnce  = (msg) =>
   result = msg in cache
@@ -109,17 +114,20 @@ PXLWarningOnce  = (msg) =>
 
 ### PXLDebug ###
 # If in Debug print the message 
+# - **msg** - a String
+# - returns this
 
 PXLDebug  = (msg) =>
   if PXL.Context.debug
     f = "PXL Debug : " + msg
     console.log (f)
-    @
-
+  @
 
 ### PXLLog ###
 # Log a message to the console
-
+# - **msg** - a String
+# - returns this
+#
 PXLLog  = (msg) ->
   f = "PXL Log : " + msg
 
@@ -128,6 +136,7 @@ PXLLog  = (msg) ->
   myName = myName.substr(0, myName.indexOf('('))
 
   console.log (f)
+  @
 
 module.exports =
   PXLError : PXLError

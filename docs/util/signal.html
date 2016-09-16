@@ -76,35 +76,138 @@ util = <span class="hljs-built_in">require</span> <span class="hljs-string">"./u
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>##Signal###</p>
+              <h2 id="signal">Signal</h2>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Signal</span></span>
+            <div class="content"><div class='highlight'><pre><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Signal</span></span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p><strong>@constructor</strong></p>
 
-  constructor : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  constructor : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
     @listeners = []
-    @_pause = <span class="hljs-literal">false</span>
+    @_pause = <span class="hljs-literal">false</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p><strong>add</strong> </p>
+<ul>
+<li><strong>func</strong> - a Function - Required</li>
+<li><strong>context</strong> - an Object - Required</li>
+<li>returns this</li>
+</ul>
 
-  add : <span class="hljs-function"><span class="hljs-params">(func, context)</span> -&gt;</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  add : <span class="hljs-function"><span class="hljs-params">(func, context)</span> -&gt;</span>
     @listeners.push {f: func, c: context, o: <span class="hljs-literal">false</span>, g: PXL.Context}
-    @
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p><strong>addOnce</strong> </p>
+<ul>
+<li><strong>func</strong> - a Function - Required</li>
+<li><strong>context</strong> - an Object - Required</li>
+<li>returns this</li>
+</ul>
 
-  addOnce : <span class="hljs-function"><span class="hljs-params">(func, context)</span> -&gt;</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  addOnce : <span class="hljs-function"><span class="hljs-params">(func, context)</span> -&gt;</span>
     @listeners.push {f: func, c: context, o: <span class="hljs-literal">true</span>, g: PXL.Context}
-    @
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p><strong>remove</strong> </p>
+<ul>
+<li><strong>func</strong> - a Function - Required</li>
+<li><strong>context</strong> - an Object - Required</li>
+<li>returns this</li>
+</ul>
 
-  remove : <span class="hljs-function"><span class="hljs-params">(func, context)</span> -&gt;</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  remove : <span class="hljs-function"><span class="hljs-params">(func, context)</span> -&gt;</span>
     @del func
-    @
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p><strong>pause</strong> </p>
+<ul>
+<li><strong>force</strong> - a Boolean </li>
+<li>returns this</li>
+</ul>
 
-  pause : <span class="hljs-function"><span class="hljs-params">(force)</span> -&gt;</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  pause : <span class="hljs-function"><span class="hljs-params">(force)</span> -&gt;</span>
     <span class="hljs-keyword">if</span> force?
       @_pause = force
     <span class="hljs-keyword">else</span>
       @_pause = !@_pause
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p><strong>del</strong></p>
+<ul>
+<li><strong>func</strong> - a Function - Required</li>
+<li><strong>context</strong> - an Object - Required </li>
+<li>returns this</li>
+</ul>
 
-  del : <span class="hljs-function"><span class="hljs-params">(func, context)</span> -&gt;</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  del : <span class="hljs-function"><span class="hljs-params">(func, context)</span> -&gt;</span>
     <span class="hljs-keyword">for</span> obj <span class="hljs-keyword">in</span> @listeners
       <span class="hljs-keyword">if</span> obj.c == context
         <span class="hljs-keyword">if</span> obj.f == func
@@ -116,13 +219,16 @@ util = <span class="hljs-built_in">require</span> <span class="hljs-string">"./u
         </li>
         
         
-        <li id="section-4">
+        <li id="section-10">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
+                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>dispatch the event. All arguments passed in are sent on to the final function</p>
+              <p><strong>dispatch</strong> the event. All arguments passed in are sent on to the final function</p>
+<ul>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -143,7 +249,6 @@ util = <span class="hljs-built_in">require</span> <span class="hljs-string">"./u
       @del l
 
     @
-
 
 <span class="hljs-built_in">module</span>.exports = 
   Signal : Signal</pre></div></div>
