@@ -86,28 +86,40 @@ Texture Objects - uses the request object <span class="hljs-keyword">and</span> 
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>##TextureBase###
-Our base texture. It creates a blank set of data bound to a texture
-Params is a dictionary containing various parameters for textures
-Accepted values are:
-min - the min distance filter
-max - the max distance filter
-wraps - the s wrap
-wrapt - the t wrap
-width
-height
-channels - the number of channels such as RGBA
-datatype - internal datatype such as UNSIGNED_BYTE</p>
+              <h2 id="texturebase">TextureBase</h2>
+<p>Our base texture. It creates a blank set of data bound to a texture</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>
-
-
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TextureBase</span></span>
 
-  @UNITS = [] <span class="hljs-comment"># Which texture unit is free?</span>
+  @UNITS = [] <span class="hljs-comment"># Which texture unit is free?</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p><strong>@constructor</strong></p>
+<ul>
+<li><strong>params</strong> - an Object with named members as follows
+– <strong>min</strong> - a GL_ENUM - Default GL.LINEAR
+– <strong>max</strong> - a GL_ENUM - Default GL.LINEAR
+– <strong>wraps</strong> - a GL_ENUM - Default GL.CLAMP_TO_EDGE
+– <strong>width</strong> - a Number - Default 512
+– <strong>height</strong> - a Number - Default 512
+– <strong>channels</strong> - a GL_ENUM - Default GL.RGBA
+– <strong>datatype</strong> - a GL_ENUM - Default GL.UNSIGNED_BYTE</li>
+</ul>
 
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  
   constructor : <span class="hljs-function"><span class="hljs-params">(params)</span> -&gt;</span>
 
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> PXL.Context.gl?
@@ -120,11 +132,11 @@ datatype - internal datatype such as UNSIGNED_BYTE</p>
         </li>
         
         
-        <li id="section-4">
+        <li id="section-5">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
+                <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
               <p>Build our @UNITS if it isnt already? This is perhaps not optimal
 but rather than do this in the App class I prefer to do it here</p>
@@ -134,11 +146,11 @@ but rather than do this in the App class I prefer to do it here</p>
         </li>
         
         
-        <li id="section-5">
+        <li id="section-6">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
+                <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
               <p>Watcher for texture bind units</p>
 
@@ -151,11 +163,11 @@ but rather than do this in the App class I prefer to do it here</p>
         </li>
         
         
-        <li id="section-6">
+        <li id="section-7">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <p>Non power of two textures must have the following in webgl
 TODO - test for powers and look at params</p>
@@ -185,11 +197,11 @@ TODO - test for powers and look at params</p>
         </li>
         
         
-        <li id="section-7">
+        <li id="section-8">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p>Internal static lookup - tries to find empty texture units</p>
 
@@ -212,15 +224,26 @@ TODO - test for powers and look at params</p>
       x = x | x &gt;&gt; i
       i &lt;&lt;= <span class="hljs-number">1</span>
    
-    <span class="hljs-keyword">return</span> x + <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> x + <span class="hljs-number">1</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p><strong>build</strong> - create the actual texture on the GPU</p>
+<ul>
+<li>returns this</li>
+</ul>
 
-  build : <span class="hljs-function"><span class="hljs-params">(passed_context)</span> -&gt;</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  build : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
     context = PXL.Context
-    <span class="hljs-keyword">if</span> passed_context?
-      context = passed_context
-    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> context
-      <span class="hljs-keyword">return</span> 
-
     gl = context.gl
     
     @bind()</pre></div></div>
@@ -228,11 +251,11 @@ TODO - test for powers and look at params</p>
         </li>
         
         
-        <li id="section-8">
+        <li id="section-10">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
               <p>TODO - using channels twice here - thats not strictly true and will need adjusting</p>
 
@@ -253,34 +276,45 @@ TODO - test for powers and look at params</p>
         </li>
         
         
-        <li id="section-9">
+        <li id="section-11">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              <p>bind - bind this texture to texture unit in params (or the one given in unit)</p>
+              <p><strong>bind</strong> - bind this texture to texture unit in params (or the one given in unit)</p>
+<ul>
+<li><strong>unit</strong> - a Number - Integer</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  bind: <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+            <div class="content"><div class='highlight'><pre>  bind: <span class="hljs-function"><span class="hljs-params">(unit)</span> -&gt;</span>
+    
     gl = PXL.Context.gl
-    <span class="hljs-keyword">if</span> gl?
+    <span class="hljs-keyword">if</span> unit?
+      @unit = unit
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> gl?
       @unit = @_findUnit()
-      gl.activeTexture GL.TEXTURE0 + @unit
-      gl.bindTexture(gl.TEXTURE_2D, @texture)
+    
+    gl.activeTexture GL.TEXTURE0 + @unit
+    gl.bindTexture(gl.TEXTURE_2D, @texture)
     @</pre></div></div>
             
         </li>
         
         
-        <li id="section-10">
+        <li id="section-12">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <p>unbind - clear the bound unit</p>
+              <p><strong>unbind</strong> - clear the bound unit</p>
+<ul>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -296,17 +330,20 @@ TODO - test for powers and look at params</p>
         </li>
         
         
-        <li id="section-11">
+        <li id="section-13">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
-              <p>update the texture. If we are referencing an image or video (like HTML5 image) then
+              <p><strong>update</strong> - update the data of the texture. If we are referencing an image or video (like HTML5 image) then
 simply re-read the image. If we are using a data texture however, this new array is 
 passed in as an array of values like [0,1,0,1,1] etc and converted
 TODO do we really need to bind here in order to update a texture? Check that! 
 Example, in the case of a skeleton pallete we bind, update, then unbind only to bind again</p>
+<ul>
+<li><strong>texdata</strong> - an Image, Array, Uint8Array, Float32Array - Required</li>
+</ul>
 
             </div>
             
@@ -327,11 +364,11 @@ Example, in the case of a skeleton pallete we bind, update, then unbind only to 
         </li>
         
         
-        <li id="section-12">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
               <p>We do the conversion here I think</p>
 
@@ -362,11 +399,11 @@ Example, in the case of a skeleton pallete we bind, update, then unbind only to 
         </li>
         
         
-        <li id="section-13">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>_addToNode - called when this texture is added to a node</p>
 
@@ -379,11 +416,11 @@ Example, in the case of a skeleton pallete we bind, update, then unbind only to 
         </li>
         
         
-        <li id="section-14">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>_removeFromNode - called when this texture is removed from a node</p>
 
@@ -396,13 +433,13 @@ Example, in the case of a skeleton pallete we bind, update, then unbind only to 
         </li>
         
         
-        <li id="section-15">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
-              <p>washUp - remove from the graphics card</p>
+              <p><strong>washUp</strong> - remove from the graphics card</p>
 
             </div>
             
@@ -414,11 +451,11 @@ Example, in the case of a skeleton pallete we bind, update, then unbind only to 
         </li>
         
         
-        <li id="section-16">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <h2 id="texture">Texture</h2>
 <p>Create a texture from either a provided image or creates a blank one if texdata not provided
@@ -427,9 +464,33 @@ Params are as the TextureBase class</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Texture</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">TextureBase</span></span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Texture</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">TextureBase</span></span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p><strong>@constructor</strong></p>
+<ul>
+<li><strong>texdata</strong> - an Image, Array, Uint8Array or Float32Array - Required</li>
+<li><strong>params</strong> - an Object with named members as follows:
+– <strong>min</strong> - a GL_ENUM - Default GL.LINEAR
+– <strong>max</strong> - a GL_ENUM - Default GL.LINEAR
+– <strong>wraps</strong> - a GL_ENUM - Default GL.CLAMP_TO_EDGE
+– <strong>width</strong> - a Number - Default 512
+– <strong>height</strong> - a Number - Default 512
+– <strong>channels</strong> - a GL_ENUM - Default GL.RGBA
+– <strong>datatype</strong> - a GL_ENUM - Default GL.UNSIGNED_BYTE</li>
+</ul>
 
-  constructor: <span class="hljs-function"><span class="hljs-params">(texdata, params)</span> -&gt;</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  constructor: <span class="hljs-function"><span class="hljs-params">(texdata, params)</span> -&gt;</span>
     <span class="hljs-keyword">super</span>(params)
 
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> PXL.Context.gl?
@@ -461,22 +522,36 @@ Params are as the TextureBase class</p>
       
       @textureData = <span class="hljs-keyword">new</span> Float32Array texdata
      
-    @build()
+    @build()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p><strong>build</strong> - actually create the texure on the GPU</p>
+<ul>
+<li>returns this</li>
+</ul>
 
-
-
-  build : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  build : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
     context = PXL.Context
     gl = context.gl</pre></div></div>
             
         </li>
         
         
-        <li id="section-17">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
               <p>TODO are we sure we dont need to flip anymore</p>
 
@@ -488,11 +563,11 @@ Params are as the TextureBase class</p>
         </li>
         
         
-        <li id="section-18">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>In case we are using webgl images and or video as oppose to our array for messing with</p>
 
@@ -509,26 +584,40 @@ Params are as the TextureBase class</p>
     gl.texParameteri gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, @wrapt
 
     gl.bindTexture gl.TEXTURE_2D, <span class="hljs-literal">null</span>
-  @</pre></div></div>
+    @</pre></div></div>
             
         </li>
         
         
-        <li id="section-19">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <h2 id="texturefromurl">textureFromURL</h2>
 <p>Load a texture from a URL - convinience function that wraps a request
 Takes a url string, a callback, a failure callback. and optional params
 Saves the current context so we can fire different context requests
 TODO - Ideally we would have a future here and block till it returns?</p>
+<ul>
+<li><strong>url</strong> - a String - Required</li>
+<li><strong>callback</strong> - a Function with the following params
+– <strong>texture</strong> - a Texture</li>
+<li><strong>onerror</strong> - a Function</li>
+<li><strong>params</strong> - an Object with the following named members:
+– <strong>min</strong> - a GL_ENUM - Default GL.LINEAR
+– <strong>max</strong> - a GL_ENUM - Default GL.LINEAR
+– <strong>wraps</strong> - a GL_ENUM - Default GL.CLAMP_TO_EDGE
+– <strong>width</strong> - a Number - Default 512
+– <strong>height</strong> - a Number - Default 512
+– <strong>channels</strong> - a GL_ENUM - Default GL.RGBA
+– <strong>datatype</strong> - a GL_ENUM - Default GL.UNSIGNED_BYTE</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function">
+            <div class="content"><div class='highlight'><pre><span class="hljs-function">  
 <span class="hljs-title">textureFromURL</span> = <span class="hljs-params">(url, callback, onerror, params)</span> -&gt;</span>
 
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> url? <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> PXL.Context.gl?
@@ -540,11 +629,11 @@ TODO - Ideally we would have a future here and block till it returns?</p>
         </li>
         
         
-        <li id="section-20">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
               <p>TODO - On these callbacks context needs to be saved each time
 from the request all the way down :S</p>
@@ -577,11 +666,11 @@ from the request all the way down :S</p>
         </li>
         
         
-        <li id="section-21">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <h2 id="texturecube">TextureCube</h2>
 <p>Loads 6 textures for the texture cube.</p>
@@ -595,17 +684,29 @@ from the request all the way down :S</p>
         </li>
         
         
-        <li id="section-22">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
-              <p>constructor - takes an array of 6 paths for the cube</p>
+              <p><strong>@constructor</strong></p>
+<ul>
+<li><strong>images</strong> - an Array of Image - size 6 </li>
+<li><strong>params</strong> - an Object with the following members
+– <strong>min</strong> - a GL_ENUM - Default GL.LINEAR
+– <strong>max</strong> - a GL_ENUM - Default GL.LINEAR
+– <strong>wraps</strong> - a GL_ENUM - Default GL.CLAMP_TO_EDGE
+– <strong>width</strong> - a Number - Default 512
+– <strong>height</strong> - a Number - Default 512
+– <strong>channels</strong> - a GL_ENUM - Default GL.RGBA
+– <strong>datatype</strong> - a GL_ENUM - Default GL.UNSIGNED_BYTE</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  constructor: <span class="hljs-function"><span class="hljs-params">(images, params)</span> -&gt;</span>
+            <div class="content"><div class='highlight'><pre>  
+  constructor: <span class="hljs-function"><span class="hljs-params">(images, params)</span> -&gt;</span>
     
     <span class="hljs-keyword">super</span> (params)
 
@@ -627,33 +728,44 @@ from the request all the way down :S</p>
         </li>
         
         
-        <li id="section-23">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
-              <p>bind - bind this texture to texture unit given in params (or the one given in unit)</p>
+              <p><strong>bind</strong> - bind this texture to texture unit given in params (or the one given in unit)</p>
+<ul>
+<li><strong>unit</strong> - a Number - Integer</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>  bind: <span class="hljs-function"><span class="hljs-params">(unit)</span> -&gt;</span>
-    gl = PXL.Context.gl
-    <span class="hljs-keyword">if</span> gl?  
+   
+   gl = PXL.Context.gl
+   <span class="hljs-keyword">if</span> unit?
+      @unit = unit
+   <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> gl?
       @unit = @_findUnit()
-      gl.activeTexture(gl.TEXTURE0 + @unit)
-      gl.bindTexture(gl.TEXTURE_CUBE_MAP, @texture)</pre></div></div>
+    
+    gl.activeTexture(gl.TEXTURE0 + @unit)
+    gl.bindTexture(gl.TEXTURE_CUBE_MAP, @texture)</pre></div></div>
             
         </li>
         
         
-        <li id="section-24">
+        <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
-              <p>unbind - clear the bound unit</p>
+              <p><strong>unbind</strong> - clear the bound unit</p>
+<ul>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -663,18 +775,34 @@ from the request all the way down :S</p>
       gl.activeTexture(gl.TEXTURE0 + @unit)
       gl.bindTexture(gl.TEXTURE_CUBE_MAP, <span class="hljs-literal">null</span>)
       TextureBase.UNITS[i] = <span class="hljs-literal">null</span>
-      @unit = <span class="hljs-number">0</span></pre></div></div>
+      @unit = <span class="hljs-number">0</span>
+    @</pre></div></div>
             
         </li>
         
         
-        <li id="section-25">
+        <li id="section-29">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
-              <p>TODO - Deal with the error case</p>
+              <h2 id="texturecubefromurl">textureCubeFromURL</h2>
+<ul>
+<li><strong>paths</strong> - an Array of String - Length 6 - Required</li>
+<li><strong>callback</strong> - a Function with the following params
+– <strong>texture</strong> - a TextureCube</li>
+<li><strong>onerror</strong> - a Function</li>
+<li><strong>params</strong> - an Object with the following named members:
+– <strong>min</strong> - a GL_ENUM - Default GL.LINEAR
+– <strong>max</strong> - a GL_ENUM - Default GL.LINEAR
+– <strong>wraps</strong> - a GL_ENUM - Default GL.CLAMP_TO_EDGE
+– <strong>width</strong> - a Number - Default 512
+– <strong>height</strong> - a Number - Default 512
+– <strong>channels</strong> - a GL_ENUM - Default GL.RGBA
+– <strong>datatype</strong> - a GL_ENUM - Default GL.UNSIGNED_BYTE</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -703,11 +831,9 @@ from the request all the way down :S</p>
 
         texture = <span class="hljs-keyword">new</span> TextureCube texImages, params
         callback?(texture)
-
   @
 
-
-<span class="hljs-built_in">module</span>.exports = 
+<span class="hljs-built_in">module</span>.exports =
   Texture : Texture
   TextureBase : TextureBase
   TextureCube : TextureCube

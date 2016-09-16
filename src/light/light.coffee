@@ -35,11 +35,13 @@ LIGHTING_NUM_POINT_LIGHTS = 5
 LIGHTING_NUM_SPOT_LIGHTS = 5
 
 
-###AmbientLight###
+### AmbientLight ###
 # Basic ambient lighting. Should be included with all basic lights
 
 class AmbientLight
 
+  # **@constructor**
+  # - **colour** - a Colour.RGB - Default RGB(0,0,0)
   constructor : (@colour) ->
     if not @colour?
       @colour = new RGB(0,0,0)
@@ -100,7 +102,11 @@ class PointLight
     PointLight._numGlobal = lights.length
 
 
-  # constructor -  takes a position (Vec3), a colour, and a set of attenuation factors ([float,float,float,float])
+  # **@constructor**
+  # - **pos** - a Vec3 - Default (1,1,1)
+  # - **colour** - a Colour.RGB - Default RGB.WHITE
+  # - **attenutation** - an Array of Number - Length 4 - Default [100, 1.0, 0.045, 0.0075] - **NOT IMPLEMENTED YET**
+  # TODO - need to add attenuation to our ubershader
   constructor : (@pos, @colour, @attenuation) ->
    
     # this is a bit of a hack to get things bound to shaders but it works
@@ -195,7 +201,7 @@ class SpotLight
   # We need this because we may call draw on a subnode of a node that has a light
   # and that light should not affect the scene. this mask would be passed to the shader
 
-  # **constructor** 
+  # **@constructor** 
   # -**pos** - a Vec3
   # -**colour** - an RGB
   # -**dir** - a Vec3

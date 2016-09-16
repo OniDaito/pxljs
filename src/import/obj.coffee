@@ -40,16 +40,15 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 {PhongMaterial} = require '../material/phong'
 {BasicColourMaterial} = require '../material/basic'
 
-###OBJModel###
+### OBJModel ###
 # Load a basic OBJ Model as a set of nodes with materials
 
 class OBJModel extends Node
 
-  # Basic constructor for OBJ
-  # @url - the URL to the object in question
-  # @promise - this promise is honoured when everything is loaded 
-  # TODO - We may wish to consider how this fits with queue and loading items :O
-
+  # **@constructor**
+  # - **url** - a String - Required
+  # - **promise** - a Promise 
+  
   constructor: (@url, @promise) ->
     super()
     promise_main = new Promise()
@@ -113,7 +112,6 @@ class OBJModel extends Node
   # Parse the material file data.
   # So far, only basic phong materials are supported and RGB colours
   # callback is the function called when all the items have been loaded
-
 
   _parseMaterialFile : (text_data, materials, promise) ->
     lines = text_data.split("\n")

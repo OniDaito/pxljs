@@ -18,7 +18,7 @@ util = require "../util/util"
 {Vec2} = require "../math/math"
 {Signal} = require "../util/signal"
 
-###KeyEmitter###
+### KeyEmitter ###
 # Attaches to the App / Context and listens for DOM Key events then emmits
 
 KeyEmitter = {}
@@ -28,7 +28,8 @@ KeyEmitter["pauseKeyEmitter"] = (force) ->
   @keyDown.pause(force)
   @keyPress.pause(force)
 
-# makeKeyEmitter - function to make an object listen on the dom for keyboard events
+### makeKeyEmitter ###
+# function to make an object listen on the dom for keyboard events
 makeKeyEmitter = (obj) ->
   if obj.canvas?
     util.extend obj, KeyEmitter
@@ -59,7 +60,9 @@ makeKeyEmitter = (obj) ->
     obj.canvas.addEventListener "keypress", obj["_onKeyPress"]
 
     
-# removeKeyEmitter - remove any keyboard listeners
+### removeKeyEmitter ###
+# remove any keyboard listeners
+
 removeKeyEmitter = (obj) ->
   obj.canvas.removeEventListener('keyup', obj["_onKeyUp"])
   obj.canvas.removeEventListener('keydown', obj["_onKeyDown"])

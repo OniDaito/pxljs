@@ -118,20 +118,18 @@ TODO - there is duplication of data here we will need to sort out.</p>
 
       <span class="hljs-keyword">if</span> obj.contract.roles[u.name]?
 
-        obj_var = obj[obj.contract.roles[u.name]] 
+        obj_var = obj[obj.contract.roles[u.name]]
         shader_contract.matches[u.name] = obj_var
         obj.contract.matches[u.name] = obj_var
   
 
     <span class="hljs-keyword">for</span> a <span class="hljs-keyword">in</span> shader_contract.attributes
       <span class="hljs-keyword">if</span> obj.contract.roles[a.name]?
-        obj_var = obj[obj.contract.roles[a.name]] 
+        obj_var = obj[obj.contract.roles[a.name]]
         shader_contract.matches[a.name] = obj_var
-        obj.contract.matches[a.name] = obj_var   
+        obj.contract.matches[a.name] = obj_var
 
-    shader_contract
-
-  constructor : <span class="hljs-function"><span class="hljs-params">(@attributes, @uniforms, user_roles)</span> -&gt;</span></pre></div></div>
+    shader_contract</pre></div></div>
             
         </li>
         
@@ -141,6 +139,27 @@ TODO - there is duplication of data here we will need to sort out.</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p><strong>@constructor</strong></p>
+<ul>
+<li><strong>attributes</strong> - an Array - Required</li>
+<li><strong>uniforms</strong> - an Array - Required</li>
+<li><strong>user_roles</strong> - an Array</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  constructor : <span class="hljs-function"><span class="hljs-params">(@attributes, @uniforms, user_roles)</span> -&gt;</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <p>Roles are text to text mappings on the node side
 Essentially what role does a node variable play in
@@ -154,11 +173,11 @@ this shader</p>
         </li>
         
         
-        <li id="section-7">
+        <li id="section-8">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p>Copy any passed in @roles</p>
 
@@ -171,11 +190,11 @@ this shader</p>
         </li>
         
         
-        <li id="section-8">
+        <li id="section-9">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
               <p>matches are a direct mapping between either a uniform or 
 attribute and a node variable. This acts as a cache</p>
@@ -187,15 +206,18 @@ attribute and a node variable. This acts as a cache</p>
         </li>
         
         
-        <li id="section-9">
+        <li id="section-10">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>Add a variable to the contract
-role - the name of the variable in the shader
-varname - the javascript varible providing the data</p>
+              <p><strong>add</strong> - Add a variable to the contract</p>
+<ul>
+<li><strong>role</strong> - a String - Required</li>
+<li><strong>varname</strong>  - a String - Required
+returns this</li>
+</ul>
 
             </div>
             
@@ -206,13 +228,17 @@ varname - the javascript varible providing the data</p>
         </li>
         
         
-        <li id="section-10">
+        <li id="section-11">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              <p>Check to see if a rolename is listed</p>
+              <p><strong>hasRoleValue</strong> - Check to see if a rolename is listed</p>
+<ul>
+<li><strong>role_name</strong> - a String - Required</li>
+<li>returns a boolean</li>
+</ul>
 
             </div>
             
@@ -225,13 +251,16 @@ varname - the javascript varible providing the data</p>
         </li>
         
         
-        <li id="section-11">
+        <li id="section-12">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
+                <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <p>Find any unmatched uniforms or attributes</p>
+              <p><strong>findUnmatched</strong> - Find any unmatched uniforms or attributes</p>
+<ul>
+<li>returns an Array of Objects</li>
+</ul>
 
             </div>
             

@@ -217,7 +217,10 @@ Simply provide the the constructor variables and then bind in order to draw to t
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>bind - Bind this fbo to the current drawing context</p>
+              <p><strong>bind</strong> - Bind this fbo to the current drawing context</p>
+<ul>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -225,7 +228,8 @@ Simply provide the the constructor variables and then bind in order to draw to t
     gl = PXL.Context.gl
     
     gl.bindFramebuffer(gl.FRAMEBUFFER,@framebuffer)
-    gl.bindRenderbuffer(gl.RENDERBUFFER,@renderbuffer)</pre></div></div>
+    gl.bindRenderbuffer(gl.RENDERBUFFER,@renderbuffer)
+    @</pre></div></div>
             
         </li>
         
@@ -236,14 +240,18 @@ Simply provide the the constructor variables and then bind in order to draw to t
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>unbind - remove this fbo from the context</p>
+              <p><strong>unbind</strong> - remove this fbo from the context</p>
+<ul>
+<li>returns this</li>
+</ul>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>  unbind: <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
     gl = PXL.Context.gl
     gl.bindFramebuffer(gl.FRAMEBUFFER,<span class="hljs-literal">null</span>)
-    gl.bindRenderbuffer(gl.RENDERBUFFER,<span class="hljs-literal">null</span>)</pre></div></div>
+    gl.bindRenderbuffer(gl.RENDERBUFFER,<span class="hljs-literal">null</span>)
+    @</pre></div></div>
             
         </li>
         
@@ -254,7 +262,11 @@ Simply provide the the constructor variables and then bind in order to draw to t
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>clear - Clear the FBO with an optional colour</p>
+              <p><strong>clear</strong> - Clear the FBO with an optional colour</p>
+<ul>
+<li><strong>colour</strong> - a Colour</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -272,7 +284,9 @@ Simply provide the the constructor variables and then bind in order to draw to t
     <span class="hljs-keyword">if</span> @depth
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
     <span class="hljs-keyword">else</span>
-      gl.clear gl.COLOR_BUFFER_BIT</pre></div></div>
+      gl.clear gl.COLOR_BUFFER_BIT
+    
+    @</pre></div></div>
             
         </li>
         
@@ -283,7 +297,10 @@ Simply provide the the constructor variables and then bind in order to draw to t
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>washUp - delete this Fbo from the Graphics Card</p>
+              <p><strong>washUp</strong> - delete this Fbo from the Graphics Card</p>
+<ul>
+<li>returns this</li>
+</ul>
 
             </div>
             

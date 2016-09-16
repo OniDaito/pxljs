@@ -40,7 +40,16 @@ class TextureBase
 
   @UNITS = [] # Which texture unit is free?
 
-  # 
+  # **@constructor**
+  # - **params** - an Object with named members as follows
+  # -- **min** - a GL_ENUM - Default GL.LINEAR
+  # -- **max** - a GL_ENUM - Default GL.LINEAR
+  # -- **wraps** - a GL_ENUM - Default GL.CLAMP_TO_EDGE
+  # -- **width** - a Number - Default 512
+  # -- **height** - a Number - Default 512
+  # -- **channels** - a GL_ENUM - Default GL.RGBA
+  # -- **datatype** - a GL_ENUM - Default GL.UNSIGNED_BYTE
+  
   constructor : (params) ->
 
     if not PXL.Context.gl?
@@ -101,13 +110,10 @@ class TextureBase
    
     return x + 1
 
-  build : (passed_context) ->
+  # **build** - create the actual texture on the GPU
+  # - returns this
+  build : () ->
     context = PXL.Context
-    if passed_context?
-      context = passed_context
-    if not context
-      return 
-
     gl = context.gl
     
     @bind()
@@ -125,16 +131,23 @@ class TextureBase
 
     @
 
-  # bind - bind this texture to texture unit in params (or the one given in unit)
-  bind: () ->
+  # **bind** - bind this texture to texture unit in params (or the one given in unit)
+  # - **unit** - a Number - Integer
+  # - returns this
+  bind: (unit) ->
+    
     gl = PXL.Context.gl
-    if gl?
+    if unit?
+      @unit = unit
+    else if gl?
       @unit = @_findUnit()
-      gl.activeTexture GL.TEXTURE0 + @unit
-      gl.bindTexture(gl.TEXTURE_2D, @texture)
+    
+    gl.activeTexture GL.TEXTURE0 + @unit
+    gl.bindTexture(gl.TEXTURE_2D, @texture)
     @
       
-  # unbind - clear the bound unit
+  # **unbind** - clear the bound unit
+  # - returns this
   unbind: ->
     gl = PXL.Context.gl
     if gl?
@@ -144,11 +157,12 @@ class TextureBase
       @unit = 0
     @
 
-  # update the texture. If we are referencing an image or video (like HTML5 image) then
+  # **update** - update the data of the texture. If we are referencing an image or video (like HTML5 image) then
   # simply re-read the image. If we are using a data texture however, this new array is 
   # passed in as an array of values like [0,1,0,1,1] etc and converted
   # TODO do we really need to bind here in order to update a texture? Check that! 
   # Example, in the case of a skeleton pallete we bind, update, then unbind only to bind again
+  # - **texdata** - an Image, Array, Uint8Array, Float32Array - Required
 
   update : (texdata) ->
     
@@ -196,7 +210,7 @@ class TextureBase
     node.textures.splice node.textures.indexOf @
     @
   
-  # washUp - remove from the graphics card
+  # **washUp** - remove from the graphics card
   washup : () ->
     gl = PXL.Context.gl
     gl.deleteTexture @texture
@@ -209,6 +223,16 @@ class TextureBase
 
 class Texture extends TextureBase
 
+  # **@constructor**
+  # - **texdata** - an Image, Array, Uint8Array or Float32Array - Required
+  # - **params** - an Object with named members as follows:
+  # -- **min** - a GL_ENUM - Default GL.LINEAR
+  # -- **max** - a GL_ENUM - Default GL.LINEAR
+  # -- **wraps** - a GL_ENUM - Default GL.CLAMP_TO_EDGE
+  # -- **width** - a Number - Default 512
+  # -- **height** - a Number - Default 512
+  # -- **channels** - a GL_ENUM - Default GL.RGBA
+  # -- **datatype** - a GL_ENUM - Default GL.UNSIGNED_BYTE
   constructor: (texdata, params) ->
     super(params)
 
@@ -244,7 +268,8 @@ class Texture extends TextureBase
     @build()
 
 
-
+  # **build** - actually create the texure on the GPU
+  # - returns this
   build : () ->
     context = PXL.Context
     gl = context.gl
@@ -264,14 +289,26 @@ class Texture extends TextureBase
     gl.texParameteri gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, @wrapt
 
     gl.bindTexture gl.TEXTURE_2D, null
-  @
+    @
 
 ### textureFromURL ###
 # Load a texture from a URL - convinience function that wraps a request
 # Takes a url string, a callback, a failure callback. and optional params
 # Saves the current context so we can fire different context requests
 # TODO - Ideally we would have a future here and block till it returns?
-
+# - **url** - a String - Required
+# - **callback** - a Function with the following params
+# -- **texture** - a Texture
+# - **onerror** - a Function
+# - **params** - an Object with the following named members:
+# -- **min** - a GL_ENUM - Default GL.LINEAR
+# -- **max** - a GL_ENUM - Default GL.LINEAR
+# -- **wraps** - a GL_ENUM - Default GL.CLAMP_TO_EDGE
+# -- **width** - a Number - Default 512
+# -- **height** - a Number - Default 512
+# -- **channels** - a GL_ENUM - Default GL.RGBA
+# -- **datatype** - a GL_ENUM - Default GL.UNSIGNED_BYTE
+  
 textureFromURL = (url, callback, onerror, params) ->
 
     if not url? or not PXL.Context.gl?
@@ -304,15 +341,23 @@ textureFromURL = (url, callback, onerror, params) ->
       onerror?()
 
     r.get success, failure
-
-
        
 ### TextureCube ###
 # Loads 6 textures for the texture cube.
 
 
 class TextureCube extends TextureBase
-  # constructor - takes an array of 6 paths for the cube
+  # **@constructor**
+  # - **images** - an Array of Image - size 6 
+  # - **params** - an Object with the following members
+  # -- **min** - a GL_ENUM - Default GL.LINEAR
+  # -- **max** - a GL_ENUM - Default GL.LINEAR
+  # -- **wraps** - a GL_ENUM - Default GL.CLAMP_TO_EDGE
+  # -- **width** - a Number - Default 512
+  # -- **height** - a Number - Default 512
+  # -- **channels** - a GL_ENUM - Default GL.RGBA
+  # -- **datatype** - a GL_ENUM - Default GL.UNSIGNED_BYTE
+  
   constructor: (images, params) ->
     
     super (params)
@@ -332,15 +377,22 @@ class TextureCube extends TextureBase
 
     gl.bindTexture(gl.TEXTURE_CUBE_MAP, null);
 
-  # bind - bind this texture to texture unit given in params (or the one given in unit)
+  # **bind** - bind this texture to texture unit given in params (or the one given in unit)
+  # - **unit** - a Number - Integer
+  # - returns this
   bind: (unit) ->
-    gl = PXL.Context.gl
-    if gl?  
+   
+   gl = PXL.Context.gl
+   if unit?
+      @unit = unit
+   else if gl?
       @unit = @_findUnit()
-      gl.activeTexture(gl.TEXTURE0 + @unit)
-      gl.bindTexture(gl.TEXTURE_CUBE_MAP, @texture)
+    
+    gl.activeTexture(gl.TEXTURE0 + @unit)
+    gl.bindTexture(gl.TEXTURE_CUBE_MAP, @texture)
       
-  # unbind - clear the bound unit
+  # **unbind** - clear the bound unit
+  # - returns this
   unbind: ->
     gl = PXL.Context.gl
     if gl?
@@ -348,9 +400,22 @@ class TextureCube extends TextureBase
       gl.bindTexture(gl.TEXTURE_CUBE_MAP, null)
       TextureBase.UNITS[i] = null
       @unit = 0
+    @
 
-
-# TODO - Deal with the error case
+### textureCubeFromURL ###
+# - **paths** - an Array of String - Length 6 - Required
+# - **callback** - a Function with the following params
+# -- **texture** - a TextureCube
+# - **onerror** - a Function
+# - **params** - an Object with the following named members:
+# -- **min** - a GL_ENUM - Default GL.LINEAR
+# -- **max** - a GL_ENUM - Default GL.LINEAR
+# -- **wraps** - a GL_ENUM - Default GL.CLAMP_TO_EDGE
+# -- **width** - a Number - Default 512
+# -- **height** - a Number - Default 512
+# -- **channels** - a GL_ENUM - Default GL.RGBA
+# -- **datatype** - a GL_ENUM - Default GL.UNSIGNED_BYTE
+# - returns this
 textureCubeFromURL = (paths,callback,onerror,params) ->
 
   if not paths? or not PXL.Context?
@@ -376,11 +441,9 @@ textureCubeFromURL = (paths,callback,onerror,params) ->
 
         texture = new TextureCube texImages, params
         callback?(texture)
-
   @
 
-
-module.exports = 
+module.exports =
   Texture : Texture
   TextureBase : TextureBase
   TextureCube : TextureCube

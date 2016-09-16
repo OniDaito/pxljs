@@ -48,6 +48,7 @@ Your HTML page should look something like this:
 <pre>
 &lt;!doctype html&gt;
 &lt;head&gt;
+
 &lt;title&gt;My First PXLjs Page&lt;/title&gt;
 &lt;/head&gt;
 &lt;body&gt;
@@ -59,13 +60,10 @@ Inside your html page insert the following lines...
 
 <pre>
 &lt;canvas id="webgl-canvas" style="border: none;" width="580" height="580"&gt;&lt;/canvas&gt;
-&lt;script type="text/javascript" src="coffeegl.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="pxljs.min.js"&gt;&lt;/script&gt;
 </pre>
 
 ...inside the body section.
-Next, we will need a basic shader for our first example. You can write your own as either a file or a string, using components from PXLjs. Lets copy our most basic shader, **basic_vertex_colour.glsl** from the shaders directory.
-
-We have everything we need in place now, so lets start work on our first ever triangle!
 
 ### Using CoffeeScript to compile your code.
 
@@ -203,7 +201,7 @@ As we are performing requests to grab our shader, we should run a small websever
   python -m SimpleHTTPServer
 </pre>
 
-Now browse to **http://localhost:8000** page in your favorite web-browser (so long as it isn't Windows Internet Explorer) and voila! You should see your first triangle!
+Now browse to **http://localhost:8000** page in your favorite web-browser and voila! You should see your first triangle!
 Now take a look at the examples to see how you can make wonderful, hardware accelerated graphics on the web.
 
 ### Going with vanilla Javascript.
@@ -252,6 +250,7 @@ cgl = new PXL.App(params);
 The Javascript version is very similar and if that's your bag, definitely go with that.
 
 ## API Documentation
+
 Full API documentation can be found in the docs directory or online at [http://docs.pxljs.com](http://docs.pxljs.com).
 
 ## Further Reading here on GitHub
@@ -259,17 +258,18 @@ Full API documentation can be found in the docs directory or online at [http://d
 * [Introduction](https://github.com/OniDaito/pxljs/blob/master/pxljs/docs/index.markdown) 
 
 
-## Things still to do
+## Things still to do...
+
 * SIMD Extensions in the math library
 * BSP / Quad Tree structures for gaming
-* Add lighting to the shader library functions
-* Remove _DIM tests for compatibility with Canon.js
-* ....loads more! Please check the github page for issues.
+* Physically Based Rendering (PBR)
+* Optimisations for more speed
+* Better Debug settings
+* WebGL2 support in the build
+* and more! Please submit issues here on the github page
 
-## Credits
+## Thanks to...
 
 * Katie Eagleton.
 * Seb Falk.
-* Raymond Hill for the Voroni implementation.
-* @schteppe of Canon.js fame.
-* NASA for the Earth Images
+* Raymond Hill.

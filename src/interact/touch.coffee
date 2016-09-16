@@ -23,7 +23,7 @@ GESTURE_FLICK_TIME = 280
 GESTURE_FLICK_LIMIT = 0.001
 FINGER_UP_LIMIT = 60
 
-###TouchEmitter###
+### TouchEmitter ###
 # Attaches to the App / Context and listens for DOM Touch events then emmits
 
 TouchEmitter = {}
@@ -37,7 +37,8 @@ TouchEmitter["pauseTouchEmitter"] = (force) ->
   @touchDone.pause(force)
 
 
-# makeTouchEmitter - function to make an object listen on the dom for touch events
+### makeTouchEmitter ###
+# function to make an object listen on the dom for touch events
 # This function extends another object with many utility functions that deal with 
 # touches starting, ending and such. It determines what the gesture may or may not be
 # For now, we assume no scrolling at that the view encompasses the entire screen on the 
@@ -215,6 +216,8 @@ makeTouchEmitter = (obj) ->
     obj.canvas.ontouchend = obj["_touchEnd"]
     obj.canvas.ontouchcancel = obj["_touchEnd"]
 
+### removeTouchEmitter ###
+# - obj - a DOM object - Required
 removeTouchEmitter = (obj) ->
   obj.canvas.removeEventListener "touchend", obj["_onTouchEnd"]
   obj.canvas.removeEventListener "touchcancel", obj["_onTouchEnd"]

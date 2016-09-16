@@ -19,7 +19,7 @@ util = require "../util/util"
 {Signal} = require "../util/signal"
 
 
-###MouseEmitter###
+### MouseEmitter ###
 # Attaches to the App / Context and listens for DOM Mouse events then emmits
 
 MouseEmitter = {}
@@ -118,7 +118,8 @@ MouseEmitter["_setButtons"] = (event) ->
     event
 
 
-# makeMouseEmitter - function to make an object listen on the dom for mouse events
+### makeMouseEmitter ###
+# function to make an object listen on the dom for mouse events
 makeMouseEmitter = (obj) ->
   if obj.canvas?
     util.extend obj, MouseEmitter
@@ -224,7 +225,7 @@ makeMouseEmitter = (obj) ->
           false
         obj.canvas.onmousewheel = obj["_onMouseWheel"]
 
-
+### removeMouseEmitter ###
 removeMouseEmitter = (obj) ->
   if obj.canvas?
     #util.extend obj, MouseEmitter

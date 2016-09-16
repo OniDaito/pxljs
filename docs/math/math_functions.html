@@ -85,11 +85,17 @@ This software <span class="hljs-keyword">is</span> released under the MIT Licenc
               </div>
               <h2 id="rayplaneintersect">rayPlaneIntersect</h2>
 <p>Given 4 Vec3, work out the distance along line_dir where the intersection occurred</p>
+<ul>
+<li><strong>plane_point</strong> - a Vec3 - Required</li>
+<li><strong>plane_normal</strong> - a Vec3 - Required</li>
+<li><strong>line_point</strong> - a Vec3 - Required</li>
+<li><strong>line_dir</strong> - a Vec3 - Required</li>
+<li>returns a Number</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function">
-<span class="hljs-title">rayPlaneIntersect</span> = <span class="hljs-params">(plane_point, plane_normal, line_point, line_dir)</span> -&gt;</span>
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-title">rayPlaneIntersect</span> = <span class="hljs-params">(plane_point, plane_normal, line_point, line_dir)</span> -&gt;</span>
   num = Vec3.dot(plane_normal, Vec3.sub(plane_point, line_point))
   den = Vec3.dot(plane_normal,line_dir)
   
@@ -106,13 +112,22 @@ This software <span class="hljs-keyword">is</span> released under the MIT Licenc
               </div>
               <h2 id="screennodehittest">screenNodeHitTest</h2>
 <p>Given a node, camera &amp; a point on the screen, traverse the hierarchy and find if anything was hit
-This works for brewed geometry only at present (though could work for normal as well im sure)
 Results are returned in ascending order of depth. Back facing and front facing triangles are included.</p>
+<ul>
+<li><strong>sx</strong> - a Number - Integer - Range 0 to Context.Width - Required</li>
+<li><strong>sy</strong> - a Number - Integer - Range 0 to Context.Height - Required</li>
+<li><strong>camera</strong> - a Camera - Required</li>
+<li><strong>node</strong> - a Node - Required</li>
+<li>returns an Array of Object - Each object has the following named members:
+– <strong>pos</strong> - a Vec3
+– <strong>node</strong> - a Node
+– <strong>index</strong> - a Number
+– <strong>dist</strong> - a Number</li>
+</ul>
 
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-function">
-
 <span class="hljs-title">screenNodeHitTest</span> = <span class="hljs-params">(sx,sy,camera,node)</span> -&gt;</span>
 
   results = []

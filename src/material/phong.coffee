@@ -21,8 +21,6 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 {Texture} = require "../gl/texture"
 {uber_phong_diff_tex, uber_phong_spec_tex, uber_phong_emis_tex, uber_vertex_colour, uber_phong_mat} = require '../gl/uber_shader_paths'
 
-
-
 # TODO - transparent alpha blending materials
 
 # We don't reference textures. Rather, textures are sampled and are set to the variable baseColour
@@ -38,6 +36,12 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 
 class PhongMaterial extends Material
 
+  # **@constructor**
+  # - **ambient** - a Colour.RGB - Default RGB(0,0,0)
+  # - **diffuse** - a Colour.RGB or a Texture
+  # - **specular** - a Colour.RGB or a Texture - Default RGB(1,1,1)
+  # - **shine** - a Number - Default 20
+  # - **emissive** -  a Colour.RGB or a Texture - default RGB(0,0,0) 
   constructor: (@ambient, @diffuse, @specular, @shine, @emissive) ->
     super()
 

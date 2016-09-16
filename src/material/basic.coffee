@@ -26,8 +26,8 @@ Basic materials for our ubershader
 
 class BasicColourMaterial extends Material
 
-  # **constructor**
-  # - **colour** - RGB or RGBA
+  # **@constructor**
+  # - **colour** - a Colour.RGB or Colour.RGBA
 
   constructor : (@colour) ->
     super()
@@ -45,6 +45,7 @@ class BasicColourMaterial extends Material
 
 class VertexColourMaterial extends Material
 
+  # **@constructor**
   constructor : () ->
     super()
     @_uber0 = uber_vertex_colour true, @_uber0

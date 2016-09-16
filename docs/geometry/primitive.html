@@ -299,6 +299,11 @@ atm we only check for the named variable ‘contract’ - perhaps there is a bet
               <p><strong>getTrisIndexer</strong> - returns a function that allows us to iterate over the triangles
 We look at the instanceof for the organisation of the triangles
 TODO - Non indexed TRIANGLE_STRIPs need to be sorted</p>
+<ul>
+<li>returns a function with the following parameters
+– <strong>index</strong> - a Number - Integer - Required
+– returns an Array of Vec3 or an Array of Vertex (depending if the geometry is flat)</li>
+</ul>
 
             </div>
             
@@ -342,7 +347,8 @@ TODO - Non indexed TRIANGLE_STRIPs need to be sorted</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
-              <p>Return the number of triangles in this geometry</p>
+              <p><strong>getNumTris</strong> - Return the number of triangles in this geometry
+returns a Number</p>
 
             </div>
             
@@ -415,9 +421,13 @@ to a buffer of the same name + “”</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
-              <p>You can pass in whatever named arguments you want. They will be attached to the 
+              <p><strong>@constructor</strong></p>
+<ul>
+<li><strong>named_arguments</strong> - an Object with named arguments
+You can pass in whatever named arguments you want. They will be attached to the 
 Vertex object. Some of these have default names, such as p for position and 
-c for colour. So pass in { ‘p’ :  Vec3(1,1,1) } for example</p>
+c for colour. So pass in { ‘p’ :  Vec3(1,1,1) } for example</li>
+</ul>
 
             </div>
             
@@ -454,10 +464,7 @@ c for colour. So pass in { ‘p’ :  Vec3(1,1,1) } for example</p>
             
             <div class="content"><div class='highlight'><pre>
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @p?
-      @p = <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>
-
-  flatten: <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
-    t = []</pre></div></div>
+      @p = <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span></pre></div></div>
             
         </li>
         
@@ -467,6 +474,25 @@ c for colour. So pass in { ‘p’ :  Vec3(1,1,1) } for example</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p><strong>flatten</strong> - take all the named attributes and call flatten on them</p>
+<ul>
+<li>returns an Array</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  flatten: <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    t = []</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <p>Flatten all keys</p>
 
@@ -480,32 +506,53 @@ c for colour. So pass in { ‘p’ :  Vec3(1,1,1) } for example</p>
         </li>
         
         
-        <li id="section-20">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
-              <p>##Triangle###
-A triangle. This CAN be extended to be drawn on its own but doesnt have to be
+              <h2 id="triangle">Triangle</h2>
+<p>A triangle. This CAN be extended to be drawn on its own but doesnt have to be
 TODO - is a Triangle really geometry? It is kinda but since we have loads of triangles
 in things like a mesh shouldnt we really not do that? :S</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Triangle</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Geometry</span></span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Triangle</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Geometry</span></span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p><strong>@constructor</strong></p>
+<ul>
+<li><strong>p0</strong> - a Vertex - Default v.p (-1,-1,0)</li>
+<li><strong>p1</strong> - a Vertex - Default v.p (1,-1,0)</li>
+<li><strong>p2</strong> - a Vertex - Default v.p (0,1,0)</li>
+<li><strong>n</strong> - a Vec3 - normalised</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  
   constructor: <span class="hljs-function"><span class="hljs-params">(p0,p1,p2,@n)</span> -&gt;</span>
     <span class="hljs-keyword">super</span>()</pre></div></div>
             
         </li>
         
         
-        <li id="section-21">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>we dont have 3 vectors, create a unit triangle with -1 to 1 with anticlockwise winding</p>
 
@@ -524,16 +571,48 @@ in things like a mesh shouldnt we really not do that? :S</p>
     <span class="hljs-keyword">else</span>
       @vertices = [p0,p1,p2]
 
-    @computeFaceNormal() <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @n?
+    @computeFaceNormal() <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @n?</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p><strong>flatten</strong> - squash the vertices into an array</p>
+<ul>
+<li>returns an Array</li>
+</ul>
 
-  flatten: <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  flatten: <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
     t = []
     t = t.concat @vertices[<span class="hljs-number">0</span>].flatten()
     t = t.concat @vertices[<span class="hljs-number">1</span>].flatten()
     t = t.concat @vertices[<span class="hljs-number">2</span>].flatten()
-    t
-  
-  computeFaceNormal: <span class="hljs-function"><span class="hljs-params">()</span>-&gt;</span>
+    t</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p><strong>computeFaceNormal</strong> - sets the internal normal based on the points of the triangle</p>
+<ul>
+<li>returns this</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  computeFaceNormal: <span class="hljs-function"><span class="hljs-params">()</span>-&gt;</span>
     l0 = Vec3.sub(@vertices[<span class="hljs-number">1</span>].p, @vertices[<span class="hljs-number">0</span>].p)
     l1 = Vec3.sub(@vertices[<span class="hljs-number">2</span>].p, @vertices[<span class="hljs-number">1</span>].p)
     @n = l0.cross(l1)
@@ -544,31 +623,52 @@ in things like a mesh shouldnt we really not do that? :S</p>
         </li>
         
         
-        <li id="section-22">
+        <li id="section-26">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
-              <p>##Quad###
-Our basic Quad, drawn as a tristrip. Assume planar triangles</p>
+              <h2 id="quad">Quad</h2>
+<p>Our basic Quad, drawn as a tristrip. Assume planar triangles</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Quad</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Geometry</span></span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Quad</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Geometry</span></span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p><strong>@constructor</strong></p>
+<ul>
+<li><strong>p0</strong> - a Vertex - Default v.p(-1,1,0), v.c(1,1,1,1), v.n(0,0,1), v.t(0,1) </li>
+<li><strong>p1</strong> - a Vertex - Default v.p(-1,-1,0), v.c(1,1,1,1), v.n(0,0,1), v.t(0,0)</li>
+<li><strong>p2</strong> - a Vertex - Default v.p(1,1,0), v.c(1,1,1,1), v.n(0,0,1), v.t(1,1)</li>
+<li><strong>p3</strong> - a Vertex - Default v.p(1,-1,0), v.c(1,1,1,1), v.n(0,0,1), v.t(1,0)</li>
+<li><strong>n</strong> - a Vec3 - normalised - Default Vec3(0,0,1)</li>
+</ul>
 
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> 
   constructor: <span class="hljs-function"><span class="hljs-params">(p0,p1,p2,p3,@n)</span> -&gt;</span>
     <span class="hljs-keyword">super</span>()</pre></div></div>
             
         </li>
         
         
-        <li id="section-23">
+        <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p>we dont have 4 vectors, create a 2 wide quad with -1 to 1 with anticlockwise winding</p>
 
@@ -603,17 +703,49 @@ Our basic Quad, drawn as a tristrip. Assume planar triangles</p>
     gl = GL
     @layout = GL.TRIANGLE_STRIP <span class="hljs-keyword">if</span> GL?
 
-    @computeFaceNormal() <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @n?
-  
-  computeFaceNormal: <span class="hljs-function"><span class="hljs-params">()</span>-&gt;</span>
+    @computeFaceNormal() <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @n?</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p><strong>computeFaceNormal</strong> - sets the internal normal based on the points of the triangle</p>
+<ul>
+<li>returns this</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  computeFaceNormal: <span class="hljs-function"><span class="hljs-params">()</span>-&gt;</span>
     l0 = Vec3.sub(@vertices[<span class="hljs-number">1</span>].p, @vertices[<span class="hljs-number">0</span>].p)
     l1 = Vec3.sub(@vertices[<span class="hljs-number">2</span>].p, @vertices[<span class="hljs-number">1</span>].p)
     @n = l0.cross(l1)
     @n.normalize()
    
-    @
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p><strong>flatten</strong> - squash the vertices into an array</p>
+<ul>
+<li>returns an Array</li>
+</ul>
 
-  flatten: <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  flatten: <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
     t = []
     t = t.concat @vertices[<span class="hljs-number">0</span>].flatten()
     t = t.concat @vertices[<span class="hljs-number">1</span>].flatten()
@@ -624,11 +756,11 @@ Our basic Quad, drawn as a tristrip. Assume planar triangles</p>
         </li>
         
         
-        <li id="section-24">
+        <li id="section-31">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <h2 id="vertexsoup">VertexSoup</h2>
 <p>A Place holder class for a collection of non indexed vertices, likely to be drawn out as lines
@@ -638,8 +770,25 @@ vertex_list - the list of vertices to make this from</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">VertexSoup</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Geometry</span> </span>
-  constructor: <span class="hljs-function"><span class="hljs-params">(vertex_list)</span> -&gt;</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">VertexSoup</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Geometry</span> </span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p><strong> constructor </strong></p>
+<ul>
+<li><strong>vertex_list</strong> - an Array of Vertex</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  constructor: <span class="hljs-function"><span class="hljs-params">(vertex_list)</span> -&gt;</span>
     <span class="hljs-keyword">super</span>()
     gl = GL
     @layout = GL.POINTS <span class="hljs-keyword">if</span> GL?
@@ -648,14 +797,14 @@ vertex_list - the list of vertices to make this from</p>
         </li>
         
         
-        <li id="section-25">
+        <li id="section-33">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
-              <p>##TriangleMesh###
-A mesh made up of triangles that have the same kinds of vertices
+              <h2 id="trianglemesh">TriangleMesh</h2>
+<p>A mesh made up of triangles that have the same kinds of vertices
 Can be created in several ways but the outcome is a set of indexed
 or non indexed buffers
 By adding triangles / quads we copy the vertex data semantically 
@@ -670,19 +819,34 @@ We can infer the triangles back from this however should we wish</p>
         </li>
         
         
-        <li id="section-26">
+        <li id="section-34">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p>TODO - allow indexing but also allowing passing in indices as well - speeds things 
 up with the json model</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>
-  constructor : <span class="hljs-function"><span class="hljs-params">(indexed)</span> -&gt;</span>
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <p><strong>@constructor</strong> </p>
+<ul>
+<li><strong>indexed</strong> - a Boolean - Required</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  constructor : <span class="hljs-function"><span class="hljs-params">(indexed)</span> -&gt;</span>
     <span class="hljs-keyword">super</span>()
     @vertices = []
     @faces = []
@@ -693,13 +857,17 @@ up with the json model</p>
         </li>
         
         
-        <li id="section-27">
+        <li id="section-36">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
-              <p>Add a triangle to this mesh checking for any problems with vertex duplication</p>
+              <p><strong>addTriangle</strong> - Add a triangle to this mesh checking for any problems with vertex duplication</p>
+<ul>
+<li><strong>t</strong> - a Triangle</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -726,14 +894,18 @@ up with the json model</p>
         </li>
         
         
-        <li id="section-28">
+        <li id="section-37">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
-              <p>If we’ve added indicies by hand, we can create triangles from these
+              <p><strong>addTriangleFromIndices </strong> If we’ve added indicies by hand, we can create triangles from these
 indices. Used in the MD5Model class</p>
+<ul>
+<li><strong>indices</strong> - an Array of Integer - Required</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -747,28 +919,32 @@ indices. Used in the MD5Model class</p>
           PXLError <span class="hljs-string">"Attempting to create a triangle from indicies that dont exist"</span>
 
       t = <span class="hljs-keyword">new</span> Triangle @vertices[points[<span class="hljs-number">0</span>]], @vertices[points[<span class="hljs-number">1</span>]], @vertices[points[<span class="hljs-number">2</span>]]
-      @faces.push t 
+      @faces.push t
 
     @</pre></div></div>
             
         </li>
         
         
-        <li id="section-29">
+        <li id="section-38">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
-              <p>addQuad - Add a quad, breaking it down into its component parts</p>
+              <p><strong>addQuad</strong> - Add a quad, breaking it down into its component parts</p>
+<ul>
+<li><strong>q</strong> - a Quad</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>  addQuad : <span class="hljs-function"><span class="hljs-params">(q)</span> -&gt;</span>
 
-    <span class="hljs-keyword">if</span> @indexed? == <span class="hljs-literal">true</span>     
+    <span class="hljs-keyword">if</span> @indexed? == <span class="hljs-literal">true</span>
       <span class="hljs-keyword">for</span> idx <span class="hljs-keyword">in</span> [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>]
-        p = @_findV(q.vertices[idx]) 
+        p = @_findV(q.vertices[idx])
         <span class="hljs-keyword">if</span> p == <span class="hljs-number">-1</span>
           @vertices.push q.vertices[idx]
           ti = @vertices.length
@@ -779,7 +955,7 @@ indices. Used in the MD5Model class</p>
           @indices.push(p)
 
       <span class="hljs-keyword">for</span> idx <span class="hljs-keyword">in</span> [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">1</span>]
-        p = @_findV(q.vertices[idx]) 
+        p = @_findV(q.vertices[idx])
         <span class="hljs-keyword">if</span> p == <span class="hljs-number">-1</span>
           @vertices.push q.vertices[idx]
           ti = @vertices.length
@@ -801,11 +977,11 @@ indices. Used in the MD5Model class</p>
         </li>
         
         
-        <li id="section-30">
+        <li id="section-39">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
               <p>_findV - Find the position in the array for this vertex
 to speed this up we use a temporary _idx attribute if it exists</p>

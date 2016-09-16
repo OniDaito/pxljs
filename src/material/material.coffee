@@ -19,8 +19,11 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 
 {Contract} = require '../gl/contract'
 
+### Material ###
+# A base class for materials
 class Material
 
+  # **@constructor** 
   constructor : () ->
     @contract = new Contract()
 

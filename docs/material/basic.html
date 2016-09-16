@@ -90,9 +90,9 @@ Basic materials <span class="hljs-keyword">for</span> our ubershader</pre></div>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p><strong>constructor</strong></p>
+              <p><strong>@constructor</strong></p>
 <ul>
-<li><strong>colour</strong> - RGB or RGBA</li>
+<li><strong>colour</strong> - a Colour.RGB or Colour.RGBA</li>
 </ul>
 
             </div>
@@ -123,12 +123,7 @@ Basic materials <span class="hljs-keyword">for</span> our ubershader</pre></div>
             </div>
             
             <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">VertexColourMaterial</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Material</span></span>
-
-  constructor : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
-    <span class="hljs-keyword">super</span>()
-    @_uber0 = uber_vertex_colour <span class="hljs-literal">true</span>, @_uber0
-    @_uber_defines = [<span class="hljs-string">'VERTEX_COLOUR'</span>]</pre></div></div>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">VertexColourMaterial</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Material</span></span></pre></div></div>
             
         </li>
         
@@ -138,6 +133,24 @@ Basic materials <span class="hljs-keyword">for</span> our ubershader</pre></div>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p><strong>@constructor</strong></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  constructor : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    <span class="hljs-keyword">super</span>()
+    @_uber0 = uber_vertex_colour <span class="hljs-literal">true</span>, @_uber0
+    @_uber_defines = [<span class="hljs-string">'VERTEX_COLOUR'</span>]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <h2 id="texturematerial">TextureMaterial</h2>
 <p>A Basic material that uses a texture for it its albedo. </p>
@@ -150,11 +163,11 @@ Basic materials <span class="hljs-keyword">for</span> our ubershader</pre></div>
         </li>
         
         
-        <li id="section-7">
+        <li id="section-8">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p><strong>constructor</strong></p>
 <ul>

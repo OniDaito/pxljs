@@ -20,7 +20,11 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 
 ### rayPlaneIntersect ###
 # Given 4 Vec3, work out the distance along line_dir where the intersection occurred
-
+# - **plane_point** - a Vec3 - Required
+# - **plane_normal** - a Vec3 - Required
+# - **line_point** - a Vec3 - Required
+# - **line_dir** - a Vec3 - Required
+# - returns a Number
 rayPlaneIntersect = (plane_point, plane_normal, line_point, line_dir) ->
   num = Vec3.dot(plane_normal, Vec3.sub(plane_point, line_point))
   den = Vec3.dot(plane_normal,line_dir)
@@ -30,9 +34,16 @@ rayPlaneIntersect = (plane_point, plane_normal, line_point, line_dir) ->
 
 ### screenNodeHitTest ###
 # Given a node, camera & a point on the screen, traverse the hierarchy and find if anything was hit
-# This works for brewed geometry only at present (though could work for normal as well im sure)
 # Results are returned in ascending order of depth. Back facing and front facing triangles are included.
-
+# - **sx** - a Number - Integer - Range 0 to Context.Width - Required
+# - **sy** - a Number - Integer - Range 0 to Context.Height - Required
+# - **camera** - a Camera - Required
+# - **node** - a Node - Required
+# - returns an Array of Object - Each object has the following named members:
+# -- **pos** - a Vec3
+# -- **node** - a Node
+# -- **index** - a Number
+# -- **dist** - a Number
 
 screenNodeHitTest = (sx,sy,camera,node) ->
 

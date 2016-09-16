@@ -82,8 +82,8 @@ http:<span class="hljs-regexp">//</span>www<span class="hljs-number">.3</span>dg
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>##MD5### 
-Loads an MD5 Model creating a set of nodes, materials and a skeleton
+              <h2 id="md5model">MD5Model</h2>
+<p>Loads an MD5 Model creating a set of nodes, materials and a skeleton
 MD5 is one of the widely used ID Software Model formats
 Regarding materials, for now we just load the nearest texture in the directory</p>
 
@@ -101,11 +101,14 @@ Regarding materials, for now we just load the nearest texture in the directory</
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>Basic constructor for OBJ
-@url - the URL to the object in question
-@promise (optional) - a promise that will be fulfilled when the code is loaded
+              <p><strong>@constructor</strong> for OBJ</p>
+<ul>
+<li><strong>url</strong> - a String - Required</li>
+<li><strong>promise</strong> - a Promise</li>
+<li><strong>params</strong> - NOT CURRENTLY USED
 TODO - We may wish to consider how this fits with queue and loading items :O
-TODO - Remove the queue once its finished with?</p>
+TODO - Remove the queue once its finished with?</li>
+</ul>
 
             </div>
             
@@ -396,7 +399,7 @@ white plain material for now. Eventually we’ll check a material file</p>
             
             <div class="content"><div class='highlight'><pre> 
     promise_materials = <span class="hljs-keyword">new</span> Promise()
-    promise_materials.<span class="hljs-keyword">when</span>.apply(promise_materials, _material_promises).<span class="hljs-keyword">then</span> () =&gt;        
+    promise_materials.<span class="hljs-keyword">when</span>.apply(promise_materials, _material_promises).<span class="hljs-keyword">then</span> () =&gt;
       promise_textures.resolve(text_data)
   
     @
@@ -488,7 +491,7 @@ them at the end of each mesh</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>          <span class="hljs-keyword">if</span> parent_idx &gt; <span class="hljs-number">-1</span> 
+            <div class="content"><div class='highlight'><pre>          <span class="hljs-keyword">if</span> parent_idx &gt; <span class="hljs-number">-1</span>
             parent = @skeleton.getBone parent_idx
 
           tokens = jline[openbrace..closebrace].split(<span class="hljs-string">" "</span>)
@@ -511,7 +514,7 @@ them at the end of each mesh</p>
 
           bone = <span class="hljs-keyword">new</span> Bone name, jidx, parent, rotation, position
           
-          @skeleton.addBone bone    
+          @skeleton.addBone bone
  
         midx += @num_joints</pre></div></div>
             
@@ -1030,13 +1033,9 @@ indices table which we’ve already built. This is a bit naughty</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>    @_material_by_name = <span class="hljs-literal">undefined</span> <span class="hljs-keyword">if</span> @_material_by_name?
-
     @
 
-   
-
-
-<span class="hljs-built_in">module</span>.exports = 
+<span class="hljs-built_in">module</span>.exports =
   MD5Model : MD5Model</pre></div></div>
             
         </li>

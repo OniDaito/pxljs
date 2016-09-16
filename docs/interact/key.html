@@ -71,8 +71,8 @@ util = <span class="hljs-built_in">require</span> <span class="hljs-string">"../
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>##KeyEmitter###
-Attaches to the App / Context and listens for DOM Key events then emmits</p>
+              <h2 id="keyemitter">KeyEmitter</h2>
+<p>Attaches to the App / Context and listens for DOM Key events then emmits</p>
 
             </div>
             
@@ -93,7 +93,8 @@ KeyEmitter[<span class="hljs-string">"pauseKeyEmitter"</span>] = <span class="hl
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>makeKeyEmitter - function to make an object listen on the dom for keyboard events</p>
+              <h2 id="makekeyemitter">makeKeyEmitter</h2>
+<p>function to make an object listen on the dom for keyboard events</p>
 
             </div>
             
@@ -135,11 +136,13 @@ KeyEmitter[<span class="hljs-string">"pauseKeyEmitter"</span>] = <span class="hl
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>removeKeyEmitter - remove any keyboard listeners</p>
+              <h2 id="removekeyemitter">removeKeyEmitter</h2>
+<p>remove any keyboard listeners</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-title">removeKeyEmitter</span> = <span class="hljs-params">(obj)</span> -&gt;</span>
+            <div class="content"><div class='highlight'><pre><span class="hljs-function">
+<span class="hljs-title">removeKeyEmitter</span> = <span class="hljs-params">(obj)</span> -&gt;</span>
   obj.canvas.removeEventListener(<span class="hljs-string">'keyup'</span>, obj[<span class="hljs-string">"_onKeyUp"</span>])
   obj.canvas.removeEventListener(<span class="hljs-string">'keydown'</span>, obj[<span class="hljs-string">"_onKeyDown"</span>])
 

@@ -76,8 +76,8 @@ FINGER_UP_LIMIT = <span class="hljs-number">60</span></pre></div></div>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>##TouchEmitter###
-Attaches to the App / Context and listens for DOM Touch events then emmits</p>
+              <h2 id="touchemitter">TouchEmitter</h2>
+<p>Attaches to the App / Context and listens for DOM Touch events then emmits</p>
 
             </div>
             
@@ -101,7 +101,8 @@ TouchEmitter[<span class="hljs-string">"pauseTouchEmitter"</span>] = <span class
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>makeTouchEmitter - function to make an object listen on the dom for touch events
+              <h2 id="maketouchemitter">makeTouchEmitter</h2>
+<p>function to make an object listen on the dom for touch events
 This function extends another object with many utility functions that deal with 
 touches starting, ending and such. It determines what the gesture may or may not be
 For now, we assume no scrolling at that the view encompasses the entire screen on the 
@@ -340,9 +341,25 @@ touch device (that way we can get the position of the touches correct with the c
         obj.touchDone.dispatch(evt)
 
     obj.canvas.ontouchend = obj[<span class="hljs-string">"_touchEnd"</span>]
-    obj.canvas.ontouchcancel = obj[<span class="hljs-string">"_touchEnd"</span>]
-<span class="hljs-function">
-<span class="hljs-title">removeTouchEmitter</span> = <span class="hljs-params">(obj)</span> -&gt;</span>
+    obj.canvas.ontouchcancel = obj[<span class="hljs-string">"_touchEnd"</span>]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <h2 id="removetouchemitter">removeTouchEmitter</h2>
+<ul>
+<li>obj - a DOM object - Required</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-title">removeTouchEmitter</span> = <span class="hljs-params">(obj)</span> -&gt;</span>
   obj.canvas.removeEventListener <span class="hljs-string">"touchend"</span>, obj[<span class="hljs-string">"_onTouchEnd"</span>]
   obj.canvas.removeEventListener <span class="hljs-string">"touchcancel"</span>, obj[<span class="hljs-string">"_onTouchEnd"</span>]
   obj.canvas.removeEventListener <span class="hljs-string">"touchmove"</span>, obj[<span class="hljs-string">"_onTouchMove"</span>]

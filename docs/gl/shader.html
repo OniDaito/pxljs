@@ -93,10 +93,15 @@ user_roles = passed onto the contract </p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>Constructor. Designed so an object can be built with no parameters 
+              <p><strong>@constructor</strong> Designed so an object can be built with no parameters 
 via functions such as shaderFromText
 We keep hold of the chunks incase we need to rebuild the shader (changing various defines 
 for example)</p>
+<ul>
+<li><strong>vertex_source</strong> - a String - Required</li>
+<li><strong>fragment_source</strong> - a String - Required</li>
+<li><strong>user_roles</strong> - an Array</li>
+</ul>
 
             </div>
             
@@ -272,7 +277,10 @@ in the contract - order dependent</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>bind - bind the shader to the current context</p>
+              <p><strong>bind</strong> - bind the shader to the current context</p>
+<ul>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -290,7 +298,10 @@ in the contract - order dependent</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              <p>unbind - Clear the current context so there are no shaders</p>
+              <p><strong>unbind</strong> - Clear the current context so there are no shaders</p>
+<ul>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -307,7 +318,10 @@ in the contract - order dependent</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <p>washUp - Remove this shader and destroy it</p>
+              <p><strong>washUp</strong> - Remove this shader and destroy it</p>
+<ul>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -378,41 +392,30 @@ in the contract - order dependent</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
-              <p>_getUniforms - Find all the active uniforms in a shader
-returns a list of objects :
+              <p><strong>_getUniforms</strong> - Find all the active uniforms in a shader</p>
+<ul>
+<li>returns an Array of objects
 { name, type, pos, size }
 Types are listed thusly and will need to be changed
-/<em> Uniform Types </em>/</p>
-<p>##</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    const GLenum FLOAT_VEC2                     = <span class="hljs-number">0x8B50</span>; 
-    const GLenum FLOAT_VEC3                     = <span class="hljs-number">0x8B51</span>;
-    const GLenum FLOAT_VEC4                     = <span class="hljs-number">0x8B52</span>;
-    const GLenum INT_VEC2                       = <span class="hljs-number">0x8B53</span>;
-    const GLenum INT_VEC3                       = <span class="hljs-number">0x8B54</span>;
-    const GLenum INT_VEC4                       = <span class="hljs-number">0x8B55</span>;
-    const GLenum BOOL                           = <span class="hljs-number">0x8B56</span>;
-    const GLenum BOOL_VEC2                      = <span class="hljs-number">0x8B57</span>;
-    const GLenum BOOL_VEC3                      = <span class="hljs-number">0x8B58</span>;
-    const GLenum BOOL_VEC4                      = <span class="hljs-number">0x8B59</span>;
-    const GLenum FLOAT_MAT2                     = <span class="hljs-number">0x8B5A</span>;
-    const GLenum FLOAT_MAT3                     = <span class="hljs-number">0x8B5B</span>;
-    const GLenum FLOAT_MAT4                     = <span class="hljs-number">0x8B5C</span>;
-    const GLenum SAMPLER_2D                     = <span class="hljs-number">0x8B5E</span>;
-    const GLenum SAMPLER_CUBE                   = <span class="hljs-number">0x8B60</span>;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-16">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
-              </div>
-              <p>##</p>
+Uniform Types<ul>
+<li>const GLenum FLOAT_VEC2                     = 0x8B50; </li>
+<li>const GLenum FLOAT_VEC3                     = 0x8B51;</li>
+<li>const GLenum FLOAT_VEC4                     = 0x8B52;</li>
+<li>const GLenum INT_VEC2                       = 0x8B53;</li>
+<li>const GLenum INT_VEC3                       = 0x8B54;</li>
+<li>const GLenum INT_VEC4                       = 0x8B55;</li>
+<li>const GLenum BOOL                           = 0x8B56;</li>
+<li>const GLenum BOOL_VEC2                      = 0x8B57;</li>
+<li>const GLenum BOOL_VEC3                      = 0x8B58;</li>
+<li>const GLenum BOOL_VEC4                      = 0x8B59;</li>
+<li>const GLenum FLOAT_MAT2                     = 0x8B5A;</li>
+<li>const GLenum FLOAT_MAT3                     = 0x8B5B;</li>
+<li>const GLenum FLOAT_MAT4                     = 0x8B5C;</li>
+<li>const GLenum SAMPLER_2D                     = 0x8B5E;</li>
+<li>const GLenum SAMPLER_CUBE                   = 0x8B60;</li>
+</ul>
+</li>
+</ul>
 
             </div>
             
@@ -422,11 +425,11 @@ Types are listed thusly and will need to be changed
         </li>
         
         
-        <li id="section-17">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>Cache uniforms as they hopefully wont change!</p>
 
@@ -446,11 +449,11 @@ Types are listed thusly and will need to be changed
         </li>
         
         
-        <li id="section-18">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <p>It appears that active uniform arrays seem to have their name with ‘[0]’ so remove
 TODO - must check to make sure this is the actual behaviour</p>
@@ -475,11 +478,11 @@ TODO - must check to make sure this is the actual behaviour</p>
         </li>
         
         
-        <li id="section-19">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <p>_getTextures - find all the texture in a shader
 TODO - other samplers? Texture Cube for example?</p>
@@ -500,11 +503,11 @@ TODO - other samplers? Texture Cube for example?</p>
         </li>
         
         
-        <li id="section-20">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
               <p>_parseShader - Given a token, a line basically, parse the line and get the types (vec3 etc)</p>
 
@@ -547,13 +550,18 @@ TODO - other samplers? Texture Cube for example?</p>
         </li>
         
         
-        <li id="section-21">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
-              <p>setUniform1f - Given a uniform name and one float, set this uniform</p>
+              <p><strong>setUniform1f</strong> - Given a uniform name and one float, set this uniform</p>
+<ul>
+<li><strong>name</strong> - a String - Required</li>
+<li><strong>a</strong> - a Number - Required</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -565,13 +573,18 @@ TODO - other samplers? Texture Cube for example?</p>
         </li>
         
         
-        <li id="section-22">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
-              <p>setUniform1i - Given a uniform name and one integer, set this uniform</p>
+              <p><strong>setUniform1i</strong> - Given a uniform name and one integer, set this uniform</p>
+<ul>
+<li><strong>name</strong> - a String - Required</li>
+<li><strong>a</strong> - a Number - Integer - Required</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -583,13 +596,18 @@ TODO - other samplers? Texture Cube for example?</p>
         </li>
         
         
-        <li id="section-23">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
-              <p>setUniform1fv - Given a uniform name and an array of floats, not grouped, set this uniform</p>
+              <p><strong>setUniform1fv</strong> - Given a uniform name and an array of floats, not grouped, set this uniform</p>
+<ul>
+<li><strong>name</strong> - a String - Required</li>
+<li><strong>a</strong> - an Array of Number - Required</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -601,13 +619,18 @@ TODO - other samplers? Texture Cube for example?</p>
         </li>
         
         
-        <li id="section-24">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
-              <p>setUniform2fv - Given a uniform name and an array of floats, grouped in pairs, set this uniform</p>
+              <p><strong>setUniform2fv</strong> - Given a uniform name and an array of floats, grouped in pairs, set this uniform</p>
+<ul>
+<li><strong>name</strong> - a String - Required</li>
+<li><strong>a</strong> - an Array of Number - Required</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -619,13 +642,18 @@ TODO - other samplers? Texture Cube for example?</p>
         </li>
         
         
-        <li id="section-25">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
-              <p>setUniform2v - Given a uniform name and a Vec2, set this uniform</p>
+              <p><strong>setUniform2v</strong> - Given a uniform name and a Vec2, set this uniform</p>
+<ul>
+<li><strong>name</strong> - a String - Required</li>
+<li><strong>v</strong> - a Vec2 - Required</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -637,19 +665,50 @@ TODO - other samplers? Texture Cube for example?</p>
         </li>
         
         
-        <li id="section-26">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
-              <p>setUniform3f - Given a uniform name and three floats, set this uniform</p>
+              <p><strong>setUniform3f</strong> - Given a uniform name and three floats, set this uniform</p>
+<ul>
+<li><strong>name</strong> - a String - Required</li>
+<li><strong>a</strong> - a Number - Required </li>
+<li><strong>b</strong> - a Number - Required</li>
+<li><strong>c</strong> - a Number - Required</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>  setUniform3f: <span class="hljs-function"><span class="hljs-params">(name,a,b,c)</span> -&gt;</span>
     gl = PXL.Context.gl
     gl.uniform3f(@_getLocation(name),a,b,c)
+    @</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p><strong>setUniform3fv</strong> - Given a uniform name and an array of floats, grouped in threes, set this uniform</p>
+<ul>
+<li><strong>name</strong> - a String - Required</li>
+<li><strong>a</strong> - an Array of Number - Required </li>
+<li>returns this</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre> 
+  setUniform3fv : <span class="hljs-function"><span class="hljs-params">(name, a)</span> -&gt;</span>
+    gl = PXL.Context.gl
+    gl.uniform3fv(@_getLocation(name), a)
     @</pre></div></div>
             
         </li>
@@ -661,13 +720,19 @@ TODO - other samplers? Texture Cube for example?</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
-              <p>setUniform3fv - Given a uniform name and an array of floats, grouped in threes, set this uniform</p>
+              <p><strong>setUniform3v</strong> - Given a uniform name and a Vec3, set this uniform</p>
+<ul>
+<li><strong>name</strong> - a String - Required</li>
+<li><strong>v</strong> - a Vec3 - Required </li>
+<li>returns this</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  setUniform3fv : <span class="hljs-function"><span class="hljs-params">(name, a)</span> -&gt;</span>
+            <div class="content"><div class='highlight'><pre> 
+  setUniform3v: <span class="hljs-function"><span class="hljs-params">(name,v)</span> -&gt;</span>
     gl = PXL.Context.gl
-    gl.uniform3fv(@_getLocation(name), a)
+    gl.uniform3f(@_getLocation(name),v.x,v.y,v.z)
     @</pre></div></div>
             
         </li>
@@ -679,13 +744,21 @@ TODO - other samplers? Texture Cube for example?</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
-              <p>setUniform3v - Given a uniform name and a Vec3, set this uniform</p>
+              <p><strong>setUniform3f</strong> - Given 3 floats, set this uniform</p>
+<ul>
+<li><strong>name</strong> - a String - Required</li>
+<li><strong>a</strong> - a Number - Required </li>
+<li><strong>b</strong> - a Number - Required</li>
+<li><strong>c</strong> - a Number - Required</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  setUniform3v: <span class="hljs-function"><span class="hljs-params">(name,v)</span> -&gt;</span>
+            <div class="content"><div class='highlight'><pre> 
+  setUniform3f: <span class="hljs-function"><span class="hljs-params">(name,a,b,c)</span> -&gt;</span>
     gl = PXL.Context.gl
-    gl.uniform3f(@_getLocation(name),v.x,v.y,v.z)
+    gl.uniform3f(@_getLocation(name),a,b,c)
     @</pre></div></div>
             
         </li>
@@ -697,13 +770,22 @@ TODO - other samplers? Texture Cube for example?</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
-              <p>setUniform3f - Given 3 floats, set this uniform</p>
+              <p><strong>setUniform4f</strong> - Given a uniform name and four floats, set this uniform</p>
+<ul>
+<li><strong>name</strong> - a String - Required</li>
+<li><strong>a</strong> - a Number - Required </li>
+<li><strong>b</strong> - a Number - Required</li>
+<li><strong>c</strong> - a Number - Required </li>
+<li><strong>d</strong> - a Number - Required</li>
+<li>returns this</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  setUniform3f: <span class="hljs-function"><span class="hljs-params">(name,a,b,c)</span> -&gt;</span>
+            <div class="content"><div class='highlight'><pre> 
+  setUniform4f: <span class="hljs-function"><span class="hljs-params">(name,a,b,c,d)</span> -&gt;</span>
     gl = PXL.Context.gl
-    gl.uniform3f(@_getLocation(name),a,b,c)
+    gl.uniform4f(@_getLocation(name),a,b,c,d)
     @</pre></div></div>
             
         </li>
@@ -715,13 +797,19 @@ TODO - other samplers? Texture Cube for example?</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
-              <p>setUniform4f - Given a uniform name and four floats, set this uniform</p>
+              <p><strong>setUniform4v</strong> - Given a uniform name and a Vec4, set this uniform</p>
+<ul>
+<li><strong>name</strong> - a String - Required</li>
+<li><strong>v</strong> - a Vec4 - Required </li>
+<li>returns this</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  setUniform4f: <span class="hljs-function"><span class="hljs-params">(name,a,b,c,d)</span> -&gt;</span>
+            <div class="content"><div class='highlight'><pre> 
+  setUniform4v: <span class="hljs-function"><span class="hljs-params">(name,v)</span> -&gt;</span>
     gl = PXL.Context.gl
-    gl.uniform4f(@_getLocation(name),a,b,c,d)
+    gl.uniform4f(@_getLocation(name),v.x,v.y,v.z,v.w)
     @</pre></div></div>
             
         </li>
@@ -733,13 +821,19 @@ TODO - other samplers? Texture Cube for example?</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
-              <p>setUniform4v - Given a uniform name and a Vec4, set this uniform</p>
+              <p><strong>setUniform4fv</strong> - Given a uniform name and an array of floats, grouped in fours, set this uniform</p>
+<ul>
+<li><strong>name</strong> - a String - Required</li>
+<li><strong>a</strong> - an Array of Number - Required </li>
+<li>returns this</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  setUniform4v: <span class="hljs-function"><span class="hljs-params">(name,v)</span> -&gt;</span>
+            <div class="content"><div class='highlight'><pre> 
+  setUniform4fv : <span class="hljs-function"><span class="hljs-params">(name, a)</span> -&gt;</span>
     gl = PXL.Context.gl
-    gl.uniform4f(@_getLocation(name),v.x,v.y,v.z,v.w)
+    gl.uniform4fv(@_getLocation(name), a)
     @</pre></div></div>
             
         </li>
@@ -751,13 +845,18 @@ TODO - other samplers? Texture Cube for example?</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
-              <p>setUniform4fv - Given a uniform name and an array of floats, grouped in fours, set this uniform</p>
+              <p>setMatrix4f - Given a uniform name and a matrix3, set this uniform</p>
+<ul>
+<li><strong>name</strong> - a String - Required</li>
+<li><strong>m</strong> - a Matrix3 - Required </li>
+<li>returns this</li>
+</ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  setUniform4fv : <span class="hljs-function"><span class="hljs-params">(name, a)</span> -&gt;</span>
+            <div class="content"><div class='highlight'><pre>  setMatrix3f: <span class="hljs-function"><span class="hljs-params">(name, m)</span> -&gt;</span>
     gl = PXL.Context.gl
-    gl.uniform4fv(@_getLocation(name), a)
+    gl.uniformMatrix3fv(@_getLocation(name), <span class="hljs-literal">false</span>, m.a)
     @</pre></div></div>
             
         </li>
@@ -770,24 +869,11 @@ TODO - other samplers? Texture Cube for example?</p>
                 <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
               <p>setMatrix4f - Given a uniform name and a matrix4, set this uniform</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  setMatrix3f: <span class="hljs-function"><span class="hljs-params">(name, m)</span> -&gt;</span>
-    gl = PXL.Context.gl
-    gl.uniformMatrix3fv(@_getLocation(name), <span class="hljs-literal">false</span>, m.a)
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-34">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
-              </div>
-              <p>setMatrix4f - Given a uniform name and a matrix4, set this uniform</p>
+<ul>
+<li><strong>name</strong> - a String - Required</li>
+<li><strong>m</strong> - a Matrix4 - Required </li>
+<li>returns this</li>
+</ul>
 
             </div>
             
@@ -799,13 +885,17 @@ TODO - other samplers? Texture Cube for example?</p>
         </li>
         
         
-        <li id="section-35">
+        <li id="section-34">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
-              <p>enableAttribArray - Enable an attribute array by name</p>
+              <p><strong>enableAttribArray</strong> - Enable an attribute array by name</p>
+<ul>
+<li><strong>name</strong> - a String - Required</li>
+<li>returns this </li>
+</ul>
 
             </div>
             
@@ -818,13 +908,17 @@ TODO - other samplers? Texture Cube for example?</p>
         </li>
         
         
-        <li id="section-36">
+        <li id="section-35">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p>getAttribLocation - Get the location of an attribute</p>
+<ul>
+<li><strong>name</strong> - a String - Required</li>
+<li>returns a Number </li>
+</ul>
 
             </div>
             
@@ -835,15 +929,20 @@ TODO - other samplers? Texture Cube for example?</p>
         </li>
         
         
-        <li id="section-37">
+        <li id="section-36">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-37">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <h2 id="shaderfromtext">shaderFromText</h2>
 <p>Create a shader from a block of text and an optional contract
 TODO - old and not used at present but could be handy later</p>
+<ul>
+<li><strong>text</strong> - A String - Required</li>
+<li><strong>contract</strong> - A Contract - Required</li>
+<li>returns a Shader</li>
+</ul>
 
             </div>
             
@@ -859,11 +958,11 @@ TODO - old and not used at present but could be handy later</p>
         </li>
         
         
-        <li id="section-38">
+        <li id="section-37">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <p>Grab vertex section</p>
 
@@ -878,11 +977,11 @@ TODO - old and not used at present but could be handy later</p>
         </li>
         
         
-        <li id="section-39">
+        <li id="section-38">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               <p>Grab fragment section</p>
 
@@ -910,11 +1009,11 @@ TODO - old and not used at present but could be handy later</p>
         </li>
         
         
-        <li id="section-40">
+        <li id="section-39">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-40">&#182;</a>
+                <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
               <p>s = s.replace match,””</p>
 
@@ -927,11 +1026,11 @@ TODO - old and not used at present but could be handy later</p>
         </li>
         
         
-        <li id="section-41">
+        <li id="section-40">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-41">&#182;</a>
+                <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
               <p>if ShaderChunkLibrary[type][shader_type][“head”]?
  s = s.replace match, ShaderChunkLibrary[type][shader_type][“head”]</p>
@@ -941,11 +1040,11 @@ TODO - old and not used at present but could be handy later</p>
         </li>
         
         
-        <li id="section-42">
+        <li id="section-41">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-42">&#182;</a>
+                <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
               <p>if ShaderChunkLibrary[type][shader_type][“main”]?
  main_block += ShaderChunkLibrary[type][shader_type][“main”] + “\n”
@@ -971,11 +1070,11 @@ else
         </li>
         
         
-        <li id="section-43">
+        <li id="section-42">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-43">&#182;</a>
+                <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
               <p>Remove the blocks of precision</p>
 
@@ -993,11 +1092,11 @@ else
         </li>
         
         
-        <li id="section-44">
+        <li id="section-43">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-44">&#182;</a>
+                <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
               <p>Assume the main function is the last thing in the shader :)</p>
 
@@ -1023,11 +1122,11 @@ else
         </li>
         
         
-        <li id="section-45">
+        <li id="section-44">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-45">&#182;</a>
+                <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
               <p>Make a chunk out of the remaining sv and sf</p>
 

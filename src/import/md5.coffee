@@ -29,16 +29,17 @@ http://www.3dgep.com/loading-and-animating-md5-models-with-opengl
 {BasicColourMaterial} = require '../material/basic'
 {Skeleton, Bone, Skin, SkinWeight, SkinIndex} = require '../animation/skeleton'
 
-###MD5### 
+### MD5Model ### 
 # Loads an MD5 Model creating a set of nodes, materials and a skeleton
 # MD5 is one of the widely used ID Software Model formats
 # Regarding materials, for now we just load the nearest texture in the directory
 
 class MD5Model extends Node
 
-  # Basic constructor for OBJ
-  # @url - the URL to the object in question
-  # @promise (optional) - a promise that will be fulfilled when the code is loaded
+  # **@constructor** for OBJ
+  # - **url** - a String - Required
+  # - **promise** - a Promise
+  # - **params** - NOT CURRENTLY USED
   # TODO - We may wish to consider how this fits with queue and loading items :O
   # TODO - Remove the queue once its finished with?
 
@@ -170,7 +171,7 @@ class MD5Model extends Node
     # white plain material for now. Eventually we'll check a material file
  
     promise_materials = new Promise()
-    promise_materials.when.apply(promise_materials, _material_promises).then () =>        
+    promise_materials.when.apply(promise_materials, _material_promises).then () =>
       promise_textures.resolve(text_data)
   
     @
@@ -214,7 +215,7 @@ class MD5Model extends Node
           parent_idx = parseInt(jline[lastquote+1..openbrace-1])
           parent = undefined
           # I believe all parents are listed in MD5 before their children
-          if parent_idx > -1 
+          if parent_idx > -1
             parent = @skeleton.getBone parent_idx
 
           tokens = jline[openbrace..closebrace].split(" ")
@@ -237,7 +238,7 @@ class MD5Model extends Node
 
           bone = new Bone name, jidx, parent, rotation, position
           
-          @skeleton.addBone bone    
+          @skeleton.addBone bone
  
         midx += @num_joints
 
@@ -482,11 +483,7 @@ class MD5Model extends Node
 
     # Delete any temporary things on this node
     @_material_by_name = undefined if @_material_by_name?
-
     @
 
-   
-
-
-module.exports = 
+module.exports =
   MD5Model : MD5Model
