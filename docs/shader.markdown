@@ -1,6 +1,13 @@
 # Shaders in PXLjs
 
+Shaders come in two forms in PXLjs: custom and uber. The uber shader is provided for ease of use, but if you wish to write your own, you can! It's also possible to utilise PXLjs's shader builder script to simplify the construction of your shaders.
+
+
 ## The Ubershader
+
+### shaderbuilder
+
+In the gulp file, eagle eyed developers may see the **shader** build step. Inside the **src/shader** folder there lives a file called **uber.glsl**. This file contains the skeleton for the ubershader and highlights the way in which shaders are built from component parts in PXLjs.  
 
 ## Custom Shaders
 
