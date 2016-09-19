@@ -1,320 +1,35 @@
----
-layout: default
-title: CoffeeGL.js - A WebGL Library for CoffeeScript
----
-
-{% block content %}
-
-
-<h1>CoffeeGL <small>v0.6.0</small><h1>
-<h2>A WebGL Library for CoffeeScript.</h2>
-
-<iframe id="twitter-widget-0" scrolling="no" frameborder="0" allowtransparency="true" src="http://platform.twitter.com/widgets/tweet_button.1397165098.html#_=1399991891766&amp;count=horizontal&amp;hashtags=coffeegl&amp;id=twitter-widget-0&amp;lang=en&amp;original_referer=http%3A%2F%2Fwww.coffeegl.com&amp;size=l&amp;text=CoffeeGL&amp;url=http%3A%2F%2Fwww.coffeegl.com&amp;via=secti0n9" class="twitter-share-button twitter-tweet-button twitter-count-horizontal" title="Twitter Tweet Button" data-twttr-rendered="true" style="width: 138px; height: 28px;"></iframe>
-
-<p class="lead">
-CoffeeGL is a WebGL Library designed to help programmers create 3D programs for the World-Wide-Web using CoffeeScript. This project is open-source and designed to provide useful functions for beginners without restricting the option to program in raw WebGL.
-</p>
-
-<hr />
-
-<h2>Examples</h2>
-<p>Click below to view the examples and sample code.</p>
-
-<div class="row">
-
-  <div class="col-md-3"><a href="http://cudl.lib.cam.ac.uk/view/MS-PETERHOUSE-00075-00001/1"><img class="img-responsive img-thumbnail" src="/img/equatorie.jpg" alt="Equatorie"/></a></div>
-
-  <div class="col-md-3"><a href="anisotropic.html"><img class="img-responsive img-thumbnail" src="/img/anisotropic.jpg" alt="anisotropic"/></a></div>
-  
-  <div class="col-md-3"><a href="voronoi.html"><img class="img-responsive img-thumbnail" src="/img/voronoi.jpg" alt="voronoi"/></a></div>
-
-  <div class="col-md-3"><a href="curves.html"><img class="img-responsive img-thumbnail" src="/img/curves.jpg" alt="curves"/></a></div>
-
-
-
-</div>
-
-<div class="row">
-
-  <div class="col-md-3"><a href="depth_of_field.html"><img class="img-responsive img-thumbnail" src="/img/depth_of_field.jpg" alt="depth_of_field"/></a></div>
-
-  <div class="col-md-3"><a href="helloworld.html"><img class="img-responsive img-thumbnail" src="/img/helloworld.jpg" alt="helloworld"/></a></div>
-
-  <div class="col-md-3"><a href="jsonmodel.html"><img class="img-responsive img-thumbnail" src="/img/jsonmodel.jpg" alt="jsonmodel"/></a></div>
-
-  <div class="col-md-3"><a href="physics.html"><img class="img-responsive img-thumbnail" src="/img/physics.jpg" alt="physics"/></a></div>
-
-</div>
-
-<div class="row">
-
-  <div class="col-md-3"><a href="picking.html"><img class="img-responsive img-thumbnail" src="/img/picking.jpg" alt="picking"/></a></div>
-
-  <div class="col-md-3"><a href="plane.html"><img class="img-responsive img-thumbnail" src="/img/plane.jpg" alt="plane"/></a></div>
-
-  <div class="col-md-3"><a href="raymarch.html"><img class="img-responsive img-thumbnail" src="/img/raymarch.jpg" alt="raymarch"/></a></div>
-
-  <div class="col-md-3"><a href="shapes.html"><img class="img-responsive img-thumbnail" src="/img/shapes.jpg" alt="shapes"/></a></div>
-
-</div>
-
-<div class="row">
-  <div class="col-md-3"><a href="ssao.html"><img class="img-responsive img-thumbnail" src="/img/ssao.jpg" alt="ssao"/></a></div>
-
-  <div class="col-md-3"><a href="texture.html"><img class="img-responsive img-thumbnail" src="/img/texture.jpg" alt="texture"/></a></div>
-
-  <div class="col-md-3"><a href="depth_buffer.html"><img class="img-responsive img-thumbnail" src="/img/depth_buffer.jpg" alt="depth_buffer"/></a></div>
-
-  <div class="col-md-3"><a href="bumpmap.html"><img class="img-responsive img-thumbnail" src="/img/bumpmap.jpg" alt="Bump Mapping"/></a></div>
-
-<div>
-
-<div class="clearfix"></div>
-
-<hr />
-
-<h2>Download and Installation</h2>
-<p> You can get CoffeeGL in a variety of ways: 
-<ol>
-  <li>As a <a href="http://www.coffeegl.com/coffeegl.zip">zip direct download.</a></li>
-  <li>Visit <a href="https://www.github.com/OniDaito/CoffeeGL">the Github page</a> and clone the respository.</li>
-  <li>Directly through npm using the command below</li>
-</ol>
-
-<pre>npm install coffeegl</pre>
-
-<h3>Requirements</h3>
-
-To use CoffeeGL you just need a good text editor and a recent web-browser. You can use CoffeeGL either with normal Javascript or CoffeeScript; it is provided ready compiled. However, if you are working on a more complicated project, its useful to work with the non-compiled, coffeescript version using node. In which case you will need:
-<ol>
-  <li>Node.js version 0.8.0 or above</li>
-  <li>browserify version 2.7.1 or above</li>
-  <li>uglify-js version 2.2 or above</li>
-  <li>coffeescript 1.6.2 or above</li>
-  <li>mocha 1.8.2 or above</li>
-  <li>chai 1.5.0 or above</li>
-  <li>Docco</li>
-</ol>
-mocha and chai are only needed to run the tests (which is a good idea if you are playing with the maths library). Docco is required to build the documentation. NPM will install all of these for you.
-</p>
-
-
-<hr />
-
-<h2>Getting Started</h2>
-
-<h3>Starting a new project.</h3>
-
-<p>First, create a new folder for your project. Into this we will place our index.html and the coffeegl library file, <strong>coffeegl.min.js</strong> which you can find in the <strong>lib</strong> directory.</p>
-
-<p>
-Your HTML page should look something like this:
-
-<pre>
-&lt;!doctype html&gt;
-&lt;head&gt;
-&lt;title&gt;My First CoffeeGL Page&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</pre>
-
-</p>
-
-<p>
-Inside your html page insert the following lines...
-
-<pre>
-&lt;canvas id="webgl-canvas" style="border: none;" width="580" height="580"&gt;&lt;/canvas&gt;
-&lt;script type="text/javascript" src="coffeegl.min.js"&gt;&lt;/script&gt;
-</pre>
-
-...inside the body section.</p>
-
-<p>
-Next, we will need a basic shader for our first example. You can write your own as either a file or a string, using components from CoffeeGL. Lets copy our most basic shader, <strong>basic_vertex_colour.glsl</strong> from the <strong>shaders</strong> directory.</p>
-
-<p>
-We have everything we need in place now, so lets start work on our first ever triangle!
-</p>
-
-<h3>Using CoffeeScript to compile your code.</h3>
-<p>My preference is to use coffeescript to write my code. If you are not familar with coffeescript or prefer to use javascript, you can! Just skip to the next section.</p>
-
-<p>Lets start by writing two basic functions, our <strong>init</strong> and <strong>draw</strong> functions. Create a new file called <strong>helloworld.coffee</strong>.
-
-<pre>
-  init = () ->
-    v0 = new CoffeeGL.Vertex(new CoffeeGL.Vec3(-1,-1,0), new CoffeeGL.Colour.RGBA.WHITE())
-    v1 = new CoffeeGL.Vertex(new CoffeeGL.Vec3(0,1,0), new CoffeeGL.Colour.RGBA.WHITE())
-    v2 = new CoffeeGL.Vertex(new CoffeeGL.Vec3(1,-1,0), new CoffeeGL.Colour.RGBA.WHITE())
-
-    t = new CoffeeGL.Triangle(v0,v1,v2)
-
-    r = new CoffeeGL.Request('basic_vertex_colour.glsl')
-    r.get (data) =>
-      shader = new CoffeeGL.Shader(data)
-      shader.bind()
-
-    @node = new CoffeeGL.Node t 
-
-    @camera = new CoffeeGL.Camera.PerspCamera()
-
-    @node.add @camera
-
-  draw = () ->
-  
-    GL.clearColor(0.15, 0.15, 0.15, 1.0)
-    GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT)
-    @node.draw()
-
-  cgl = new CoffeeGL.App('webgl-canvas', this, init, draw)
-
-</pre>
-</p>
-
-<p>
-Lets take a closer look at these functions and the lines inside...
-
-
-<pre>
-  v0 = new CoffeeGL.Vertex(new CoffeeGL.Vec3(-1,-1,0), new CoffeeGL.Colour.RGBA.WHITE())
-</pre>
-
-This line creates a new <strong>Vertex</strong> consisting of a <strong>Vec3</strong> and an <strong>RGBA Colour</strong>. A Vertex is the smallest unit of geometry possible and can contain things like a normal, a tangent, a colour, etc.</p>
-
-<p>The <strong>Vec3</strong> represents a position in space and is part of the <a href="http://docs.coffeegl.com">CoffeeGL Maths Library</a> which has many primitives for you to play with. The <strong>Colour.RGBA.WHITE()</strong> is a 4 component colour, in this case white, that is passed along with the position when creating the vertex.</p>
-
-<p>
-  <pre>
-    t = new CoffeeGL.Triangle(v0,v1,v2)
-  </pre>
-  As you may have guessed, a Triangle contains 3 vertices and is a simple collection of vertices. It is a face and therefore can have face normals and such.
-</p>
-
-<p>
-  <pre>
-    r = new CoffeeGL.Request('basic_vertex_colour.glsl')
-    r.get (data) =>
-      shader = new CoffeeGL.Shader(data)
-      shader.bind()
-  </pre>
-
-  CoffeeGL has a loading mechanism where a request can be sent for an external file. In this case, we are asking for a <strong>glsl</strong> file that represents our shader. We call the <strong>get</strong> method, passing it a function that is called when the file is loaded. The data will be text that pass to our new <strong>CoffeeGL.Shader</strong>. We then <strong>bind</strong> this shader, thus loading it onto our graphics card.</p>
-
-<p>
-  <pre>
-    @node = new CoffeeGL.Node t 
-    @camera = new CoffeeGL.Camera.PerspCamera()
-    @node.add @camera
-  </pre>
-
-  The first line creates a <strong>Node</strong> object. These are quite useful in CoffeeGL. They combine geometry with a matrix, shaders, cameras and even other nodes, in order to create a partial scene graph. The node system is fairly flexible and takes care of creating buffers, bind calls and shader uniform calls for you.
-</p>
-
-<p> 
-  The second line creates a perspective camera with the default settings. This should allow us to see our first triangle. We attach it to the node in the last line.
-</p>
-
-<p>
-<pre>
-  draw = () ->
-  
-    GL.clearColor(0.15, 0.15, 0.15, 1.0)
-    GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT)
-    @node.draw()
-</pre>
-The draw function is quite straight forward. CoffeeGL creates a <strong>GL</strong> object that allows you to execute normal WebGL commands for the current context, like clearing the screen, setting depth buffers or any of the normal WebGL functions. The context is automatically set for you, and the draw function is called 60 times a second.
-</p>
-<p>The final line calls the <strong>draw</strong> function on our node, actually drawing to the screen.</p>
-
-<p>
-  <pre>
-    cgl = new CoffeeGL.App('webgl-canvas', this, init, draw)
-  </pre>
-  This last line is the final piece of the puzzle. We create an <strong>App</strong> that takes a number of parameters...
-  <ol>
-    <li>The <strong>'webgl-canvas'</strong> refers to which canvas object on the page we want to use (by id)</li>
-    <li><strong>this</strong> refers to the object to be wrapped by CoffeeGL (in this case, the global context)</li>
-    <li><strong>init</strong> refers to the init method we just defined above.</li>
-    <li><strong>draw</strong> refers to which function will be used by CoffeeGL to draw to the screen.</li>
-  </ol>
-And that is it. Compile this with CoffeeScript using the following command inside your new directory...
-<pre>
-  coffee -o . helloworld.coffee
-</pre>
-</p> 
-
-<p>...and you should see a file called <strong>helloworld.js</strong> appear in your new folder. Lets go back to your <strong>index.html</strong> page and add the following line:
-
-<pre>
-  &lt;script type="text/javascript" src="helloworld.js"&gt;&lt;/script&gt;
-</pre>
-
-</p>
-
-<p>As we are performing requests to grab our shader, we should run a small websever to test our page. If you are on OSX or Linux you should have access to <strong>python</strong>. Open up a terminal, navigate to your directory and type...
-<pre>
-  python -m SimpleHTTPServer
-</pre>
-  Now browse to <strong>http://localhost:8000</strong> page in your favorite web-browser (so long as it isn't Windows Internet Explorer) and voila! You should see your first triangle!</p>
-
-<p>Now take a look at the examples to see how you can make wonderful, hardware accelerated graphics on the web.</p>
-
-
-<h3>Going with vanilla Javascript.</h3>
-
-<p>If you are a purist and prefer to use Javascript you can! The objects <strong>CoffeeGL</strong> and <strong>GL</strong> are exported to the global namespace so you can use them as normal javscript objects.</p>
-
-<p>You may also have noticed that the <strong>lib</strong> directory contains a sub-directory called <strong>coffeegl</strong>. Inside here, you will find all the compiled modules if you prefer to use node.js and include / require just the files you need. </p>
-
-<p>CoffeeGL uses uglify and browserify to create its final coffeegl.min.js file, so if you follow the conventions laid down by these libraries, you should have no trouble.</p>
-
-<hr />
-
-<h2>API Documentation</h2>
-Full API documentation can be found in the <strong>docs</strong> directory or online at <a href="http://docs.coffeegl.com">http://docs.coffeegl.com</a>. 
-<hr />
-
-
-<h2>About</h2>
-<p>
-CoffeGL is designed to make the repetitive and common tasks in WebGL development easy and straight-forward. I decided to go down the route of using a node-based system, similar to a scene graph but one that could be ignored if a developer so chooses. The idea is that one can create something quickly to see how it looks, then optimise and adapt the code easily and quickly.</p>
-
-<p>
-I decided to write this in CoffeeScript as oppose to native Javascript, largely because Javascript has some idiosyncracies that I'm not very fond of. To put it bluntly, we all know that javscript mostly sucks, and there are various ways to get around that. Dart is one I'd consider, along with CoffeeScript and in the future, I may move to Dart if the situation arises. For now though, CoffeeScript, along with Node.js, provides a useful abstraction, allowing me to get work done.</p>
-
-<p>
-All the code is open-source and is available on my <a href="http://www.github.com/OniDaito/CoffeeGL">GitHub Page</a>. Please add comments, pull requests and similar there, and do feel free to send me any comments at <a href="mailto:oni@section9.co.uk">oni@section9.co.uk</a>. Let me know if you use CoffeeGL, have comments or queries or suggestions on how we can improve.</p>
-<hr />
-
-<h3>Things still to do</h3>
-<p>
-<ul>
-  <li>SIMD Extensions in the math library</li>
-  <li>BSP / Quad Tree structures for gaming</li>
-  <li>Add lighting to the shader library functions</li>
-  <li>Remove _DIM tests for compatibility with Canon.js</li>
-  <li>....loads more! Please check the github page.</li>
-</ul>
-</p>
-<hr />
-
-<h2>Further Information</h2>
-
-<hr />
-
-<h2>Credits</h2>
-
-<p>
-  <ul>
-    <li>Katie Eagleton.</li>
-    <li>Seb Falk.</li>
-    <li>Raymond Hill for the Voroni implementation.</li>
-    <li>@schteppe of Canon.js fame.</li>
-    <li>NASA for the Earth images.</li>
-  </ul>
-</p>
-
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>PXLjs</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4"><a href="https://www.pxljs.com/examples">examples</a></div> 
+        <div class="col-md-4"><a href="https://github.com/OniDaito/pxljs/blob/master/docs/index.markdown">docs</a></div>
+        <div class="col-md-4"><a href="https://api.pxljs.com">api</a></div>
+      </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="/js/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/js/bootstrap.min.js"></script>
+  </body>
+</html>

@@ -21,7 +21,7 @@ var shader_builder = require('./shader_builder');
 gulp.task('docs', function(){
   gulp.src("./src/**/*.coffee")
   .pipe(docco())
-  .pipe(gulp.dest('./docs'))
+  .pipe(gulp.dest('./docs/api'))
 });
 
 
