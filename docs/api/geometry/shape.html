@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>shape.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="../docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>shape.coffee</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h2 id="about">ABOUT</h2>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>             .__   
+_________  __|  |  
+\____ \  \/  /  |  
+|  |_&gt; &gt;    &lt;|  |__
+|   __<span class="hljs-regexp">/__/</span>\_ \____/
+|__|        \/     js
+
+                    PXL.js
+                    Benjamin Blundell - ben@pxljs.com
+                    http:<span class="hljs-regexp">//</span>pxljs.com
+
+This software <span class="hljs-keyword">is</span> released under the MIT Licence. See LICENCE.txt <span class="hljs-keyword">for</span> details</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>##</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+{Node} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../core/node'</span>
+{RGB,RGBA} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../colour/colour'</span>
+{Vec2, Vec3, PI, degToRad} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../math/math'</span>
+{Vertex, Triangle, Quad, Geometry} = <span class="hljs-built_in">require</span> <span class="hljs-string">'./primitive'</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <h2 id="cuboid">Cuboid</h2>
+<p>A basic Cuboid with indices</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Cuboid</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Geometry</span></span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>TODO - Add resolution here?
+TODO - Add tangents here too?</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p><strong>constructor</strong></p>
+<ul>
+<li><strong>dim</strong> - a Vec3 - Default Vec3(1,1,1)</li>
+<li><strong>colour</strong> - a Colour</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  
+  constructor: <span class="hljs-function"><span class="hljs-params">(dim, colour)</span> -&gt;</span>
+    <span class="hljs-keyword">super</span>()
+
+    @indexed = <span class="hljs-literal">true</span>
+
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> dim?
+      dim = <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">1.0</span>,<span class="hljs-number">1.0</span>,<span class="hljs-number">1.0</span>
+
+    w = dim.x / <span class="hljs-number">2</span>
+    h = dim.y / <span class="hljs-number">2</span>
+    d = dim.z / <span class="hljs-number">2</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>front</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    @vertices.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 -w,-h,d
+      n : Vec3.normalize <span class="hljs-keyword">new</span> Vec3 -w,-h,d
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">0</span>,<span class="hljs-number">0</span> 
+    
+    @vertices.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 w,-h,d  
+      n : Vec3.normalize <span class="hljs-keyword">new</span> Vec3 w,-h,d
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">1</span>,<span class="hljs-number">0</span> 
+    
+    @vertices.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 w,h,d
+      n : Vec3.normalize <span class="hljs-keyword">new</span> Vec3 w,h,d 
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">1</span>,<span class="hljs-number">1</span>
+    
+    @vertices.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 -w,h,d  
+      n : Vec3.normalize <span class="hljs-keyword">new</span> Vec3 -w,h,d
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">0</span>,<span class="hljs-number">1</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>back</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    @vertices.push <span class="hljs-keyword">new</span> Vertex
+      p : <span class="hljs-keyword">new</span> Vec3 -w,-h,-d
+      n : Vec3.normalize <span class="hljs-keyword">new</span> Vec3 -w,-h,-d
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">1</span>,<span class="hljs-number">1</span> 
+    
+    @vertices.push <span class="hljs-keyword">new</span> Vertex
+      p : <span class="hljs-keyword">new</span> Vec3 w,-h,-d
+      n : Vec3.normalize <span class="hljs-keyword">new</span> Vec3 w,-h,-d
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">1</span>,<span class="hljs-number">0</span>
+    
+    @vertices.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 w,h,-d
+      n : Vec3.normalize <span class="hljs-keyword">new</span> Vec3 w,h,-d
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">0</span>,<span class="hljs-number">0</span>
+    
+    @vertices.push <span class="hljs-keyword">new</span> Vertex
+      p : <span class="hljs-keyword">new</span> Vec3 -w,h,-d
+      n : Vec3.normalize <span class="hljs-keyword">new</span> Vec3 -w,h,-d
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">0</span>,<span class="hljs-number">1</span> 
+
+    <span class="hljs-keyword">if</span> colour?
+      <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> @vertices
+        v.c = colour
+
+    @indices = [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>,<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>,<span class="hljs-number">4</span>,<span class="hljs-number">7</span>,<span class="hljs-number">4</span>,<span class="hljs-number">0</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">7</span>,<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">6</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>]
+
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.@indices.length<span class="hljs-number">-1</span>] <span class="hljs-keyword">by</span> <span class="hljs-number">3</span>
+      @faces.push <span class="hljs-keyword">new</span> Triangle(@vertices[@indices[i]], @vertices[@indices[i+<span class="hljs-number">1</span>]], @vertices[@indices[i+<span class="hljs-number">2</span>]])</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <h2 id="sphere">Sphere</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p><a href="http://local.wasp.uwa.edu.au/~pbourke/texture_colour/spheremap/">http://local.wasp.uwa.edu.au/~pbourke/texture_colour/spheremap/</a>  Paul Bourke’s sphere code
+We should weigh an alternative that reduces the batch count by using GL_TRIANGLES instead
+TODO - Add Tangents?
+TODO - not convinced this generation is correct</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Sphere</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Geometry</span></span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p><strong>@constructor</strong></p>
+<ul>
+<li><strong>radius</strong> - a Number - Default 1.0</li>
+<li><strong>segments</strong> - a Number - Default 10</li>
+<li><strong>colour</strong> - a Colour</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  constructor: <span class="hljs-function"><span class="hljs-params">(radius, segments, colour)</span> -&gt;</span>
+    <span class="hljs-keyword">super</span>()
+    gl = PXL.Context.gl <span class="hljs-comment"># Global / Current context</span>
+    @layout = gl.TRIANGLE_STRIP
+
+    <span class="hljs-keyword">if</span> radius?
+      <span class="hljs-keyword">if</span> radius &lt; <span class="hljs-number">0</span>
+        radius = <span class="hljs-number">1.0</span>
+    <span class="hljs-keyword">else</span>
+      radius - <span class="hljs-number">1.0</span>
+
+    <span class="hljs-keyword">if</span> segments?
+      <span class="hljs-keyword">if</span> segments &lt; <span class="hljs-number">0</span>
+        segments = <span class="hljs-number">10</span>
+    <span class="hljs-keyword">else</span>
+      segments = <span class="hljs-number">10</span>
+
+    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.segments/<span class="hljs-number">2</span>]
+      theta1 = j * <span class="hljs-number">2</span> * PI / segments - (PI / <span class="hljs-number">2</span>)
+      theta2 = (j + <span class="hljs-number">1</span>) * <span class="hljs-number">2</span> * PI / segments - (PI / <span class="hljs-number">2</span>)
+
+      <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.segments+<span class="hljs-number">1</span>]
+        e0 = <span class="hljs-keyword">new</span> Vec3()
+   
+        theta3 = i * <span class="hljs-number">2</span> * PI / segments
+ 
+        e0.x = Math.cos(theta1) * Math.cos(theta3)
+        e0.y = Math.sin(theta1)
+        e0.z = Math.cos(theta1) * Math.sin(theta3)
+
+        p0 = Vec3.multScalar(e0,radius)
+        c0 = <span class="hljs-keyword">new</span> RGBA(<span class="hljs-number">1.0</span>,<span class="hljs-number">1.0</span>,<span class="hljs-number">1.0</span>,<span class="hljs-number">1.0</span>)
+        t0 = <span class="hljs-keyword">new</span> Vec2( <span class="hljs-number">0.999</span> - i / segments, <span class="hljs-number">0.999</span> - <span class="hljs-number">2</span> * j / segments)
+        v = <span class="hljs-keyword">new</span> Vertex 
+          p : p0
+          t : t0
+          n : e0   
+
+        @vertices.push v
+
+        e1 = <span class="hljs-keyword">new</span> Vec3()
+
+        e1.x = Math.cos(theta2) * Math.cos(theta3)
+        e1.y = Math.sin(theta2)
+        e1.z = Math.cos(theta2) * Math.sin(theta3)
+
+        p1 = Vec3.multScalar(e1,radius)
+
+        t1 = <span class="hljs-keyword">new</span> Vec2( <span class="hljs-number">0.999</span> - i / segments, <span class="hljs-number">0.999</span> - <span class="hljs-number">2</span> * (j+<span class="hljs-number">1</span>) / segments)
+        v = <span class="hljs-keyword">new</span> Vertex
+          p : p1
+          n : e1
+          t : t1
+     
+        @vertices.push v
+
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">2.</span>.@vertices.length<span class="hljs-number">-1</span>] <span class="hljs-keyword">by</span> <span class="hljs-number">1</span>
+      <span class="hljs-keyword">if</span> i % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>
+        @faces.push <span class="hljs-keyword">new</span> Triangle(@vertices[i], @vertices[i<span class="hljs-number">-1</span>], @vertices[i<span class="hljs-number">-2</span>])
+      <span class="hljs-keyword">else</span>
+        @faces.push <span class="hljs-keyword">new</span> Triangle(@vertices[i], @vertices[i<span class="hljs-number">-2</span>], @vertices[i<span class="hljs-number">-1</span>])
+    
+    <span class="hljs-keyword">if</span> colour?
+      <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> @vertices
+        v.c = colour</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <h2 id="cylinder">Cylinder</h2>
+<p>A basic cylinder</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Cylinder</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Geometry</span></span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p><strong>@constructor</strong> </p>
+<ul>
+<li><strong>radius</strong> - a Number - Default 0.5</li>
+<li><strong>resolution</strong> - a Number - Default 10</li>
+<li><strong>height</strong> - a Number - Default 1.0</li>
+<li><strong>colour</strong> - a Colour</li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  constructor: <span class="hljs-function"><span class="hljs-params">(radius, resolution, segments, height, colour)</span> -&gt;</span>
+    <span class="hljs-keyword">super</span>()
+    @indices = []
+
+    @indexed = <span class="hljs-literal">true</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>TODO - This could be neater</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> radius? 
+      <span class="hljs-keyword">if</span> radius &lt; <span class="hljs-number">0</span>
+        radius = <span class="hljs-number">0.5</span>
+    <span class="hljs-keyword">else</span>
+      radius = <span class="hljs-number">0.5</span>
+
+    <span class="hljs-keyword">if</span> resolution?
+      <span class="hljs-keyword">if</span> resolution &lt; <span class="hljs-number">0</span>
+        resolution = <span class="hljs-number">10.0</span>
+    <span class="hljs-keyword">else</span>
+      resolution = <span class="hljs-number">10.0</span>
+
+    <span class="hljs-keyword">if</span> segments?
+      <span class="hljs-keyword">if</span> segments &lt; <span class="hljs-number">0</span>
+        segments = <span class="hljs-number">10</span>
+    <span class="hljs-keyword">else</span>
+      segments = <span class="hljs-number">10</span>
+
+    <span class="hljs-keyword">if</span> height?
+      <span class="hljs-keyword">if</span> height &lt; <span class="hljs-number">0</span>
+        height = <span class="hljs-number">1.0</span>
+    <span class="hljs-keyword">else</span>
+      height = <span class="hljs-number">1.0</span>
+
+    hstep = height / segments
+    height = height / <span class="hljs-number">2.0</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>top</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    @vertices.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,height,<span class="hljs-number">0</span>)
+      n : <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,<span class="hljs-number">1.0</span>,<span class="hljs-number">0.0</span>)
+      t : <span class="hljs-keyword">new</span> Vec2(<span class="hljs-number">0.5</span>,<span class="hljs-number">0.0</span>)
+      a : <span class="hljs-keyword">new</span> Vec2(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>) <span class="hljs-comment"># cx this - hairy coconut</span>
+    
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">1.</span>.resolution]
+
+      x = radius * Math.sin degToRad(<span class="hljs-number">360.0</span> / resolution * i)
+      z = radius * Math.cos degToRad(<span class="hljs-number">360.0</span> / resolution * i)
+      
+      tangent = <span class="hljs-keyword">new</span> Vec3(x,<span class="hljs-number">0</span>,z)
+      tangent.normalize()
+      tangent.cross <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>)
+
+      @vertices.push <span class="hljs-keyword">new</span> Vertex 
+        p : <span class="hljs-keyword">new</span> Vec3(x,height,z)
+        n : Vec3.normalize(<span class="hljs-keyword">new</span> Vec3(x,<span class="hljs-number">1.0</span>,z)) 
+        t : <span class="hljs-keyword">new</span> Vec2(i/resolution, <span class="hljs-number">0.0</span>) 
+        a : tangent</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>top cap</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">1.</span>.resolution]
+      @indices.push <span class="hljs-number">0</span>
+      @indices.push i
+      <span class="hljs-keyword">if</span> i == resolution
+        @indices.push <span class="hljs-number">1</span>
+      <span class="hljs-keyword">else</span>
+        @indices.push (i+<span class="hljs-number">1</span>)
+
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">1.</span>.segments]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>next end</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> [<span class="hljs-number">1.</span>.resolution]
+
+        x = radius * Math.sin degToRad(<span class="hljs-number">360.0</span> / resolution * j)
+        z = radius * Math.cos degToRad(<span class="hljs-number">360.0</span> / resolution * j)
+
+        tangent = <span class="hljs-keyword">new</span> Vec3(x,<span class="hljs-number">0</span>,z)
+        tangent.normalize()
+        tangent.cross <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,<span class="hljs-number">-1</span>,<span class="hljs-number">0</span>)
+
+        n0 = Vec3.normalize(<span class="hljs-keyword">new</span> Vec3(x,<span class="hljs-number">0</span>,z))
+        <span class="hljs-keyword">if</span> i == segments
+          n0 = Vec3.normalize(<span class="hljs-keyword">new</span> Vec3(x,<span class="hljs-number">-1</span>,z))
+        
+        @vertices.push <span class="hljs-keyword">new</span> Vertex 
+          p : <span class="hljs-keyword">new</span> Vec3(x, height - (hstep * i) ,z) 
+          n : n0
+          t : <span class="hljs-keyword">new</span> Vec2(j/resolution, i/segments ) 
+          a : tangent</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>sides1</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      s = (i - <span class="hljs-number">1</span>) * resolution + <span class="hljs-number">1</span>
+      e = s + resolution
+  
+      <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.resolution<span class="hljs-number">-1</span>]
+        @indices.push (s + j)
+        @indices.push (e + j)
+        <span class="hljs-keyword">if</span> j == (resolution<span class="hljs-number">-1</span>)
+          @indices.push (e)
+        <span class="hljs-keyword">else</span>
+          @indices.push (e + j + <span class="hljs-number">1</span>)
+      
+      <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.resolution<span class="hljs-number">-1</span>]
+        @indices.push (s+j)
+        <span class="hljs-keyword">if</span> j == (resolution<span class="hljs-number">-1</span>)
+          @indices.push (e)
+          @indices.push (s)
+        <span class="hljs-keyword">else</span>
+          @indices.push (e+j+<span class="hljs-number">1</span>)
+          @indices.push (s+j+<span class="hljs-number">1</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>Very last point for bottom cap</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    @vertices.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,-height,<span class="hljs-number">0</span>)
+      n : <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,<span class="hljs-number">-1.0</span>,<span class="hljs-number">0.0</span>)
+      t : <span class="hljs-keyword">new</span> Vec2(<span class="hljs-number">0.5</span>,<span class="hljs-number">1.0</span>)
+      a : <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>bottom cap</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    s = (segments * resolution) + <span class="hljs-number">2</span>
+    e = s + resolution - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [s..e]
+      @indices.push (s - <span class="hljs-number">1</span>)
+      <span class="hljs-keyword">if</span> i == e
+        @indices.push s
+      <span class="hljs-keyword">else</span>
+        @indices.push (i+<span class="hljs-number">1</span>)
+
+      @indices.push i
+
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.@indices.length<span class="hljs-number">-1</span>] <span class="hljs-keyword">by</span> <span class="hljs-number">3</span>
+      @faces.push <span class="hljs-keyword">new</span> Triangle @vertices[@indices[i]], @vertices[@indices[i+<span class="hljs-number">1</span>]], @vertices[@indices[i+<span class="hljs-number">2</span>]]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>Add colour - convert to RGBA here as that is what we expect in the shader
+Potentially this is bad but attributes are what they are and this is cheaper</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> colour?
+      <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> colour.a?
+        colour = <span class="hljs-keyword">new</span> RGBA(colour.r,colour.g,colour.b,<span class="hljs-number">1.0</span>)
+      <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> @vertices
+        v.c = colour
+
+    @
+
+
+<span class="hljs-built_in">module</span>.exports = 
+  Cuboid: Cuboid
+  Sphere: Sphere
+  Cylinder : Cylinder</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

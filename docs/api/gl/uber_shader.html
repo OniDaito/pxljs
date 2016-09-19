@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>uber_shader.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="../docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>uber_shader.coffee</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h2 id="about">ABOUT</h2>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>             .__   
+_________  __|  |  
+\____ \  \/  /  |  
+|  |_&gt; &gt;    &lt;|  |__
+|   __<span class="hljs-regexp">/__/</span>\_ \____/
+|__|        \/     js
+
+                    PXL.js
+                    Benjamin Blundell - ben@pxljs.com
+                    http:<span class="hljs-regexp">//</span>pxljs.com
+
+This software <span class="hljs-keyword">is</span> released under the MIT Licence. See LICENCE.txt <span class="hljs-keyword">for</span> details
+
+An Uber shader implementation
+
+TODO - There <span class="hljs-keyword">is</span> an issue that the uber shader will attempt to match its larger contract each time
+even with nodes <span class="hljs-keyword">and</span> contracts that dont have related uniforms, because the path through the uber shader
+that <span class="hljs-keyword">is</span> being taken doesnt need these uniforms</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>##</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+{Shader} = <span class="hljs-built_in">require</span> <span class="hljs-string">"./shader"</span>
+uber = <span class="hljs-built_in">require</span> <span class="hljs-string">"../shaders/uber"</span> <span class="hljs-comment"># this is automatically built via gulp</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <h2 id="ubershader">UberShader</h2>
+<p>An implementation of an Ubershader that uses a uniform to choose the path through the shader
+and a series of hash defines to sort out what we actually need.</p>
+<p>The paths through the shader are defined using the uniform uUber0
+Its a float whose bits are checked. You can see these in uber_shader_paths</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>TODO - Potentially have the defines rigidly set in a class?
+TODO - Shaderpaths could do the same - use names that map to numbers</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UberShader</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Shader</span></span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>We run over all the nodes, looking for materials. If we have them, check for defines
+Defines can also occur depending on what we have in the node structure, like point-lights and 
+such. We therefore do the check for that here, as oppose to inside the node class. Nodes deal with the
+runtime changes each frame, whereas ubershader deals with defines that should only be needed once :)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  _traverse : <span class="hljs-function"><span class="hljs-params">(base_node)</span> -&gt;</span>
+    <span class="hljs-keyword">if</span> base_node.material?
+      <span class="hljs-keyword">for</span> def <span class="hljs-keyword">in</span> base_node.material._uber_defines
+        <span class="hljs-keyword">if</span> def <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> @uber_defines
+          @uber_defines.push def</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Things to add, depening on whether or not things exist on a node</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> base_node.camera?
+      @uber_defines.push <span class="hljs-string">"BASIC_CAMERA"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"BASIC_CAMERA"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> @uber_defines
+    
+    <span class="hljs-keyword">if</span> base_node.pointLights.length &gt; <span class="hljs-number">0</span>
+      @uber_defines.push <span class="hljs-string">"LIGHTING_POINT"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"LIGHTING_POINT"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> @uber_defines
+      @uber_defines.push <span class="hljs-string">"LIGHTING"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"LIGHTING"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> @uber_defines
+
+    <span class="hljs-keyword">if</span> base_node.spotLights.length &gt; <span class="hljs-number">0</span>
+      @uber_defines.push <span class="hljs-string">"LIGHTING_SPOT"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"LIGHTING_SPOT"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> @uber_defines
+      @uber_defines.push <span class="hljs-string">"LIGHTING"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"LIGHTING"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> @uber_defines</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Checking for shadowmaps</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">for</span> light <span class="hljs-keyword">in</span> base_node.spotLights
+        <span class="hljs-keyword">if</span> light.shadowmap
+          @uber_defines.push <span class="hljs-string">"SHADOWMAP"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"SHADOWMAP"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> @uber_defines
+          @uber_defines.push <span class="hljs-string">"FRAGMENT_DEPTH_OUT"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"FRAGMENT_DEPTH_OUT"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> @uber_defines
+    
+    <span class="hljs-keyword">if</span> base_node.skeleton?
+      @uber_defines.push <span class="hljs-string">"SKINNING"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"SKINNING"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> @uber_defines
+
+    <span class="hljs-keyword">for</span> child <span class="hljs-keyword">in</span> base_node.children
+      @_traverse child</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>The uberconstructor builds a shader at the base nodes, looking at the entire subtree for all the defines
+and such that it needs to set.</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p><strong>constructor</strong></p>
+<ul>
+<li>arbitrary number of unnamed arguments - all of class Node </li>
+</ul>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  constructor : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    @uber_defines = []
+
+    <span class="hljs-keyword">for</span> base_node <span class="hljs-keyword">in</span> arguments
+      @_traverse base_node
+
+    def_string = <span class="hljs-string">""</span>
+    <span class="hljs-keyword">for</span> def <span class="hljs-keyword">in</span> @uber_defines
+      def_string += <span class="hljs-string">"#define "</span> + def + <span class="hljs-string">"\n"</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>We default to high precision for our ubershader
+I havent passed in any options for precision yet</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    @vertex = def_string + uber.vertex
+    @fragment = def_string + uber.fragment
+
+    <span class="hljs-keyword">super</span>(@vertex, @fragment, <span class="hljs-literal">undefined</span>)
+    @_uber = <span class="hljs-literal">true</span>
+
+<span class="hljs-built_in">module</span>.exports =
+  UberShader : UberShader</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
