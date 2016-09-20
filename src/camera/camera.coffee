@@ -215,7 +215,7 @@ class PerspCamera extends Camera
   constructor: (@pos, @look, @up, @angle, @near, @far) ->
     super(@pos,@look,@up)
     if not @angle?
-      @angle = PXL.Math.degToRad 25.0
+      @angle = degToRad 25.0
     if not @near?
       @near = 0.1
     if not @far?

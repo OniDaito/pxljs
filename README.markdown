@@ -15,11 +15,12 @@ PXLjs is a WebGL Library designed to help programmers create 3D programs for the
 
 You can get PXLjs in a variety of ways: 
 
-* As a [zip direct download](http://www.pxljs.com/pxljs.zip).
+* As a [zip direct download](http://www.pxljs.com/pxljs.zip) of the minified and standard library from [pxljs.com](http://pxljs.com).
+* The latest [zip from github](https://github.com/OniDaito/pxljs/archive/master.zip).
 * Visit the [Github page](https://www.github.com/OniDaito/PXLjs) and clone the respository.
 * Directly through npm using the command below.
 
- npm install pxljs
+    npm install pxljs
 
 ## Requirements
 
@@ -35,7 +36,7 @@ Browse to ...
      http://localhost:9966/examples/helloworld.html
 ... to get started
 
-The [building and developing PXLjs page](https://github.com/OniDaito/pxljs/blob/master/docs/building.markdown) has more.
+The [building and developing PXLjs page](https://github.com/OniDaito/pxljs/blob/master/docs/index.markdown#downloading-and-building) has more.
 
 ## Getting Started
 
@@ -244,7 +245,6 @@ params = {
 
 cgl = new PXL.App(params);
 
-
 </pre>
 
 The Javascript version is very similar and if that's your bag, definitely go with that.
@@ -255,7 +255,7 @@ Full API documentation can be found in the docs directory or online at [http://d
 
 ## Further Reading here on GitHub
 
-* [Introduction](https://github.com/OniDaito/pxljs/blob/master/pxljs/docs/index.markdown) 
+* [Introduction](https://github.com/OniDaito/pxljs/blob/master/docs/index.markdown) 
 
 
 ## Things still to do...
