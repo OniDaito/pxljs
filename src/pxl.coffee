@@ -65,7 +65,6 @@ extend "Geometry", require './geometry/primitive'
 extend "Geometry", require './geometry/shape'
 extend "Geometry", require './geometry/plane'
 
-extend "Import", require './import/three'
 extend "Import", require './import/obj'
 extend "Import", require './import/md5'
 

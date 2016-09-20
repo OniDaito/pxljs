@@ -334,7 +334,7 @@ GeometryBrewer.brew = (params) ->
       new_verts = new_verts.concat v[gattr].flatten() for v in @vertices
 
       if not @[name]? 
-        # Always Float32Arrays?
+        # TODO - Always Float32Arrays?
         @[name] = createArrayBuffer(new Float32Array(new_verts), access, size)
       else 
       # Assume if the same size, its the same order
@@ -348,15 +348,17 @@ GeometryBrewer.brew = (params) ->
   if @flat
 
     # Look at the contract to decide what we compress
-    for key of @contract.roles
-      name = @contract.roles[key]
+    for attrib of @contract.roles
+      name = @contract.roles[attrib]
+      key = name.replace("vertex","")
+      key = key.replace("Buffer","")
 
-      if @[ name ] instanceof Float32Array
-        minorBrew true, "vertex" + key + "Buffer", key, key + "_buffer_access", @_flat_sizes[name]
+      if @[ key ] instanceof Float32Array
+        minorBrew true, name, key, key + "_buffer_access", @_flat_sizes[key]
 
   else
     # We look at everything that is attached to a vertex and is in
-    # the contract with the right name
+    # the contract with the right name. Must also have a DIM attached
 
     for key of @vertices[0]
 
@@ -364,6 +366,8 @@ GeometryBrewer.brew = (params) ->
       if @contract.hasRoleValue(role_name) and key != undefined
         vert = @vertices[0]
         datatype = vert[key]
+        if not datatype.DIM?
+          PXLError "No DIM provided for datatype sent to minorbrew"
         size = datatype.DIM
         minorBrew false, role_name, key, key + "_buffer_access", size
     
@@ -371,13 +375,16 @@ GeometryBrewer.brew = (params) ->
   access = if params.indices_buffer_access? then params.indices_buffer_access else gl.STATIC_DRAW
 
   if @indexed
-    if not @vertexIndexBuffer?
-      @vertexIndexBuffer = createElementBuffer(new Uint16Array(@indices), access, 1)
+    if @flat 
+      @vertexIndexBuffer = createElementBuffer(@indices, access, 1)
     else
-      if @indices.length == @vertexIndexBuffer.numItems
-        setDataBuffer @vertexIndexBuffer, new Float32Array(@indices), access
+      if not @vertexIndexBuffer?
+        @vertexIndexBuffer = createElementBuffer(new Uint16Array(@indices), access, 1)
       else
-        PXLWarningOnce "Attemping to update indices buffer of different length"
+        if @indices.length == @vertexIndexBuffer.numItems
+          setDataBuffer @vertexIndexBuffer, new Float32Array(@indices), access
+        else
+          PXLWarningOnce "Attemping to update indices buffer of different length"
 
   @brewed = true 
   @
@@ -442,28 +449,28 @@ rebrew_typed = (geometry, params) =>
 
   # Colours
   if params.colour_buffer?
-    if geometry.vertexColourBuffer?
-      bufferSubData(geometry.vertexColourBuffer, params.colour_buffer.data, params.colour_buffer.offset)
+    if geometry.vertexcBuffer?
+      bufferSubData(geometry.vertexcBuffer, params.colour_buffer.data, params.colour_buffer.offset)
 
   # Positions
   if params.position_buffer?
-    if geometry.vertexPositionBuffer?
-      bufferSubData(geometry.vertexPositionBuffer, params.position_buffer.data, params.position_buffer.offset)
+    if geometry.vertexpBuffer?
+      bufferSubData(geometry.vertexpBuffer, params.position_buffer.data, params.position_buffer.offset)
 
   # normals
   if params.normal_buffer?
-    if geometry.vertexNormalBuffer?
-      bufferSubData(geometry.vertexNormalBuffer, params.normal_buffer.data, params.normal_buffer.offset)
+    if geometry.vertexnBuffer?
+      bufferSubData(geometry.vertexnBuffer, params.normal_buffer.data, params.normal_buffer.offset)
 
   # UVs
   if params.texcoord_buffer?
-    if geometry.vertexTextureBuffer?
-      bufferSubData(geometry.vertexTextureBuffer, params.texcoord_buffer.data, params.texcoord_buffer.offset)
+    if geometry.vertextBuffer?
+      bufferSubData(geometry.vertextBuffer, params.texcoord_buffer.data, params.texcoord_buffer.offset)
 
   # tangent
   if params.tangent_buffer?
-    if geometry.vertexTangentBuffer?
-      bufferSubData(geometry.vertexTangentBuffer, params.tangent_buffer.data, params.tangent_buffer.offset)
+    if geometry.vertexbBuffer?
+      bufferSubData(geometry.vertexaBuffer, params.tangent_buffer.data, params.tangent_buffer.offset)
 
   @
 

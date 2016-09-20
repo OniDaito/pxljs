@@ -37,10 +37,10 @@ class Plane extends Geometry
     @indexed = true
     @indices = []
 
-    for i in [0..zres-1]
-      for j in [0..xres-1]
-        xp = -1.0 + (2.0 / xres * j)
-        zp = -1.0 + (2.0 / zres * i)
+    for i in [0..zres]
+      for j in [0..xres]
+        xp = -1.0 + (2.0 / (xres+1) * j)
+        zp = -1.0 + (2.0 / (zres+1) * i)
         xt = 1.0 / xres * j
         zt = 1.0 / zres * i
         
@@ -51,10 +51,10 @@ class Plane extends Geometry
           t : new Vec2 xt,zt
 
     # create indices as triangles - anti-clockwise winding
-    for z in [0..zres-2]
-      for x in [0..xres-2]
-        row = xres*z
-        row2 = xres*(z+1)
+    for z in [0..zres-1]
+      for x in [0..xres-1]
+        row = (xres+1)*z
+        row2 = (xres+1)*(z+1)
 
         @indices.push row+x
         @indices.push row2+x
@@ -80,7 +80,7 @@ class PlaneFlat extends Geometry
   # **@constructor**
   # - **xres** - a Number - Optional - Integer - Default 2
   # - **zres** - a Number - Optional - Integer - Default 2
-  constructor: (@xres=2, @zres=2) ->
+  constructor: (xres=2, zres=2) ->
     super()
     # TODO - Can we have options here?
 
@@ -91,6 +91,14 @@ class PlaneFlat extends Geometry
     @n = new Float32Array(tt * 3)
     @c = new Float32Array(tt * 4)
     @indices = new Uint16Array(xres * (zres - 1) * 2)
+    
+    # Set the sizes so WebGL knows how to read this buffer
+    # We do this for flat geometry only
+    @_flat_sizes  = 
+      p : 3
+      t : 2
+      n : 3
+      c : 4 
 
     @indexed = true
     @flat = true
@@ -202,6 +210,13 @@ class PlaneHexagonFlat extends Geometry
     @flat = true
 
     @layout = GL.TRIANGLES if GL?
+
+    @_flat_sizes  = 
+      p : 3
+      t : 2
+      n : 3
+      c : 4
+      y : 3 
 
     idv = 0
     idt = 0
