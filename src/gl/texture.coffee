@@ -314,29 +314,23 @@ textureFromURL = (url, callback, onerror, params) ->
     if not url? or not PXL.Context.gl?
       PXLWarning "No context or url provided for texture"
 
-    cc = PXL.Context
-    gl = cc.gl
-
-    # TODO - On these callbacks context needs to be saved each time
-    # from the request all the way down :S
-
+    # Request will keep hold of the current GL context for us
     r = new Request url
 
-    success = () =>
+    success = () ->
       texImage = new Image()
       texImage.src = url
 
-      loadHandler = () =>
-
+      loadHandler = () ->
         texture = new Texture texImage, params
         callback?(texture)
 
-      texImage.addEventListener('load', loadHandler)
+      texImage.addEventListener('loadend', loadHandler)
       
       if texImage.complete
         loadHandler()
 
-    failure = () =>
+    failure = () ->
       PXLWarning "Failed to load Texture: " + url
       onerror?()
 
@@ -434,6 +428,7 @@ textureCubeFromURL = (paths,callback,onerror,params) ->
     texImages[i].cubeID = i
     texImages[i].src = paths[i]
 
+    # TODO - Double check this doesnt get called twice as above
     texImages[i].onload = () =>
 
       loadedTextures++

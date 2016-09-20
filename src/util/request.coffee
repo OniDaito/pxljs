@@ -40,7 +40,9 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 
 ### Request ###
 # A class that makes an XMLHTTPRequest for us, given a url
-
+# One important thing that request does is to hold the current
+# GL context for us so that when loads complete, we can go back
+# to our previous context
 class Request
 
   # **@constructor**

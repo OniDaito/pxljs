@@ -8,11 +8,27 @@ PXLjs is written in CoffeeScript but can just as easily be used with Plain Old J
 
 ## Downloading and Building
 
+You can download the source from here on github. Simply checkout the project and run the following command...
 
+    npm install
+
+This should pull down the development pre-requisites, build the library and run the tests.  
+
+To run the development build, type the following command inside the base directory...
+
+    gulp dev
+
+The *dev* command builds the library but also runs a webserver on port **9966** on localhost, so you can view the built examples in your browser.
+
+I used [gulp](http://gulpjs.com/) to manage the build system. Previously I had a makefile which I might re-instate in the future.
 
 ## Basic Use
 
-### Simple usecase in Coffeescript
+PXLjs is a single, minified Javascript source, with associated json and image files for the various textures and models you may wish to load. 
+
+If you wish to develop PXLjs and modify it whilst you are writing your program, you might prefer to use the Javascript builds or the raw coffeescript source. The former can be found in the **build** directory once you've built the source.
+
+### Simple example in Coffeescript
 <pre>
 
 init = () ->
@@ -26,7 +42,9 @@ init = () ->
   @camera = new PXLjs.Camera.PerspCamera()
   @node.add @camera
 
-  new PXL.GL.UberShader @node
+  uber = new PXL.GL.UberShader @node
+  @node.add uber
+
 
 draw = () ->
   GL.clearColor(0.15, 0.15, 0.15, 1.0)
@@ -51,7 +69,7 @@ cgl = new PXL.App params
 var cgl, draw, init, params;
 
 init = function() {
-  var t, v0, v1, v2;
+  var t, v0, v1, v2, uber;
   v0 = new PXLjs.Vertex(new PXLjs.Vec3(-1, -1, 0), new PXLjs.Colour.RGBA.WHITE());
   v1 = new PXLjs.Vertex(new PXLjs.Vec3(0, 1, 0), new PXLjs.Colour.RGBA.WHITE());
   v2 = new PXLjs.Vertex(new PXLjs.Vec3(1, -1, 0), new PXLjs.Colour.RGBA.WHITE());
@@ -59,13 +77,13 @@ init = function() {
   this.node = new PXLjs.Node(t);
   this.camera = new PXLjs.Camera.PerspCamera();
   this.node.add(this.camera);
-  return new PXL.GL.UberShader(this.node);
+  uber = new PXL.GL.UberShader(this.node); 
 };
 
 draw = function() {
   GL.clearColor(0.15, 0.15, 0.15, 1.0);
   GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT);
-  return this.node.draw();
+  this.node.draw();
 };
 
 params = {
