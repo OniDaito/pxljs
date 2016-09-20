@@ -130,7 +130,7 @@ class Curve
     while curr_u < u
       prev_dist = curr_dist
       prev_u = curr_u
-      prev_point.copyFrom curr_point
+      prev_point.copy curr_point
 
       curr_u += Curve.step_rez
       curr_point = @pointOnCurve curr_u
@@ -159,7 +159,7 @@ class Curve
     while curr_dist < d
       prev_dist = curr_dist
       prev_u = curr_u
-      prev_point.copyFrom curr_point
+      prev_point.copy curr_point
 
       curr_u += Curve.step_rez
       curr_point = @pointOnCurve curr_u
@@ -458,26 +458,26 @@ class CatmullPatch
 class CubicHermiteSpline extends Curve
 
   # **@constructor**
-  # - **p0** - a Vec3 - Required
-  # - **p1** - a Vec3 - Required
-  # - **m0** - a Vec3 - Required
-  # - **m1** - a Vec3 - Required
+  # - **p0** - a Vec2 or Vec3 - Required
+  # - **p1** - a Vec2 or Vec3 - Required
+  # - **m0** - a Vec2 or Vec3 - Required
+  # - **m1** - a Vec2 or Vec3 - Required
   constructor : (@p0, @p1, @m0, @m1) ->
     super()
     @
 
   # **pointOnCurve** - Return the point on this curve given u (or x)
   # - **u** - a Number - Required
-  # - returns a new Vec3 
+  # - returns a new Vec2 or Vec3 
   pointOnCurve : (u) ->
 
     t3 = u*u*u 
     t2 = u*u
 
-    c0 = @p0.copy().multScalar(2 * t3 - 3 * t2 + 1) 
-    c1 = @m0.copy().multScalar(t3 - 2 * t2 + u)
-    c2 = @p1.copy().multScalar(-2 * t3 + 3 * t2)
-    c3 = @m1.copy().multScalar(t3 - t2)
+    c0 = @p0.clone().multScalar(2 * t3 - 3 * t2 + 1) 
+    c1 = @m0.clone().multScalar(t3 - 2 * t2 + u)
+    c2 = @p1.clone().multScalar(-2 * t3 + 3 * t2)
+    c3 = @m1.clone().multScalar(t3 - t2)
 
     c0.add(c1).add(c2).add(c3)
 
@@ -489,7 +489,7 @@ class CatmullRomSpline extends Curve
   # TODO - as we are are not keeping a count of the points, we cant really
   # alter the spline on the fly :(
   # **@constructor**
-  # - **points** - an Array of Vec3 - Minimum Length 4 - Required
+  # - **points** - an Array of Vec2 or Vec3 - Minimum Length 4 - Required
   constructor : (points) ->
 
     if points.length < 4
@@ -502,8 +502,8 @@ class CatmullRomSpline extends Curve
     @splines = []
  
     for i in [0..segments-1]
-      m0 = points[i+2].copy().sub( points[i])
-      m1 = points[i+3].copy().sub( points[i+1])
+      m0 = points[i+2].clone().sub( points[i])
+      m1 = points[i+3].clone().sub( points[i+1])
 
       @splines.push new CubicHermiteSpline points[i+1], points[i+2], m0, m1
 

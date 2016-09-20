@@ -209,10 +209,10 @@ class Tween
     if not @interp?
       @interp = new Interpolation @f0.value, @f1.value
 
-    if @f0.obj.copyFrom?
-      @_original = @f0.obj.copy()
+    if @f0.obj.copy?
+      @_original = @f0.obj.clone()
       @reset = () ->
-        @f0.copyFrom @_original
+        @f0.copy @_original
     else
       @_original = @f0
       @reset = () ->
@@ -222,8 +222,8 @@ class Tween
   # **set**
   # - **u** - a Number - 0 to 1 range
   set: (u) ->
-    if @f0.obj.copyFrom?
-      @f0.obj.copyFrom @interp.set(u)
+    if @f0.obj.copy?
+      @f0.obj.copy @interp.set(u)
     else
       @f0.obj = @interp.set(u)
 
