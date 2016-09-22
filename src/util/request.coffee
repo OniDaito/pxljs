@@ -115,7 +115,7 @@ class Request
             else
               PXL.Context.switchContext @_context if PXL?
               onerror(@req.responseText)
-        
+       
         @req.open('GET', @url)
         @req.setRequestHeader('X-Requested-With', 'XMLHttpRequest')
         @req.send(null)

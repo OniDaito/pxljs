@@ -316,30 +316,30 @@ GeometryBrewer.brew = (params) ->
 
 
   # Actually perform the brewing
-  minorBrew = (flat,name,gattr,pattr,size) =>
+  minorBrew = (obj, name,gattr,pattr,size) ->
 
     access = if params[pattr]? then params[pattr] else gl.STATIC_DRAW
 
-    if flat
-      if not @[name]?
-        @[name] = createArrayBuffer(@[gattr], access, size)
+    if obj.flat
+      if not obj[name]?
+        obj[name] = createArrayBuffer(obj[gattr], access, size)
       else
-        if @[gattr].length == @[name].numItems
-          setDataBuffer @[name], @[gattr], access
+        if obj[gattr].length == obj[name].numItems
+          setDataBuffer obj[name], obj[gattr], access
         else
           PXLWarningOnce "Attemping to update position buffer of different length"
 
     else
       new_verts = []
-      new_verts = new_verts.concat v[gattr].flatten() for v in @vertices
+      new_verts = new_verts.concat v[gattr].flatten() for v in obj.vertices
 
-      if not @[name]? 
+      if not obj[name]? 
         # TODO - Always Float32Arrays?
-        @[name] = createArrayBuffer(new Float32Array(new_verts), access, size)
+        obj[name] = createArrayBuffer(new Float32Array(new_verts), access, size)
       else 
       # Assume if the same size, its the same order
-        if @vertices.length == @[name].numItems
-          setDataBuffer @[name], new Float32Array(new_verts), access
+        if obj.vertices.length == obj[name].numItems
+          setDataBuffer obj[name], new Float32Array(new_verts), access
         else
           PXLWarningOnce "Attemping to update position buffer of different length"
 
@@ -354,7 +354,7 @@ GeometryBrewer.brew = (params) ->
       key = key.replace("Buffer","")
 
       if @[ key ] instanceof Float32Array
-        minorBrew true, name, key, key + "_buffer_access", @_flat_sizes[key]
+        minorBrew @, name, key, key + "_buffer_access", @_flat_sizes[key]
 
   else
     # We look at everything that is attached to a vertex and is in
@@ -369,7 +369,7 @@ GeometryBrewer.brew = (params) ->
         if not datatype.DIM?
           PXLError "No DIM provided for datatype sent to minorbrew"
         size = datatype.DIM
-        minorBrew false, role_name, key, key + "_buffer_access", size
+        minorBrew @, role_name, key, key + "_buffer_access", size
     
   # Indices
   access = if params.indices_buffer_access? then params.indices_buffer_access else gl.STATIC_DRAW
@@ -485,7 +485,6 @@ GeometryBrewer.drawGL = () ->
     gl.drawElements(@layout, @vertexIndexBuffer.numItems, gl.UNSIGNED_SHORT,0);
   else
     gl.drawArrays(@layout, 0, @vertexpBuffer.numItems);
-
   @
 
 

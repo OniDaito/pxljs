@@ -55,7 +55,7 @@ init = () ->
   params = 
     min : GL.NEAREST
 
-  texture = new PXL.GL.textureFromURL("/textures/chessboard.png", got_texture, undefined, params)  
+  PXL.GL.textureFromURL("/textures/chessboard.png", got_texture, undefined, params)  
   
   GL.enable GL.DEPTH_TEST
 

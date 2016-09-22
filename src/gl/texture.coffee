@@ -316,19 +316,19 @@ textureFromURL = (url, callback, onerror, params) ->
 
     # Request will keep hold of the current GL context for us
     r = new Request url
-
+ 
     success = () ->
       texImage = new Image()
       texImage.src = url
-
+   
       loadHandler = () ->
         texture = new Texture texImage, params
         callback?(texture)
 
-      texImage.addEventListener('loadend', loadHandler)
+      texImage.addEventListener('load', loadHandler)
       
-      if texImage.complete
-        loadHandler()
+      #if texImage.complete
+      #  loadHandler()
 
     failure = () ->
       PXLWarning "Failed to load Texture: " + url

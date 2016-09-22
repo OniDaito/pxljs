@@ -35,7 +35,7 @@ class Shader
   # for example)
   # - **vertex_source** - a String - Required
   # - **fragment_source** - a String - Required
-  # - **user_roles** - an Array
+  # - **user_roles** - an Object with named attributes mapping to String
 
   constructor : (@vertex_source, @fragment_source, user_roles) ->
 
@@ -448,109 +448,63 @@ class Shader
 
 ### shaderFromText ###
 # Create a shader from a block of text and an optional contract
-# TODO - old and not used at present but could be handy later
 #  - **text** - A String - Required
-#  - **contract** - A Contract - Required
+#  - **user_roles** - An Object with named attributes mapping to Strings
 #  - returns a Shader
-shaderFromText = ( text, contract ) ->
+
+shaderFromText = ( text, user_roles ) ->
 
   _splitShader = (s) ->
-    
+  
     sv = sf = ""
-
     pv = s.indexOf("##>VERTEX")
     pf = s.indexOf("##>FRAGMENT")
-   
-    # Grab vertex section
-    if pv != -1
-      if pf != -1 and pf > pv
-        sv = s.slice(pv + 9, pf)
-      else if pf != -1 and pf < pv
-        sv = s.slice(pv + 9)
-
-    # Grab fragment section
-     if pf != -1
-      if pv != -1 and pv > pf
-        sf = s.slice(pf + 11, pv)
-      else if pf != -1 and pv < pf
-        sf = s.slice(pf + 11)
-   
-    [sv,sf]
-
-
-  _matchWithLibrary = (s) ->
-    matches = s.match(/\{\{(ShaderChunkLibrary\.[a-zA-Z]+)\}\}/g)
-  
-    chunks = []
-    
-    if matches?
-      for  match in matches
-        type = match.replace("}}","").split(".")[1]
-        if not ShaderChunkLibrary[type]?
-          #s = s.replace match,""
-          PXLError "Could not find " + type + " in Shader Library"
-
-        else #if ShaderChunkLibrary[type][shader_type]?
-          #if ShaderChunkLibrary[type][shader_type]["head"]?
-          #  s = s.replace match, ShaderChunkLibrary[type][shader_type]["head"]
-         
-          #if ShaderChunkLibrary[type][shader_type]["main"]?
-          #  main_block += ShaderChunkLibrary[type][shader_type]["main"] + "\n"
-          #else
-          #   s = s.replace match,""
-
-          chunks.push ShaderChunkLibrary[type]
-
-    chunks
-
-  _findPrecision = (s) ->
-    pp = ""
-    pv = ps = s.indexOf("precision")
-    pe = -1
-    while pv != -1
-      pe = s.indexOf(";",pv)
-      pp += s.slice(pv, pe + 1) + "\n"
-      pv = s.indexOf("precision",pe)
-    
-    # Remove the blocks of precision
-    if ps != -1
-      s = s.slice(pe+1)
-
-    [pp,s]
-
-   _findMain = (s) ->
-    ps = s.indexOf("void main")
-    if ps != -1
-      # Assume the main function is the last thing in the shader :)
-      return [ s.slice(ps), s.slice(0,ps)]
-
-    [undefined,s]
-
-  [sv,sf] = _splitShader text
-
-  chunks = _matchWithLibrary text
-
-  sv = sv.replace /;(?! [a-zA-Z0-9])/g, ';'
-  sv = sv.replace /\{/g, '{'
-  sv = sv.replace /\}/g, '}'
  
-  sf = sf.replace /;(?! [a-zA-Z0-9])/g, ';'
-  sf = sf.replace /;(?! [a-zA-Z0-9])/g, ';'
-  sf = sf.replace /\{/g, '{'
-  sf = sf.replace /\}/g, '}'
+    if pv != -1
+      if (pf != -1 && pf > pv)
+        sv = s.slice(pv + 9, pf)
+      else if (pf != -1 && pf < pv)
+        sv = s.slice(pv + 9)
+  
 
-  # Make a chunk out of the remaining sv and sf
+    if pf != -1
+      if pv != -1 && pv > pf
+        sf = s.slice(pf + 11, pv)
+      else if pf != -1 && pv < pf
+        sf = s.slice(pf + 11)
+     
+    return [sv,sf]
 
-  [precision_fragment,sf] = _findPrecision sf
-  [precision_vertex,sv] = _findPrecision sv
+  _javascriptize = (shader_txt,var_name) ->
+    shader_js = "var " + var_name + "=" + "\n"  
+    lines = shader_txt.split("\n")
+    for lidx in [0..lines.length-1]
+      newline = lines[lidx]
+      newline = newline.replace("\n","")
+      newline = newline.replace("\r","")
 
-  [main_fragment,sf] = _findMain sf
-  [main_vertex,sv] = _findMain sv
+      shader_js = shader_js + '\"' + newline + '\\n"'
 
-  chunks.push new ShaderChunk {func : sv, main_func : main_vertex}, {func : sf, main_func : main_fragment}
+      if (lidx + 1) < lines.length
+        shader_js = shader_js + ' +\n'
 
-  shader = new Shader chunks, contract, precision_vertex, precision_fragment 
-  shader
+    shader_js = shader_js + ";"
+    shader_js
+
+
+
+  # We assume that chunks are in a subdir relative to the glsl files called 'chunks'
+  # TODO - need someway to check it against a list of chunks that could already be in memory maybe?  
+  
+  parts =_splitShader(text);
+  shader_vertex = parts[0];
+  shader_fragment = parts[1];
+
+  #shader_vertex = _javascriptize(shader_vertex, "shader_vertex");
+  #shader_fragment = _javascriptize(shader_fragment, "shader_fragment");
+
+  new Shader(shader_vertex, shader_fragment, user_roles)
+
 
 module.exports =
   Shader : Shader

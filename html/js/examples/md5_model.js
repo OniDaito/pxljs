@@ -20,18 +20,6 @@ MD5Example = (function() {
 
   MD5Example.prototype.init = function() {
     var cuboid, cuboid_node, g;
-    this.promise = new PXL.Util.Promise();
-    this.promise.then((function(_this) {
-      return function() {
-        var uber;
-        g.matrix.rotate(new PXL.Math.Vec3(1, 0, 0), -0.5 * PXL.Math.PI);
-        g.matrix.scale(new PXL.Math.Vec3(0.1, 0.1, 0.1));
-        _this.top_node.add(g);
-        uber = new PXL.GL.UberShader(_this.top_node);
-        _this.top_node.add(uber);
-        return _this.g = g;
-      };
-    })(this));
     this.top_node = new PXL.Node();
     this.c = new PXL.Camera.MousePerspCamera(new PXL.Math.Vec3(0, 0, 25));
     this.top_node.add(this.c);
@@ -44,6 +32,18 @@ MD5Example = (function() {
     this.top_node.add(this.light2);
     this.top_node.add(this.ambientlight);
     this.top_node.add(cuboid_node);
+    this.promise = new PXL.Util.Promise();
+    this.promise.then((function(_this) {
+      return function() {
+        var uber;
+        g.matrix.rotate(new PXL.Math.Vec3(1, 0, 0), -0.5 * PXL.Math.PI);
+        g.matrix.scale(new PXL.Math.Vec3(0.1, 0.1, 0.1));
+        _this.top_node.add(g);
+        uber = new PXL.GL.UberShader(_this.top_node);
+        _this.top_node.add(uber);
+        return _this.g = g;
+      };
+    })(this));
     GL.enable(GL.CULL_FACE);
     GL.cullFace(GL.BACK);
     GL.enable(GL.DEPTH_TEST);

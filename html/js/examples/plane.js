@@ -16,7 +16,7 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 var cgl, draw, init, params;
 
 init = function() {
-  var camera, flat_node, flat_plane, got_texture, hex_node, hex_plane, params, plane, plane_node, texture;
+  var camera, flat_node, flat_plane, got_texture, hex_node, hex_plane, params, plane, plane_node;
   this.top_node = new PXL.Node();
   plane = new PXL.Geometry.Plane(8, 8);
   plane_node = new PXL.Node();
@@ -46,7 +46,7 @@ init = function() {
   params = {
     min: GL.NEAREST
   };
-  texture = new PXL.GL.textureFromURL("/textures/chessboard.png", got_texture, void 0, params);
+  PXL.GL.textureFromURL("/textures/chessboard.png", got_texture, void 0, params);
   return GL.enable(GL.DEPTH_TEST);
 };
 

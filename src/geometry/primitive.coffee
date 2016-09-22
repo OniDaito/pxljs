@@ -184,11 +184,11 @@ class Geometry
 # vertices essentially copy by reference unless a Vec or similar is not copied. This is
 # the general practice of PXL - inkeeping with javascript
 # The defaults are
-# @p - position
-# @c - colour
-# @n - normals
-# @t - textures (u,v)
-# @a - tangent
+# @p - position - a Vec3
+# @c - colour - a Colour (usually RGBA)
+# @n - normals - a Vec3
+# @t - textures (u,v) - a Vec2
+# @a - tangent - a Vec3
 # @y - barycentre
 # @w - skinweight
 # @i - boneindex
@@ -212,6 +212,9 @@ class Vertex
 
     if not @p?
       @p = new Vec3 0,0,0
+    else
+      if @p not instanceof Vec3
+        PXLWarning("Passing position data to Vertex that is not Vec3")        
 
   # **flatten** - take all the named attributes and call flatten on them
   # - returns an Array
@@ -355,7 +358,9 @@ class VertexSoup extends Geometry
     super()
     gl = GL
     @layout = GL.POINTS if GL?
-    @vertices = vertex_list
+
+    for v in vertex_list
+      @vertices.push v
 
 
 

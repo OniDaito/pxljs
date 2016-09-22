@@ -18,22 +18,8 @@ class MD5Example
 
   init : () ->
 
-    # Create a promise that resolves if the MD5 Model loads correctly
-    @promise = new PXL.Util.Promise()
-
-    @promise.then () =>
-      g.matrix.rotate new PXL.Math.Vec3(1,0,0), -0.5 * PXL.Math.PI
-      g.matrix.scale new PXL.Math.Vec3 0.1, 0.1, 0.1
-      @top_node.add g
-      # Create shaders once everything has loaded
-      uber = new PXL.GL.UberShader(@top_node)
-      @top_node.add uber
-      @g = g
-
-
     @top_node = new PXL.Node()
 
-   
     # Add a normal camera
     @c = new PXL.Camera.MousePerspCamera new PXL.Math.Vec3(0,0,25)
     @top_node.add @c
@@ -50,6 +36,19 @@ class MD5Example
     @top_node.add @ambientlight
     @top_node.add cuboid_node
 
+    # Create a promise that resolves if the MD5 Model loads correctly
+    @promise = new PXL.Util.Promise()
+
+    @promise.then () =>
+      g.matrix.rotate new PXL.Math.Vec3(1,0,0), -0.5 * PXL.Math.PI
+      g.matrix.scale new PXL.Math.Vec3 0.1, 0.1, 0.1
+      @top_node.add g
+      # Create shaders once everything has loaded
+      uber = new PXL.GL.UberShader(@top_node)
+      @top_node.add uber
+      @g = g
+
+   
     GL.enable(GL.CULL_FACE)
     GL.cullFace(GL.BACK)
     GL.enable(GL.DEPTH_TEST)

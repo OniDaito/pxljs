@@ -302,26 +302,29 @@ main_draw = (node, front) ->
 
     # Actual Draw
     # Put a line in here to check we also have a shader on the context
-    if front.geometry? and front.shader?
+    if front.geometry?
     
-      # Set the lights here
-      PointLight._preDraw front.pointLights
-      SpotLight._preDraw front.spotLights
+      if front.shader?      
+        PXL.Context.shader = front.shader
+    
+      if PXL.Context.shader?
+        # Set the lights here
+        PointLight._preDraw front.pointLights
+        SpotLight._preDraw front.spotLights
 
-      PXL.Context.shader = front.shader
-      PXL.Context.shader.bind()
+        PXL.Context.shader.bind()
 
-      matchWithShader(front)
-      # Quick check for unbound uniforms
-      if PXL.Context.debug
-        for u in PXL.Context.shader.contract.findUnmatched()
-          PXLWarningOnce("Unmatched uniform/attribute in shader: " + u.name)
+        matchWithShader(front)
+        # Quick check for unbound uniforms
+        if PXL.Context.debug
+          for u in PXL.Context.shader.contract.findUnmatched()
+            PXLWarningOnce("Unmatched uniform/attribute in shader: " + u.name)
                
-      front.geometry.drawGL()
+        front.geometry.drawGL()
 
-      # unbind - TODO - do we really need to unbind?
-      PXL.Context.shader.unbind()
-      PXL.Context.shader = undefined
+        # unbind - TODO - do we really need to unbind?
+        PXL.Context.shader.unbind()
+        PXL.Context.shader = undefined
 
   for child in node.children
     # We need to clone front so we dont change it permanently

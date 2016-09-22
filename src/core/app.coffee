@@ -118,6 +118,7 @@ class App
     # Context time is the time im seconds that this context has run
     # TODO - Do we still use this really?
     @contextTime = 0
+    @startTime = @oldTime = Date.now()
 
     window.onEachFrame @,@run if window?
 
