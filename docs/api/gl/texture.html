@@ -621,10 +621,7 @@ TODO - Ideally we would have a future here and block till it returns?</p>
 <span class="hljs-title">textureFromURL</span> = <span class="hljs-params">(url, callback, onerror, params)</span> -&gt;</span>
 
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> url? <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> PXL.Context.gl?
-      PXLWarning <span class="hljs-string">"No context or url provided for texture"</span>
-
-    cc = PXL.Context
-    gl = cc.gl</pre></div></div>
+      PXLWarning <span class="hljs-string">"No context or url provided for texture"</span></pre></div></div>
             
         </li>
         
@@ -635,33 +632,21 @@ TODO - Ideally we would have a future here and block till it returns?</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
-              <p>TODO - On these callbacks context needs to be saved each time
-from the request all the way down :S</p>
+              <p>Request will keep hold of the current GL context for us</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>
-    r = <span class="hljs-keyword">new</span> Request url
-<span class="hljs-function">
-    <span class="hljs-title">success</span> = <span class="hljs-params">()</span> =&gt;</span>
+            <div class="content"><div class='highlight'><pre>    r = <span class="hljs-keyword">new</span> Request url
+<span class="hljs-function"> 
+    <span class="hljs-title">success</span> = <span class="hljs-params">()</span> -&gt;</span>
       texImage = <span class="hljs-keyword">new</span> Image()
       texImage.src = url
-<span class="hljs-function">
-      <span class="hljs-title">loadHandler</span> = <span class="hljs-params">()</span> =&gt;</span>
-
+<span class="hljs-function">   
+      <span class="hljs-title">loadHandler</span> = <span class="hljs-params">()</span> -&gt;</span>
         texture = <span class="hljs-keyword">new</span> Texture texImage, params
         callback?(texture)
 
-      texImage.addEventListener(<span class="hljs-string">'load'</span>, loadHandler)
-      
-      <span class="hljs-keyword">if</span> texImage.complete
-        loadHandler()
-<span class="hljs-function">
-    <span class="hljs-title">failure</span> = <span class="hljs-params">()</span> =&gt;</span>
-      PXLWarning <span class="hljs-string">"Failed to load Texture: "</span> + url
-      onerror?()
-
-    r.get success, failure</pre></div></div>
+      texImage.addEventListener(<span class="hljs-string">'load'</span>, loadHandler)</pre></div></div>
             
         </li>
         
@@ -671,6 +656,27 @@ from the request all the way down :S</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>if texImage.complete
+ loadHandler()</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function">
+    <span class="hljs-title">failure</span> = <span class="hljs-params">()</span> -&gt;</span>
+      PXLWarning <span class="hljs-string">"Failed to load Texture: "</span> + url
+      onerror?()
+
+    r.get success, failure</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
               <h2 id="texturecube">TextureCube</h2>
 <p>Loads 6 textures for the texture cube.</p>
@@ -684,11 +690,11 @@ from the request all the way down :S</p>
         </li>
         
         
-        <li id="section-26">
+        <li id="section-27">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
+                <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
               <p><strong>@constructor</strong></p>
 <ul>
@@ -728,11 +734,11 @@ from the request all the way down :S</p>
         </li>
         
         
-        <li id="section-27">
+        <li id="section-28">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
+                <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
               <p><strong>bind</strong> - bind this texture to texture unit given in params (or the one given in unit)</p>
 <ul>
@@ -756,11 +762,11 @@ from the request all the way down :S</p>
         </li>
         
         
-        <li id="section-28">
+        <li id="section-29">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p><strong>unbind</strong> - clear the bound unit</p>
 <ul>
@@ -781,11 +787,11 @@ from the request all the way down :S</p>
         </li>
         
         
-        <li id="section-29">
+        <li id="section-30">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
               <h2 id="texturecubefromurl">textureCubeFromURL</h2>
 <ul>
@@ -822,9 +828,22 @@ from the request all the way down :S</p>
   <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span><span class="hljs-number">.5</span>]
     texImages[i] = <span class="hljs-keyword">new</span> Image()
     texImages[i].cubeID = i
-    texImages[i].src = paths[i]
+    texImages[i].src = paths[i]</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>TODO - Double check this doesnt get called twice as above</p>
 
-    texImages[i].onload = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    texImages[i].onload = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span>
 
       loadedTextures++
       <span class="hljs-keyword">if</span> loadedTextures == <span class="hljs-number">6</span>
@@ -846,3 +865,4 @@ from the request all the way down :S</p>
   </div>
 </body>
 </html>
+

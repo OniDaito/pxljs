@@ -3,7 +3,7 @@
 
 ### v0.1.0
 
-![Build Status Images](https://travis-ci.org/OniDaito/PXLjs.svg)
+![Build Status Images](https://travis-ci.org/OniDaito/pxljs.svg?branch=master)
 
 ## A WebGL Library for CoffeeScript and Vanilla Javascript.
 

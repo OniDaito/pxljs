@@ -100,7 +100,7 @@ for example)</p>
 <ul>
 <li><strong>vertex_source</strong> - a String - Required</li>
 <li><strong>fragment_source</strong> - a String - Required</li>
-<li><strong>user_roles</strong> - an Array</li>
+<li><strong>user_roles</strong> - an Object with named attributes mapping to String</li>
 </ul>
 
             </div>
@@ -936,24 +936,54 @@ TODO - other samplers? Texture Cube for example?</p>
                 <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <h2 id="shaderfromtext">shaderFromText</h2>
-<p>Create a shader from a block of text and an optional contract
-TODO - old and not used at present but could be handy later</p>
+<p>Create a shader from a block of text and an optional contract</p>
 <ul>
 <li><strong>text</strong> - A String - Required</li>
-<li><strong>contract</strong> - A Contract - Required</li>
+<li><strong>user_roles</strong> - An Object with named attributes mapping to Strings</li>
 <li>returns a Shader</li>
 </ul>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-title">shaderFromText</span> = <span class="hljs-params">( text, contract )</span> -&gt;</span>
+            <div class="content"><div class='highlight'><pre><span class="hljs-function">
+<span class="hljs-title">shaderFromText</span> = <span class="hljs-params">( text, user_roles )</span> -&gt;</span>
 <span class="hljs-function">
   <span class="hljs-title">_splitShader</span> = <span class="hljs-params">(s)</span> -&gt;</span>
-    
+  
     sv = sf = <span class="hljs-string">""</span>
-
     pv = s.indexOf(<span class="hljs-string">"##&gt;VERTEX"</span>)
-    pf = s.indexOf(<span class="hljs-string">"##&gt;FRAGMENT"</span>)</pre></div></div>
+    pf = s.indexOf(<span class="hljs-string">"##&gt;FRAGMENT"</span>)
+ 
+    <span class="hljs-keyword">if</span> pv != <span class="hljs-number">-1</span>
+      <span class="hljs-keyword">if</span> (pf != <span class="hljs-number">-1</span> &amp;&amp; pf &gt; pv)
+        sv = s.slice(pv + <span class="hljs-number">9</span>, pf)
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (pf != <span class="hljs-number">-1</span> &amp;&amp; pf &lt; pv)
+        sv = s.slice(pv + <span class="hljs-number">9</span>)
+  
+
+    <span class="hljs-keyword">if</span> pf != <span class="hljs-number">-1</span>
+      <span class="hljs-keyword">if</span> pv != <span class="hljs-number">-1</span> &amp;&amp; pv &gt; pf
+        sf = s.slice(pf + <span class="hljs-number">11</span>, pv)
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> pf != <span class="hljs-number">-1</span> &amp;&amp; pv &lt; pf
+        sf = s.slice(pf + <span class="hljs-number">11</span>)
+     
+    <span class="hljs-keyword">return</span> [sv,sf]
+<span class="hljs-function">
+  <span class="hljs-title">_javascriptize</span> = <span class="hljs-params">(shader_txt,var_name)</span> -&gt;</span>
+    shader_js = <span class="hljs-string">"var "</span> + var_name + <span class="hljs-string">"="</span> + <span class="hljs-string">"\n"</span>  
+    lines = shader_txt.split(<span class="hljs-string">"\n"</span>)
+    <span class="hljs-keyword">for</span> lidx <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.lines.length<span class="hljs-number">-1</span>]
+      newline = lines[lidx]
+      newline = newline.replace(<span class="hljs-string">"\n"</span>,<span class="hljs-string">""</span>)
+      newline = newline.replace(<span class="hljs-string">"\r"</span>,<span class="hljs-string">""</span>)
+
+      shader_js = shader_js + <span class="hljs-string">'\"'</span> + newline + <span class="hljs-string">'\\n"'</span>
+
+      <span class="hljs-keyword">if</span> (lidx + <span class="hljs-number">1</span>) &lt; lines.length
+        shader_js = shader_js + <span class="hljs-string">' +\n'</span>
+
+    shader_js = shader_js + <span class="hljs-string">";"</span>
+    shader_js</pre></div></div>
             
         </li>
         
@@ -964,15 +994,15 @@ TODO - old and not used at present but could be handy later</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
-              <p>Grab vertex section</p>
+              <p>We assume that chunks are in a subdir relative to the glsl files called ‘chunks’
+TODO - need someway to check it against a list of chunks that could already be in memory maybe?  </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> pv != <span class="hljs-number">-1</span>
-      <span class="hljs-keyword">if</span> pf != <span class="hljs-number">-1</span> <span class="hljs-keyword">and</span> pf &gt; pv
-        sv = s.slice(pv + <span class="hljs-number">9</span>, pf)
-      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> pf != <span class="hljs-number">-1</span> <span class="hljs-keyword">and</span> pf &lt; pv
-        sv = s.slice(pv + <span class="hljs-number">9</span>)</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  
+  parts =_splitShader(text);
+  shader_vertex = parts[<span class="hljs-number">0</span>];
+  shader_fragment = parts[<span class="hljs-number">1</span>];</pre></div></div>
             
         </li>
         
@@ -983,166 +1013,14 @@ TODO - old and not used at present but could be handy later</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
-              <p>Grab fragment section</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>     <span class="hljs-keyword">if</span> pf != <span class="hljs-number">-1</span>
-      <span class="hljs-keyword">if</span> pv != <span class="hljs-number">-1</span> <span class="hljs-keyword">and</span> pv &gt; pf
-        sf = s.slice(pf + <span class="hljs-number">11</span>, pv)
-      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> pf != <span class="hljs-number">-1</span> <span class="hljs-keyword">and</span> pv &lt; pf
-        sf = s.slice(pf + <span class="hljs-number">11</span>)
-   
-    [sv,sf]
-<span class="hljs-function">
-
-  <span class="hljs-title">_matchWithLibrary</span> = <span class="hljs-params">(s)</span> -&gt;</span>
-    matches = s.match(<span class="hljs-regexp">/\{\{(ShaderChunkLibrary\.[a-zA-Z]+)\}\}/g</span>)
-  
-    chunks = []
-    
-    <span class="hljs-keyword">if</span> matches?
-      <span class="hljs-keyword">for</span>  match <span class="hljs-keyword">in</span> matches
-        type = match.replace(<span class="hljs-string">"}}"</span>,<span class="hljs-string">""</span>).split(<span class="hljs-string">"."</span>)[<span class="hljs-number">1</span>]
-        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> ShaderChunkLibrary[type]?</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-39">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
-              </div>
-              <p>s = s.replace match,””</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>          PXLError <span class="hljs-string">"Could not find "</span> + type + <span class="hljs-string">" in Shader Library"</span>
-
-        <span class="hljs-keyword">else</span> <span class="hljs-comment">#if ShaderChunkLibrary[type][shader_type]?</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-40">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-40">&#182;</a>
-              </div>
-              <p>if ShaderChunkLibrary[type][shader_type][“head”]?
- s = s.replace match, ShaderChunkLibrary[type][shader_type][“head”]</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-41">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-41">&#182;</a>
-              </div>
-              <p>if ShaderChunkLibrary[type][shader_type][“main”]?
- main_block += ShaderChunkLibrary[type][shader_type][“main”] + “\n”
-else
-  s = s.replace match,””</p>
+              <p>shader_vertex = _javascriptize(shader_vertex, “shader_vertex”);
+shader_fragment = _javascriptize(shader_fragment, “shader_fragment”);</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>
-          chunks.push ShaderChunkLibrary[type]
+  <span class="hljs-keyword">new</span> Shader(shader_vertex, shader_fragment, user_roles)
 
-    chunks
-<span class="hljs-function">
-  <span class="hljs-title">_findPrecision</span> = <span class="hljs-params">(s)</span> -&gt;</span>
-    pp = <span class="hljs-string">""</span>
-    pv = ps = s.indexOf(<span class="hljs-string">"precision"</span>)
-    pe = <span class="hljs-number">-1</span>
-    <span class="hljs-keyword">while</span> pv != <span class="hljs-number">-1</span>
-      pe = s.indexOf(<span class="hljs-string">";"</span>,pv)
-      pp += s.slice(pv, pe + <span class="hljs-number">1</span>) + <span class="hljs-string">"\n"</span>
-      pv = s.indexOf(<span class="hljs-string">"precision"</span>,pe)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-42">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-42">&#182;</a>
-              </div>
-              <p>Remove the blocks of precision</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> ps != <span class="hljs-number">-1</span>
-      s = s.slice(pe+<span class="hljs-number">1</span>)
-
-    [pp,s]
-<span class="hljs-function">
-   <span class="hljs-title">_findMain</span> = <span class="hljs-params">(s)</span> -&gt;</span>
-    ps = s.indexOf(<span class="hljs-string">"void main"</span>)
-    <span class="hljs-keyword">if</span> ps != <span class="hljs-number">-1</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-43">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-43">&#182;</a>
-              </div>
-              <p>Assume the main function is the last thing in the shader :)</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">return</span> [ s.slice(ps), s.slice(<span class="hljs-number">0</span>,ps)]
-
-    [<span class="hljs-literal">undefined</span>,s]
-
-  [sv,sf] = _splitShader text
-
-  chunks = _matchWithLibrary text
-
-  sv = sv.replace <span class="hljs-regexp">/;(?! [a-zA-Z0-9])/g</span>, <span class="hljs-string">';'</span>
-  sv = sv.replace <span class="hljs-regexp">/\{/g</span>, <span class="hljs-string">'{'</span>
-  sv = sv.replace <span class="hljs-regexp">/\}/g</span>, <span class="hljs-string">'}'</span>
- 
-  sf = sf.replace <span class="hljs-regexp">/;(?! [a-zA-Z0-9])/g</span>, <span class="hljs-string">';'</span>
-  sf = sf.replace <span class="hljs-regexp">/;(?! [a-zA-Z0-9])/g</span>, <span class="hljs-string">';'</span>
-  sf = sf.replace <span class="hljs-regexp">/\{/g</span>, <span class="hljs-string">'{'</span>
-  sf = sf.replace <span class="hljs-regexp">/\}/g</span>, <span class="hljs-string">'}'</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-44">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-44">&#182;</a>
-              </div>
-              <p>Make a chunk out of the remaining sv and sf</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  [precision_fragment,sf] = _findPrecision sf
-  [precision_vertex,sv] = _findPrecision sv
-
-  [main_fragment,sf] = _findMain sf
-  [main_vertex,sv] = _findMain sv
-
-  chunks.push <span class="hljs-keyword">new</span> ShaderChunk {func : sv, main_func : main_vertex}, {func : sf, main_func : main_fragment}
-
-  shader = <span class="hljs-keyword">new</span> Shader chunks, contract, precision_vertex, precision_fragment 
-  shader
 
 <span class="hljs-built_in">module</span>.exports =
   Shader : Shader
@@ -1154,3 +1032,4 @@ else
   </div>
 </body>
 </html>
+

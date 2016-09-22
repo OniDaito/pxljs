@@ -466,7 +466,7 @@ TODO - Not sure we need zoom here. Should probably have a spaceball class</p>
             <div class="content"><div class='highlight'><pre>  constructor: <span class="hljs-function"><span class="hljs-params">(@pos, @look, @up, @angle, @near, @far)</span> -&gt;</span>
     <span class="hljs-keyword">super</span>(@pos,@look,@up)
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @angle?
-      @angle = PXL.Math.degToRad <span class="hljs-number">25.0</span>
+      @angle = degToRad <span class="hljs-number">25.0</span>
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @near?
       @near = <span class="hljs-number">0.1</span>
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @far?
@@ -1034,3 +1034,4 @@ At the moment, this appears to be chrome only</p>
   </div>
 </body>
 </html>
+

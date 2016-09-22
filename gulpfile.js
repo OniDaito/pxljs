@@ -14,13 +14,13 @@ var sourcemaps = require('gulp-sourcemaps');
 var budo = require('budo')
 var shader_builder = require('./shader_builder');
 
-//var transform = require('vinyl-transform'); - previously used but doesnt work :S
 //var watchify = require('watchify'); // TODO - Eventually use watchify
 
 // Build the docs with docco
 gulp.task('docs', function(){
+  var options = { template :"./docs/api/api.jst", css: "./docs/api/docco.css" };
   gulp.src("./src/**/*.coffee")
-  .pipe(docco())
+  .pipe(docco(options))
   .pipe(gulp.dest('./docs/api'))
 });
 

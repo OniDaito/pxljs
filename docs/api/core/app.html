@@ -258,6 +258,7 @@ TODO - Do we still use this really?</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>    @contextTime = <span class="hljs-number">0</span>
+    @startTime = @oldTime = Date.now()
 
     <span class="hljs-built_in">window</span>.onEachFrame @,@run <span class="hljs-keyword">if</span> <span class="hljs-built_in">window</span>?</pre></div></div>
             
@@ -351,14 +352,14 @@ TODO - Do we still use this really?</p>
             
             <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> navigator? 
     `<span class="javascript"><span class="hljs-keyword">var</span> BrowserDetect = {
-      init: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+      <span class="hljs-attr">init</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
         <span class="hljs-keyword">this</span>.browser = <span class="hljs-keyword">this</span>.searchString(<span class="hljs-keyword">this</span>.dataBrowser) || <span class="hljs-string">"An unknown browser"</span>;
         <span class="hljs-keyword">this</span>.version = <span class="hljs-keyword">this</span>.searchVersion(navigator.userAgent)
           || <span class="hljs-keyword">this</span>.searchVersion(navigator.appVersion)
           || <span class="hljs-string">"an unknown version"</span>;
         <span class="hljs-keyword">this</span>.OS = <span class="hljs-keyword">this</span>.searchString(<span class="hljs-keyword">this</span>.dataOS) || <span class="hljs-string">"an unknown OS"</span>;
       },
-      searchString: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) </span>{
+      <span class="hljs-attr">searchString</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">data</span>) </span>{
         <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>;i&lt;data.length;i++) {
           <span class="hljs-keyword">var</span> dataString = data[i].string;
           <span class="hljs-keyword">var</span> dataProp = data[i].prop;
@@ -371,97 +372,97 @@ TODO - Do we still use this really?</p>
             <span class="hljs-keyword">return</span> data[i].identity;
         }
       },
-      searchVersion: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">dataString</span>) </span>{
+      <span class="hljs-attr">searchVersion</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">dataString</span>) </span>{
         <span class="hljs-keyword">var</span> index = dataString.indexOf(<span class="hljs-keyword">this</span>.versionSearchString);
         <span class="hljs-keyword">if</span> (index == <span class="hljs-number">-1</span>) <span class="hljs-keyword">return</span>;
         <span class="hljs-keyword">return</span> <span class="hljs-built_in">parseFloat</span>(dataString.substring(index+<span class="hljs-keyword">this</span>.versionSearchString.length+<span class="hljs-number">1</span>));
       },
-      dataBrowser: [
+      <span class="hljs-attr">dataBrowser</span>: [
         {
-          string: navigator.userAgent,
-          subString: <span class="hljs-string">"Chrome"</span>,
-          identity: <span class="hljs-string">"Chrome"</span>
+          <span class="hljs-attr">string</span>: navigator.userAgent,
+          <span class="hljs-attr">subString</span>: <span class="hljs-string">"Chrome"</span>,
+          <span class="hljs-attr">identity</span>: <span class="hljs-string">"Chrome"</span>
         },
-        {   string: navigator.userAgent,
-          subString: <span class="hljs-string">"OmniWeb"</span>,
-          versionSearch: <span class="hljs-string">"OmniWeb/"</span>,
-          identity: <span class="hljs-string">"OmniWeb"</span>
-        },
-        {
-          string: navigator.vendor,
-          subString: <span class="hljs-string">"Apple"</span>,
-          identity: <span class="hljs-string">"Safari"</span>,
-          versionSearch: <span class="hljs-string">"Version"</span>
+        {   <span class="hljs-attr">string</span>: navigator.userAgent,
+          <span class="hljs-attr">subString</span>: <span class="hljs-string">"OmniWeb"</span>,
+          <span class="hljs-attr">versionSearch</span>: <span class="hljs-string">"OmniWeb/"</span>,
+          <span class="hljs-attr">identity</span>: <span class="hljs-string">"OmniWeb"</span>
         },
         {
-          prop: <span class="hljs-built_in">window</span>.opera,
-          identity: <span class="hljs-string">"Opera"</span>,
-          versionSearch: <span class="hljs-string">"Version"</span>
+          <span class="hljs-attr">string</span>: navigator.vendor,
+          <span class="hljs-attr">subString</span>: <span class="hljs-string">"Apple"</span>,
+          <span class="hljs-attr">identity</span>: <span class="hljs-string">"Safari"</span>,
+          <span class="hljs-attr">versionSearch</span>: <span class="hljs-string">"Version"</span>
         },
         {
-          string: navigator.vendor,
-          subString: <span class="hljs-string">"iCab"</span>,
-          identity: <span class="hljs-string">"iCab"</span>
+          <span class="hljs-attr">prop</span>: <span class="hljs-built_in">window</span>.opera,
+          <span class="hljs-attr">identity</span>: <span class="hljs-string">"Opera"</span>,
+          <span class="hljs-attr">versionSearch</span>: <span class="hljs-string">"Version"</span>
         },
         {
-          string: navigator.vendor,
-          subString: <span class="hljs-string">"KDE"</span>,
-          identity: <span class="hljs-string">"Konqueror"</span>
+          <span class="hljs-attr">string</span>: navigator.vendor,
+          <span class="hljs-attr">subString</span>: <span class="hljs-string">"iCab"</span>,
+          <span class="hljs-attr">identity</span>: <span class="hljs-string">"iCab"</span>
         },
         {
-          string: navigator.userAgent,
-          subString: <span class="hljs-string">"Firefox"</span>,
-          identity: <span class="hljs-string">"Firefox"</span>
+          <span class="hljs-attr">string</span>: navigator.vendor,
+          <span class="hljs-attr">subString</span>: <span class="hljs-string">"KDE"</span>,
+          <span class="hljs-attr">identity</span>: <span class="hljs-string">"Konqueror"</span>
         },
         {
-          string: navigator.vendor,
-          subString: <span class="hljs-string">"Camino"</span>,
-          identity: <span class="hljs-string">"Camino"</span>
+          <span class="hljs-attr">string</span>: navigator.userAgent,
+          <span class="hljs-attr">subString</span>: <span class="hljs-string">"Firefox"</span>,
+          <span class="hljs-attr">identity</span>: <span class="hljs-string">"Firefox"</span>
+        },
+        {
+          <span class="hljs-attr">string</span>: navigator.vendor,
+          <span class="hljs-attr">subString</span>: <span class="hljs-string">"Camino"</span>,
+          <span class="hljs-attr">identity</span>: <span class="hljs-string">"Camino"</span>
         },
         {   <span class="hljs-comment">// for newer Netscapes (6+)</span>
           string: navigator.userAgent,
-          subString: <span class="hljs-string">"Netscape"</span>,
-          identity: <span class="hljs-string">"Netscape"</span>
+          <span class="hljs-attr">subString</span>: <span class="hljs-string">"Netscape"</span>,
+          <span class="hljs-attr">identity</span>: <span class="hljs-string">"Netscape"</span>
         },
         {
-          string: navigator.userAgent,
-          subString: <span class="hljs-string">"MSIE"</span>,
-          identity: <span class="hljs-string">"Explorer"</span>,
-          versionSearch: <span class="hljs-string">"MSIE"</span>
+          <span class="hljs-attr">string</span>: navigator.userAgent,
+          <span class="hljs-attr">subString</span>: <span class="hljs-string">"MSIE"</span>,
+          <span class="hljs-attr">identity</span>: <span class="hljs-string">"Explorer"</span>,
+          <span class="hljs-attr">versionSearch</span>: <span class="hljs-string">"MSIE"</span>
         },
         {
-          string: navigator.userAgent,
-          subString: <span class="hljs-string">"Gecko"</span>,
-          identity: <span class="hljs-string">"Mozilla"</span>,
-          versionSearch: <span class="hljs-string">"rv"</span>
+          <span class="hljs-attr">string</span>: navigator.userAgent,
+          <span class="hljs-attr">subString</span>: <span class="hljs-string">"Gecko"</span>,
+          <span class="hljs-attr">identity</span>: <span class="hljs-string">"Mozilla"</span>,
+          <span class="hljs-attr">versionSearch</span>: <span class="hljs-string">"rv"</span>
         },
         {     <span class="hljs-comment">// for older Netscapes (4-)</span>
           string: navigator.userAgent,
-          subString: <span class="hljs-string">"Mozilla"</span>,
-          identity: <span class="hljs-string">"Netscape"</span>,
-          versionSearch: <span class="hljs-string">"Mozilla"</span>
+          <span class="hljs-attr">subString</span>: <span class="hljs-string">"Mozilla"</span>,
+          <span class="hljs-attr">identity</span>: <span class="hljs-string">"Netscape"</span>,
+          <span class="hljs-attr">versionSearch</span>: <span class="hljs-string">"Mozilla"</span>
         }
       ],
-      dataOS : [
+      <span class="hljs-attr">dataOS</span> : [
         {
-          string: navigator.platform,
-          subString: <span class="hljs-string">"Win"</span>,
-          identity: <span class="hljs-string">"Windows"</span>
+          <span class="hljs-attr">string</span>: navigator.platform,
+          <span class="hljs-attr">subString</span>: <span class="hljs-string">"Win"</span>,
+          <span class="hljs-attr">identity</span>: <span class="hljs-string">"Windows"</span>
         },
         {
-          string: navigator.platform,
-          subString: <span class="hljs-string">"Mac"</span>,
-          identity: <span class="hljs-string">"Mac"</span>
+          <span class="hljs-attr">string</span>: navigator.platform,
+          <span class="hljs-attr">subString</span>: <span class="hljs-string">"Mac"</span>,
+          <span class="hljs-attr">identity</span>: <span class="hljs-string">"Mac"</span>
         },
         {
-             string: navigator.userAgent,
-             subString: <span class="hljs-string">"iPhone"</span>,
-             identity: <span class="hljs-string">"iPhone/iPod"</span>
+             <span class="hljs-attr">string</span>: navigator.userAgent,
+             <span class="hljs-attr">subString</span>: <span class="hljs-string">"iPhone"</span>,
+             <span class="hljs-attr">identity</span>: <span class="hljs-string">"iPhone/iPod"</span>
           },
         {
-          string: navigator.platform,
-          subString: <span class="hljs-string">"Linux"</span>,
-          identity: <span class="hljs-string">"Linux"</span>
+          <span class="hljs-attr">string</span>: navigator.platform,
+          <span class="hljs-attr">subString</span>: <span class="hljs-string">"Linux"</span>,
+          <span class="hljs-attr">identity</span>: <span class="hljs-string">"Linux"</span>
         }
       ]
 
@@ -817,3 +818,4 @@ These are here because we make use of them quite a bit</p>
   </div>
 </body>
 </html>
+

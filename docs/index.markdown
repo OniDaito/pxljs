@@ -1,5 +1,10 @@
 # PXLjs
 
+## Contents
+* [Nodes and the scenegraph](https://github.com/OniDaito/pxljs/blob/master/docs/node.markdown)
+* [Ubershader and custom shaders](https://github.com/OniDaito/pxljs/blob/master/docs/shader.markdown)
+* [Geometry](https://github.com/OniDaito/pxljs/blob/master/docs/geometry.markdown)
+
 ## Introduction
 
 PXLjs is designed to make WebGL quick and easy to use for these who want results quick, but also flexible enough for more advanced coding. It takes the form of a large scene-graph plus ubershader, with all of the functionality exposed for adapting and extending.

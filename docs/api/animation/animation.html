@@ -459,10 +459,10 @@ Add keyframes to animators with the appropriate values</p>
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @interp?
       @interp = <span class="hljs-keyword">new</span> Interpolation @f0.value, @f1.value
 
-    <span class="hljs-keyword">if</span> @f0.obj.copyFrom?
-      @_original = @f0.obj.copy()
+    <span class="hljs-keyword">if</span> @f0.obj.copy?
+      @_original = @f0.obj.clone()
       @reset = <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
-        @f0.copyFrom @_original
+        @f0.copy @_original
     <span class="hljs-keyword">else</span>
       @_original = @f0
       @reset = <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
@@ -486,8 +486,8 @@ Add keyframes to animators with the appropriate values</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>  set: <span class="hljs-function"><span class="hljs-params">(u)</span> -&gt;</span>
-    <span class="hljs-keyword">if</span> @f0.obj.copyFrom?
-      @f0.obj.copyFrom @interp.set(u)
+    <span class="hljs-keyword">if</span> @f0.obj.copy?
+      @f0.obj.copy @interp.set(u)
     <span class="hljs-keyword">else</span>
       @f0.obj = @interp.set(u)
 
@@ -503,3 +503,4 @@ Add keyframes to animators with the appropriate values</p>
   </div>
 </body>
 </html>
+

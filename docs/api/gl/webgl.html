@@ -644,24 +644,24 @@ maybe we get around that?</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-function">  <span class="hljs-title">minorBrew</span> = <span class="hljs-params">(flat,name,gattr,pattr,size)</span> =&gt;</span>
+            <div class="content"><div class='highlight'><pre><span class="hljs-function">  <span class="hljs-title">minorBrew</span> = <span class="hljs-params">(obj, name,gattr,pattr,size)</span> -&gt;</span>
 
     access = <span class="hljs-keyword">if</span> params[pattr]? <span class="hljs-keyword">then</span> params[pattr] <span class="hljs-keyword">else</span> gl.STATIC_DRAW
 
-    <span class="hljs-keyword">if</span> flat
-      <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @[name]?
-        @[name] = createArrayBuffer(@[gattr], access, size)
+    <span class="hljs-keyword">if</span> obj.flat
+      <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> obj[name]?
+        obj[name] = createArrayBuffer(obj[gattr], access, size)
       <span class="hljs-keyword">else</span>
-        <span class="hljs-keyword">if</span> @[gattr].length == @[name].numItems
-          setDataBuffer @[name], @[gattr], access
+        <span class="hljs-keyword">if</span> obj[gattr].length == obj[name].numItems
+          setDataBuffer obj[name], obj[gattr], access
         <span class="hljs-keyword">else</span>
           PXLWarningOnce <span class="hljs-string">"Attemping to update position buffer of different length"</span>
 
     <span class="hljs-keyword">else</span>
       new_verts = []
-      new_verts = new_verts.concat v[gattr].flatten() <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> @vertices
+      new_verts = new_verts.concat v[gattr].flatten() <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> obj.vertices
 
-      <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @[name]?</pre></div></div>
+      <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> obj[name]?</pre></div></div>
             
         </li>
         
@@ -672,11 +672,11 @@ maybe we get around that?</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
-              <p>Always Float32Arrays?</p>
+              <p>TODO - Always Float32Arrays?</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        @[name] = createArrayBuffer(<span class="hljs-keyword">new</span> Float32Array(new_verts), access, size)
+            <div class="content"><div class='highlight'><pre>        obj[name] = createArrayBuffer(<span class="hljs-keyword">new</span> Float32Array(new_verts), access, size)
       <span class="hljs-keyword">else</span></pre></div></div>
             
         </li>
@@ -692,8 +692,8 @@ maybe we get around that?</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> @vertices.length == @[name].numItems
-          setDataBuffer @[name], <span class="hljs-keyword">new</span> Float32Array(new_verts), access
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> obj.vertices.length == obj[name].numItems
+          setDataBuffer obj[name], <span class="hljs-keyword">new</span> Float32Array(new_verts), access
         <span class="hljs-keyword">else</span>
           PXLWarningOnce <span class="hljs-string">"Attemping to update position buffer of different length"</span></pre></div></div>
             
@@ -725,11 +725,13 @@ maybe we get around that?</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">for</span> key <span class="hljs-keyword">of</span> @contract.roles
-      name = @contract.roles[key]
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">for</span> attrib <span class="hljs-keyword">of</span> @contract.roles
+      name = @contract.roles[attrib]
+      key = name.replace(<span class="hljs-string">"vertex"</span>,<span class="hljs-string">""</span>)
+      key = key.replace(<span class="hljs-string">"Buffer"</span>,<span class="hljs-string">""</span>)
 
-      <span class="hljs-keyword">if</span> @[ name ] <span class="hljs-keyword">instanceof</span> Float32Array
-        minorBrew <span class="hljs-literal">true</span>, <span class="hljs-string">"vertex"</span> + key + <span class="hljs-string">"Buffer"</span>, key, key + <span class="hljs-string">"_buffer_access"</span>, @_flat_sizes[name]
+      <span class="hljs-keyword">if</span> @[ key ] <span class="hljs-keyword">instanceof</span> Float32Array
+        minorBrew @, name, key, key + <span class="hljs-string">"_buffer_access"</span>, @_flat_sizes[key]
 
   <span class="hljs-keyword">else</span></pre></div></div>
             
@@ -743,7 +745,7 @@ maybe we get around that?</p>
                 <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <p>We look at everything that is attached to a vertex and is in
-the contract with the right name</p>
+the contract with the right name. Must also have a DIM attached</p>
 
             </div>
             
@@ -754,8 +756,10 @@ the contract with the right name</p>
       <span class="hljs-keyword">if</span> @contract.hasRoleValue(role_name) <span class="hljs-keyword">and</span> key != <span class="hljs-literal">undefined</span>
         vert = @vertices[<span class="hljs-number">0</span>]
         datatype = vert[key]
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> datatype.DIM?
+          PXLError <span class="hljs-string">"No DIM provided for datatype sent to minorbrew"</span>
         size = datatype.DIM
-        minorBrew <span class="hljs-literal">false</span>, role_name, key, key + <span class="hljs-string">"_buffer_access"</span>, size</pre></div></div>
+        minorBrew @, role_name, key, key + <span class="hljs-string">"_buffer_access"</span>, size</pre></div></div>
             
         </li>
         
@@ -773,13 +777,16 @@ the contract with the right name</p>
             <div class="content"><div class='highlight'><pre>  access = <span class="hljs-keyword">if</span> params.indices_buffer_access? <span class="hljs-keyword">then</span> params.indices_buffer_access <span class="hljs-keyword">else</span> gl.STATIC_DRAW
 
   <span class="hljs-keyword">if</span> @indexed
-    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @vertexIndexBuffer?
-      @vertexIndexBuffer = createElementBuffer(<span class="hljs-keyword">new</span> Uint16Array(@indices), access, <span class="hljs-number">1</span>)
+    <span class="hljs-keyword">if</span> @flat 
+      @vertexIndexBuffer = createElementBuffer(@indices, access, <span class="hljs-number">1</span>)
     <span class="hljs-keyword">else</span>
-      <span class="hljs-keyword">if</span> @indices.length == @vertexIndexBuffer.numItems
-        setDataBuffer @vertexIndexBuffer, <span class="hljs-keyword">new</span> Float32Array(@indices), access
+      <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @vertexIndexBuffer?
+        @vertexIndexBuffer = createElementBuffer(<span class="hljs-keyword">new</span> Uint16Array(@indices), access, <span class="hljs-number">1</span>)
       <span class="hljs-keyword">else</span>
-        PXLWarningOnce <span class="hljs-string">"Attemping to update indices buffer of different length"</span>
+        <span class="hljs-keyword">if</span> @indices.length == @vertexIndexBuffer.numItems
+          setDataBuffer @vertexIndexBuffer, <span class="hljs-keyword">new</span> Float32Array(@indices), access
+        <span class="hljs-keyword">else</span>
+          PXLWarningOnce <span class="hljs-string">"Attemping to update indices buffer of different length"</span>
 
   @brewed = <span class="hljs-literal">true</span> 
   @</pre></div></div>
@@ -878,8 +885,8 @@ tangent_buffer : as above</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> params.colour_buffer?
-    <span class="hljs-keyword">if</span> geometry.vertexColourBuffer?
-      bufferSubData(geometry.vertexColourBuffer, params.colour_buffer.data, params.colour_buffer.offset)</pre></div></div>
+    <span class="hljs-keyword">if</span> geometry.vertexcBuffer?
+      bufferSubData(geometry.vertexcBuffer, params.colour_buffer.data, params.colour_buffer.offset)</pre></div></div>
             
         </li>
         
@@ -895,8 +902,8 @@ tangent_buffer : as above</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> params.position_buffer?
-    <span class="hljs-keyword">if</span> geometry.vertexPositionBuffer?
-      bufferSubData(geometry.vertexPositionBuffer, params.position_buffer.data, params.position_buffer.offset)</pre></div></div>
+    <span class="hljs-keyword">if</span> geometry.vertexpBuffer?
+      bufferSubData(geometry.vertexpBuffer, params.position_buffer.data, params.position_buffer.offset)</pre></div></div>
             
         </li>
         
@@ -912,8 +919,8 @@ tangent_buffer : as above</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> params.normal_buffer?
-    <span class="hljs-keyword">if</span> geometry.vertexNormalBuffer?
-      bufferSubData(geometry.vertexNormalBuffer, params.normal_buffer.data, params.normal_buffer.offset)</pre></div></div>
+    <span class="hljs-keyword">if</span> geometry.vertexnBuffer?
+      bufferSubData(geometry.vertexnBuffer, params.normal_buffer.data, params.normal_buffer.offset)</pre></div></div>
             
         </li>
         
@@ -929,8 +936,8 @@ tangent_buffer : as above</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> params.texcoord_buffer?
-    <span class="hljs-keyword">if</span> geometry.vertexTextureBuffer?
-      bufferSubData(geometry.vertexTextureBuffer, params.texcoord_buffer.data, params.texcoord_buffer.offset)</pre></div></div>
+    <span class="hljs-keyword">if</span> geometry.vertextBuffer?
+      bufferSubData(geometry.vertextBuffer, params.texcoord_buffer.data, params.texcoord_buffer.offset)</pre></div></div>
             
         </li>
         
@@ -946,8 +953,8 @@ tangent_buffer : as above</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> params.tangent_buffer?
-    <span class="hljs-keyword">if</span> geometry.vertexTangentBuffer?
-      bufferSubData(geometry.vertexTangentBuffer, params.tangent_buffer.data, params.tangent_buffer.offset)
+    <span class="hljs-keyword">if</span> geometry.vertexbBuffer?
+      bufferSubData(geometry.vertexaBuffer, params.tangent_buffer.data, params.tangent_buffer.offset)
 
   @</pre></div></div>
             
@@ -972,7 +979,6 @@ tangent_buffer : as above</p>
     gl.drawElements(@layout, @vertexIndexBuffer.numItems, gl.UNSIGNED_SHORT,<span class="hljs-number">0</span>);
   <span class="hljs-keyword">else</span>
     gl.drawArrays(@layout, <span class="hljs-number">0</span>, @vertexpBuffer.numItems);
-
   @</pre></div></div>
             
         </li>
@@ -1008,3 +1014,4 @@ GeometryBrewer.washup = <span class="hljs-function"><span class="hljs-params">()
   </div>
 </body>
 </html>
+

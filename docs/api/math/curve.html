@@ -397,7 +397,7 @@ TODO - Might change to instance variables later</p>
     <span class="hljs-keyword">while</span> curr_u &lt; u
       prev_dist = curr_dist
       prev_u = curr_u
-      prev_point.copyFrom curr_point
+      prev_point.copy curr_point
 
       curr_u += Curve.step_rez
       curr_point = @pointOnCurve curr_u
@@ -439,7 +439,7 @@ TODO - Might change to instance variables later</p>
     <span class="hljs-keyword">while</span> curr_dist &lt; d
       prev_dist = curr_dist
       prev_u = curr_u
-      prev_point.copyFrom curr_point
+      prev_point.copy curr_point
 
       curr_u += Curve.step_rez
       curr_point = @pointOnCurve curr_u
@@ -1041,10 +1041,10 @@ Assume points are given in column major order!</li>
               </div>
               <p><strong>@constructor</strong></p>
 <ul>
-<li><strong>p0</strong> - a Vec3 - Required</li>
-<li><strong>p1</strong> - a Vec3 - Required</li>
-<li><strong>m0</strong> - a Vec3 - Required</li>
-<li><strong>m1</strong> - a Vec3 - Required</li>
+<li><strong>p0</strong> - a Vec2 or Vec3 - Required</li>
+<li><strong>p1</strong> - a Vec2 or Vec3 - Required</li>
+<li><strong>m0</strong> - a Vec2 or Vec3 - Required</li>
+<li><strong>m1</strong> - a Vec2 or Vec3 - Required</li>
 </ul>
 
             </div>
@@ -1065,7 +1065,7 @@ Assume points are given in column major order!</li>
               <p><strong>pointOnCurve</strong> - Return the point on this curve given u (or x)</p>
 <ul>
 <li><strong>u</strong> - a Number - Required</li>
-<li>returns a new Vec3 </li>
+<li>returns a new Vec2 or Vec3 </li>
 </ul>
 
             </div>
@@ -1075,10 +1075,10 @@ Assume points are given in column major order!</li>
     t3 = u*u*u 
     t2 = u*u
 
-    c0 = @p0.copy().multScalar(<span class="hljs-number">2</span> * t3 - <span class="hljs-number">3</span> * t2 + <span class="hljs-number">1</span>) 
-    c1 = @m0.copy().multScalar(t3 - <span class="hljs-number">2</span> * t2 + u)
-    c2 = @p1.copy().multScalar(<span class="hljs-number">-2</span> * t3 + <span class="hljs-number">3</span> * t2)
-    c3 = @m1.copy().multScalar(t3 - t2)
+    c0 = @p0.clone().multScalar(<span class="hljs-number">2</span> * t3 - <span class="hljs-number">3</span> * t2 + <span class="hljs-number">1</span>) 
+    c1 = @m0.clone().multScalar(t3 - <span class="hljs-number">2</span> * t2 + u)
+    c2 = @p1.clone().multScalar(<span class="hljs-number">-2</span> * t3 + <span class="hljs-number">3</span> * t2)
+    c3 = @m1.clone().multScalar(t3 - t2)
 
     c0.add(c1).add(c2).add(c3)</pre></div></div>
             
@@ -1112,7 +1112,7 @@ Assume points are given in column major order!</li>
 alter the spline on the fly :(
 <strong>@constructor</strong></p>
 <ul>
-<li><strong>points</strong> - an Array of Vec3 - Minimum Length 4 - Required</li>
+<li><strong>points</strong> - an Array of Vec2 or Vec3 - Minimum Length 4 - Required</li>
 </ul>
 
             </div>
@@ -1141,8 +1141,8 @@ alter the spline on the fly :(
     @splines = []
  
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.segments<span class="hljs-number">-1</span>]
-      m0 = points[i+<span class="hljs-number">2</span>].copy().sub( points[i])
-      m1 = points[i+<span class="hljs-number">3</span>].copy().sub( points[i+<span class="hljs-number">1</span>])
+      m0 = points[i+<span class="hljs-number">2</span>].clone().sub( points[i])
+      m1 = points[i+<span class="hljs-number">3</span>].clone().sub( points[i+<span class="hljs-number">1</span>])
 
       @splines.push <span class="hljs-keyword">new</span> CubicHermiteSpline points[i+<span class="hljs-number">1</span>], points[i+<span class="hljs-number">2</span>], m0, m1
 
@@ -1322,3 +1322,4 @@ TODO - Most of it - there is still a fair bit to go</p>
   </div>
 </body>
 </html>
+

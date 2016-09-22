@@ -840,7 +840,12 @@ Put a line in here to check we also have a shader on the context</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> front.geometry? <span class="hljs-keyword">and</span> front.shader?</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> front.geometry?
+    
+      <span class="hljs-keyword">if</span> front.shader?      
+        PXL.Context.shader = front.shader
+    
+      <span class="hljs-keyword">if</span> PXL.Context.shader?</pre></div></div>
             
         </li>
         
@@ -855,13 +860,12 @@ Put a line in here to check we also have a shader on the context</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      PointLight._preDraw front.pointLights
-      SpotLight._preDraw front.spotLights
+            <div class="content"><div class='highlight'><pre>        PointLight._preDraw front.pointLights
+        SpotLight._preDraw front.spotLights
 
-      PXL.Context.shader = front.shader
-      PXL.Context.shader.bind()
+        PXL.Context.shader.bind()
 
-      matchWithShader(front)</pre></div></div>
+        matchWithShader(front)</pre></div></div>
             
         </li>
         
@@ -876,11 +880,11 @@ Put a line in here to check we also have a shader on the context</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> PXL.Context.debug
-        <span class="hljs-keyword">for</span> u <span class="hljs-keyword">in</span> PXL.Context.shader.contract.findUnmatched()
-          PXLWarningOnce(<span class="hljs-string">"Unmatched uniform/attribute in shader: "</span> + u.name)
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> PXL.Context.debug
+          <span class="hljs-keyword">for</span> u <span class="hljs-keyword">in</span> PXL.Context.shader.contract.findUnmatched()
+            PXLWarningOnce(<span class="hljs-string">"Unmatched uniform/attribute in shader: "</span> + u.name)
                
-      front.geometry.drawGL()</pre></div></div>
+        front.geometry.drawGL()</pre></div></div>
             
         </li>
         
@@ -895,8 +899,8 @@ Put a line in here to check we also have a shader on the context</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      PXL.Context.shader.unbind()
-      PXL.Context.shader = <span class="hljs-literal">undefined</span>
+            <div class="content"><div class='highlight'><pre>        PXL.Context.shader.unbind()
+        PXL.Context.shader = <span class="hljs-literal">undefined</span>
 
   <span class="hljs-keyword">for</span> child <span class="hljs-keyword">in</span> node.children</pre></div></div>
             
@@ -952,3 +956,4 @@ front and see if they have a pre and post</p>
   </div>
 </body>
 </html>
+

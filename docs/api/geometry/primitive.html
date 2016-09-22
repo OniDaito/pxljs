@@ -396,11 +396,11 @@ We need position as a minimum. Optional Colour, Normal and texture and tangent
 vertices essentially copy by reference unless a Vec or similar is not copied. This is
 the general practice of PXL - inkeeping with javascript
 The defaults are
-@p - position
-@c - colour
-@n - normals
-@t - textures (u,v)
-@a - tangent
+@p - position - a Vec3
+@c - colour - a Colour (usually RGBA)
+@n - normals - a Vec3
+@t - textures (u,v) - a Vec2
+@a - tangent - a Vec3
 @y - barycentre
 @w - skinweight
 @i - boneindex
@@ -464,7 +464,10 @@ c for colour. So pass in { ‘p’ :  Vec3(1,1,1) } for example</li>
             
             <div class="content"><div class='highlight'><pre>
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @p?
-      @p = <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span></pre></div></div>
+      @p = <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-keyword">if</span> @p <span class="hljs-keyword">not</span> <span class="hljs-keyword">instanceof</span> Vec3
+        PXLWarning(<span class="hljs-string">"Passing position data to Vertex that is not Vec3"</span>)</pre></div></div>
             
         </li>
         
@@ -792,7 +795,9 @@ vertex_list - the list of vertices to make this from</p>
     <span class="hljs-keyword">super</span>()
     gl = GL
     @layout = GL.POINTS <span class="hljs-keyword">if</span> GL?
-    @vertices = vertex_list</pre></div></div>
+
+    <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> vertex_list
+      @vertices.push v</pre></div></div>
             
         </li>
         
@@ -1012,3 +1017,4 @@ to speed this up we use a temporary _idx attribute if it exists</p>
   </div>
 </body>
 </html>
+

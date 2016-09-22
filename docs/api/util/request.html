@@ -91,12 +91,14 @@ This software <span class="hljs-keyword">is</span> released under the MIT Licenc
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
               <h2 id="request">Request</h2>
-<p>A class that makes an XMLHTTPRequest for us, given a url</p>
+<p>A class that makes an XMLHTTPRequest for us, given a url
+One important thing that request does is to hold the current
+GL context for us so that when loads complete, we can go back
+to our previous context</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Request</span></span></pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Request</span></span></pre></div></div>
             
         </li>
         
@@ -270,7 +272,7 @@ readFile instead</p>
             <span class="hljs-keyword">else</span>
               PXL.Context.switchContext @_context <span class="hljs-keyword">if</span> PXL?
               onerror(@req.responseText)
-        
+       
         @req.open(<span class="hljs-string">'GET'</span>, @url)
         @req.setRequestHeader(<span class="hljs-string">'X-Requested-With'</span>, <span class="hljs-string">'XMLHttpRequest'</span>)
         @req.send(<span class="hljs-literal">null</span>)
@@ -330,3 +332,4 @@ Issues may occur given this files location in the source tree :S</p>
   </div>
 </body>
 </html>
+
