@@ -183,14 +183,14 @@ class Geometry
 # vertices essentially copy by reference unless a Vec or similar is not copied. This is
 # the general practice of PXL - inkeeping with javascript
 # The defaults are
-# @p - position - a Vec3
-# @c - colour - a Colour (usually RGBA)
-# @n - normals - a Vec3
-# @t - textures (u,v) - a Vec2
-# @a - tangent - a Vec3
-# @y - barycentre
-# @w - skinweight
-# @i - boneindex
+# - @p - position - a Vec3
+# - @c - colour - a Colour (usually RGBA)
+# - @n - normals - a Vec3
+# - @t - textures (u,v) - a Vec2
+# - @a - tangent - a Vec3
+# - @y - barycentre
+# - @w - skinweight
+# - @i - boneindex
 # It is possible to pass in more arguments. Any object held on the vertex will be converted
 # to a buffer of the same name + ""
 

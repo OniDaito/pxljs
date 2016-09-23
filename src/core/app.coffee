@@ -49,15 +49,16 @@ class App
 
   # **@constructor** 
   # - **params** - an Object with the following attributes - Required
-  # -- **canvas** - canvas element - Required
-  # -- **context** - the object to which this App is attached
-  # -- **init** - a Function - Required
-  # -- **draw** - a Function - Required
-  # -- *update** - a Function 
-  # -- **error** - a Function
-  # -- **delay_start** - a Boolean
-  # -- **destroy** - a Function
-  # -- **debug**  - a Boolean
+  # 
+  # - **canvas** - canvas element - Required
+  # - **context** - the object to which this App is attached
+  # - **init** - a Function - Required
+  # - **draw** - a Function - Required
+  # - *update** - a Function 
+  # - **error** - a Function
+  # - **delay_start** - a Boolean
+  # - **destroy** - a Function
+  # - **debug**  - a Boolean
   constructor: (params) ->
     
     # Parse the basic parameters

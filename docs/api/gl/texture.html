@@ -31,14 +31,16 @@ This software is released under the MIT Licence. See LICENCE.txt for details</co
 
   <span class="hljs-property">@UNITS</span> = [] <span class="hljs-comment"># Which texture unit is free?</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>@constructor</strong></p>
 <ul>
-<li><strong>params</strong> - an Object with named members as follows
--- <strong>min</strong> - a GL_ENUM - Default GL.LINEAR
--- <strong>max</strong> - a GL_ENUM - Default GL.LINEAR
--- <strong>wraps</strong> - a GL_ENUM - Default GL.CLAMP_TO_EDGE
--- <strong>width</strong> - a Number - Default 512
--- <strong>height</strong> - a Number - Default 512
--- <strong>channels</strong> - a GL_ENUM - Default GL.RGBA
--- <strong>datatype</strong> - a GL_ENUM - Default GL.UNSIGNED_BYTE</li>
+<li><p><strong>params</strong> - an Object with named members as follows</p>
+</li>
+<li><p><strong>min</strong> - a GL_ENUM - Default GL.LINEAR</p>
+</li>
+<li><strong>max</strong> - a GL_ENUM - Default GL.LINEAR</li>
+<li><strong>wraps</strong> - a GL_ENUM - Default GL.CLAMP_TO_EDGE</li>
+<li><strong>width</strong> - a Number - Default 512</li>
+<li><strong>height</strong> - a Number - Default 512</li>
+<li><strong>channels</strong> - a GL_ENUM - Default GL.RGBA</li>
+<li><strong>datatype</strong> - a GL_ENUM - Default GL.UNSIGNED_BYTE</li>
 </ul></div></div><div class="code"><div class="wrapper">  
   constructor : <span class="hljs-function"><span class="hljs-params">(params)</span> -&gt;</span>
 
@@ -177,14 +179,16 @@ Example, in the case of a skeleton pallete we bind, update, then unbind only to 
 Params are as the TextureBase class</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Texture</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">TextureBase</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>@constructor</strong></p>
 <ul>
 <li><strong>texdata</strong> - an Image, Array, Uint8Array or Float32Array - Required</li>
-<li><strong>params</strong> - an Object with named members as follows:
--- <strong>min</strong> - a GL_ENUM - Default GL.LINEAR
--- <strong>max</strong> - a GL_ENUM - Default GL.LINEAR
--- <strong>wraps</strong> - a GL_ENUM - Default GL.CLAMP_TO_EDGE
--- <strong>width</strong> - a Number - Default 512
--- <strong>height</strong> - a Number - Default 512
--- <strong>channels</strong> - a GL_ENUM - Default GL.RGBA
--- <strong>datatype</strong> - a GL_ENUM - Default GL.UNSIGNED_BYTE</li>
+<li><p><strong>params</strong> - an Object with named members as follows:</p>
+</li>
+<li><p><strong>min</strong> - a GL_ENUM - Default GL.LINEAR</p>
+</li>
+<li><strong>max</strong> - a GL_ENUM - Default GL.LINEAR</li>
+<li><strong>wraps</strong> - a GL_ENUM - Default GL.CLAMP_TO_EDGE</li>
+<li><strong>width</strong> - a Number - Default 512</li>
+<li><strong>height</strong> - a Number - Default 512</li>
+<li><strong>channels</strong> - a GL_ENUM - Default GL.RGBA</li>
+<li><strong>datatype</strong> - a GL_ENUM - Default GL.UNSIGNED_BYTE</li>
 </ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(texdata, params)</span> -&gt;</span>
     <span class="hljs-keyword">super</span>(params)
 
@@ -241,17 +245,22 @@ Saves the current context so we can fire different context requests
 TODO - Ideally we would have a future here and block till it returns?</p>
 <ul>
 <li><strong>url</strong> - a String - Required</li>
-<li><strong>callback</strong> - a Function with the following params
--- <strong>texture</strong> - a Texture</li>
-<li><strong>onerror</strong> - a Function</li>
-<li><strong>params</strong> - an Object with the following named members:
--- <strong>min</strong> - a GL_ENUM - Default GL.LINEAR
--- <strong>max</strong> - a GL_ENUM - Default GL.LINEAR
--- <strong>wraps</strong> - a GL_ENUM - Default GL.CLAMP_TO_EDGE
--- <strong>width</strong> - a Number - Default 512
--- <strong>height</strong> - a Number - Default 512
--- <strong>channels</strong> - a GL_ENUM - Default GL.RGBA
--- <strong>datatype</strong> - a GL_ENUM - Default GL.UNSIGNED_BYTE</li>
+<li><p><strong>callback</strong> - a Function with the following params</p>
+</li>
+<li><p><strong>texture</strong> - a Texture</p>
+</li>
+<li><p><strong>onerror</strong> - a Function</p>
+</li>
+<li><p><strong>params</strong> - an Object with the following named members:</p>
+</li>
+<li><p><strong>min</strong> - a GL_ENUM - Default GL.LINEAR</p>
+</li>
+<li><strong>max</strong> - a GL_ENUM - Default GL.LINEAR</li>
+<li><strong>wraps</strong> - a GL_ENUM - Default GL.CLAMP_TO_EDGE</li>
+<li><strong>width</strong> - a Number - Default 512</li>
+<li><strong>height</strong> - a Number - Default 512</li>
+<li><strong>channels</strong> - a GL_ENUM - Default GL.RGBA</li>
+<li><strong>datatype</strong> - a GL_ENUM - Default GL.UNSIGNED_BYTE</li>
 </ul></div></div><div class="code"><div class="wrapper"><span class="hljs-function">  
 <span class="hljs-title">textureFromURL</span> = <span class="hljs-params">(url, callback, onerror, params)</span> -&gt;</span>
 
@@ -278,14 +287,16 @@ TODO - Ideally we would have a future here and block till it returns?</p>
 <p>Loads 6 textures for the texture cube.</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TextureCube</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">TextureBase</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>@constructor</strong></p>
 <ul>
 <li><strong>images</strong> - an Array of Image - size 6 </li>
-<li><strong>params</strong> - an Object with the following members
--- <strong>min</strong> - a GL_ENUM - Default GL.LINEAR
--- <strong>max</strong> - a GL_ENUM - Default GL.LINEAR
--- <strong>wraps</strong> - a GL_ENUM - Default GL.CLAMP_TO_EDGE
--- <strong>width</strong> - a Number - Default 512
--- <strong>height</strong> - a Number - Default 512
--- <strong>channels</strong> - a GL_ENUM - Default GL.RGBA
--- <strong>datatype</strong> - a GL_ENUM - Default GL.UNSIGNED_BYTE</li>
+<li><p><strong>params</strong> - an Object with the following members</p>
+</li>
+<li><p><strong>min</strong> - a GL_ENUM - Default GL.LINEAR</p>
+</li>
+<li><strong>max</strong> - a GL_ENUM - Default GL.LINEAR</li>
+<li><strong>wraps</strong> - a GL_ENUM - Default GL.CLAMP_TO_EDGE</li>
+<li><strong>width</strong> - a Number - Default 512</li>
+<li><strong>height</strong> - a Number - Default 512</li>
+<li><strong>channels</strong> - a GL_ENUM - Default GL.RGBA</li>
+<li><strong>datatype</strong> - a GL_ENUM - Default GL.UNSIGNED_BYTE</li>
 </ul></div></div><div class="code"><div class="wrapper">  
   <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(images, params)</span> -&gt;</span>
     
@@ -331,18 +342,25 @@ TODO - Ideally we would have a future here and block till it returns?</p>
     @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="texturecubefromurl">textureCubeFromURL</h2>
 <ul>
 <li><strong>paths</strong> - an Array of String - Length 6 - Required</li>
-<li><strong>callback</strong> - a Function with the following params
--- <strong>texture</strong> - a TextureCube</li>
-<li><strong>onerror</strong> - a Function</li>
-<li><strong>params</strong> - an Object with the following named members:
--- <strong>min</strong> - a GL_ENUM - Default GL.LINEAR
--- <strong>max</strong> - a GL_ENUM - Default GL.LINEAR
--- <strong>wraps</strong> - a GL_ENUM - Default GL.CLAMP_TO_EDGE
--- <strong>width</strong> - a Number - Default 512
--- <strong>height</strong> - a Number - Default 512
--- <strong>channels</strong> - a GL_ENUM - Default GL.RGBA
--- <strong>datatype</strong> - a GL_ENUM - Default GL.UNSIGNED_BYTE</li>
-<li>returns this</li>
+<li><p><strong>callback</strong> - a Function with the following params</p>
+</li>
+<li><p><strong>texture</strong> - a TextureCube</p>
+</li>
+<li><p><strong>onerror</strong> - a Function</p>
+</li>
+<li><p><strong>params</strong> - an Object with the following named members:</p>
+</li>
+<li><p><strong>min</strong> - a GL_ENUM - Default GL.LINEAR</p>
+</li>
+<li><strong>max</strong> - a GL_ENUM - Default GL.LINEAR</li>
+<li><strong>wraps</strong> - a GL_ENUM - Default GL.CLAMP_TO_EDGE</li>
+<li><strong>width</strong> - a Number - Default 512</li>
+<li><strong>height</strong> - a Number - Default 512</li>
+<li><strong>channels</strong> - a GL_ENUM - Default GL.RGBA</li>
+<li><p><strong>datatype</strong> - a GL_ENUM - Default GL.UNSIGNED_BYTE</p>
+</li>
+<li><p>returns this</p>
+</li>
 </ul></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-title">textureCubeFromURL</span> = <span class="hljs-params">(paths,callback,onerror,params)</span> -&gt;</span>
 
   <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> paths? <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> PXL.Context?

@@ -25,8 +25,7 @@ Error Handling code
 
 cache = []
 
-# ## Print Stack Trace funtion
-
+# ## printStackTrace
 printStackTrace = () ->
   callstack = []
   isCallstackPopulated = false

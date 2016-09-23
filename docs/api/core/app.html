@@ -32,16 +32,18 @@ Taken from <a href="http://nokarma.org/2011/02/02/javascript-game-development-th
 as and when needed
 TODO - is Context a better name? I think so. We should change it</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">App</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>@constructor</strong> </p>
 <ul>
-<li><strong>params</strong> - an Object with the following attributes - Required
--- <strong>canvas</strong> - canvas element - Required
--- <strong>context</strong> - the object to which this App is attached
--- <strong>init</strong> - a Function - Required
--- <strong>draw</strong> - a Function - Required
--- <em>update<strong> - a Function 
--- </strong>error<strong> - a Function
--- </strong>delay_start<strong> - a Boolean
--- </strong>destroy<strong> - a Function
--- </strong>debug*</em>  - a Boolean</li>
+<li><p><strong>params</strong> - an Object with the following attributes - Required</p>
+</li>
+<li><p><strong>canvas</strong> - canvas element - Required</p>
+</li>
+<li><strong>context</strong> - the object to which this App is attached</li>
+<li><strong>init</strong> - a Function - Required</li>
+<li><strong>draw</strong> - a Function - Required</li>
+<li><em>update*</em> - a Function </li>
+<li><strong>error</strong> - a Function</li>
+<li><strong>delay_start</strong> - a Boolean</li>
+<li><strong>destroy</strong> - a Function</li>
+<li><strong>debug</strong>  - a Boolean</li>
 </ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(params)</span> -&gt;</span>
     </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Parse the basic parameters</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> params.canvas?
       PXLError <span class="hljs-string">"No WebGL Canvas Provided"</span>

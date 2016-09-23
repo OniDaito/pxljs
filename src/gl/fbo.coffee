@@ -58,7 +58,10 @@ class Fbo
 
     @_build()
   
-  # resize - Given width and height (as either a Vec2 or two seperate numbers), resize this FBO
+  # **resize** - Given width and height (as either a Vec2 or two seperate numbers), resize this FBO
+  # - **w** - a Number - Integer - Reequired
+  # - **h** - a Number - Integer - Reequired
+  # - returns this
   resize: (w,h) ->
 
     if w instanceof Vec2

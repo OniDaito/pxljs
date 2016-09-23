@@ -41,13 +41,14 @@ class TextureBase
 
   # **@constructor**
   # - **params** - an Object with named members as follows
-  # -- **min** - a GL_ENUM - Default GL.LINEAR
-  # -- **max** - a GL_ENUM - Default GL.LINEAR
-  # -- **wraps** - a GL_ENUM - Default GL.CLAMP_TO_EDGE
-  # -- **width** - a Number - Default 512
-  # -- **height** - a Number - Default 512
-  # -- **channels** - a GL_ENUM - Default GL.RGBA
-  # -- **datatype** - a GL_ENUM - Default GL.UNSIGNED_BYTE
+  #
+  # - **min** - a GL_ENUM - Default GL.LINEAR
+  # - **max** - a GL_ENUM - Default GL.LINEAR
+  # - **wraps** - a GL_ENUM - Default GL.CLAMP_TO_EDGE
+  # - **width** - a Number - Default 512
+  # - **height** - a Number - Default 512
+  # - **channels** - a GL_ENUM - Default GL.RGBA
+  # - **datatype** - a GL_ENUM - Default GL.UNSIGNED_BYTE
   
   constructor : (params) ->
 
@@ -225,13 +226,14 @@ class Texture extends TextureBase
   # **@constructor**
   # - **texdata** - an Image, Array, Uint8Array or Float32Array - Required
   # - **params** - an Object with named members as follows:
-  # -- **min** - a GL_ENUM - Default GL.LINEAR
-  # -- **max** - a GL_ENUM - Default GL.LINEAR
-  # -- **wraps** - a GL_ENUM - Default GL.CLAMP_TO_EDGE
-  # -- **width** - a Number - Default 512
-  # -- **height** - a Number - Default 512
-  # -- **channels** - a GL_ENUM - Default GL.RGBA
-  # -- **datatype** - a GL_ENUM - Default GL.UNSIGNED_BYTE
+  #
+  # - **min** - a GL_ENUM - Default GL.LINEAR
+  # - **max** - a GL_ENUM - Default GL.LINEAR
+  # - **wraps** - a GL_ENUM - Default GL.CLAMP_TO_EDGE
+  # - **width** - a Number - Default 512
+  # - **height** - a Number - Default 512
+  # - **channels** - a GL_ENUM - Default GL.RGBA
+  # - **datatype** - a GL_ENUM - Default GL.UNSIGNED_BYTE
   constructor: (texdata, params) ->
     super(params)
 
@@ -297,16 +299,19 @@ class Texture extends TextureBase
 # TODO - Ideally we would have a future here and block till it returns?
 # - **url** - a String - Required
 # - **callback** - a Function with the following params
-# -- **texture** - a Texture
+#
+# - **texture** - a Texture
+#
 # - **onerror** - a Function
 # - **params** - an Object with the following named members:
-# -- **min** - a GL_ENUM - Default GL.LINEAR
-# -- **max** - a GL_ENUM - Default GL.LINEAR
-# -- **wraps** - a GL_ENUM - Default GL.CLAMP_TO_EDGE
-# -- **width** - a Number - Default 512
-# -- **height** - a Number - Default 512
-# -- **channels** - a GL_ENUM - Default GL.RGBA
-# -- **datatype** - a GL_ENUM - Default GL.UNSIGNED_BYTE
+#
+# - **min** - a GL_ENUM - Default GL.LINEAR
+# - **max** - a GL_ENUM - Default GL.LINEAR
+# - **wraps** - a GL_ENUM - Default GL.CLAMP_TO_EDGE
+# - **width** - a Number - Default 512
+# - **height** - a Number - Default 512
+# - **channels** - a GL_ENUM - Default GL.RGBA
+# - **datatype** - a GL_ENUM - Default GL.UNSIGNED_BYTE
   
 textureFromURL = (url, callback, onerror, params) ->
 
@@ -343,13 +348,14 @@ class TextureCube extends TextureBase
   # **@constructor**
   # - **images** - an Array of Image - size 6 
   # - **params** - an Object with the following members
-  # -- **min** - a GL_ENUM - Default GL.LINEAR
-  # -- **max** - a GL_ENUM - Default GL.LINEAR
-  # -- **wraps** - a GL_ENUM - Default GL.CLAMP_TO_EDGE
-  # -- **width** - a Number - Default 512
-  # -- **height** - a Number - Default 512
-  # -- **channels** - a GL_ENUM - Default GL.RGBA
-  # -- **datatype** - a GL_ENUM - Default GL.UNSIGNED_BYTE
+  #
+  # - **min** - a GL_ENUM - Default GL.LINEAR
+  # - **max** - a GL_ENUM - Default GL.LINEAR
+  # - **wraps** - a GL_ENUM - Default GL.CLAMP_TO_EDGE
+  # - **width** - a Number - Default 512
+  # - **height** - a Number - Default 512
+  # - **channels** - a GL_ENUM - Default GL.RGBA
+  # - **datatype** - a GL_ENUM - Default GL.UNSIGNED_BYTE
   
   constructor: (images, params) ->
     
@@ -398,16 +404,20 @@ class TextureCube extends TextureBase
 # ## textureCubeFromURL
 # - **paths** - an Array of String - Length 6 - Required
 # - **callback** - a Function with the following params
-# -- **texture** - a TextureCube
+#
+# - **texture** - a TextureCube
+#
 # - **onerror** - a Function
 # - **params** - an Object with the following named members:
-# -- **min** - a GL_ENUM - Default GL.LINEAR
-# -- **max** - a GL_ENUM - Default GL.LINEAR
-# -- **wraps** - a GL_ENUM - Default GL.CLAMP_TO_EDGE
-# -- **width** - a Number - Default 512
-# -- **height** - a Number - Default 512
-# -- **channels** - a GL_ENUM - Default GL.RGBA
-# -- **datatype** - a GL_ENUM - Default GL.UNSIGNED_BYTE
+#
+# - **min** - a GL_ENUM - Default GL.LINEAR
+# - **max** - a GL_ENUM - Default GL.LINEAR
+# - **wraps** - a GL_ENUM - Default GL.CLAMP_TO_EDGE
+# - **width** - a Number - Default 512
+# - **height** - a Number - Default 512
+# - **channels** - a GL_ENUM - Default GL.RGBA
+# - **datatype** - a GL_ENUM - Default GL.UNSIGNED_BYTE
+#
 # - returns this
 textureCubeFromURL = (paths,callback,onerror,params) ->
 

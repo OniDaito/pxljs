@@ -1,16 +1,16 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 
 The WebGL End of our basic primitives. Here we match our classes to the WebGL Shaders 

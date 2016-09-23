@@ -26,9 +26,9 @@
 
 class Plane extends Geometry 
 
-  # -**constructor**
-  # -**xres** - a Number
-  # -**yres** - a Number
+  # **@constructor**
+  # - **xres** - a Number
+  # - **yres** - a Number
   constructor: (xres=1, zres=1) ->
     super()
     @v = []
