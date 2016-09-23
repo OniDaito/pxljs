@@ -1,19 +1,17 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
-
-A set of draw paths for the node - effectively render paths
 ###
 
 {Vec3, Vec4, Matrix3, Matrix4} = require '../math/math'
@@ -31,7 +29,7 @@ uber = require '../gl/uber_shader_paths'
 util = require '../util/util'
 
 
-### Front ###
+# ## Front
 # A stripped down version of the Node Class that just copies the data, and amalgamates
 # node data as we traverse the tree
 # There is a problem here - as we change node, what happen to front? Better design needed here?

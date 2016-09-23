@@ -1,16 +1,16 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 An implementation of the Red Black Tree from the Javascript Implementation found
 at https://github.com/gorhill/Javascript-Voronoi/blob/master/rhill-voronoi-core.js

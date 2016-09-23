@@ -1,16 +1,16 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 The MD5 Model format written by ID Software for Doom3
 
@@ -29,7 +29,7 @@ http://www.3dgep.com/loading-and-animating-md5-models-with-opengl
 {BasicColourMaterial} = require '../material/basic'
 {Skeleton, Bone, Skin, SkinWeight, SkinIndex} = require '../animation/skeleton'
 
-### MD5Model ### 
+# ## MD5Model 
 # Loads an MD5 Model creating a set of nodes, materials and a skeleton
 # MD5 is one of the widely used ID Software Model formats
 # Regarding materials, for now we just load the nearest texture in the directory

@@ -1,119 +1,38 @@
-<!DOCTYPE html>
-
-<html>
-<head>
-  <title>mouse.coffee</title>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
-  <link rel="stylesheet" media="all" href="../docco.css" />
-</head>
-<body>
-  <div id="container">
-    <div id="background"></div>
-    
-    <ul class="sections">
-        
-          <li id="title">
-              <div class="annotation">
-                  <h1>mouse.coffee</h1>
-              </div>
-          </li>
-        
-        
-        
-        <li id="section-1">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-1">&#182;</a>
-              </div>
-              <h2 id="about">ABOUT</h2>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>             .__   
+<!DOCTYPE html><html lang="en"><head><title>interact/mouse</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="interact/mouse"><meta name="groc-project-path" content="src/interact/mouse.coffee"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/interact/mouse.coffee</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><pre><code>             .__   
 _________  __|  |  
 \____ \  \/  /  |  
 |  |_&gt; &gt;    &lt;|  |__
-|   __<span class="hljs-regexp">/__/</span>\_ \____/
+|   __/__/\_ \____/
 |__|        \/     js
 
-                    PXL.js
-                    Benjamin Blundell - ben@pxljs.com
-                    http:<span class="hljs-regexp">//</span>pxljs.com
+                PXL.js
+                Benjamin Blundell - ben@pxljs.com
+                http://pxljs.com
 
-This software <span class="hljs-keyword">is</span> released under the MIT Licence. See LICENCE.txt <span class="hljs-keyword">for</span> details</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-2">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-2">&#182;</a>
-              </div>
-              <p>##</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-util = <span class="hljs-built_in">require</span> <span class="hljs-string">"../util/util"</span>
+This software is released under the MIT Licence. See LICENCE.txt for details</code></pre></div></div><div class="code"><div class="wrapper">util = <span class="hljs-built_in">require</span> <span class="hljs-string">"../util/util"</span>
 {Vec2} = <span class="hljs-built_in">require</span> <span class="hljs-string">"../math/math"</span>
-{Signal} = <span class="hljs-built_in">require</span> <span class="hljs-string">"../util/signal"</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-3">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
-              </div>
-              <h2 id="mouseemitter">MouseEmitter</h2>
-<p>Attaches to the App / Context and listens for DOM Mouse events then emmits</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-MouseEmitter = {}
+{Signal} = <span class="hljs-built_in">require</span> <span class="hljs-string">"../util/signal"</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="mouseemitter">MouseEmitter</h2>
+<p>Attaches to the App / Context and listens for DOM Mouse events then emmits</p></div></div><div class="code"><div class="wrapper">MouseEmitter = {}
 
 MouseEmitter[<span class="hljs-string">"pauseMouseEmitter"</span>] = <span class="hljs-function"><span class="hljs-params">(force)</span> -&gt;</span>
-  @mouseMove.pause(force)
-  @mouseDown.pause(force)
-  @mouseUp.pause(force)
-  @mouseClick.pause(force)
-  @mouseOut.pause(force)
-  @mouseOver.pause(force)
-  @mouseWheel.pause(force)
+  <span class="hljs-property">@mouseMove</span>.pause(force)
+  <span class="hljs-property">@mouseDown</span>.pause(force)
+  <span class="hljs-property">@mouseUp</span>.pause(force)
+  <span class="hljs-property">@mouseClick</span>.pause(force)
+  <span class="hljs-property">@mouseOut</span>.pause(force)
+  <span class="hljs-property">@mouseOver</span>.pause(force)
+  <span class="hljs-property">@mouseWheel</span>.pause(force)
 
 MouseEmitter[<span class="hljs-string">"_setMouseEvent"</span>] = <span class="hljs-function"><span class="hljs-params">(event)</span> -&gt;</span>
-  @_getMousePos event
-  @_setButtons event
+  <span class="hljs-property">@_getMousePos</span> event
+  <span class="hljs-property">@_setButtons</span> event
 
   event.preventDefault() <span class="hljs-keyword">if</span> event.preventDefault?
   event.stopImmediatePropagation() <span class="hljs-keyword">if</span> event.stopImmediatePropagation?
   event.stopPropagation() <span class="hljs-keyword">if</span> event.stopPropagation?
   event
 
-MouseEmitter[<span class="hljs-string">"_getMousePos"</span>] = <span class="hljs-function"><span class="hljs-params">(e)</span> -&gt;</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-4">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
-              </div>
-              <p>Create a mouseX and mouseY on our event, cross platform and browser</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  <span class="hljs-keyword">if</span> e.clientX <span class="hljs-keyword">or</span> e.clientY
+MouseEmitter[<span class="hljs-string">"_getMousePos"</span>] = <span class="hljs-function"><span class="hljs-params">(e)</span> -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create a mouseX and mouseY on our event, cross platform and browser</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> e.clientX <span class="hljs-keyword">or</span> e.clientY
     e.mouseX = e.clientX
     e.mouseY = e.clientY
 
@@ -123,35 +42,19 @@ MouseEmitter[<span class="hljs-string">"_getMousePos"</span>] = <span class="hlj
 
   [e.mouseX,e.mouseY]
 
-MouseEmitter[<span class="hljs-string">"_setButtons"</span>] = <span class="hljs-function"><span class="hljs-params">(event)</span> -&gt;</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-5">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
-              </div>
-              <p>Set the buttons for easier recognition - also, different browsers may report this differently
-IE Will no doubt report this differently</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  <span class="hljs-keyword">if</span> event.type == <span class="hljs-string">"mousedown"</span>
-    @_mouseButton = <span class="hljs-literal">true</span>
+MouseEmitter[<span class="hljs-string">"_setButtons"</span>] = <span class="hljs-function"><span class="hljs-params">(event)</span> -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set the buttons for easier recognition - also, different browsers may report this differently
+IE Will no doubt report this differently</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> event.type == <span class="hljs-string">"mousedown"</span>
+    <span class="hljs-property">@_mouseButton</span> = <span class="hljs-literal">true</span>
 
   <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> event.type == <span class="hljs-string">"mouseup"</span> <span class="hljs-keyword">or</span>  event.type == <span class="hljs-string">"mouseout"</span>
-    @_mouseButton = <span class="hljs-literal">false</span>
+    <span class="hljs-property">@_mouseButton</span> = <span class="hljs-literal">false</span>
 
 
   <span class="hljs-keyword">if</span> PXL.Context.profile.browser == <span class="hljs-string">"Firefox"</span>
     <span class="hljs-keyword">if</span> event.type == <span class="hljs-string">"mousemove"</span> <span class="hljs-keyword">and</span> event.buttons != <span class="hljs-number">0</span>
-      @_mouseButton = <span class="hljs-literal">true</span>
+      <span class="hljs-property">@_mouseButton</span> = <span class="hljs-literal">true</span>
 
-  <span class="hljs-keyword">if</span> @_mouseButton
+  <span class="hljs-keyword">if</span> <span class="hljs-property">@_mouseButton</span>
 
     <span class="hljs-keyword">if</span> PXL.Context.profile.browser == <span class="hljs-string">"Firefox"</span>
 
@@ -195,23 +98,8 @@ IE Will no doubt report this differently</p>
     event.buttonLeft = <span class="hljs-literal">false</span>
     event.buttonMiddle = <span class="hljs-literal">false</span>
     event.buttonRight = <span class="hljs-literal">false</span>
-    event</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-6">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
-              </div>
-              <h2 id="makemouseemitter">makeMouseEmitter</h2>
-<p>function to make an object listen on the dom for mouse events</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-title">makeMouseEmitter</span> = <span class="hljs-params">(obj)</span> -&gt;</span>
+    event</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="makemouseemitter">makeMouseEmitter</h2>
+<p>function to make an object listen on the dom for mouse events</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-title">makeMouseEmitter</span> = <span class="hljs-params">(obj)</span> -&gt;</span>
   <span class="hljs-keyword">if</span> obj.canvas?
     util.extend obj, MouseEmitter
 
@@ -279,22 +167,7 @@ IE Will no doubt report this differently</p>
     obj.canvas.onmouseover = obj[<span class="hljs-string">"_onMouseOver"</span>]
 
 
-    <span class="hljs-keyword">if</span> obj.canvas.addEventListener?</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
-              </div>
-              <p>Dealing with the lack of event in Firefox</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      obj[<span class="hljs-string">"_onMouseWheel"</span>] = <span class="hljs-function"><span class="hljs-params">(event)</span> =&gt;</span>
+    <span class="hljs-keyword">if</span> obj.canvas.addEventListener?</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Dealing with the lack of event in Firefox</p></div></div><div class="code"><div class="wrapper">      obj[<span class="hljs-string">"_onMouseWheel"</span>] = <span class="hljs-function"><span class="hljs-params">(event)</span> =&gt;</span>
         PXL.Context.switchContext obj
         obj._setMouseEvent event
         obj.mouseWheel.dispatch event
@@ -302,7 +175,7 @@ IE Will no doubt report this differently</p>
 
       obj[<span class="hljs-string">"_onDOMNouseScroll"</span>]  = <span class="hljs-function"><span class="hljs-params">(event)</span> =&gt;</span>
         PXL.Context.switchContext obj
-        event.wheelDelta = Math.max(<span class="hljs-number">-500</span>, Math.min(<span class="hljs-number">500</span>, (event.wheelDelta || -event.detail) * <span class="hljs-number">500</span>))
+        event.wheelDelta = Math.max(-<span class="hljs-number">500</span>, Math.min(<span class="hljs-number">500</span>, (event.wheelDelta || -event.detail) * <span class="hljs-number">500</span>))
         obj._setMouseEvent event
         obj.mouseWheel.dispatch event
         <span class="hljs-literal">false</span>
@@ -326,38 +199,10 @@ IE Will no doubt report this differently</p>
           obj._setMouseEvent event
           obj.mouseWheel.dispatch event
           <span class="hljs-literal">false</span>
-        obj.canvas.onmousewheel = obj[<span class="hljs-string">"_onMouseWheel"</span>]</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-8">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
-              </div>
-              <h2 id="removemouseemitter">removeMouseEmitter</h2>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-title">removeMouseEmitter</span> = <span class="hljs-params">(obj)</span> -&gt;</span>
-  <span class="hljs-keyword">if</span> obj.canvas?</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-9">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
-              </div>
-              <p>util.extend obj, MouseEmitter</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    
+        obj.canvas.onmousewheel = obj[<span class="hljs-string">"_onMouseWheel"</span>]</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="removemouseemitter">removeMouseEmitter</h2></div></div></div><div class="segment"><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-title">removeMouseEmitter</span> = <span class="hljs-params">(obj)</span> -&gt;</span>
+  <span class="hljs-keyword">if</span> obj.canvas?
+    <span class="hljs-comment">#util.extend obj, MouseEmitter</span>
+    
     obj.canvas.removeEventListener(<span class="hljs-string">'click'</span>, obj[<span class="hljs-string">"_onMouseClick"</span>])
     obj.canvas.removeEventListener(<span class="hljs-string">'mousewheel'</span>, obj[<span class="hljs-string">"_onMouseWheel"</span>])
     obj.canvas.removeEventListener(<span class="hljs-string">'DOMMouseScroll'</span>, obj[<span class="hljs-string">"_onDOMNouseScroll"</span>])
@@ -367,52 +212,15 @@ IE Will no doubt report this differently</p>
     obj.canvas.removeEventListener(<span class="hljs-string">'mouseup'</span>, obj[<span class="hljs-string">"_onMouseUp"</span>])
     obj.canvas.removeEventListener(<span class="hljs-string">'mousedown'</span>, obj[<span class="hljs-string">"_onMouseDown"</span>])
     obj.canvas.removeEventListener(<span class="hljs-string">'mousemove'</span>, obj[<span class="hljs-string">"_onMouseMove"</span>])
-    obj.canvas.removeEventListener(<span class="hljs-string">'mousebutton'</span>, obj[<span class="hljs-string">"_onMouseButton"</span>])</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-10">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
-              </div>
-              <p>##</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">delete</span> obj.mouseMove
-    <span class="hljs-keyword">delete</span> obj.mouseDown
-    <span class="hljs-keyword">delete</span> obj.mouseUp
-    <span class="hljs-keyword">delete</span> obj.mouseClick
-    <span class="hljs-keyword">delete</span> obj.mouseOut
-    <span class="hljs-keyword">delete</span> obj.mouseOver
-    <span class="hljs-keyword">delete</span> obj.mouseWheel</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-11">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
-              </div>
-              <p>## </p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    
+    obj.canvas.removeEventListener(<span class="hljs-string">'mousebutton'</span>, obj[<span class="hljs-string">"_onMouseButton"</span>])</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>delete obj.mouseMove
+delete obj.mouseDown
+delete obj.mouseUp
+delete obj.mouseClick
+delete obj.mouseOut
+delete obj.mouseOver
+delete obj.mouseWheel</p></div></div><div class="code"><div class="wrapper"> 
+    
   
 <span class="hljs-built_in">module</span>.exports = 
   makeMouseEmitter : makeMouseEmitter
-  removeMouseEmitter : removeMouseEmitter</pre></div></div>
-            
-        </li>
-        
-    </ul>
-  </div>
-</body>
-</html>
-
+  removeMouseEmitter : removeMouseEmitter</div></div></div></div></body></html>

@@ -1,23 +1,22 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
-
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 ###
 
 {Vec2, Vec3, Vec4, Matrix4, PI } = require '../math/math'
 
-### Curve2 ###
+# ## Curve2
 # The basis for a series of two dimensional curves. These may or may not be normalised
 # This class also can be used to represent a straight line with gradient one, through
 # the origin - basically your classic straight line
@@ -72,7 +71,7 @@ class Curve2
   tangentDistance: (d) ->
     new Vec2 1,1
 
-### Curve ###
+# ## Curve
 # The basis for any parametric curve. We cache values for distance and u so we can
 # step along the curve using distance or normalized values
 # TODO - Rename this as CurveP - for parametric
@@ -237,7 +236,7 @@ class Curve
     Vec3.sub(v1,v0).normalize()
 
 
-### BezierCubic3 ###
+# ## BezierCubic3
 # A Quadratic, bezier curve with four vectors determining the shape
 # A 3D curve as oppose to 2D
 
@@ -385,7 +384,7 @@ class Parabola
     [ new Vec2(x0, (-e*x0-g)/f), new Vec2(x1, (-e*x1-g)/f) ]
 
 
-### CatmullPatch ###
+# ## CatmullPatch
 #
 
 class CatmullPatch 
@@ -454,7 +453,7 @@ class CatmullPatch
 
   # TODO - eventually use the proper matrix http://www.cubic.org/docs/hermite.htm
 
-### CubicHermiteSpline ###
+# ## CubicHermiteSpline
 class CubicHermiteSpline extends Curve
 
   # **@constructor**
@@ -481,7 +480,7 @@ class CubicHermiteSpline extends Curve
 
     c0.add(c1).add(c2).add(c3)
 
-### CatmullRomSpline ###
+# ## CatmullRomSpline
 # A collection of curves forming a Catmull-rom spline.
 
 class CatmullRomSpline extends Curve
@@ -526,7 +525,7 @@ class CatmullRomSpline extends Curve
       @splines[segment].pointOnCurve ( (@splines.length * u) - segment)
 
 
-### CurveSlide ###
+# ## CurveSlide
 # http://www.cs.cmu.edu/~fp/courses/graphics/asst5/cameraMovement.pdf
 # essentially step along via a distance, passing in previous values
 # and setting new ones
@@ -570,7 +569,7 @@ class CurveSlide
     @
 
 
-### NURB ###
+# ## NURB
 # NURB Class
 # TODO - Most of it - there is still a fair bit to go
 

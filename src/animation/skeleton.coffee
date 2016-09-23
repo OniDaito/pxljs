@@ -1,23 +1,19 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
-
-A selection of classes that represent a skeleton for Animation
-Based largely from the MD5 Parser and the bone structure contained therein
-
-- TODO enforce bone ordering with idx numbers 
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 ###
+
 
 {Matrix4,Vec2,Vec3,Vec4,Quaternion} = require '../math/math'
 {PXLWarning, PXLError, PXLLog} = require '../util/log'
@@ -26,7 +22,7 @@ Based largely from the MD5 Parser and the bone structure contained therein
 {Texture} = require '../gl/texture'
 
 
-### Bone ### 
+# ## Bone 
 # Represents an actual bone. It contains rotations and positions, both absolute and relative
 # and the pose positions
 
@@ -72,14 +68,14 @@ class Bone
     @rotation_relative.multiply(quat).normalize()
     @
 
-### SkinIndex ###
+# ## SkinIndex
 # Nothng more than a way of recording the pair index and count. Used internally by Skin
 
 class SkinIndex
   constructor : (@index, @count) ->
     @    
 
-### SkinWeight ###
+# ## SkinWeight
 # Another pair of values to record how biased the bone is. Used internally by Skin
 
 class SkinWeight
@@ -87,7 +83,7 @@ class SkinWeight
     @
 
 
-### Skin ###
+# ## Skin
 # A collection of weights and indices, based on the md5 model idea. It connects vertices
 # to bones basically. It is temporarily used, with the actual skin weights being held
 # on vertices
@@ -117,7 +113,7 @@ class Skin
     @index.length
 
 
-### Skeleton ###
+# ## Skeleton
 # A skeleton is a relationship of bones
 
 class  Skeleton 

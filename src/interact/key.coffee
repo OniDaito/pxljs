@@ -1,16 +1,16 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 ###
 
@@ -18,7 +18,7 @@ util = require "../util/util"
 {Vec2} = require "../math/math"
 {Signal} = require "../util/signal"
 
-### KeyEmitter ###
+# ## KeyEmitter
 # Attaches to the App / Context and listens for DOM Key events then emmits
 
 KeyEmitter = {}
@@ -28,7 +28,7 @@ KeyEmitter["pauseKeyEmitter"] = (force) ->
   @keyDown.pause(force)
   @keyPress.pause(force)
 
-### makeKeyEmitter ###
+# ## makeKeyEmitter
 # function to make an object listen on the dom for keyboard events
 makeKeyEmitter = (obj) ->
   if obj.canvas?
@@ -60,7 +60,7 @@ makeKeyEmitter = (obj) ->
     obj.canvas.addEventListener "keypress", obj["_onKeyPress"]
 
     
-### removeKeyEmitter ###
+# ## removeKeyEmitter
 # remove any keyboard listeners
 
 removeKeyEmitter = (obj) ->

@@ -1,26 +1,25 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 ###
-
 
 {RGBA,RGB} = require '../colour/colour'
 {Matrix4,Vec2,Vec3,Vec4} = require '../math/math'
 {Geometry, Vertex, Quad} = require './primitive'
 
 
-### Plane ###
+# ## Plane
 # Basically, a varying resolution Quad made up of quads, -1 to 1, parallel to x/z plane
 # Quads are added but the indices are triangles
 # TODO - faces as quads? Perhaps not the best idea
@@ -65,7 +64,7 @@ class Plane extends Geometry
         
         @faces.push new Quad @v[row2+x], @v[row2+x+1], @v[row+x+1], @v[row+x]  
 
-### PlaneFlat ###
+# ## PlaneFlat
 # Flat refers to the data size being fixed and the arrays already set
 # Vertices are arranged as a triangle strip. Vertices are indexed so 
 # as not to show cracks. We use degenerate triangles in order to create
@@ -172,7 +171,7 @@ class PlaneFlat extends Geometry
     return flat_indexed_tristrip
 
 
-### PlaneHexagonFlat ###
+# ## PlaneHexagonFlat
 # Very similar to the plane flat, only this one is laid out with pretty
 # triangles as oppose to strips, with a ragged edge, giving regular hexagons
 # Flat refers to the data size being fixed and the arrays already set

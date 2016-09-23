@@ -1,19 +1,18 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 ###
-
 
 {Matrix4, Vec2, Vec3, Vec4} = require '../math/math'
 {Light} = require '../light/light'
@@ -21,7 +20,7 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 {Contract} = require './contract'
 
 
-### Shader ###
+# ## Shader
 # The master shader class. Represents a shader that can be bound to a context or attached to a node
 # chunks - a list [] of ShaderChunks that create our shader - order is important - it defines what
 # chunks take precidence. chunks later on in the line rely and may overwrite these earlier in line.
@@ -446,7 +445,7 @@ class Shader
     gl.getAttribLocation(@shaderProgram, name)
 
 
-### shaderFromText ###
+# ## shaderFromText
 # Create a shader from a block of text and an optional contract
 #  - **text** - A String - Required
 #  - **user_roles** - An Object with named attributes mapping to Strings

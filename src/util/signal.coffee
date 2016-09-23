@@ -1,16 +1,16 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 - TODO
 * There is no hierarchy or bubbling really. Anyone can listen
@@ -22,7 +22,7 @@ Influenced by signals.js - an object where listeners and events may be added
 util = require "./util"
 {Vec2} = require "../math/math"
 
-### Signal ###
+# ## Signal
 class Signal
 
   # **@constructor**

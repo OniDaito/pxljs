@@ -1,150 +1,21 @@
-<!DOCTYPE html>
-
-<html>
-<head>
-  <title>debug.coffee</title>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
-  <link rel="stylesheet" media="all" href="../docco.css" />
-</head>
-<body>
-  <div id="container">
-    <div id="background"></div>
-    
-    <ul class="sections">
-        
-          <li id="title">
-              <div class="annotation">
-                  <h1>debug.coffee</h1>
-              </div>
-          </li>
-        
-        
-        
-        <li id="section-1">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-1">&#182;</a>
-              </div>
-              <h2 id="about">ABOUT</h2>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>             .__   
+<!DOCTYPE html><html lang="en"><head><title>util/debug</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="util/debug"><meta name="groc-project-path" content="src/util/debug.coffee"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/util/debug.coffee</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><pre><code>             .__   
 _________  __|  |  
 \____ \  \/  /  |  
 |  |_&gt; &gt;    &lt;|  |__
-|   __<span class="hljs-regexp">/__/</span>\_ \____/
+|   __/__/\_ \____/
 |__|        \/     js
 
-                    PXL.js
-                    Benjamin Blundell - ben@pxljs.com
-                    http:<span class="hljs-regexp">//</span>pxljs.com
+                PXL.js
+                Benjamin Blundell - ben@pxljs.com
+                http://pxljs.com
 
-This software <span class="hljs-keyword">is</span> released under the MIT Licence. See LICENCE.txt <span class="hljs-keyword">for</span> details</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-2">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-2">&#182;</a>
-              </div>
-              <p>##</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-glValidEnumContexts =</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-3">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
-              </div>
-              <p>Generic setters and getters</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  <span class="hljs-string">'enable'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span> }
+This software is released under the MIT Licence. See LICENCE.txt for details</code></pre></div></div><div class="code"><div class="wrapper">glValidEnumContexts = </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Generic setters and getters</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-string">'enable'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span> }
   <span class="hljs-string">'disable'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span> }
-  <span class="hljs-string">'getParameter'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span> }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-4">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
-              </div>
-              <p>Rendering</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  <span class="hljs-string">'drawArrays'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span> }
-  <span class="hljs-string">'drawElements'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">2</span>:<span class="hljs-literal">true</span> }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-5">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
-              </div>
-              <p>Shaders</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  <span class="hljs-string">'createShader'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span> }
+  <span class="hljs-string">'getParameter'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span> }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Rendering</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-string">'drawArrays'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span> }
+  <span class="hljs-string">'drawElements'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">2</span>:<span class="hljs-literal">true</span> }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Shaders</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-string">'createShader'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span> }
   <span class="hljs-string">'getShaderParameter'</span>: { <span class="hljs-number">1</span>:<span class="hljs-literal">true</span> }
-  <span class="hljs-string">'getProgramParameter'</span>: { <span class="hljs-number">1</span>:<span class="hljs-literal">true</span> }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-6">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
-              </div>
-              <p>Vertex attributes</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  <span class="hljs-string">'getVertexAttrib'</span>: { <span class="hljs-number">1</span>:<span class="hljs-literal">true</span> }
-  <span class="hljs-string">'vertexAttribPointer'</span>: { <span class="hljs-number">2</span>:<span class="hljs-literal">true</span> }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
-              </div>
-              <p>Textures</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  <span class="hljs-string">'bindTexture'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span> }
+  <span class="hljs-string">'getProgramParameter'</span>: { <span class="hljs-number">1</span>:<span class="hljs-literal">true</span> }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Vertex attributes</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-string">'getVertexAttrib'</span>: { <span class="hljs-number">1</span>:<span class="hljs-literal">true</span> }
+  <span class="hljs-string">'vertexAttribPointer'</span>: { <span class="hljs-number">2</span>:<span class="hljs-literal">true</span> }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Textures</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-string">'bindTexture'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span> }
   <span class="hljs-string">'activeTexture'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span> }
   <span class="hljs-string">'getTexParameter'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">1</span>:<span class="hljs-literal">true</span> }
   <span class="hljs-string">'texParameterf'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">1</span>:<span class="hljs-literal">true</span> }
@@ -153,42 +24,10 @@ glValidEnumContexts =</pre></div></div>
   <span class="hljs-string">'texSubImage2D'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">6</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">7</span>:<span class="hljs-literal">true</span> }
   <span class="hljs-string">'copyTexImage2D'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">2</span>:<span class="hljs-literal">true</span> }
   <span class="hljs-string">'copyTexSubImage2D'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span> }
-  <span class="hljs-string">'generateMipmap'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span> }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-8">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
-              </div>
-              <p>Buffer objects</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  <span class="hljs-string">'bindBuffer'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span> }
+  <span class="hljs-string">'generateMipmap'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span> }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Buffer objects</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-string">'bindBuffer'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span> }
   <span class="hljs-string">'bufferData'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">2</span>:<span class="hljs-literal">true</span> }
   <span class="hljs-string">'bufferSubData'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span> }
-  <span class="hljs-string">'getBufferParameter'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">1</span>:<span class="hljs-literal">true</span> }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-9">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
-              </div>
-              <p>Renderbuffers and framebuffers</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  <span class="hljs-string">'pixelStorei'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">1</span>:<span class="hljs-literal">true</span> }
+  <span class="hljs-string">'getBufferParameter'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">1</span>:<span class="hljs-literal">true</span> }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Renderbuffers and framebuffers</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-string">'pixelStorei'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">1</span>:<span class="hljs-literal">true</span> }
   <span class="hljs-string">'readPixels'</span>: { <span class="hljs-number">4</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">5</span>:<span class="hljs-literal">true</span> }
   <span class="hljs-string">'bindRenderbuffer'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span> }
   <span class="hljs-string">'bindFramebuffer'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span> }
@@ -197,23 +36,7 @@ glValidEnumContexts =</pre></div></div>
   <span class="hljs-string">'framebufferTexture2D'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">1</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">2</span>:<span class="hljs-literal">true</span> }
   <span class="hljs-string">'getFramebufferAttachmentParameter'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">1</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">2</span>:<span class="hljs-literal">true</span> }
   <span class="hljs-string">'getRenderbufferParameter'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">1</span>:<span class="hljs-literal">true</span> }
-  <span class="hljs-string">'renderbufferStorage'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">1</span>:<span class="hljs-literal">true</span> }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-10">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
-              </div>
-              <p>Frame buffer operations (clear, blend, depth test, stencil)</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  <span class="hljs-string">'clear'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span> }
+  <span class="hljs-string">'renderbufferStorage'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">1</span>:<span class="hljs-literal">true</span> }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Frame buffer operations (clear, blend, depth test, stencil)</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-string">'clear'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span> }
   <span class="hljs-string">'depthFunc'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span> }
   <span class="hljs-string">'blendFunc'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">1</span>:<span class="hljs-literal">true</span> }
   <span class="hljs-string">'blendFuncSeparate'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">1</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">2</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">3</span>:<span class="hljs-literal">true</span> }
@@ -223,23 +46,7 @@ glValidEnumContexts =</pre></div></div>
   <span class="hljs-string">'stencilFuncSeparate'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">1</span>:<span class="hljs-literal">true</span> }
   <span class="hljs-string">'stencilMaskSeparate'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span> }
   <span class="hljs-string">'stencilOp'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">1</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">2</span>:<span class="hljs-literal">true</span> }
-  <span class="hljs-string">'stencilOpSeparate'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">1</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">2</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">3</span>:<span class="hljs-literal">true</span> }</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-11">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
-              </div>
-              <p>Culling</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  <span class="hljs-string">'cullFace'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span> }
+  <span class="hljs-string">'stencilOpSeparate'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">1</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">2</span>:<span class="hljs-literal">true</span>, <span class="hljs-number">3</span>:<span class="hljs-literal">true</span> }</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Culling</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-string">'cullFace'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span> }
   <span class="hljs-string">'frontFace'</span>: { <span class="hljs-number">0</span>:<span class="hljs-literal">true</span> }
 
 
@@ -274,12 +81,4 @@ glEnums = <span class="hljs-literal">null</span>
 <span class="hljs-function">
 
 <span class="hljs-title">makeDebugContext</span> = <span class="hljs-params">(ctx)</span> -&gt;</span>
-  initDebugContext(ctx)</pre></div></div>
-            
-        </li>
-        
-    </ul>
-  </div>
-</body>
-</html>
-
+  initDebugContext(ctx)</div></div></div></div></body></html>

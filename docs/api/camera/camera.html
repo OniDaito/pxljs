@@ -1,457 +1,170 @@
-<!DOCTYPE html>
-
-<html>
-<head>
-  <title>camera.coffee</title>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
-  <link rel="stylesheet" media="all" href="../docco.css" />
-</head>
-<body>
-  <div id="container">
-    <div id="background"></div>
-    
-    <ul class="sections">
-        
-          <li id="title">
-              <div class="annotation">
-                  <h1>camera.coffee</h1>
-              </div>
-          </li>
-        
-        
-        
-        <li id="section-1">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-1">&#182;</a>
-              </div>
-              <h2 id="about">ABOUT</h2>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>             .__   
+<!DOCTYPE html><html lang="en"><head><title>camera/camera</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="camera/camera"><meta name="groc-project-path" content="src/camera/camera.coffee"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/camera/camera.coffee</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><pre><code>             .__   
 _________  __|  |  
 \____ \  \/  /  |  
 |  |_&gt; &gt;    &lt;|  |__
-|   __<span class="hljs-regexp">/__/</span>\_ \____/
+|   __/__/\_ \____/
 |__|        \/     js
 
-                    PXL.js
-                    Benjamin Blundell - ben@pxljs.com
-                    http:<span class="hljs-regexp">//</span>pxljs.com
+                PXL.js
+                Benjamin Blundell - ben@pxljs.com
+                http://pxljs.com
 
-This software <span class="hljs-keyword">is</span> released under the MIT Licence. See LICENCE.txt <span class="hljs-keyword">for</span> details
-
-
-- TODO
-  * Combine mouse <span class="hljs-keyword">and</span> touch cameras into one I think (possibly move to interact?)
-  * Interactive cameras, <span class="hljs-keyword">when</span> created should add listeners automagically to either <span class="hljs-built_in">window</span>
-    <span class="hljs-keyword">or</span> some passed <span class="hljs-keyword">in</span> DOM object I suspect. Saves us writing boilerplate code
-
-  * Decouple the GL so we can test - but keep option <span class="hljs-keyword">in</span> because its clean <span class="hljs-keyword">when</span> used
-  * TEST ORTHO CAMERA! I dont think it works! &gt;&lt;
-  * update <span class="hljs-keyword">isnt</span> really that great :S Keep it internal :)
-  * functions to change the positions so we can change things like look pos <span class="hljs-keyword">and</span>
-    have the up vector change accordingly
-
-https:<span class="hljs-regexp">//gi</span>st.github.com/eligrey/<span class="hljs-number">384583</span> - useful <span class="hljs-keyword">for</span> changes to pos,look etc?</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-2">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-2">&#182;</a>
-              </div>
-              <p>##</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-{Vec2, Vec3,Vec4,Matrix4, Quaternion, degToRad} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../math/math'</span>
+This software is released under the MIT Licence. See LICENCE.txt for details</code></pre>
+<p> TODO</p>
+<ul>
+<li>Combine mouse and touch cameras into one I think (possibly move to interact?)</li>
+<li><p>Interactive cameras, when created should add listeners automagically to either window
+   or some passed in DOM object I suspect. Saves us writing boilerplate code</p>
+</li>
+<li><p>Decouple the GL so we can test - but keep option in because its clean when used</p>
+</li>
+<li>TEST ORTHO CAMERA! I dont think it works! &gt;&lt;</li>
+<li>update isnt really that great :S Keep it internal :)</li>
+<li>functions to change the positions so we can change things like look pos and
+ have the up vector change accordingly</li>
+</ul>
+<p><a href="https://gist.github.com/eligrey/384583">https://gist.github.com/eligrey/384583</a> - useful for changes to pos,look etc?</p></div></div><div class="code"><div class="wrapper">{Vec2, Vec3,Vec4,Matrix4, Quaternion, degToRad} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../math/math'</span>
 {Primitive} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../geometry/primitive'</span>
 {makeMouseListener} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../interact/mouse'</span>
-{Contract} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../gl/contract'</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-3">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
-              </div>
-              <h2 id="camera">Camera</h2>
-<p>The base class for cameras - provides base functionality to the other cameras</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Camera</span></span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-4">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
-              </div>
-              <p><strong>@constructor</strong></p>
+{Contract} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../gl/contract'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="camera">Camera</h2>
+<p>The base class for cameras - provides base functionality to the other cameras</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Camera</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>@constructor</strong></p>
 <ul>
 <li><strong>pos</strong> - a Vec3</li>
 <li><strong>look</strong> - a Vec3</li>
 <li><strong>up</strong> - a Vec3</li>
-</ul>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@pos</span>, <span class="hljs-property">@look</span>, <span class="hljs-property">@up</span>)</span> -&gt;</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@pos</span>?
+      <span class="hljs-property">@pos</span> = <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">5</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@look</span>?
+      <span class="hljs-property">@look</span> = <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@up</span>?
+      <span class="hljs-property">@up</span> = <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>SHOULD call update here and figure out what up needs to be 
+if we&#39;ve not been given it :S</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-property">@m</span> = <span class="hljs-keyword">new</span> Matrix4()
+    <span class="hljs-property">@p</span> = <span class="hljs-keyword">new</span> Matrix4()
+    <span class="hljs-property">@i</span> = <span class="hljs-keyword">new</span> Matrix4()
+    <span class="hljs-property">@ip</span> = <span class="hljs-keyword">new</span> Matrix4()
+    <span class="hljs-property">@q</span> = <span class="hljs-keyword">new</span> Quaternion() <span class="hljs-comment"># Spare Quaternion to work out rotations</span>
+  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>We keep these for the viewport calculations</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-property">@width</span> = <span class="hljs-number">1</span>
+    <span class="hljs-property">@height</span> = <span class="hljs-number">1</span>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  constructor: <span class="hljs-function"><span class="hljs-params">(@pos, @look, @up)</span> -&gt;</span>
-    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @pos?
-      @pos = <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">5</span>
-    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @look?
-      @look = <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>
-    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @up?
-      @up = <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-5">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
-              </div>
-              <p>SHOULD call update here and figure out what up needs to be 
-if we’ve not been given it :S</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-    @m = <span class="hljs-keyword">new</span> Matrix4()
-    @p = <span class="hljs-keyword">new</span> Matrix4()
-    @i = <span class="hljs-keyword">new</span> Matrix4()
-    @ip = <span class="hljs-keyword">new</span> Matrix4()
-    @q = <span class="hljs-keyword">new</span> Quaternion() <span class="hljs-comment"># Spare Quaternion to work out rotations</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-6">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
-              </div>
-              <p>We keep these for the viewport calculations</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    @width = <span class="hljs-number">1</span>
-    @height = <span class="hljs-number">1</span>
-
-    @contract = <span class="hljs-keyword">new</span> Contract()
-    @contract.roles.uCameraNear = <span class="hljs-string">"near"</span>
-    @contract.roles.uCameraFar  = <span class="hljs-string">"far"</span>
-    @contract.roles.uInverseProjectionMatrix  = <span class="hljs-string">"ip"</span>
-    @contract.roles.uProjectionMatrix         = <span class="hljs-string">"p"</span>
-    @contract.roles.uCameraMatrix             = <span class="hljs-string">"m"</span>
-    @contract.roles.uCameraInverseMatrix      = <span class="hljs-string">"i"</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
-              </div>
-              <p><strong>update</strong> - call this in your update function to update the matrices
+    <span class="hljs-property">@contract</span> = <span class="hljs-keyword">new</span> Contract()
+    <span class="hljs-property">@contract</span>.roles.uCameraNear = <span class="hljs-string">"near"</span>
+    <span class="hljs-property">@contract</span>.roles.uCameraFar  = <span class="hljs-string">"far"</span>
+    <span class="hljs-property">@contract</span>.roles.uInverseProjectionMatrix  = <span class="hljs-string">"ip"</span>
+    <span class="hljs-property">@contract</span>.roles.uProjectionMatrix         = <span class="hljs-string">"p"</span>
+    <span class="hljs-property">@contract</span>.roles.uCameraMatrix             = <span class="hljs-string">"m"</span>
+    <span class="hljs-property">@contract</span>.roles.uCameraInverseMatrix      = <span class="hljs-string">"i"</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>update</strong> - call this in your update function to update the matrices
 TODO - I wonder if such things should be automatic on our draw / update 
 paths through the nodes? Needs GL context ideally</p>
 <ul>
 <li><strong>width</strong> - a Number - default current context width</li>
 <li><strong>height</strong> - a Number - default current context height</li>
 <li>returns this</li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  update: <span class="hljs-function"><span class="hljs-params">(width=PXL.Context.width, height=PXL.Context.height)</span> -&gt;</span>
-    @m.lookAt @pos, @look, @up
-    @i = Matrix4.invert(@m)
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">update</span>: <span class="hljs-function"><span class="hljs-params">(width=PXL.Context.width, height=PXL.Context.height)</span> -&gt;</span>
+    <span class="hljs-property">@m</span>.lookAt <span class="hljs-property">@pos</span>, <span class="hljs-property">@look</span>, <span class="hljs-property">@up</span>
+    <span class="hljs-property">@i</span> = Matrix4.invert(<span class="hljs-property">@m</span>)
     
-    @width = width
-    @height = height
+    <span class="hljs-property">@width</span> = width
+    <span class="hljs-property">@height</span> = height
 
-    GL.viewport <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, @width, @height <span class="hljs-keyword">if</span> GL?
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-8">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
-              </div>
-              <p><strong>lookat</strong> - point the camera</p>
+    GL.viewport <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-property">@width</span>, <span class="hljs-property">@height</span> <span class="hljs-keyword">if</span> GL?
+    @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>lookat</strong> - point the camera</p>
 <ul>
 <li><strong>pos</strong> - a Vec3</li>
 <li><strong>look</strong> - a Vec3</li>
 <li><strong>up</strong> - a Vec3</li>
 <li>returns this</li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  lookAt : <span class="hljs-function"><span class="hljs-params">(@pos, @look, @up)</span> -&gt;</span>
-    @update()</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-9">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
-              </div>
-              <p><strong>setViewport</strong></p>
+</ul></div></div><div class="code"><div class="wrapper">  lookAt : <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@pos</span>, <span class="hljs-property">@look</span>, <span class="hljs-property">@up</span>)</span> -&gt;</span>
+    <span class="hljs-property">@update</span>()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>setViewport</strong></p>
 <ul>
 <li><strong>width</strong> - a Number</li>
 <li><strong>height</strong> - a Number</li>
 <li>returns this</li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  setViewport: <span class="hljs-function"><span class="hljs-params">(@width, @height)</span> -&gt;</span>
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-10">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
-              </div>
-              <p><strong>orbit</strong> -Rotate the camera around its look point.</p>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">setViewport</span>: <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@width</span>, <span class="hljs-property">@height</span>)</span> -&gt;</span>
+    @
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>orbit</strong> -Rotate the camera around its look point.</p>
 <ul>
 <li><strong>axis</strong> - a Vec3 - Required</li>
 <li><strong>angle</strong> - a Number - Required - Radians</li>
 <li>returns this</li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  orbit : <span class="hljs-function"><span class="hljs-params">(axis, angle)</span> -&gt;</span>
-    @q.fromAxisAngle axis, angle
+</ul></div></div><div class="code"><div class="wrapper">  orbit : <span class="hljs-function"><span class="hljs-params">(axis, angle)</span> -&gt;</span>
+    <span class="hljs-property">@q</span>.fromAxisAngle axis, angle
          
-    dir = Vec3.sub @look, @pos
+    dir = Vec3.sub <span class="hljs-property">@look</span>, <span class="hljs-property">@pos</span>
     dir.normalize()
     
-    l = Vec3.sub @pos, @look
+    l = Vec3.sub <span class="hljs-property">@pos</span>, <span class="hljs-property">@look</span>
 
-    @q.transVec3 l
-    @q.transVec3 @up
+    <span class="hljs-property">@q</span>.transVec3 l
+    <span class="hljs-property">@q</span>.transVec3 <span class="hljs-property">@up</span>
     
-    l.add @look
+    l.add <span class="hljs-property">@look</span>
 
-    @pos.copy l
+    <span class="hljs-property">@pos</span>.copy l
 
-    @update()
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-11">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
-              </div>
-              <p><strong>pantilt</strong> - Pan and tilt the camera with an axis and angle notation</p>
+    <span class="hljs-property">@update</span>()
+    @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>pantilt</strong> - Pan and tilt the camera with an axis and angle notation</p>
 <ul>
 <li><strong>axis</strong> - a Vec3 - Required</li>
 <li><strong>angle</strong> - a Number - Required - Radians</li>
 <li>returns this</li>
-</ul>
+</ul></div></div><div class="code"><div class="wrapper">  pantilt : <span class="hljs-function"><span class="hljs-params">(axis, angle)</span> -&gt;</span>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  pantilt : <span class="hljs-function"><span class="hljs-params">(axis, angle)</span> -&gt;</span>
-
-    @q.fromAxisAngle axis, angle
+    <span class="hljs-property">@q</span>.fromAxisAngle axis, angle
          
-    dir = Vec3.sub @look, @pos
+    dir = Vec3.sub <span class="hljs-property">@look</span>, <span class="hljs-property">@pos</span>
     dir.normalize()
       
     q2 = <span class="hljs-keyword">new</span> Quaternion()
 
-    q2.fromAxisAngle Vec3.cross(dir,@up), angle
-    q2.mult @q
+    q2.fromAxisAngle Vec3.cross(dir,<span class="hljs-property">@up</span>), angle
+    q2.mult <span class="hljs-property">@q</span>
 
-    q2.transVec3 @look
-    q2.transVec3 @up
+    q2.transVec3 <span class="hljs-property">@look</span>
+    q2.transVec3 <span class="hljs-property">@up</span>
     
-    @update()
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-12">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
-              </div>
-              <p>_addToNode - a function called when this class is added to a node</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  _addToNode : <span class="hljs-function"><span class="hljs-params">(node)</span> -&gt;</span>
+    <span class="hljs-property">@update</span>()
+    @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>_addToNode - a function called when this class is added to a node</p></div></div><div class="code"><div class="wrapper">  _addToNode : <span class="hljs-function"><span class="hljs-params">(node)</span> -&gt;</span>
     node.camera = @
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-13">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
-              </div>
-              <p><strong>track</strong> - track the camera - v is a vec2 perpendicular to the look/pos dir</p>
+    @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>track</strong> - track the camera - v is a vec2 perpendicular to the look/pos dir</p>
 <ul>
 <li><strong>v</strong> - a Vec2 - Required</li>
 <li>returns this</li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  track : <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
+</ul></div></div><div class="code"><div class="wrapper">  track : <span class="hljs-function"><span class="hljs-params">(v)</span> -&gt;</span>
     g = <span class="hljs-keyword">new</span> Vec4 v.x,v.y,<span class="hljs-number">0</span>,<span class="hljs-number">0</span> <span class="hljs-comment"># non-homogenous vector w = 0</span>
-    @i.multVec g
+    <span class="hljs-property">@i</span>.multVec g
         
-    @look.add g
-    @pos.add g
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-14">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
-              </div>
-              <h2 id="orthocamera">OrthoCamera</h2>
+    <span class="hljs-property">@look</span>.add g
+    <span class="hljs-property">@pos</span>.add g
+    @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="orthocamera">OrthoCamera</h2>
 <p>An orthographic camera. This class calls makeOrtho on its perspective matrix
-Orthographic Camera uses 1 pixel as 1 world unit</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">OrthoCamera</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Camera</span></span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-15">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
-              </div>
-              <p><strong>@constructor</strong></p>
+Orthographic Camera uses 1 pixel as 1 world unit</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">OrthoCamera</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Camera</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>@constructor</strong></p>
 <ul>
 <li><strong>pos</strong> - a Vec3 - Required</li>
 <li><strong>look</strong> - a Vec3 - Required</li>
 <li><strong>up</strong> - a Vec3 - Required</li>
 <li><strong>near</strong> - a Number</li>
 <li><strong>far</strong> - a Number</li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  constructor: <span class="hljs-function"><span class="hljs-params">(@pos, @look, @up, @near, @far)</span> -&gt;</span>
-    <span class="hljs-keyword">super</span>(@pos,@look,@up)
-    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @near?
-      @near = <span class="hljs-number">-1.0</span>
-    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @far?
-      @far = <span class="hljs-number">1.0</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-16">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
-              </div>
-              <p>update - call with width and height and the matrix will be updated</p>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@pos</span>, <span class="hljs-property">@look</span>, <span class="hljs-property">@up</span>, <span class="hljs-property">@near</span>, <span class="hljs-property">@far</span>)</span> -&gt;</span>
+    <span class="hljs-keyword">super</span>(<span class="hljs-property">@pos</span>,<span class="hljs-property">@look</span>,<span class="hljs-property">@up</span>)
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@near</span>?
+      <span class="hljs-property">@near</span> = -<span class="hljs-number">1.0</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@far</span>?
+      <span class="hljs-property">@far</span> = <span class="hljs-number">1.0</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>update - call with width and height and the matrix will be updated</p>
 <ul>
 <li><strong>width</strong> - a Number - Default is current context width</li>
 <li><strong>height</strong> - a Number - Default is current context height</li>
 <li>returns this</li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  update: <span class="hljs-function"><span class="hljs-params">(width=PXL.Context.width, height=PXL.Context.height)</span>-&gt;</span>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">update</span>: <span class="hljs-function"><span class="hljs-params">(width=PXL.Context.width, height=PXL.Context.height)</span>-&gt;</span>
 
     OrthoCamera.__super__.update.call(@, width, height)
-    @p.makeOrtho(<span class="hljs-number">0</span>, width, <span class="hljs-number">0</span>, height, @near, @far)
-    @ip = Matrix4.invert(@p)
+    <span class="hljs-property">@p</span>.makeOrtho(<span class="hljs-number">0</span>, width, <span class="hljs-number">0</span>, height, <span class="hljs-property">@near</span>, <span class="hljs-property">@far</span>)
+    <span class="hljs-property">@ip</span> = Matrix4.invert(<span class="hljs-property">@p</span>)
 
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-17">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
-              </div>
-              <h2 id="perspcamera">PerspCamera</h2>
+    @
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="perspcamera">PerspCamera</h2>
 <p>An perspective camera. This class calls makePerspective on its perspective matrix
-TODO - Not sure we need zoom here. Should probably have a spaceball class</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PerspCamera</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Camera</span></span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-18">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
-              </div>
-              <p><strong>@constructor</strong> </p>
+TODO - Not sure we need zoom here. Should probably have a spaceball class</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PerspCamera</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Camera</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>@constructor</strong> </p>
 <ul>
 <li><strong>pos</strong> - a Vec3 - Required</li>
 <li><strong>look</strong> - a Vec3 - Required</li>
@@ -459,78 +172,43 @@ TODO - Not sure we need zoom here. Should probably have a spaceball class</p>
 <li><strong>angle</strong> - a Number</li>
 <li><strong>near</strong> - a Number</li>
 <li><strong>far</strong> - a Number</li>
-</ul>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@pos</span>, <span class="hljs-property">@look</span>, <span class="hljs-property">@up</span>, <span class="hljs-property">@angle</span>, <span class="hljs-property">@near</span>, <span class="hljs-property">@far</span>)</span> -&gt;</span>
+    <span class="hljs-keyword">super</span>(<span class="hljs-property">@pos</span>,<span class="hljs-property">@look</span>,<span class="hljs-property">@up</span>)
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@angle</span>?
+      <span class="hljs-property">@angle</span> = degToRad <span class="hljs-number">25.0</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@near</span>?
+      <span class="hljs-property">@near</span> = <span class="hljs-number">0.1</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@far</span>?
+      <span class="hljs-property">@far</span> = <span class="hljs-number">100.0</span>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  constructor: <span class="hljs-function"><span class="hljs-params">(@pos, @look, @up, @angle, @near, @far)</span> -&gt;</span>
-    <span class="hljs-keyword">super</span>(@pos,@look,@up)
-    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @angle?
-      @angle = degToRad <span class="hljs-number">25.0</span>
-    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @near?
-      @near = <span class="hljs-number">0.1</span>
-    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @far?
-      @far = <span class="hljs-number">100.0</span>
-
-    @zoom_near = @near
-    @zoom_far = @far</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-19">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
-              </div>
-              <p>update - call with width and height and the matrix will be updated</p>
+    <span class="hljs-property">@zoom_near</span> = <span class="hljs-property">@near</span>
+    <span class="hljs-property">@zoom_far</span> = <span class="hljs-property">@far</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>update - call with width and height and the matrix will be updated</p>
 <ul>
 <li><strong>width</strong> - a Number - Default is current context width</li>
 <li><strong>height</strong> - a Number - Default is current context height</li>
 <li>returns this</li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  update: <span class="hljs-function"><span class="hljs-params">(width=PXL.Context.width, height=PXL.Context.height)</span>-&gt;</span>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">update</span>: <span class="hljs-function"><span class="hljs-params">(width=PXL.Context.width, height=PXL.Context.height)</span>-&gt;</span>
   
     PerspCamera.__super__.update.call(@, width, height)
-    @p.makePerspective(@angle, width / height, @near, @far )
-    @ip = Matrix4.invert(@p)
+    <span class="hljs-property">@p</span>.makePerspective(<span class="hljs-property">@angle</span>, width / height, <span class="hljs-property">@near</span>, <span class="hljs-property">@far</span> )
+    <span class="hljs-property">@ip</span> = Matrix4.invert(<span class="hljs-property">@p</span>)
   
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-20">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
-              </div>
-              <p><strong>castRay</strong> - Given a screen position (in pixels 0 -&gt; dimension), cast a ray through the screen along the frustum from the eye pos</p>
+    @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>castRay</strong> - Given a screen position (in pixels 0 -&gt; dimension), cast a ray through the screen along the frustum from the eye pos</p>
 <ul>
 <li><strong>sx</strong> - a Number - Required - Range 0 to width</li>
 <li><strong>sy</strong> - a Number - Required - Range 0 to width</li>
 <li><strong>width</strong> - a Number - Default is current context width</li>
 <li><strong>height</strong> - a Number - Default is current context height</li>
 <li>returns a Vec4 - Normalised  </li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  castRay : <span class="hljs-function"><span class="hljs-params">(sx,sy, width=PXL.Context.width, height=PXL.Context.height)</span> -&gt;</span>
+</ul></div></div><div class="code"><div class="wrapper">  castRay : <span class="hljs-function"><span class="hljs-params">(sx,sy, width=PXL.Context.width, height=PXL.Context.height)</span> -&gt;</span>
   
     sy = height - sy
     
-    near_ray = <span class="hljs-keyword">new</span> Vec4((sx * <span class="hljs-number">2.0</span>)/ width - <span class="hljs-number">1.0</span>, (sy * <span class="hljs-number">2</span>) / height - <span class="hljs-number">1</span>, <span class="hljs-number">-1.0</span>, <span class="hljs-number">1.0</span>)
+    near_ray = <span class="hljs-keyword">new</span> Vec4((sx * <span class="hljs-number">2.0</span>)/ width - <span class="hljs-number">1.0</span>, (sy * <span class="hljs-number">2</span>) / height - <span class="hljs-number">1</span>, -<span class="hljs-number">1.0</span>, <span class="hljs-number">1.0</span>)
     far_ray = <span class="hljs-keyword">new</span> Vec4((sx * <span class="hljs-number">2.0</span>)/ width - <span class="hljs-number">1.0</span>, (sy * <span class="hljs-number">2</span>) / height - <span class="hljs-number">1</span>, <span class="hljs-number">1.0</span>, <span class="hljs-number">1.0</span>)
 
-    @ip.multVec near_ray
-    @ip.multVec far_ray
+    <span class="hljs-property">@ip</span>.multVec near_ray
+    <span class="hljs-property">@ip</span>.multVec far_ray
 
     nearg = <span class="hljs-number">1.0</span> / near_ray.w
     near_ray_w = <span class="hljs-keyword">new</span> Vec4 near_ray.x * nearg, near_ray.y * nearg, near_ray.z * nearg, <span class="hljs-number">1.0</span>
@@ -542,92 +220,36 @@ TODO - Not sure we need zoom here. Should probably have a spaceball class</p>
 
     far_ray_w.normalize()
 
-    @i.multVec far_ray_w
-    far_ray_w.normalize()</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-21">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
-              </div>
-              <p>change the zoom as a function of the current percentage of the distance between the near
-and far clipping planes plus an offset percentage given by dt. Percentages are 0-1</p>
+    <span class="hljs-property">@i</span>.multVec far_ray_w
+    far_ray_w.normalize()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>change the zoom as a function of the current percentage of the distance between the near
+and far clipping planes plus an offset percentage given by dt. Percentages are 0-1</p></div></div><div class="code"><div class="wrapper">  _zoom : <span class="hljs-function"><span class="hljs-params">(dt)</span> -&gt;</span>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  _zoom : <span class="hljs-function"><span class="hljs-params">(dt)</span> -&gt;</span>
-
-    dir = Vec3.sub(@look,@pos)
+    dir = Vec3.sub(<span class="hljs-property">@look</span>,<span class="hljs-property">@pos</span>)
     dl = dir.length()
     
-    tl = @zoom_far - @zoom_near
+    tl = <span class="hljs-property">@zoom_far</span> - <span class="hljs-property">@zoom_near</span>
     dp = dl/tl
   
-    @zoom dp+dt
+    <span class="hljs-property">@zoom</span> dp+dt
 
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-22">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
-              </div>
-              <p><strong>zoom</strong> - set the absolute zoom value between 0 and 1 - a percentage of the distance between
+    @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>zoom</strong> - set the absolute zoom value between 0 and 1 - a percentage of the distance between
 the near and far clip planes (by default - these can be changed)</p>
 <ul>
 <li><strong>z</strong> - a Number - Required - Range 0 to 1</li>
 <li>returns this</li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  zoom : <span class="hljs-function"><span class="hljs-params">(z)</span> -&gt;</span>
+</ul></div></div><div class="code"><div class="wrapper">  zoom : <span class="hljs-function"><span class="hljs-params">(z)</span> -&gt;</span>
   
     <span class="hljs-keyword">if</span> z &gt;<span class="hljs-number">0</span> <span class="hljs-keyword">and</span> z &lt; <span class="hljs-number">1</span>
-      dir = Vec3.sub(@pos,@look)
+      dir = Vec3.sub(<span class="hljs-property">@pos</span>,<span class="hljs-property">@look</span>)
       dir.normalize()
-      tl = @zoom_far - @zoom_near
+      tl = <span class="hljs-property">@zoom_far</span> - <span class="hljs-property">@zoom_near</span>
       dir.multScalar(z * tl)
-      @pos = Vec3.add(@look,dir)
-      @update()
+      <span class="hljs-property">@pos</span> = Vec3.add(<span class="hljs-property">@look</span>,dir)
+      <span class="hljs-property">@update</span>()
 
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-23">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
-              </div>
-              <h2 id="mouseperspcamera">MousePerspCamera</h2>
-<p>Camera that listens for mouse input and moves when the user moves the mouse around</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MousePerspCamera</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">PerspCamera</span></span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-24">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
-              </div>
-              <p><strong>@constructor</strong></p>
+    @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="mouseperspcamera">MousePerspCamera</h2>
+<p>Camera that listens for mouse input and moves when the user moves the mouse around</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MousePerspCamera</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">PerspCamera</span></span>
+  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>@constructor</strong></p>
 <ul>
 <li><strong>pos</strong> - a Vec3 - Required</li>
 <li><strong>look</strong> - a Vec3 - Required</li>
@@ -636,264 +258,104 @@ the near and far clip planes (by default - these can be changed)</p>
 <li><strong>near</strong> - a Number</li>
 <li><strong>far</strong> - a Number</li>
 <li><strong>sense</strong> - a Number</li>
-</ul>
+</ul></div></div><div class="code"><div class="wrapper">  
+  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">( <span class="hljs-property">@pos</span>, <span class="hljs-property">@look</span>, <span class="hljs-property">@up</span>, <span class="hljs-property">@angle</span>, <span class="hljs-property">@near</span>, <span class="hljs-property">@far</span>, <span class="hljs-property">@sense</span>)</span> -&gt;</span>
+    <span class="hljs-keyword">super</span>(<span class="hljs-property">@pos</span>, <span class="hljs-property">@look</span>, <span class="hljs-property">@up</span>, <span class="hljs-property">@angle</span>, <span class="hljs-property">@near</span>, <span class="hljs-property">@far</span>)
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Listen for the signals on the PXL Context, emitting mouse events</p></div></div><div class="code"><div class="wrapper">    PXL.Context.mouseMove.add <span class="hljs-property">@onMouseMove</span>, @
+    PXL.Context.mouseDown.add <span class="hljs-property">@onMouseDown</span>, @ 
+    PXL.Context.mouseUp.add <span class="hljs-property">@onMouseUp</span>, @
+    PXL.Context.mouseWheel.add <span class="hljs-property">@onMouseWheel</span>, @
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  
-  constructor: <span class="hljs-function"><span class="hljs-params">( @pos, @look, @up, @angle, @near, @far, @sense)</span> -&gt;</span>
-    <span class="hljs-keyword">super</span>(@pos, @look, @up, @angle, @near, @far)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-25">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
-              </div>
-              <p>Listen for the signals on the PXL Context, emitting mouse events</p>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@sense</span>?
+      <span class="hljs-property">@sense</span> = <span class="hljs-number">0.3</span>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    PXL.Context.mouseMove.add @onMouseMove, @
-    PXL.Context.mouseDown.add @onMouseDown, @ 
-    PXL.Context.mouseUp.add @onMouseUp, @
-    PXL.Context.mouseWheel.add @onMouseWheel, @
-
-    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> @sense?
-      @sense = <span class="hljs-number">0.3</span>
-
-    @px = <span class="hljs-number">0</span>
-    @py = <span class="hljs-number">0</span>
-    @dx = <span class="hljs-number">0</span>
-    @dy = <span class="hljs-number">0</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-26">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
-              </div>
-              <p>This holds all we need to know about the camera</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    @m.lookAt(@pos,@look,@up)
-    @i = Matrix4.invert(@m)
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-27">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
-              </div>
-              <p><strong>onMouseMove</strong> - registered with our signal - called when mouse is moved over canvas</p>
+    <span class="hljs-property">@px</span> = <span class="hljs-number">0</span>
+    <span class="hljs-property">@py</span> = <span class="hljs-number">0</span>
+    <span class="hljs-property">@dx</span> = <span class="hljs-number">0</span>
+    <span class="hljs-property">@dy</span> = <span class="hljs-number">0</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>This holds all we need to know about the camera</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-property">@m</span>.lookAt(<span class="hljs-property">@pos</span>,<span class="hljs-property">@look</span>,<span class="hljs-property">@up</span>)
+    <span class="hljs-property">@i</span> = Matrix4.invert(<span class="hljs-property">@m</span>)
+    @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>onMouseMove</strong> - registered with our signal - called when mouse is moved over canvas</p>
 <ul>
 <li><strong>event</strong> - an Event</li>
 <li>returns this</li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  onMouseMove : <span class="hljs-function"><span class="hljs-params">(event)</span>-&gt;</span>
+</ul></div></div><div class="code"><div class="wrapper">  onMouseMove : <span class="hljs-function"><span class="hljs-params">(event)</span>-&gt;</span>
 
     x = event.mouseX
     y = event.mouseY
     
-    @dx = x - @px 
-    @px = x
+    <span class="hljs-property">@dx</span> = x - <span class="hljs-property">@px</span> 
+    <span class="hljs-property">@px</span> = x
 
-    @dy = y - @py
-    @py = y
+    <span class="hljs-property">@dy</span> = y - <span class="hljs-property">@py</span>
+    <span class="hljs-property">@py</span> = y
 
     <span class="hljs-keyword">if</span> event.buttonLeft
-      @orbit <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>), degToRad(-@dx * @sense)
-      dir = Vec3.sub @look, @pos
-      @orbit Vec3.cross(dir,@up), degToRad(@dy * @sense)
+      <span class="hljs-property">@orbit</span> <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>), degToRad(-<span class="hljs-property">@dx</span> * <span class="hljs-property">@sense</span>)
+      dir = Vec3.sub <span class="hljs-property">@look</span>, <span class="hljs-property">@pos</span>
+      <span class="hljs-property">@orbit</span> Vec3.cross(dir,<span class="hljs-property">@up</span>), degToRad(<span class="hljs-property">@dy</span> * <span class="hljs-property">@sense</span>)
 
     <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> event.buttonRight
-      @track <span class="hljs-keyword">new</span> Vec2 @dx * @sense * <span class="hljs-number">-0.02</span>, @dy * @sense * <span class="hljs-number">0.02</span>
+      <span class="hljs-property">@track</span> <span class="hljs-keyword">new</span> Vec2 <span class="hljs-property">@dx</span> * <span class="hljs-property">@sense</span> * -<span class="hljs-number">0.02</span>, <span class="hljs-property">@dy</span> * <span class="hljs-property">@sense</span> * <span class="hljs-number">0.02</span>
       
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-28">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
-              </div>
-              <p><strong>onMouseDown</strong> - registered with our signal - called when mouse button is pressed over canvas</p>
+    @
+  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>onMouseDown</strong> - registered with our signal - called when mouse button is pressed over canvas</p>
 <ul>
 <li><strong>event</strong> - an Event</li>
 <li>returns this</li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  onMouseDown : <span class="hljs-function"><span class="hljs-params">(event)</span> -&gt;</span>
+</ul></div></div><div class="code"><div class="wrapper">  onMouseDown : <span class="hljs-function"><span class="hljs-params">(event)</span> -&gt;</span>
 
     x = event.mouseX
     y = event.mouseY
-    @px = x
-    @py = y
-    @dx = <span class="hljs-number">0</span>
-    @dy = <span class="hljs-number">0</span>
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-29">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
-              </div>
-              <p><strong>onMouseUp</strong> - registered with our signal - called when mouse button is released over canvas</p>
+    <span class="hljs-property">@px</span> = x
+    <span class="hljs-property">@py</span> = y
+    <span class="hljs-property">@dx</span> = <span class="hljs-number">0</span>
+    <span class="hljs-property">@dy</span> = <span class="hljs-number">0</span>
+    @
+
+ </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>onMouseUp</strong> - registered with our signal - called when mouse button is released over canvas</p>
 <ul>
 <li><strong>event</strong> - an Event</li>
 <li>returns this</li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  onMouseUp : <span class="hljs-function"><span class="hljs-params">(event)</span> -&gt;</span>
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-30">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
-              </div>
-              <p><strong>onMouseWheel</strong> - registered with our signal - called when mouse wheel is moved over canvas
+</ul></div></div><div class="code"><div class="wrapper">  onMouseUp : <span class="hljs-function"><span class="hljs-params">(event)</span> -&gt;</span>
+    @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>onMouseWheel</strong> - registered with our signal - called when mouse wheel is moved over canvas
 At the moment, this appears to be chrome only</p>
 <ul>
 <li><strong>event</strong> - an Event</li>
 <li>returns this</li>
-</ul>
+</ul></div></div><div class="code"><div class="wrapper">  onMouseWheel : <span class="hljs-function"><span class="hljs-params">(event)</span> -&gt;</span>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  onMouseWheel : <span class="hljs-function"><span class="hljs-params">(event)</span> -&gt;</span>
-
-    dt = event.wheelDelta * <span class="hljs-number">0.01</span> * @sense
-    tl = @far - @near
+    dt = event.wheelDelta * <span class="hljs-number">0.01</span> * <span class="hljs-property">@sense</span>
+    tl = <span class="hljs-property">@far</span> - <span class="hljs-property">@near</span>
 
     dp = dt / tl
-    @_zoom(dp)
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-31">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
-              </div>
-              <p><strong>update</strong> - call with width and height and the matrix will be updated</p>
+    <span class="hljs-property">@_zoom</span>(dp)
+    @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>update</strong> - call with width and height and the matrix will be updated</p>
 <ul>
 <li><strong>width</strong> - a Number - Default is current context width</li>
 <li><strong>height</strong> - a Number - Default is current context height</li>
 <li>returns this</li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  update: <span class="hljs-function"><span class="hljs-params">(width=PXL.Context.width, height=PXL.Context.height)</span>-&gt;</span>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">update</span>: <span class="hljs-function"><span class="hljs-params">(width=PXL.Context.width, height=PXL.Context.height)</span>-&gt;</span>
     MousePerspCamera.__super__.update.call(@, width, height)
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-32">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
-              </div>
-              <p>onMouseOut - registered with our signal - called when mouse leaves the context</p>
+    @
+  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>onMouseOut - registered with our signal - called when mouse leaves the context</p>
 <ul>
 <li><strong>event</strong> - an Event</li>
 <li>returns this</li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  onMouseOut : <span class="hljs-function"><span class="hljs-params">(event)</span> -&gt;</span>
-    @px = <span class="hljs-number">0</span>
-    @py = <span class="hljs-number">0</span>
-    @dx = <span class="hljs-number">0</span>
-    @dy = <span class="hljs-number">0</span>
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-33">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
-              </div>
-              <p><strong>onMouseOver</strong> - registered with our signal - called when mouse enters the context</p>
+</ul></div></div><div class="code"><div class="wrapper">  onMouseOut : <span class="hljs-function"><span class="hljs-params">(event)</span> -&gt;</span>
+    <span class="hljs-property">@px</span> = <span class="hljs-number">0</span>
+    <span class="hljs-property">@py</span> = <span class="hljs-number">0</span>
+    <span class="hljs-property">@dx</span> = <span class="hljs-number">0</span>
+    <span class="hljs-property">@dy</span> = <span class="hljs-number">0</span>
+    @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>onMouseOver</strong> - registered with our signal - called when mouse enters the context</p>
 <ul>
 <li><strong>event</strong> - an Event</li>
 <li>returns this </li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  onMouseOver : <span class="hljs-function"><span class="hljs-params">(event)</span> -&gt;</span>
-    <span class="hljs-keyword">if</span> @px == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> @py == <span class="hljs-number">0</span>
-      [@px, @py] = [event.mouseX, event.mouseY]
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-34">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
-              </div>
-              <h2 id="touchperspcamera">TouchPerspCamera</h2>
-<p>Camera that listens for both mouse input and touch gestures</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TouchPerspCamera</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">MousePerspCamera</span></span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-35">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
-              </div>
-              <p><strong>@constructor</strong></p>
+</ul></div></div><div class="code"><div class="wrapper">  onMouseOver : <span class="hljs-function"><span class="hljs-params">(event)</span> -&gt;</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@px</span> == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-property">@py</span> == <span class="hljs-number">0</span>
+      [<span class="hljs-property">@px</span>, <span class="hljs-property">@py</span>] = [event.mouseX, event.mouseY]
+    @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TouchPerspCamera
+Camera that listens for both mouse input and touch gestures</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TouchPerspCamera</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">MousePerspCamera</span></span>
+  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>@constructor</strong></p>
 <ul>
 <li><strong>pos</strong> - a Vec3 - Required</li>
 <li><strong>look</strong> - a Vec3 - Required</li>
@@ -902,136 +364,65 @@ At the moment, this appears to be chrome only</p>
 <li><strong>near</strong> - a Number</li>
 <li><strong>far</strong> - a Number</li>
 <li><strong>sense</strong> - a Number</li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre> 
-  constructor: <span class="hljs-function"><span class="hljs-params">( @pos, @look, @up, @angle, @near, @far, @sense)</span> -&gt;</span>
-    <span class="hljs-keyword">super</span>(@pos, @look, @up, @angle, @near, @far)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-36">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
-              </div>
-              <p>Listen for the signals on the PXL Context, emitting touch events</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    PXL.Context.touchPinch.add @onPinch, @
-    PXL.Context.touchSpread.add @onSpread, @
-    PXL.Context.touchSwipe.add @onSwipe, @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-37">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-37">&#182;</a>
-              </div>
-              <p><strong>onPinch</strong></p>
+</ul></div></div><div class="code"><div class="wrapper"> 
+  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">( <span class="hljs-property">@pos</span>, <span class="hljs-property">@look</span>, <span class="hljs-property">@up</span>, <span class="hljs-property">@angle</span>, <span class="hljs-property">@near</span>, <span class="hljs-property">@far</span>, <span class="hljs-property">@sense</span>)</span> -&gt;</span>
+    <span class="hljs-keyword">super</span>(<span class="hljs-property">@pos</span>, <span class="hljs-property">@look</span>, <span class="hljs-property">@up</span>, <span class="hljs-property">@angle</span>, <span class="hljs-property">@near</span>, <span class="hljs-property">@far</span>)
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Listen for the signals on the PXL Context, emitting touch events</p></div></div><div class="code"><div class="wrapper">    PXL.Context.touchPinch.add <span class="hljs-property">@onPinch</span>, @
+    PXL.Context.touchSpread.add <span class="hljs-property">@onSpread</span>, @
+    PXL.Context.touchSwipe.add <span class="hljs-property">@onSwipe</span>, @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>onPinch</strong></p>
 <ul>
 <li><strong>event</strong> - an Event</li>
 <li>returns this </li>
-</ul>
+</ul></div></div><div class="code"><div class="wrapper">  onPinch : <span class="hljs-function"><span class="hljs-params">(event)</span> -&gt;</span>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  onPinch : <span class="hljs-function"><span class="hljs-params">(event)</span> -&gt;</span>
-
-    dt = -event.ddist * <span class="hljs-number">0.08</span> * @sense
-    tl = @far - @near
+    dt = -event.ddist * <span class="hljs-number">0.08</span> * <span class="hljs-property">@sense</span>
+    tl = <span class="hljs-property">@far</span> - <span class="hljs-property">@near</span>
   
     dp = dt / tl
-    @_zoom(dp)
+    <span class="hljs-property">@_zoom</span>(dp)
 
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-38">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
-              </div>
-              <p><strong>onSpread</strong></p>
+    @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>onSpread</strong></p>
 <ul>
 <li><strong>event</strong> - an Event</li>
 <li>returns this </li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  onSpread : <span class="hljs-function"><span class="hljs-params">(event)</span> -&gt;</span>
+</ul></div></div><div class="code"><div class="wrapper">  onSpread : <span class="hljs-function"><span class="hljs-params">(event)</span> -&gt;</span>
     
-    dt = -event.ddist * <span class="hljs-number">0.08</span> * @sense
-    tl = @far - @near
+    dt = -event.ddist * <span class="hljs-number">0.08</span> * <span class="hljs-property">@sense</span>
+    tl = <span class="hljs-property">@far</span> - <span class="hljs-property">@near</span>
   
     dp = dt / tl
-    @_zoom(dp)
+    <span class="hljs-property">@_zoom</span>(dp)
 
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-39">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
-              </div>
-              <p><strong>onSwipe</strong></p>
+    @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>onSwipe</strong></p>
 <ul>
 <li><strong>event</strong> - an Event</li>
 <li>returns this  </li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  onSwipe : <span class="hljs-function"><span class="hljs-params">(event)</span> -&gt;</span>
+</ul></div></div><div class="code"><div class="wrapper">  onSwipe : <span class="hljs-function"><span class="hljs-params">(event)</span> -&gt;</span>
     x = event.currentPos.x
     y = event.currentPos.y
 
-    @px = event.previousPos.x
-    @py = event.previousPos.y
+    <span class="hljs-property">@px</span> = event.previousPos.x
+    <span class="hljs-property">@py</span> = event.previousPos.y
       
-    @dx = x - @px 
-    @px = x
+    <span class="hljs-property">@dx</span> = x - <span class="hljs-property">@px</span> 
+    <span class="hljs-property">@px</span> = x
 
-    @dy = y - @py
-    @py = y
+    <span class="hljs-property">@dy</span> = y - <span class="hljs-property">@py</span>
+    <span class="hljs-property">@py</span> = y
 
     <span class="hljs-keyword">if</span> event.fingers == <span class="hljs-number">1</span>
 
-      @orbit <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>), degToRad(-@dx * @sense)
-      dir = Vec3.sub @look, @pos
-      @orbit Vec3.cross(dir,@up), degToRad(-@dy * @sense)
+      <span class="hljs-property">@orbit</span> <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>), degToRad(-<span class="hljs-property">@dx</span> * <span class="hljs-property">@sense</span>)
+      dir = Vec3.sub <span class="hljs-property">@look</span>, <span class="hljs-property">@pos</span>
+      <span class="hljs-property">@orbit</span> Vec3.cross(dir,<span class="hljs-property">@up</span>), degToRad(-<span class="hljs-property">@dy</span> * <span class="hljs-property">@sense</span>)
         
     <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> event.fingers == <span class="hljs-number">2</span>
-      @track <span class="hljs-keyword">new</span> Vec2 @dx * @sense * <span class="hljs-number">-0.02</span>, @dy * @sense * <span class="hljs-number">0.02</span>
+      <span class="hljs-property">@track</span> <span class="hljs-keyword">new</span> Vec2 <span class="hljs-property">@dx</span> * <span class="hljs-property">@sense</span> * -<span class="hljs-number">0.02</span>, <span class="hljs-property">@dy</span> * <span class="hljs-property">@sense</span> * <span class="hljs-number">0.02</span>
     @
 
 <span class="hljs-built_in">module</span>.exports = 
-    Camera: Camera
-    OrthoCamera: OrthoCamera
-    PerspCamera: PerspCamera
+    <span class="hljs-attribute">Camera</span>: Camera
+    <span class="hljs-attribute">OrthoCamera</span>: OrthoCamera
+    <span class="hljs-attribute">PerspCamera</span>: PerspCamera
     MousePerspCamera : MousePerspCamera
-    TouchPerspCamera : TouchPerspCamera</pre></div></div>
-            
-        </li>
-        
-    </ul>
-  </div>
-</body>
-</html>
-
+    TouchPerspCamera : TouchPerspCamera</div></div></div></div></body></html>

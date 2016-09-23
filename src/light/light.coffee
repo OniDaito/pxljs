@@ -1,16 +1,16 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 Basic forward rendering lights such as ambient, spotlight and such
 
@@ -35,7 +35,7 @@ LIGHTING_NUM_POINT_LIGHTS = 5
 LIGHTING_NUM_SPOT_LIGHTS = 5
 
 
-### AmbientLight ###
+# ## AmbientLight
 # Basic ambient lighting. Should be included with all basic lights
 
 class AmbientLight
@@ -55,7 +55,7 @@ class AmbientLight
     @
 
 
-### PointLight ###
+# ## PointLight
 # A very basic light, a point in space. Used by the node class at present
 # Doesnt create shadows at present (might use a different class for that)
 # TODO - At some point this class will need to detect forward and deferred
@@ -138,7 +138,7 @@ class PointLight
     @
 
 
-### SpotLight ###
+# ## SpotLight
 # A SpotLight with a direction and angle (which represents how wide the beam is)
 # Just as in PointLight, the spotlight prototype records all spots
 class SpotLight

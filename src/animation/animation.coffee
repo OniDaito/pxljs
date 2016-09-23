@@ -1,16 +1,16 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 ###
 
@@ -20,7 +20,7 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 {Curve2} = require '../math/curve'
 
 
-### Interpolation ###
+# ## Interpolation
 # A basic wrapper around a math / colour value that performs linear interpolation
 # TODO - Quaternion's need to be here and probably just SLERPED
 
@@ -179,7 +179,7 @@ class Animator
         tween.set p
 
 
-### KeyFrame ###
+# ## KeyFrame
 # A reference to an object and the value that object should take at that point.
 # Add keyframes to animators with the appropriate values
 #
@@ -193,7 +193,7 @@ class KeyFrame
   constructor : (@obj, @value, @framenum) ->
     @
 
-### Tween ###
+# ## Tween
 # A simple class that basically takes two keyframes and uses an interpolator to move between said values
 
 class Tween

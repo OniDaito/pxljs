@@ -1,22 +1,19 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
-
-
-Consists of a matrix, a material, parent and children for the scene graph computation
-Doesnt have to be drawn per-se
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 ###
+
 
 {Vec3, Vec4, Matrix3, Matrix4} = require '../math/math'
 {matchWithShader} = require '../gl/webgl'
@@ -27,7 +24,7 @@ Doesnt have to be drawn per-se
 
 util = require '../util/util'
 
-### Node ###
+# ## Node
 # Arguably, the most important piece of code. The node represents the combination of all the
 # elements required for drawing. It has a matrix as the minimum, but can also accept materials
 # a piece of geometry, a shader and several textures and lights. It can have children but only

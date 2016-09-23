@@ -1,17 +1,16 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
-
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 Primitive Objects - holds support for the various buffers we need
 
@@ -38,7 +37,7 @@ When applying materials, we may need to AUTOGEN stuff - thats not a bad idea act
 
 util = require '../util/util'
 
-### Geometry ###
+# ## Geometry
 # Represents actually geometry - a collection of vertices that can be drawn, with some
 # organisation
 # Geometry is either a set of vertices ready to be flattened into arrays to go onto the
@@ -178,7 +177,7 @@ class Geometry
       else
         return @vertices.length / 3
 
-### Vertex ###
+# ## Vertex
 # Lowest class. We use this because we need to do things on a vertex basis when we brew
 # We need position as a minimum. Optional Colour, Normal and texture and tangent
 # vertices essentially copy by reference unless a Vec or similar is not copied. This is
@@ -229,7 +228,7 @@ class Vertex
 
 
 
-### Triangle ###
+# ## Triangle
 # A triangle. This CAN be extended to be drawn on its own but doesnt have to be
 # TODO - is a Triangle really geometry? It is kinda but since we have loads of triangles
 # in things like a mesh shouldnt we really not do that? :S
@@ -280,7 +279,7 @@ class Triangle extends Geometry
     @
 
 
-### Quad ###
+# ## Quad
 # Our basic Quad, drawn as a tristrip. Assume planar triangles
 
 class Quad extends Geometry
@@ -346,7 +345,7 @@ class Quad extends Geometry
     t
 
 
-### VertexSoup ###
+# ## VertexSoup
 # A Place holder class for a collection of non indexed vertices, likely to be drawn out as lines
 # or some arbitrary polygon
 # vertex_list - the list of vertices to make this from
@@ -364,7 +363,7 @@ class VertexSoup extends Geometry
 
 
 
-### TriangleMesh ###
+# ## TriangleMesh
 # A mesh made up of triangles that have the same kinds of vertices
 # Can be created in several ways but the outcome is a set of indexed
 # or non indexed buffers

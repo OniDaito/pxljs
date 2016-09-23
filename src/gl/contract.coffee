@@ -1,23 +1,23 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 ###
 
 util = require '../util/util'
 
 
-### Contract ###
+# ## Contract
 # Holds the actual mapping between webgl shader inputs and the names of the variables to be mapped
 # A shader holds a contract with uniforms and attributes but has no roles. 
 # A contract on a node or other js object has roles but no uniforms or attributes. We match the 

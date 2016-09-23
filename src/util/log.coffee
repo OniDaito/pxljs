@@ -1,16 +1,16 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 Error Handling code
 
@@ -25,7 +25,7 @@ Error Handling code
 
 cache = []
 
-### Print Stack Trace funtion ###
+# ## Print Stack Trace funtion
 
 printStackTrace = () ->
   callstack = []
@@ -75,7 +75,7 @@ printObjectName = (obj) ->
   ""
 
 
-### PXLError ###
+# ## PXLError
 # Thow an exception and print the message 
 # - **msg** - a String
 # - returns throws exception
@@ -84,7 +84,7 @@ PXLError  = (msg) =>
   console.error (f)
   throw f
 
-### PXLWarning ###
+# ## PXLWarning
 # Thow a warning and print the message 
 # - **msg** - a String
 # - returns this
@@ -96,7 +96,7 @@ PXLWarning  = (msg) =>
   console.warn printStackTrace()
   @
 
-### PXLWarningOnce ###
+# ## PXLWarningOnce
 # Thow a warning only once and print the message 
 # Potentially a warning shouldnt occur more than once ;)
 # - **msg** - a String
@@ -112,7 +112,7 @@ PXLWarningOnce  = (msg) =>
     cache.push msg
   @
 
-### PXLDebug ###
+# ## PXLDebug
 # If in Debug print the message 
 # - **msg** - a String
 # - returns this
@@ -123,7 +123,7 @@ PXLDebug  = (msg) =>
     console.log (f)
   @
 
-### PXLLog ###
+# ## PXLLog
 # Log a message to the console
 # - **msg** - a String
 # - returns this

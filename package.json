@@ -1,6 +1,6 @@
 {
     "name": "pxljs",
-    "version": "0.6.0",
+    "version": "0.1.0",
     "description": "WebGL Library written for hackers!",
     "main": "lib/pxl.min.js",
     "scripts": {
@@ -20,7 +20,7 @@
         "math"
     ],
     "author": "Benjamin Blundell",
-    "license": "CC-BY-NC-SA-4.0",
+    "license": "MIT",
     "readmeFilename": "README.markdown",
     
     "dependencies": {
@@ -36,9 +36,7 @@
         "node-static": "0.7.0",
         "mocha": "1.8.2",
         "chai": "1.5.0",
-        "docco" : "0.3.0",
         "gulp" : "3.9.1",
-        "gulp-docco" : "0.0.4",
         "gulp-coffee" : "2.3",
         "gulp-uglify" : "2.0.0",
         "gulp-util" : "3.0.7",
@@ -50,6 +48,7 @@
         "del" : "2.2.2",
         "through2" : "2.0.1",
         "bl" : "1.1.2",
-        "budo" : "9.0.0"
+        "budo" : "9.0.0",
+        "groc" : "0.8.0"
     }
 }

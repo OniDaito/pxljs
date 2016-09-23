@@ -1,82 +1,21 @@
-<!DOCTYPE html>
-
-<html>
-<head>
-  <title>red_black_tree.coffee</title>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
-  <link rel="stylesheet" media="all" href="../docco.css" />
-</head>
-<body>
-  <div id="container">
-    <div id="background"></div>
-    
-    <ul class="sections">
-        
-          <li id="title">
-              <div class="annotation">
-                  <h1>red_black_tree.coffee</h1>
-              </div>
-          </li>
-        
-        
-        
-        <li id="section-1">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-1">&#182;</a>
-              </div>
-              <h2 id="about">ABOUT</h2>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>             .__   
+<!DOCTYPE html><html lang="en"><head><title>util/red_black_tree</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="util/red_black_tree"><meta name="groc-project-path" content="src/util/red_black_tree.coffee"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/util/red_black_tree.coffee</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><pre><code>             .__   
 _________  __|  |  
 \____ \  \/  /  |  
 |  |_&gt; &gt;    &lt;|  |__
-|   __<span class="hljs-regexp">/__/</span>\_ \____/
+|   __/__/\_ \____/
 |__|        \/     js
 
-                    PXL.js
-                    Benjamin Blundell - ben@pxljs.com
-                    http:<span class="hljs-regexp">//</span>pxljs.com
+                PXL.js
+                Benjamin Blundell - ben@pxljs.com
+                http://pxljs.com
 
-This software <span class="hljs-keyword">is</span> released under the MIT Licence. See LICENCE.txt <span class="hljs-keyword">for</span> details
+This software is released under the MIT Licence. See LICENCE.txt for details</code></pre>
+<p>An implementation of the Red Black Tree from the Javascript Implementation found
+at <a href="https://github.com/gorhill/Javascript-Voronoi/blob/master/rhill-voronoi-core.js">https://github.com/gorhill/Javascript-Voronoi/blob/master/rhill-voronoi-core.js</a></p></div></div><div class="code"><div class="wrapper"><span class="hljs-comment">###RedBlackTree###</span>
 
-An implementation <span class="hljs-keyword">of</span> the Red Black Tree from the Javascript Implementation found
-at https:<span class="hljs-regexp">//gi</span>thub.com/gorhill/Javascript-Voronoi/blob/master/rhill-voronoi-core.js</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-2">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-2">&#182;</a>
-              </div>
-              <p>##</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-3">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
-              </div>
-              <p>##RedBlackTree###</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">RedBlackTree</span></span>
   constructor : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
-    @root = <span class="hljs-literal">null</span>
+    <span class="hljs-property">@root</span> = <span class="hljs-literal">null</span>
 
   insertSuccessor : <span class="hljs-function"><span class="hljs-params">(node, successor)</span> -&gt;</span>
     <span class="hljs-keyword">if</span> node
@@ -100,8 +39,8 @@ at https:<span class="hljs-regexp">//gi</span>thub.com/gorhill/Javascript-Vorono
         node.rbRight = successor
       parent = node
     
-    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> @root
-      node = @getFirst(@root)
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@root</span>
+      node = <span class="hljs-property">@getFirst</span>(<span class="hljs-property">@root</span>)
       successor.rbPrevious = <span class="hljs-literal">null</span>
       successor.rbNext = node
       node.rbPrevious = successor
@@ -111,7 +50,7 @@ at https:<span class="hljs-regexp">//gi</span>thub.com/gorhill/Javascript-Vorono
     <span class="hljs-keyword">else</span> 
       successor.rbPrevious = successor.rbNext = <span class="hljs-literal">null</span>
      
-      @root = successor
+      <span class="hljs-property">@root</span> = successor
       parent = <span class="hljs-literal">null</span>
       
     successor.rbLeft = successor.rbRight = <span class="hljs-literal">null</span>
@@ -133,13 +72,13 @@ at https:<span class="hljs-regexp">//gi</span>thub.com/gorhill/Javascript-Vorono
         
         <span class="hljs-keyword">else</span> 
           <span class="hljs-keyword">if</span> node <span class="hljs-keyword">is</span> parent.rbRight
-            @rotateLeft(parent)
+            <span class="hljs-property">@rotateLeft</span>(parent)
             node = parent
             parent = node.rbParent
             
           parent.rbRed = <span class="hljs-literal">false</span>
           grandpa.rbRed = <span class="hljs-literal">true</span>
-          @rotateRight(grandpa)
+          <span class="hljs-property">@rotateRight</span>(grandpa)
           
       <span class="hljs-keyword">else</span>
         uncle = grandpa.rbLeft
@@ -150,17 +89,17 @@ at https:<span class="hljs-regexp">//gi</span>thub.com/gorhill/Javascript-Vorono
             
         <span class="hljs-keyword">else</span>
           <span class="hljs-keyword">if</span> (node <span class="hljs-keyword">is</span> parent.rbLeft)
-            @rotateRight(parent)
+            <span class="hljs-property">@rotateRight</span>(parent)
             node = parent
             parent = node.rbParent
               
           parent.rbRed = <span class="hljs-literal">false</span>
           grandpa.rbRed = <span class="hljs-literal">true</span>
-          @rotateLeft grandpa
+          <span class="hljs-property">@rotateLeft</span> grandpa
           
           parent = node.rbParent
 
-    @root.rbRed = <span class="hljs-literal">false</span>      
+    <span class="hljs-property">@root</span>.rbRed = <span class="hljs-literal">false</span>      
 
   removeNode : <span class="hljs-function"><span class="hljs-params">(node)</span> -&gt;</span>
     <span class="hljs-keyword">if</span> node.rbNext
@@ -182,7 +121,7 @@ at https:<span class="hljs-regexp">//gi</span>thub.com/gorhill/Javascript-Vorono
     <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> !right
       next = left
     <span class="hljs-keyword">else</span>
-      next = @getFirst right
+      next = <span class="hljs-property">@getFirst</span> right
     <span class="hljs-keyword">if</span> parent
       <span class="hljs-keyword">if</span> parent.rbLeft <span class="hljs-keyword">is</span> node
         parent.rbLeft = next      
@@ -190,22 +129,8 @@ at https:<span class="hljs-regexp">//gi</span>thub.com/gorhill/Javascript-Vorono
         parent.rbRight = next
   
     <span class="hljs-keyword">else</span>
-      @root = next</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-4">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
-              </div>
-              <p>enforce red-black rules</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    isRed
+      <span class="hljs-property">@root</span> = next
+  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>enforce red-black rules</p></div></div><div class="code"><div class="wrapper">    isRed
 
     <span class="hljs-keyword">if</span> left <span class="hljs-keyword">and</span> right
       isRed = next.rbRed
@@ -240,7 +165,7 @@ at https:<span class="hljs-regexp">//gi</span>thub.com/gorhill/Javascript-Vorono
 
     sibling
     <span class="hljs-keyword">loop</span>
-      <span class="hljs-keyword">if</span> node <span class="hljs-keyword">is</span> @root
+      <span class="hljs-keyword">if</span> node <span class="hljs-keyword">is</span> <span class="hljs-property">@root</span>
         <span class="hljs-keyword">break</span>
         
       <span class="hljs-keyword">if</span> node <span class="hljs-keyword">is</span> parent.rbLeft
@@ -249,20 +174,20 @@ at https:<span class="hljs-regexp">//gi</span>thub.com/gorhill/Javascript-Vorono
         <span class="hljs-keyword">if</span> sibling.rbRed
           sibling.rbRed = <span class="hljs-literal">false</span>
           parent.rbRed = <span class="hljs-literal">true</span>
-          @rotateLeft(parent)
+          <span class="hljs-property">@rotateLeft</span>(parent)
           sibling = parent.rbRight
         
         <span class="hljs-keyword">if</span> (sibling.rbLeft <span class="hljs-keyword">and</span> sibling.rbLeft.rbRed) <span class="hljs-keyword">or</span> (sibling.rbRight <span class="hljs-keyword">and</span> sibling.rbRight.rbRed)
           <span class="hljs-keyword">if</span> !sibling.rbRight <span class="hljs-keyword">or</span> !sibling.rbRight.rbRed
             sibling.rbLeft.rbRed = <span class="hljs-literal">false</span>
             sibling.rbRed = <span class="hljs-literal">true</span>
-            @rotateRight sibling
+            <span class="hljs-property">@rotateRight</span> sibling
             sibling = parent.rbRight
             
           sibling.rbRed = parent.rbRed
           parent.rbRed = sibling.rbRight.rbRed = <span class="hljs-literal">false</span>
-          @rotateLeft parent
-          node = @root
+          <span class="hljs-property">@rotateLeft</span> parent
+          node = <span class="hljs-property">@root</span>
           <span class="hljs-keyword">break</span>
           
       <span class="hljs-keyword">else</span>
@@ -270,20 +195,20 @@ at https:<span class="hljs-regexp">//gi</span>thub.com/gorhill/Javascript-Vorono
         <span class="hljs-keyword">if</span> (sibling.rbRed)
           sibling.rbRed = <span class="hljs-literal">false</span>
           parent.rbRed = <span class="hljs-literal">true</span>
-          @rotateRight parent
+          <span class="hljs-property">@rotateRight</span> parent
           sibling = parent.rbLeft
           
         <span class="hljs-keyword">if</span> (sibling.rbLeft <span class="hljs-keyword">and</span> sibling.rbLeft.rbRed) <span class="hljs-keyword">or</span> (sibling.rbRight <span class="hljs-keyword">and</span> sibling.rbRight.rbRed)
           <span class="hljs-keyword">if</span> !sibling.rbLeft <span class="hljs-keyword">or</span> !sibling.rbLeft.rbRed
             sibling.rbRight.rbRed = <span class="hljs-literal">false</span>
             sibling.rbRed = <span class="hljs-literal">true</span>
-            @rotateLeft sibling
+            <span class="hljs-property">@rotateLeft</span> sibling
             sibling = parent.rbLeft
         
           sibling.rbRed = parent.rbRed
           parent.rbRed = sibling.rbLeft.rbRed = <span class="hljs-literal">false</span>
-          @rotateRight parent
-          node = @root
+          <span class="hljs-property">@rotateRight</span> parent
+          node = <span class="hljs-property">@root</span>
           <span class="hljs-keyword">break</span>
               
       sibling.rbRed = <span class="hljs-literal">true</span>
@@ -306,7 +231,7 @@ at https:<span class="hljs-regexp">//gi</span>thub.com/gorhill/Javascript-Vorono
       <span class="hljs-keyword">else</span>
         parent.rbRight = q
     <span class="hljs-keyword">else</span>
-      @root = q
+      <span class="hljs-property">@root</span> = q
     
     q.rbParent = parent
     p.rbParent = q
@@ -328,7 +253,7 @@ at https:<span class="hljs-regexp">//gi</span>thub.com/gorhill/Javascript-Vorono
         parent.rbRight = q
     
     <span class="hljs-keyword">else</span>
-      @root = q
+      <span class="hljs-property">@root</span> = q
 
     q.rbParent = parent
     p.rbParent = q
@@ -352,12 +277,4 @@ at https:<span class="hljs-regexp">//gi</span>thub.com/gorhill/Javascript-Vorono
     node
   
 <span class="hljs-built_in">module</span>.exports =
-  RedBlackTree : RedBlackTree</pre></div></div>
-            
-        </li>
-        
-    </ul>
-  </div>
-</body>
-</html>
-
+  RedBlackTree : RedBlackTree</div></div></div></div></body></html>

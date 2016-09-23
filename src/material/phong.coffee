@@ -1,18 +1,16 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
-
-This software is released under the MIT Licence. See LICENCE.txt for details
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 ###
 
@@ -29,7 +27,7 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 
 # TODO - eventually most of this will be in a textfile that we process into javascript at build time
 
-### PhongMaterial ###
+# ## PhongMaterial
 # A basic material that contains phong elements
 # Requires an existing lighting solution, complete with ambient light
 # We choose the lights using #ifdef statements that we set thus we can set the different lights

@@ -1,25 +1,22 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
-
-# A material represents how a surface reacts to the lighting solution. 
-# Each material has a list of shaderChunks that contribute to the final shader
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 ###
 
 {Contract} = require '../gl/contract'
 
-### Material ###
+# ## Material
 # A base class for materials
 class Material
 

@@ -7,21 +7,34 @@ var uglify = require('gulp-uglify');
 var gutil = require('gulp-util');
 var mocha = require('gulp-mocha');
 var rename = require('gulp-rename');
-var docco = require('gulp-docco');
+
 var register = require('coffee-script/register');
 var del = require('del');
 var sourcemaps = require('gulp-sourcemaps');
 var budo = require('budo')
 var shader_builder = require('./shader_builder');
 
+
+
+// http://stackoverflow.com/questions/23023650/is-it-possible-to-pass-a-flag-to-gulp-to-have-it-run-tasks-in-different-ways#23038290
+
 //var watchify = require('watchify'); // TODO - Eventually use watchify
 
-// Build the docs with docco
+// Build the docs with groc as its superior to docco
+// TODO - should be a synchronous task
 gulp.task('docs', function(){
-  var options = { template :"./docs/api/api.jst", css: "./docs/api/docco.css" };
-  gulp.src("./src/**/*.coffee")
-  .pipe(docco(options))
-  .pipe(gulp.dest('./docs/api'))
+ 
+	var fs = require('fs');
+	var path = require('path'); 
+  
+	var sources = ["./src/**/*.coffee"];
+  var options = [ "-o",  "./docs/api" ];
+	
+	options = options.concat(sources); 
+ 
+  var spawn = require('child_process').spawn;
+  var groc = spawn('groc', options, {stdio: 'inherit'});
+ 
 });
 
 

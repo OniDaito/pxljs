@@ -1,67 +1,15 @@
-<!DOCTYPE html>
-
-<html>
-<head>
-  <title>node_paths.coffee</title>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
-  <link rel="stylesheet" media="all" href="../docco.css" />
-</head>
-<body>
-  <div id="container">
-    <div id="background"></div>
-    
-    <ul class="sections">
-        
-          <li id="title">
-              <div class="annotation">
-                  <h1>node_paths.coffee</h1>
-              </div>
-          </li>
-        
-        
-        
-        <li id="section-1">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-1">&#182;</a>
-              </div>
-              <h2 id="about">ABOUT</h2>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>             .__   
+<!DOCTYPE html><html lang="en"><head><title>core/node_paths</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="core/node_paths"><meta name="groc-project-path" content="src/core/node_paths.coffee"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/core/node_paths.coffee</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><pre><code>             .__   
 _________  __|  |  
 \____ \  \/  /  |  
 |  |_&gt; &gt;    &lt;|  |__
-|   __<span class="hljs-regexp">/__/</span>\_ \____/
+|   __/__/\_ \____/
 |__|        \/     js
 
-                    PXL.js
-                    Benjamin Blundell - ben@pxljs.com
-                    http:<span class="hljs-regexp">//</span>pxljs.com
+                PXL.js
+                Benjamin Blundell - ben@pxljs.com
+                http://pxljs.com
 
-This software <span class="hljs-keyword">is</span> released under the MIT Licence. See LICENCE.txt <span class="hljs-keyword">for</span> details
-
-
-A set <span class="hljs-keyword">of</span> draw paths <span class="hljs-keyword">for</span> the node - effectively render paths</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-2">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-2">&#182;</a>
-              </div>
-              <p>##</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-{Vec3, Vec4, Matrix3, Matrix4} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../math/math'</span>
+This software is released under the MIT Licence. See LICENCE.txt for details</code></pre></div></div><div class="code"><div class="wrapper">{Vec3, Vec4, Matrix3, Matrix4} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../math/math'</span>
 {matchWithShader} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../gl/webgl'</span>
 {Camera, PerspCamera} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../camera/camera'</span>
 {Material} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../material/material'</span>
@@ -73,257 +21,67 @@ A set <span class="hljs-keyword">of</span> draw paths <span class="hljs-keyword"
 {PXLWarningOnce} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../util/log'</span>
 uber = <span class="hljs-built_in">require</span> <span class="hljs-string">'../gl/uber_shader_paths'</span>
 
-util = <span class="hljs-built_in">require</span> <span class="hljs-string">'../util/util'</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-3">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
-              </div>
-              <h2 id="front">Front</h2>
+util = <span class="hljs-built_in">require</span> <span class="hljs-string">'../util/util'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="front">Front</h2>
 <p>A stripped down version of the Node Class that just copies the data, and amalgamates
 node data as we traverse the tree
-There is a problem here - as we change node, what happen to front? Better design needed here?</p>
+There is a problem here - as we change node, what happen to front? Better design needed here?</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Front</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>@constructor</strong> </p></div></div><div class="code"><div class="wrapper">  constructor : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Front</span></span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-4">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
-              </div>
-              <p><strong>@constructor</strong> </p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  constructor : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
-
-    @globalMatrix =  <span class="hljs-keyword">new</span> Matrix4()
-    @pointLights = []
-    @spotLights  =  []
-    @_normalMatrix =  <span class="hljs-keyword">new</span> Matrix4()
-    @_mvpMatrix = <span class="hljs-keyword">new</span> Matrix4()
-    @_uber0 = <span class="hljs-number">0</span>
-    @camera = <span class="hljs-literal">undefined</span>
-    @shader = <span class="hljs-literal">undefined</span>
-    @skeleton = <span class="hljs-literal">undefined</span>
+    <span class="hljs-property">@globalMatrix</span> =  <span class="hljs-keyword">new</span> Matrix4()
+    <span class="hljs-property">@pointLights</span> = []
+    <span class="hljs-property">@spotLights</span>  =  []
+    <span class="hljs-property">@_normalMatrix</span> =  <span class="hljs-keyword">new</span> Matrix4()
+    <span class="hljs-property">@_mvpMatrix</span> = <span class="hljs-keyword">new</span> Matrix4()
+    <span class="hljs-property">@_uber0</span> = <span class="hljs-number">0</span>
+    <span class="hljs-property">@camera</span> = <span class="hljs-literal">undefined</span>
+    <span class="hljs-property">@shader</span> = <span class="hljs-literal">undefined</span>
+    <span class="hljs-property">@skeleton</span> = <span class="hljs-literal">undefined</span>
 
   clone : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
-    c = <span class="hljs-keyword">new</span> Front()</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-5">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
-              </div>
-              <p>These are copied which suggests a potential
-for modifying down the tree</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    c.globalMatrix.copy @globalMatrix
-    c.pointLights = @pointLights.slice(<span class="hljs-number">0</span>)
-    c.spotLights = @spotLights.slice(<span class="hljs-number">0</span>)
-    c._normalMatrix.copy @_normalMatrix
-    c._mvpMatrix.copy @_mvpMatrix
-    c._uber0 = @_uber0</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-6">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
-              </div>
-              <p>These are references which reflects the 
+    c = <span class="hljs-keyword">new</span> Front()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>These are copied which suggests a potential
+for modifying down the tree</p></div></div><div class="code"><div class="wrapper">    c.globalMatrix.copy <span class="hljs-property">@globalMatrix</span>
+    c.pointLights = <span class="hljs-property">@pointLights</span>.slice(<span class="hljs-number">0</span>)
+    c.spotLights = <span class="hljs-property">@spotLights</span>.slice(<span class="hljs-number">0</span>)
+    c._normalMatrix.copy <span class="hljs-property">@_normalMatrix</span>
+    c._mvpMatrix.copy <span class="hljs-property">@_mvpMatrix</span>
+    c._uber0 = <span class="hljs-property">@_uber0</span>
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>These are references which reflects the 
 behaviour that cameras, shaders etc, override
 when when progress down the tree - should
-be made more explicit perhaps</p>
+be made more explicit perhaps</p></div></div><div class="code"><div class="wrapper">    c.camera = <span class="hljs-property">@camera</span>
+    c.shader = <span class="hljs-property">@shader</span>
+    c.material = <span class="hljs-property">@material</span>
+    c.contract = <span class="hljs-property">@contract</span>
+    c.skeleton = <span class="hljs-property">@skeleton</span>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    c.camera = @camera
-    c.shader = @shader
-    c.material = @material
-    c.contract = @contract
-    c.skeleton = @skeleton
-
-    c</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
-              </div>
-              <p>TODO - this should really live somewhere else</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>_shadow_map_material = <span class="hljs-keyword">new</span> DepthMaterial()
-_shadow_map_camera = <span class="hljs-keyword">new</span> PerspCamera <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>), <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>), <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>), <span class="hljs-number">3.0</span>, <span class="hljs-number">0.1</span>, <span class="hljs-number">100.0</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-8">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
-              </div>
-              <p><strong>shadomap_create_draw</strong>
+    c</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO - this should really live somewhere else</p></div></div><div class="code"><div class="wrapper">_shadow_map_material = <span class="hljs-keyword">new</span> DepthMaterial()
+_shadow_map_camera = <span class="hljs-keyword">new</span> PerspCamera <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>), <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>), <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>), <span class="hljs-number">3.0</span>, <span class="hljs-number">0.1</span>, <span class="hljs-number">100.0</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>shadomap_create_draw</strong>
 -<strong>node</strong> - a Node
 -<strong>front</strong> - An Object based on Node
--<strong>light</strong> - a SpotLight (eventually all lights)</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-9">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
-              </div>
-              <p>Called when we find a spotLight that casts shadows
-A Camera should have been set on the front before this function is called - dont like that :S</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-function">
+-<strong>light</strong> - a SpotLight (eventually all lights)</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Called when we find a spotLight that casts shadows
+A Camera should have been set on the front before this function is called - dont like that :S</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function">
 <span class="hljs-title">shadowmap_create_draw</span> = <span class="hljs-params">(node,front,light)</span> -&gt;</span> 
 
-  fc = front.clone()</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-10">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
-              </div>
-              <p>Create the camera we shall use
+  fc = front.clone()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create the camera we shall use
 Shouldnt really do this all the time if not needed :S
 Rather than recreate this matrix in the shader, we pass it in as a uniform for now
 This will be awkward as we are setting values on node objects and looking at modelviews
-and all the rest. Very cross cutting this &gt;&lt;</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  _shadow_map_camera.pos.copy light.pos
+and all the rest. Very cross cutting this &gt;&lt;</p></div></div><div class="code"><div class="wrapper">  _shadow_map_camera.pos.copy light.pos
   _shadow_map_camera.look.copy Vec3.add(light.pos, light.dir)
   _shadow_map_camera.up.copy Vec3.perp(light.dir)
-  _shadow_map_camera.angle = light.angle</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-11">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
-              </div>
-              <p>_shadow_map_camera.near = 0.1</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  _shadow_map_camera.far = light.attenuation[<span class="hljs-number">0</span>]
-  fc.camera = _shadow_map_camera</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-12">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
-              </div>
-              <p>Create the inverse matrix making sure to multiply by the current modelview matrix</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  icm = front.globalMatrix.clone()
+  _shadow_map_camera.angle = light.angle
+  <span class="hljs-comment">#_shadow_map_camera.near = 0.1</span>
+  _shadow_map_camera.far = light.attenuation[<span class="hljs-number">0</span>]
+  fc.camera = _shadow_map_camera</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create the inverse matrix making sure to multiply by the current modelview matrix</p></div></div><div class="code"><div class="wrapper">  icm = front.globalMatrix.clone()
   icm.mult _shadow_map_camera.m
-  icm.mult _shadow_map_camera.p</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-13">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
-              </div>
-              <p>icm.invert()</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  light.invMatrix.copy icm</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-14">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
-              </div>
-              <p>Begin the creation of a shadowmap for this light source</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  light.shadowmap_fbo.bind()
+  icm.mult _shadow_map_camera.p
+  <span class="hljs-comment">#icm.invert()</span>
+  light.invMatrix.copy icm</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Begin the creation of a shadowmap for this light source</p></div></div><div class="code"><div class="wrapper">  light.shadowmap_fbo.bind()
   fc.camera.update()
   GL.clearColor(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>)
   GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT)
   _shadowmap_create_draw node, fc, light
-  light.shadowmap_fbo.unbind()</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-15">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
-              </div>
-              <p><strong>_shadowmap_create_draw </strong>
-Internal recursive function</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-function">
+  light.shadowmap_fbo.unbind()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>_shadowmap_create_draw </strong>
+Internal recursive function</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function">
 <span class="hljs-title">_shadowmap_create_draw</span> = <span class="hljs-params">(node, front, light)</span> -&gt;</span>
   
   front.globalMatrix = Matrix4.mult front.globalMatrix, node.matrix
@@ -333,68 +91,11 @@ Internal recursive function</p>
   front.material = _shadow_map_material
   front.material._preDraw()
 
-  front._uber0 = front.material._uber0</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-16">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
-              </div>
-              <p>front._uber0 = uber.uber_depth_set true, front._uber0</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  front._uber0 = uber.uber_vertex_camera <span class="hljs-literal">true</span>, front._uber0</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-17">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
-              </div>
-              <p>Sort of assuming we have a nice ubershader already
-Not needed I believe as the shader should exist on front before it’s cloned and passed in
-if node.shader?
- front.shader = node.shader</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-18">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
-              </div>
-              <p>Create a precomputed model/view/perspecti:ve matrix for speed</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  nm = Matrix4.mult(front.camera.m, nm)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-19">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
-              </div>
-              <p>Possibly only needs to be done when we actually need to draw or bind</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  front._mvpMatrix.copy nm
+  front._uber0 = front.material._uber0
+  <span class="hljs-comment">#front._uber0 = uber.uber_depth_set true, front._uber0</span>
+  front._uber0 = uber.uber_vertex_camera <span class="hljs-literal">true</span>, front._uber0</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Sort of assuming we have a nice ubershader already
+Not needed I believe as the shader should exist on front before it&#39;s cloned and passed in</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-comment">#if node.shader?</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p> front.shader = node.shader</p></div></div><div class="code"><div class="wrapper">  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create a precomputed model/view/perspecti:ve matrix for speed</p></div></div><div class="code"><div class="wrapper">  nm = Matrix4.mult(front.camera.m, nm)
+ </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Possibly only needs to be done when we actually need to draw or bind</p></div></div><div class="code"><div class="wrapper">  front._mvpMatrix.copy nm
   front._mvpMatrix.mult front.camera.m
   front._mvpMatrix.mult front.camera.p
 
@@ -403,243 +104,51 @@ if node.shader?
   <span class="hljs-keyword">if</span> node.geometry?
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node.geometry.brewed
       node.geometry.brew()
-    front.geometry = node.geometry</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-20">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
-              </div>
-              <p>This contract probably needs a lot of trimming given the material we 
-are using and nothing else</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  <span class="hljs-keyword">for</span> key <span class="hljs-keyword">of</span> node.contract.roles
+    front.geometry = node.geometry</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>This contract probably needs a lot of trimming given the material we 
+are using and nothing else</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">for</span> key <span class="hljs-keyword">of</span> node.contract.roles
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> front[key]?
       front[key] = node[key]
 
-  front.contract = node.contract</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-21">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
-              </div>
-              <p>Pass down skeletons</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> node.skeleton?
+  front.contract = node.contract</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Pass down skeletons</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> node.skeleton?
     node.skeleton._preDraw()
     front.skeleton = node.skeleton
-    front._uber0 = uber.uber_vertex_skinning <span class="hljs-literal">true</span>, front._uber0</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-22">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
-              </div>
-              <p>Only draw if we have the context (think tests and the like)</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> PXL.Context.gl?</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-23">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
-              </div>
-              <p>Actual Draw
-Put a line in here to check we also have a shader on the context</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> front.geometry? <span class="hljs-keyword">and</span> front.shader?
+    front._uber0 = uber.uber_vertex_skinning <span class="hljs-literal">true</span>, front._uber0</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Only draw if we have the context (think tests and the like)</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> PXL.Context.gl?</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Actual Draw
+Put a line in here to check we also have a shader on the context</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> front.geometry? <span class="hljs-keyword">and</span> front.shader?
 
       PXL.Context.shader = front.shader
       PXL.Context.shader.bind()
 
-      matchWithShader(front)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-24">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
-              </div>
-              <p>Quick check for unbound uniforms</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> PXL.Context.debug
+      matchWithShader(front)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Quick check for unbound uniforms</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> PXL.Context.debug
         <span class="hljs-keyword">for</span> u <span class="hljs-keyword">in</span> PXL.Context.shader.contract.findUnmatched()
           PXLWarningOnce(<span class="hljs-string">"Unmatched uniform/attribute in shader: "</span> + u.name)
                
       front.geometry.drawGL()
 
 
-  <span class="hljs-keyword">for</span> child <span class="hljs-keyword">in</span> node.children</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-25">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
-              </div>
-              <p>We need to clone front so we dont change it permanently
+  <span class="hljs-keyword">for</span> child <span class="hljs-keyword">in</span> node.children</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>We need to clone front so we dont change it permanently
 Seems the fastest way is to just copy - json stringify then parse appears not to work
 TODO - We keep making a copy of this because of the recursive call but surely theres a
-better way?</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    front_child = front.clone()
+better way?</p></div></div><div class="code"><div class="wrapper">    front_child = front.clone()
     _shadowmap_create_draw(child, front_child, light)
     
-  node</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-26">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
-              </div>
-              <p>Recursive call to draw. Binds any textures on this node. Sets the lights
+  node</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Recursive call to draw. Binds any textures on this node. Sets the lights
 from the parent nodes, all the way down the tree. This node is then 
-attempted to be brewed (if it has geometry) and if brewed, it is webgl drawn</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-27">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
-              </div>
-              <p>TODO - Eventually redo this function so we create a set of flat objects with 
-a cache and all the required info.</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-28">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
-              </div>
-              <p><strong>main_draw</strong>
+attempted to be brewed (if it has geometry) and if brewed, it is webgl drawn</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO - Eventually redo this function so we create a set of flat objects with 
+a cache and all the required info.</p></div></div><div class="code"><div class="wrapper">  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>main_draw</strong>
 -<strong>node</strong> - a Node
--<strong>front</strong> - An Object based on Node</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-title">main_draw</span> = <span class="hljs-params">(node, front)</span> -&gt;</span>
+-<strong>front</strong> - An Object based on Node</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function"><span class="hljs-title">main_draw</span> = <span class="hljs-params">(node, front)</span> -&gt;</span>
     
-  front.globalMatrix = Matrix4.mult front.globalMatrix, node.matrix</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-29">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
-              </div>
-              <p>Setup the normal matrix</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  nm = node.globalMatrix.clone()</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-30">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
-              </div>
-              <p>Cameras are also passed down the tree but overidden if local
-Also call update here</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> node.camera?
+  front.globalMatrix = Matrix4.mult front.globalMatrix, node.matrix</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Setup the normal matrix</p></div></div><div class="code"><div class="wrapper">  nm = node.globalMatrix.clone()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Cameras are also passed down the tree but overidden if local
+Also call update here</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> node.camera?
     front.camera = node.camera
     front.camera.update()
     front._uber0 = uber.uber_vertex_camera <span class="hljs-literal">true</span>, front._uber0
   
   <span class="hljs-keyword">if</span> front.camera?
-    nm = Matrix4.mult(front.camera.m, nm)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-31">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
-              </div>
-              <p>Create a precomputed model/view/perspective matrix for speed</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    front._mvpMatrix.copy nm
+    nm = Matrix4.mult(front.camera.m, nm)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create a precomputed model/view/perspective matrix for speed</p></div></div><div class="code"><div class="wrapper">    front._mvpMatrix.copy nm
     front._mvpMatrix.mult front.camera.m
-    front._mvpMatrix.mult front.camera.p</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-32">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
-              </div>
-              <p>TODO - Normal Matrix calculation better GPU or CPU side? 
-TODO - We need to be careful about scaling here as well :S</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  front._normalMatrix = nm.getMatrix3().invert().transpose()
+    front._mvpMatrix.mult front.camera.p</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO - Normal Matrix calculation better GPU or CPU side? 
+TODO - We need to be careful about scaling here as well :S</p></div></div><div class="code"><div class="wrapper">  front._normalMatrix = nm.getMatrix3().invert().transpose()
 
   <span class="hljs-keyword">for</span> light <span class="hljs-keyword">in</span> node.pointLights
     front.pointLights.push light
@@ -647,297 +156,62 @@ TODO - We need to be careful about scaling here as well :S</p>
   <span class="hljs-keyword">if</span> node.pointLights.length &gt; <span class="hljs-number">0</span>
     front._uber0 = uber.uber_lighting_point <span class="hljs-literal">true</span>, front._uber0
   
-  <span class="hljs-keyword">for</span> light <span class="hljs-keyword">in</span> node.spotLights</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-33">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
-              </div>
-              <p>shadowmap jumping off point</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> light.shadowmap
+  <span class="hljs-keyword">for</span> light <span class="hljs-keyword">in</span> node.spotLights</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>shadowmap jumping off point</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> light.shadowmap
       <span class="hljs-keyword">if</span> PXL.Context.gl?
         shadowmap_create_draw node, front, light
         front.spotLights.push light
      
       front._uber0 = uber.uber_shadowmap <span class="hljs-literal">true</span>, front.uber0 <span class="hljs-comment"># we want shadowmapping</span>
 
-    front._uber0 = uber.uber_lighting_spot <span class="hljs-literal">true</span>, front._uber0</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-34">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
-              </div>
-              <p>Overwrite the ambient if there is one closer
-TODO - combine perhaps?</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> node.ambientLight?
-    front.ambientLight = node.ambientLight</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-35">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
-              </div>
-              <p>Shaders are passed down - if this node has no shader, one further up the
+    front._uber0 = uber.uber_lighting_spot <span class="hljs-literal">true</span>, front._uber0
+  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Overwrite the ambient if there is one closer
+TODO - combine perhaps?</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> node.ambientLight?
+    front.ambientLight = node.ambientLight</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Shaders are passed down - if this node has no shader, one further up the
 chain must already be bound but we bind late
-TODO We should check if a user one is bound :S</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> node.shader?
-    front.shader = node.shader</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-36">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
-              </div>
-              <p>TODO - Do we need all these if checks? Just copy null?</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  <span class="hljs-keyword">if</span> node.geometry?
+TODO We should check if a user one is bound :S</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> node.shader?
+    front.shader = node.shader
+  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO - Do we need all these if checks? Just copy null?</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> node.geometry?
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node.geometry.brewed
       node.geometry.brew()
-    front.geometry = node.geometry</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-37">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-37">&#182;</a>
-              </div>
-              <p>Pass down skeletons</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> node.skeleton?
+    front.geometry = node.geometry</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Pass down skeletons</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> node.skeleton?
     node.skeleton._preDraw()
     front.skeleton = node.skeleton
-    front._uber0 = uber.uber_vertex_skinning <span class="hljs-literal">true</span>, front._uber0</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-38">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
-              </div>
-              <p>Material - Call predraw
-Materials are inherited but certain ones cannot be overridden</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> node.material?
+    front._uber0 = uber.uber_vertex_skinning <span class="hljs-literal">true</span>, front._uber0</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Material - Call predraw
+Materials are inherited but certain ones cannot be overridden</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> node.material?
     <span class="hljs-keyword">if</span> (front.material? <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> front.material._override) <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> front.material?
         node.material._preDraw()
         front.material = node.material
-        front._uber0 = uber.uber_clear_material(front._uber0) | node.material._uber0</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-39">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
-              </div>
-              <p>Copy any user contract items (added to the contract) that have not already been added
+        front._uber0 = uber.uber_clear_material(front._uber0) | node.material._uber0
+        </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Copy any user contract items (added to the contract) that have not already been added
 as users can add data to be passed in the contract (like uColour).
-Do this by reference for now.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">for</span> key <span class="hljs-keyword">of</span> node.contract.roles
+Do this by reference for now.</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">for</span> key <span class="hljs-keyword">of</span> node.contract.roles
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> front[key]?
-      front[key] = node[key]</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-40">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-40">&#182;</a>
-              </div>
-              <p>Reference the current node contract.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  front.contract = node.contract</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-41">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-41">&#182;</a>
-              </div>
-              <p>Actually make the binds with WebGL here.
-Perhaps better move back to WebGL file?</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-42">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-42">&#182;</a>
-              </div>
-              <p>Only draw if we have the context (think tests and the like)</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> PXL.Context.gl?</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-43">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-43">&#182;</a>
-              </div>
-              <p>Actual Draw
-Put a line in here to check we also have a shader on the context</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> front.geometry?
+      front[key] = node[key]</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Reference the current node contract.</p></div></div><div class="code"><div class="wrapper">  front.contract = node.contract</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Actually make the binds with WebGL here.
+Perhaps better move back to WebGL file?</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Only draw if we have the context (think tests and the like)</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> PXL.Context.gl?</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Actual Draw
+Put a line in here to check we also have a shader on the context</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> front.geometry?
     
       <span class="hljs-keyword">if</span> front.shader?      
         PXL.Context.shader = front.shader
     
-      <span class="hljs-keyword">if</span> PXL.Context.shader?</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-44">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-44">&#182;</a>
-              </div>
-              <p>Set the lights here</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        PointLight._preDraw front.pointLights
+      <span class="hljs-keyword">if</span> PXL.Context.shader?</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set the lights here</p></div></div><div class="code"><div class="wrapper">        PointLight._preDraw front.pointLights
         SpotLight._preDraw front.spotLights
 
         PXL.Context.shader.bind()
 
-        matchWithShader(front)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-45">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-45">&#182;</a>
-              </div>
-              <p>Quick check for unbound uniforms</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> PXL.Context.debug
+        matchWithShader(front)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Quick check for unbound uniforms</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">if</span> PXL.Context.debug
           <span class="hljs-keyword">for</span> u <span class="hljs-keyword">in</span> PXL.Context.shader.contract.findUnmatched()
             PXLWarningOnce(<span class="hljs-string">"Unmatched uniform/attribute in shader: "</span> + u.name)
                
-        front.geometry.drawGL()</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-46">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-46">&#182;</a>
-              </div>
-              <p>unbind - TODO - do we really need to unbind?</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        PXL.Context.shader.unbind()
+        front.geometry.drawGL()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>unbind - TODO - do we really need to unbind?</p></div></div><div class="code"><div class="wrapper">        PXL.Context.shader.unbind()
         PXL.Context.shader = <span class="hljs-literal">undefined</span>
 
-  <span class="hljs-keyword">for</span> child <span class="hljs-keyword">in</span> node.children</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-47">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-47">&#182;</a>
-              </div>
-              <p>We need to clone front so we dont change it permanently
+  <span class="hljs-keyword">for</span> child <span class="hljs-keyword">in</span> node.children</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>We need to clone front so we dont change it permanently
 Seems the fastest way is to just copy - json stringify then parse appears not to work
 TODO - We keep making a copy of this because of the recursive call but surely theres a
-better way?</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    front_child = front.clone()
-    main_draw(child, front_child)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-48">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-48">&#182;</a>
-              </div>
-              <p>TODO Pre and post draws should probably be in a class or similar? I.e check all members of the 
-front and see if they have a pre and post</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span> front.material?
+better way?</p></div></div><div class="code"><div class="wrapper">    front_child = front.clone()
+    main_draw(child, front_child)
+  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO Pre and post draws should probably be in a class or similar? I.e check all members of the 
+front and see if they have a pre and post</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> front.material?
     front.material._postDraw()
 
   <span class="hljs-keyword">if</span> front.skeleton?
@@ -948,12 +222,4 @@ front and see if they have a pre and post</p>
 
 <span class="hljs-built_in">module</span>.exports =
   Front : Front
-  main_draw : main_draw</pre></div></div>
-            
-        </li>
-        
-    </ul>
-  </div>
-</body>
-</html>
-
+  main_draw : main_draw</div></div></div></div></body></html>

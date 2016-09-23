@@ -1,16 +1,16 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 ###
 
@@ -23,7 +23,7 @@ GESTURE_FLICK_TIME = 280
 GESTURE_FLICK_LIMIT = 0.001
 FINGER_UP_LIMIT = 60
 
-### TouchEmitter ###
+# ## TouchEmitter
 # Attaches to the App / Context and listens for DOM Touch events then emmits
 
 TouchEmitter = {}
@@ -37,7 +37,7 @@ TouchEmitter["pauseTouchEmitter"] = (force) ->
   @touchDone.pause(force)
 
 
-### makeTouchEmitter ###
+# ## makeTouchEmitter
 # function to make an object listen on the dom for touch events
 # This function extends another object with many utility functions that deal with 
 # touches starting, ending and such. It determines what the gesture may or may not be
@@ -216,7 +216,7 @@ makeTouchEmitter = (obj) ->
     obj.canvas.ontouchend = obj["_touchEnd"]
     obj.canvas.ontouchcancel = obj["_touchEnd"]
 
-### removeTouchEmitter ###
+# ## removeTouchEmitter
 # - obj - a DOM object - Required
 removeTouchEmitter = (obj) ->
   obj.canvas.removeEventListener "touchend", obj["_onTouchEnd"]

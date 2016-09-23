@@ -1,17 +1,18 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
+###
 
 - A class to import OBJ files
 
@@ -40,7 +41,7 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 {PhongMaterial} = require '../material/phong'
 {BasicColourMaterial} = require '../material/basic'
 
-### OBJModel ###
+# ## OBJModel
 # Load a basic OBJ Model as a set of nodes with materials
 
 class OBJModel extends Node

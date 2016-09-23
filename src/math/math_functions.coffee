@@ -1,24 +1,23 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
-# TODO - this file is sort of a catch all. Could do to be improved
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 ###
 
 { Vec2, Vec3, Vec4, Matrix4, PI, EPSILON } = require '../math/math'
 { Vertex } = require '../geometry/primitive'
 
-### rayPlaneIntersect ###
+# ## rayPlaneIntersect
 # Given 4 Vec3, work out the distance along line_dir where the intersection occurred
 # - **plane_point** - a Vec3 - Required
 # - **plane_normal** - a Vec3 - Required
@@ -32,7 +31,7 @@ rayPlaneIntersect = (plane_point, plane_normal, line_point, line_dir) ->
   num/den
 
 
-### screenNodeHitTest ###
+# ## screenNodeHitTest
 # Given a node, camera & a point on the screen, traverse the hierarchy and find if anything was hit
 # Results are returned in ascending order of depth. Back facing and front facing triangles are included.
 # - **sx** - a Number - Integer - Range 0 to Context.Width - Required
@@ -133,7 +132,7 @@ screenNodeHitTest = (sx,sy,camera,node) ->
 
   results
 
-### precomputeTangent ###
+# ## precomputeTangent
 # Given a face, compute the tangent at each vertex - A face being, in this case, 3 Vec3
 # with 3 vertex normals and 3 texture co-ordinates of Vec2
 # http://stackoverflow.com/questions/5255806/how-to-calculate-tangent-and-binormal
@@ -180,7 +179,7 @@ _precomputeTangent = (a, b, c, n, ta, tb, tc) ->
   # just the tangent for now, not the binormal or matrix
   tangent
 
-### rayCircleIntersection ###
+# ## rayCircleIntersection
 # http:#stackoverflow.com/questions/1073336/circle-line-collision-detection
 # Given a ray and circle, solve the quadratic and find intersection points
 
@@ -291,14 +290,14 @@ edge2Bisector = (edge0, edge1) ->
  
   
 
-### LERP ###
+# ## LERP
 # A simple function to map between two values returning a value between 0 and 1
 
 lerp = (bottom,top,value) ->
   (value - bottom) / (top - bottom)
 
   
-### closestPointLine ###
+# ## closestPointLine
 # Returns the closest point to a line.
 # a - start of the line
 # b - end of the line
@@ -338,7 +337,7 @@ closestPointLine = (a,b,p) ->
 
 
     
-### medialAxis2D ###
+# ## medialAxis2D
 # Given a planar polygon (a list of 2D vertices), compute the the medial axis of the polygon
 # as a set of pairs of 2D points (edges)
 

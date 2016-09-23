@@ -1,19 +1,16 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
-
-A 'Depth' material. Not a material in the convential sense but render
-everything below this using a depth shader instead of any other
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 ###
 
@@ -21,7 +18,7 @@ everything below this using a depth shader instead of any other
 {uber_depth_set, uber_depth_read} = require '../gl/uber_shader_paths'
 
 
-### DepthMaterial ###
+# ## DepthMaterial
 # Render all the nodes below this one using the depth shader 
 
 class DepthMaterial extends Material
@@ -34,7 +31,7 @@ class DepthMaterial extends Material
     @_uber_defines = ['FRAGMENT_DEPTH_OUT', 'ADVANCED_CAMERA']
 
 
-### ViewDepthMaterial ###
+# ## ViewDepthMaterial
 # Used more for debugging and unpacking the packed depth in the ubershader for viewing on screen
 
 class ViewDepthMaterial extends Material

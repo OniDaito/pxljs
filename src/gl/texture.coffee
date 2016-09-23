@@ -1,17 +1,16 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
-
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 TODO - Probably pass in data and have a convinence method that calls a request?
   - handling no RGBA textures like JPGS?
@@ -33,7 +32,7 @@ Texture Objects - uses the request object and callbacks. Is bound to a context
 
 {Contract} = require '../gl/contract'
 
-### TextureBase ###
+# ## TextureBase
 # Our base texture. It creates a blank set of data bound to a texture
 
 class TextureBase
@@ -217,7 +216,7 @@ class TextureBase
     @
 
 
-### Texture ###
+# ## Texture
 # Create a texture from either a provided image or creates a blank one if texdata not provided
 # Params are as the TextureBase class
 
@@ -291,7 +290,7 @@ class Texture extends TextureBase
     gl.bindTexture gl.TEXTURE_2D, null
     @
 
-### textureFromURL ###
+# ## textureFromURL
 # Load a texture from a URL - convinience function that wraps a request
 # Takes a url string, a callback, a failure callback. and optional params
 # Saves the current context so we can fire different context requests
@@ -336,7 +335,7 @@ textureFromURL = (url, callback, onerror, params) ->
 
     r.get success, failure
        
-### TextureCube ###
+# ## TextureCube
 # Loads 6 textures for the texture cube.
 
 
@@ -396,7 +395,7 @@ class TextureCube extends TextureBase
       @unit = 0
     @
 
-### textureCubeFromURL ###
+# ## textureCubeFromURL
 # - **paths** - an Array of String - Length 6 - Required
 # - **callback** - a Function with the following params
 # -- **texture** - a TextureCube

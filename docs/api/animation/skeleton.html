@@ -1,507 +1,149 @@
-<!DOCTYPE html>
-
-<html>
-<head>
-  <title>skeleton.coffee</title>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
-  <link rel="stylesheet" media="all" href="../docco.css" />
-</head>
-<body>
-  <div id="container">
-    <div id="background"></div>
-    
-    <ul class="sections">
-        
-          <li id="title">
-              <div class="annotation">
-                  <h1>skeleton.coffee</h1>
-              </div>
-          </li>
-        
-        
-        
-        <li id="section-1">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-1">&#182;</a>
-              </div>
-              <h2 id="about">ABOUT</h2>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>             .__   
+<!DOCTYPE html><html lang="en"><head><title>animation/skeleton</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="animation/skeleton"><meta name="groc-project-path" content="src/animation/skeleton.coffee"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/animation/skeleton.coffee</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><pre><code>             .__   
 _________  __|  |  
 \____ \  \/  /  |  
 |  |_&gt; &gt;    &lt;|  |__
-|   __<span class="hljs-regexp">/__/</span>\_ \____/
+|   __/__/\_ \____/
 |__|        \/     js
 
-                    PXL.js
-                    Benjamin Blundell - ben@pxljs.com
-                    http:<span class="hljs-regexp">//</span>pxljs.com
+                PXL.js
+                Benjamin Blundell - ben@pxljs.com
+                http://pxljs.com
 
-This software <span class="hljs-keyword">is</span> released under the MIT Licence. See LICENCE.txt <span class="hljs-keyword">for</span> details
-
-A selection <span class="hljs-keyword">of</span> classes that represent a skeleton <span class="hljs-keyword">for</span> Animation
-Based largely from the MD5 Parser <span class="hljs-keyword">and</span> the bone structure contained therein
-
-- TODO enforce bone ordering with idx numbers</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-2">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-2">&#182;</a>
-              </div>
-              <p>##</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-{Matrix4,Vec2,Vec3,Vec4,Quaternion} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../math/math'</span>
+This software is released under the MIT Licence. See LICENCE.txt for details</code></pre></div></div><div class="code"><div class="wrapper">{Matrix4,Vec2,Vec3,Vec4,Quaternion} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../math/math'</span>
 {PXLWarning, PXLError, PXLLog} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../util/log'</span>
 {Contract} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../gl/contract'</span>
 {CacheVar} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../util/cache_var'</span>
-{Texture} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../gl/texture'</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-3">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
-              </div>
-              <h2 id="bone">Bone</h2>
+{Texture} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../gl/texture'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="bone">Bone</h2>
 <p>Represents an actual bone. It contains rotations and positions, both absolute and relative
-and the pose positions</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Bone</span> </span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-4">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
-              </div>
-              <p><strong>@constructor</strong></p>
+and the pose positions</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Bone</span> </span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>@constructor</strong></p>
 <ul>
 <li><strong>name</strong> - a String - Required</li>
 <li><strong>idx</strong> - a Number - Required - Unique per Skeleton</li>
 <li><strong>parent</strong> - a Bone - may be null</li>
 <li><strong>rotation_pose</strong> - a Quaternion - Required</li>
 <li><strong>position_pose</strong> - a Vec3 - Required</li>
-</ul>
+</ul></div></div><div class="code"><div class="wrapper">  constructor : <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@name</span>, <span class="hljs-property">@idx</span>, <span class="hljs-property">@parent</span>, <span class="hljs-property">@rotation_pose</span>, <span class="hljs-property">@position_pose</span>)</span> -&gt;</span>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  constructor : <span class="hljs-function"><span class="hljs-params">(@name, @idx, @parent, @rotation_pose, @position_pose)</span> -&gt;</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@parent</span>?
+      <span class="hljs-property">@rotation_relative</span> = Quaternion.invert(<span class="hljs-property">@parent</span>.rotation_pose).mult(<span class="hljs-property">@rotation_pose</span>)
+      <span class="hljs-property">@rotation_relative</span>.normalize()
 
-    <span class="hljs-keyword">if</span> @parent?
-      @rotation_relative = Quaternion.invert(@parent.rotation_pose).mult(@rotation_pose)
-      @rotation_relative.normalize()
-
-      tp = @position_pose.clone().sub(@parent.position_pose)
-      @parent.rotation_pose.transVec3(tp)
-      @position_relative = tp
+      tp = <span class="hljs-property">@position_pose</span>.clone().sub(<span class="hljs-property">@parent</span>.position_pose)
+      <span class="hljs-property">@parent</span>.rotation_pose.transVec3(tp)
+      <span class="hljs-property">@position_relative</span> = tp
 
     <span class="hljs-keyword">else</span>
-      @rotation_relative = @rotation_pose.clone()
-      @position_relative = @position_pose.clone()
+      <span class="hljs-property">@rotation_relative</span> = <span class="hljs-property">@rotation_pose</span>.clone()
+      <span class="hljs-property">@position_relative</span> = <span class="hljs-property">@position_pose</span>.clone()
 
   
-    @inverse_bind_pose = <span class="hljs-keyword">new</span> Matrix4()
-    @inverse_bind_pose.translate(@position_pose).mult(@rotation_pose.getMatrix4())
-    @inverse_bind_pose.invert()
+    <span class="hljs-property">@inverse_bind_pose</span> = <span class="hljs-keyword">new</span> Matrix4()
+    <span class="hljs-property">@inverse_bind_pose</span>.translate(<span class="hljs-property">@position_pose</span>).mult(<span class="hljs-property">@rotation_pose</span>.getMatrix4())
+    <span class="hljs-property">@inverse_bind_pose</span>.invert()
 
-    @rotation_global = @rotation_pose.clone()
-    @position_global = @position_pose.clone()
+    <span class="hljs-property">@rotation_global</span> = <span class="hljs-property">@rotation_pose</span>.clone()
+    <span class="hljs-property">@position_global</span> = <span class="hljs-property">@position_pose</span>.clone()
 
-    @skinned_matrix = <span class="hljs-keyword">new</span> Matrix4() <span class="hljs-comment"># Final matrix sent to the shader</span>
+    <span class="hljs-property">@skinned_matrix</span> = <span class="hljs-keyword">new</span> Matrix4() <span class="hljs-comment"># Final matrix sent to the shader</span>
 
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-5">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
-              </div>
-              <p><strong>rotate </strong> - Given a quaternion, rotate the bone by that amount</p>
+    @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>rotate </strong> - Given a quaternion, rotate the bone by that amount</p>
 <ul>
 <li><strong>quat</strong> - A Quaternion
 TODO - Could put update func in here instead of in draw calls?</li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  rotate : <span class="hljs-function"><span class="hljs-params">(quat)</span> -&gt;</span>
-    @rotation_relative.multiply(quat).normalize()
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-6">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
-              </div>
-              <h2 id="skinindex">SkinIndex</h2>
-<p>Nothng more than a way of recording the pair index and count. Used internally by Skin</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SkinIndex</span></span>
-  constructor : <span class="hljs-function"><span class="hljs-params">(@index, @count)</span> -&gt;</span>
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
-              </div>
-              <h2 id="skinweight">SkinWeight</h2>
-<p>Another pair of values to record how biased the bone is. Used internally by Skin</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SkinWeight</span></span>
-  constructor : <span class="hljs-function"><span class="hljs-params">(@bone, @bias)</span> -&gt;</span>
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-8">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
-              </div>
-              <h2 id="skin">Skin</h2>
+</ul></div></div><div class="code"><div class="wrapper">  rotate : <span class="hljs-function"><span class="hljs-params">(quat)</span> -&gt;</span>
+    <span class="hljs-property">@rotation_relative</span>.multiply(quat).normalize()
+    @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="skinindex">SkinIndex</h2>
+<p>Nothng more than a way of recording the pair index and count. Used internally by Skin</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SkinIndex</span></span>
+  constructor : <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@index</span>, <span class="hljs-property">@count</span>)</span> -&gt;</span>
+    @    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="skinweight">SkinWeight</h2>
+<p>Another pair of values to record how biased the bone is. Used internally by Skin</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SkinWeight</span></span>
+  constructor : <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@bone</span>, <span class="hljs-property">@bias</span>)</span> -&gt;</span>
+    @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="skin">Skin</h2>
 <p>A collection of weights and indices, based on the md5 model idea. It connects vertices
 to bones basically. It is temporarily used, with the actual skin weights being held
-on vertices</p>
+on vertices</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Skin</span></span>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Skin</span></span>
-
-  constructor : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-9">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
-              </div>
-              <p>Index is a list of tuples called index and count</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    @index = []</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-10">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
-              </div>
-              <p>Weights is a list of tuples - a link to a bone and a bias</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    @weights = []
+  constructor : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Index is a list of tuples called index and count</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-property">@index</span> = []</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Weights is a list of tuples - a link to a bone and a bias</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-property">@weights</span> = []
 
   addIndex : <span class="hljs-function"><span class="hljs-params">(skin_index)</span> -&gt;</span>
-    @index.push skin_index
+    <span class="hljs-property">@index</span>.push skin_index
     @
 
   addWeight : <span class="hljs-function"><span class="hljs-params">(skin_weight)</span> -&gt;</span>
-    @weights.push skin_weight
+    <span class="hljs-property">@weights</span>.push skin_weight
     @
 
   numWeights : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
-    @weights.length
+    <span class="hljs-property">@weights</span>.length
 
   numIndices : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
-    @index.length</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-11">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
-              </div>
-              <h2 id="skeleton">Skeleton</h2>
-<p>A skeleton is a relationship of bones</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span>  <span class="hljs-title">Skeleton</span> </span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-12">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
-              </div>
-              <p>Globals, set by the profile in the App class</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  @PXL_MAX_BONES_TEX = <span class="hljs-number">256</span> <span class="hljs-comment"># How many bones in a skeleton if we use textures</span>
-  @PXL_MAX_BONES_UNI = <span class="hljs-number">64</span> <span class="hljs-comment"># How many bones in a skeleton if we use uniforms</span>
-  @PXL_MAX_WEIGHTS = <span class="hljs-number">4</span> <span class="hljs-comment"># How many bones can affect a vertex (set here in stone for now)</span>
-  @PXL_MAX_BONES = <span class="hljs-number">128</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-13">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
-              </div>
-              <p><strong>@constructor</strong></p>
+    <span class="hljs-property">@index</span>.length</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="skeleton">Skeleton</h2>
+<p>A skeleton is a relationship of bones</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span>  <span class="hljs-title">Skeleton</span> </span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Globals, set by the profile in the App class</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-property">@PXL_MAX_BONES_TEX</span> = <span class="hljs-number">256</span> <span class="hljs-comment"># How many bones in a skeleton if we use textures</span>
+  <span class="hljs-property">@PXL_MAX_BONES_UNI</span> = <span class="hljs-number">64</span> <span class="hljs-comment"># How many bones in a skeleton if we use uniforms</span>
+  <span class="hljs-property">@PXL_MAX_WEIGHTS</span> = <span class="hljs-number">4</span> <span class="hljs-comment"># How many bones can affect a vertex (set here in stone for now)</span>
+  <span class="hljs-property">@PXL_MAX_BONES</span> = <span class="hljs-number">128</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>@constructor</strong></p>
 <ul>
 <li><strong>root</strong> - a Bone - Required</li>
-</ul>
+</ul></div></div><div class="code"><div class="wrapper">  constructor : <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@root</span>)</span> -&gt;</span>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  constructor : <span class="hljs-function"><span class="hljs-params">(@root)</span> -&gt;</span>
-
-    @bones = []
-    @matrix = <span class="hljs-keyword">new</span> Matrix4()</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-14">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
-              </div>
-              <p>TODO - static sort </p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-15">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
-              </div>
-              <p>A basic contract so we can recurse into the textures and similar</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    @contract = <span class="hljs-keyword">new</span> Contract()
-    @contract.roles.uBoneTexDim = <span class="hljs-string">"_square_dim"</span>
-    @_square_dim = Math.sqrt(Skeleton.PXL_MAX_BONES_TEX * <span class="hljs-number">4</span>) <span class="hljs-comment"># should be 32 :P</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-16">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
-              </div>
-              <p>Check for the required extension</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> PXL?
-      <span class="hljs-keyword">if</span> <span class="hljs-string">'OES_texture_float'</span> <span class="hljs-keyword">in</span> PXL.Context.profile.extensions</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-17">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
-              </div>
-              <p>This variable is a texture that saves all the bone positions for the shader
-TODO Double check the dimensions are correct :)</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        @_tdata = <span class="hljs-keyword">new</span> Float32Array Skeleton.PXL_MAX_BONES_TEX * <span class="hljs-number">16</span>
+    <span class="hljs-property">@bones</span> = []
+    <span class="hljs-property">@matrix</span> = <span class="hljs-keyword">new</span> Matrix4()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO - static sort </p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>A basic contract so we can recurse into the textures and similar</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-property">@contract</span> = <span class="hljs-keyword">new</span> Contract()
+    <span class="hljs-property">@contract</span>.roles.uBoneTexDim = <span class="hljs-string">"_square_dim"</span>
+    <span class="hljs-property">@_square_dim</span> = Math.sqrt(Skeleton.PXL_MAX_BONES_TEX * <span class="hljs-number">4</span>) <span class="hljs-comment"># should be 32 :P</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Check for the required extension</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> PXL?
+      <span class="hljs-keyword">if</span> <span class="hljs-string">'OES_texture_float'</span> <span class="hljs-keyword">in</span> PXL.Context.profile.extensions</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>This variable is a texture that saves all the bone positions for the shader
+TODO Double check the dimensions are correct :)</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-property">@_tdata</span> = <span class="hljs-keyword">new</span> Float32Array Skeleton.PXL_MAX_BONES_TEX * <span class="hljs-number">16</span>
 
         <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.Skeleton.PXL_MAX_BONES_TEX*<span class="hljs-number">4</span>]
-          @_tdata[i] = <span class="hljs-number">1</span>
+          <span class="hljs-property">@_tdata</span>[i] = <span class="hljs-number">1</span>
 
-        @_palette = <span class="hljs-keyword">new</span> Texture @_tdata, {width: @_square_dim, height: @_square_dim, channels: GL.RGBA, datatype: GL.FLOAT, min: GL.NEAREST, max : GL.NEAREST } 
-        @_palette.contract.roles.uBonePalette = <span class="hljs-string">"unit"</span>
+        <span class="hljs-property">@_palette</span> = <span class="hljs-keyword">new</span> Texture <span class="hljs-property">@_tdata</span>, {<span class="hljs-attribute">width</span>: <span class="hljs-property">@_square_dim</span>, <span class="hljs-attribute">height</span>: <span class="hljs-property">@_square_dim</span>, <span class="hljs-attribute">channels</span>: GL.RGBA, <span class="hljs-attribute">datatype</span>: GL.FLOAT, <span class="hljs-attribute">min</span>: GL.NEAREST, max : GL.NEAREST } 
+        <span class="hljs-property">@_palette</span>.contract.roles.uBonePalette = <span class="hljs-string">"unit"</span>
 
       <span class="hljs-keyword">else</span> 
-        PXLError <span class="hljs-string">"Uniform bone palette support not implemented."</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-18">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
-              </div>
-              <p>Called in the node loop before drawing
-TODO - Should the user not call the update function? Maybe inkeeping with our ‘style’?</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  _preDraw : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
-    @update()
-    @_palette.bind()
+        PXLError <span class="hljs-string">"Uniform bone palette support not implemented."</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Called in the node loop before drawing
+TODO - Should the user not call the update function? Maybe inkeeping with our &#39;style&#39;?</p></div></div><div class="code"><div class="wrapper">  _preDraw : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    <span class="hljs-property">@update</span>()
+    <span class="hljs-property">@_palette</span>.bind()
     @
 
   _postDraw : <span class="hljs-function"><span class="hljs-params">()</span>-&gt;</span>
-    @_palette.unbind()
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-19">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
-              </div>
-              <p><strong>addBone</strong> - add a Bone to this skeleton</p>
+    <span class="hljs-property">@_palette</span>.unbind()
+    @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>addBone</strong> - add a Bone to this skeleton</p>
 <ul>
 <li><strong>bone</strong> - a Bone</li>
 <li>returns this</li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  addBone : <span class="hljs-function"><span class="hljs-params">(bone)</span> -&gt;</span>
-    <span class="hljs-keyword">if</span> @bones.length + <span class="hljs-number">1</span> &lt; Skeleton.PXL_MAX_BONES
-      @bones.push bone
+</ul></div></div><div class="code"><div class="wrapper">  addBone : <span class="hljs-function"><span class="hljs-params">(bone)</span> -&gt;</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@bones</span>.length + <span class="hljs-number">1</span> &lt; Skeleton.PXL_MAX_BONES
+      <span class="hljs-property">@bones</span>.push bone
     <span class="hljs-keyword">else</span>
       PXLWarning <span class="hljs-string">"Maximum bone limit reached."</span>
     @
 
-  _addToNode: <span class="hljs-function"><span class="hljs-params">(node)</span> -&gt;</span>
+  <span class="hljs-attribute">_addToNode</span>: <span class="hljs-function"><span class="hljs-params">(node)</span> -&gt;</span>
     node.skeleton = @
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-20">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
-              </div>
-              <p><strong>getBone</strong> - Look through the bones and return the one matching the id</p>
+    @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>getBone</strong> - Look through the bones and return the one matching the id</p>
 <ul>
 <li><strong>bone_idx</strong> - a Number - Required</li>
 <li>returns either a Bone or null</li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  getBone : <span class="hljs-function"><span class="hljs-params">(bone_idx)</span> -&gt;</span>
-    <span class="hljs-keyword">for</span> bone <span class="hljs-keyword">in</span> @bones
+</ul></div></div><div class="code"><div class="wrapper">  getBone : <span class="hljs-function"><span class="hljs-params">(bone_idx)</span> -&gt;</span>
+    <span class="hljs-keyword">for</span> bone <span class="hljs-keyword">in</span> <span class="hljs-property">@bones</span>
       <span class="hljs-keyword">if</span> bone.idx == bone_idx
         <span class="hljs-keyword">return</span> bone
-    <span class="hljs-literal">null</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-21">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
-              </div>
-              <p><strong>getBoneByName</strong> - Get the bone by looking for the one with the matching name</p>
+    <span class="hljs-literal">null</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>getBoneByName</strong> - Get the bone by looking for the one with the matching name</p>
 <ul>
 <li><strong>bone_name</strong> - a String - Required</li>
 <li>returns either a Bone or null</li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  getBoneByName : <span class="hljs-function"><span class="hljs-params">(bone_name)</span> -&gt;</span>
-    <span class="hljs-keyword">for</span> bone <span class="hljs-keyword">in</span> @bones
+</ul></div></div><div class="code"><div class="wrapper">  getBoneByName : <span class="hljs-function"><span class="hljs-params">(bone_name)</span> -&gt;</span>
+    <span class="hljs-keyword">for</span> bone <span class="hljs-keyword">in</span> <span class="hljs-property">@bones</span>
       <span class="hljs-keyword">if</span> bone.name == bone_name
         <span class="hljs-keyword">return</span> bone
-    <span class="hljs-literal">null</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-22">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
-              </div>
-              <p><strong>update</strong> - Called to update all the matrices of the various bones
+    <span class="hljs-literal">null</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>update</strong> - Called to update all the matrices of the various bones
 We make the assumption that all bones are in order with parents first</p>
 <ul>
 <li>returns this</li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  update : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+</ul></div></div><div class="code"><div class="wrapper">  update : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
     
-    <span class="hljs-keyword">for</span> b <span class="hljs-keyword">in</span> @bones
+    <span class="hljs-keyword">for</span> b <span class="hljs-keyword">in</span> <span class="hljs-property">@bones</span>
       <span class="hljs-keyword">if</span> b.parent <span class="hljs-keyword">is</span> <span class="hljs-literal">undefined</span>
         b.rotation_global = b.rotation_relative
         b.position_global = b.position_relative
@@ -515,44 +157,15 @@ We make the assumption that all bones are in order with parents first</p>
 
     idx = <span class="hljs-number">0</span>
 
-    <span class="hljs-keyword">for</span> b <span class="hljs-keyword">in</span> @bones
+    <span class="hljs-keyword">for</span> b <span class="hljs-keyword">in</span> <span class="hljs-property">@bones</span>
       b.skinned_matrix.identity().translate(b.position_global).mult(b.rotation_global.getMatrix4())
-      b.skinned_matrix.mult(b.inverse_bind_pose)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-23">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
-              </div>
-              <p>Update the palette/texture going to the shader</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> PXL?
+      b.skinned_matrix.mult(b.inverse_bind_pose)
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Update the palette/texture going to the shader</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> PXL?
         <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span><span class="hljs-number">.15</span>]
-          @_tdata[idx * <span class="hljs-number">16</span> + i] = b.skinned_matrix.a[i]
+          <span class="hljs-property">@_tdata</span>[idx * <span class="hljs-number">16</span> + i] = b.skinned_matrix.a[i]
 
-        idx += <span class="hljs-number">1</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-24">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
-              </div>
-              <p>Update the texture ready for the shader</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> PXL?
-      @_palette.update @_tdata
+        idx += <span class="hljs-number">1</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Update the texture ready for the shader</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> PXL?
+      <span class="hljs-property">@_palette</span>.update <span class="hljs-property">@_tdata</span>
 
     @
 
@@ -561,12 +174,4 @@ We make the assumption that all bones are in order with parents first</p>
   Bone : Bone
   Skin : Skin
   SkinWeight : SkinWeight
-  SkinIndex : SkinIndex</pre></div></div>
-            
-        </li>
-        
-    </ul>
-  </div>
-</body>
-</html>
-
+  SkinIndex : SkinIndex</div></div></div></div></body></html>

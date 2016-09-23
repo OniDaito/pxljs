@@ -1,125 +1,29 @@
-<!DOCTYPE html>
-
-<html>
-<head>
-  <title>promise.coffee</title>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
-  <link rel="stylesheet" media="all" href="../docco.css" />
-</head>
-<body>
-  <div id="container">
-    <div id="background"></div>
-    
-    <ul class="sections">
-        
-          <li id="title">
-              <div class="annotation">
-                  <h1>promise.coffee</h1>
-              </div>
-          </li>
-        
-        
-        
-        <li id="section-1">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-1">&#182;</a>
-              </div>
-              <h2 id="about">ABOUT</h2>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>             .__   
+<!DOCTYPE html><html lang="en"><head><title>util/promise</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="util/promise"><meta name="groc-project-path" content="src/util/promise.coffee"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/util/promise.coffee</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><pre><code>             .__   
 _________  __|  |  
 \____ \  \/  /  |  
 |  |_&gt; &gt;    &lt;|  |__
-|   __<span class="hljs-regexp">/__/</span>\_ \____/
+|   __/__/\_ \____/
 |__|        \/     js
 
-                    PXL.js
-                    Benjamin Blundell - ben@pxljs.com
-                    http:<span class="hljs-regexp">//</span>pxljs.com
+                PXL.js
+                Benjamin Blundell - ben@pxljs.com
+                http://pxljs.com
 
-This software <span class="hljs-keyword">is</span> released under the MIT Licence. See LICENCE.txt <span class="hljs-keyword">for</span> details
-
-
-Previously we had queues <span class="hljs-keyword">and</span> load items here but it seemed better to just use promises
-somewhat more intelligently. At some point we<span class="hljs-string">'ll need to figure out filesizes and such from
-our requests which is not always possible
-
-http://blogs.msdn.com/b/ie/archive/2011/09/11/asynchronous-programming-in-javascript-with-promises.aspx
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
-
-</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-2">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-2">&#182;</a>
-              </div>
-              <p>##</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-{PXLWarning, PXLError, PXLLog} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../util/log'</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-3">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
-              </div>
-              <h2 id="promise">Promise</h2>
+This software is released under the MIT Licence. See LICENCE.txt for details</code></pre>
+<p>Previously we had queues and load items here but it seemed better to just use promises
+somewhat more intelligently. At some point we&#39;ll need to figure out filesizes and such from
+our requests which is not always possible</p>
+<p><a href="http://blogs.msdn.com/b/ie/archive/2011/09/11/asynchronous-programming-in-javascript-with-promises.aspx">http://blogs.msdn.com/b/ie/archive/2011/09/11/asynchronous-programming-in-javascript-with-promises.aspx</a>
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects</a></p></div></div><div class="code"><div class="wrapper">{PXLWarning, PXLError, PXLLog} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../util/log'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="promise">Promise</h2>
 <p>A class to handle the loading of many items asynchronously
-Promises seem popular but I thought I’d include one anyway as its good
+Promises seem popular but I thought I&#39;d include one anyway as its good
 to learn and its not in all browsers. This one presents the results in
 the order in which the promises are passed (handy). Also, the when function
 doesnt queue - things fire and return whenever.
-These promises also record the context for WebGL if it exists</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Promise</span></span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-4">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
-              </div>
-              <p><strong>@constructor</strong></p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  constructor : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
-    @context = PXL.Context <span class="hljs-keyword">if</span> PXL?
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-5">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
-              </div>
-              <p><strong>when</strong>
-when takes any number of promises. When it’s promises are resolved
+These promises also record the context for WebGL if it exists</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Promise</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>@constructor</strong></p></div></div><div class="code"><div class="wrapper">  constructor : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    <span class="hljs-property">@context</span> = PXL.Context <span class="hljs-keyword">if</span> PXL?
+    @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>when</strong>
+when takes any number of promises. When it&#39;s promises are resolved
 this promise then becomes resolved. The function returns the parameters
 in the same order the promises were passed in
 TODO = There is potential that a particularly fast function will return 
@@ -128,37 +32,18 @@ return its promise</p>
 <ul>
 <li><strong>arguments</strong> - a variable number of arguments of type Promise</li>
 <li>returns this</li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  <span class="hljs-keyword">when</span> : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">when</span> : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
     
-    @results = [<span class="hljs-number">0.</span>.arguments.length<span class="hljs-number">-1</span>] <span class="hljs-comment"># Place holders</span>
-    @count = arguments.length
+    <span class="hljs-property">@results</span> = [<span class="hljs-number">0.</span>.arguments.length-<span class="hljs-number">1</span>] <span class="hljs-comment"># Place holders</span>
+    <span class="hljs-property">@count</span> = arguments.length
 <span class="hljs-function">
     <span class="hljs-title">failure</span> = <span class="hljs-params">()</span> =&gt;</span>
-      @reject arguments
+      <span class="hljs-property">@reject</span> arguments
 
-    <span class="hljs-keyword">for</span> fidx <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.arguments.length<span class="hljs-number">-1</span>]
+    <span class="hljs-keyword">for</span> fidx <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.arguments.length-<span class="hljs-number">1</span>]
 
-      promise = arguments[fidx]</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-6">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
-              </div>
-              <p>Create a c</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-function">
+      promise = arguments[fidx]
+      </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create a c</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function">
       <span class="hljs-title">success_closure</span> = <span class="hljs-params">(top_promise, position)</span> -&gt;</span>
         _top_promise = top_promise
         _position = position
@@ -167,98 +52,32 @@ return its promise</p>
           PXL.Context.switchContext _top_promise.context <span class="hljs-keyword">if</span> _top_promise.context?
           _top_promise.results[_position] = value
           _top_promise.count -= <span class="hljs-number">1</span>
-          <span class="hljs-keyword">if</span> _top_promise.count == <span class="hljs-number">0</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
-              </div>
-              <p>Skip going through resolve on this one :P</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>            _top_promise.onResolved.apply(_top_promise,_top_promise.results) 
+          <span class="hljs-keyword">if</span> _top_promise.count == <span class="hljs-number">0</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Skip going through resolve on this one :P</p></div></div><div class="code"><div class="wrapper">            _top_promise.onResolved.apply(_top_promise,_top_promise.results) 
 
         success
 
       promise.<span class="hljs-keyword">then</span>(success_closure(@,fidx), failure)
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-8">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
-              </div>
-              <p><strong>then</strong></p>
+    @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>then</strong></p>
 <ul>
 <li><strong>onResolved</strong> - a Function </li>
 <li><strong>onRejected</strong> - a Function</li>
 <li>returns this</li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">then</span> : <span class="hljs-function"><span class="hljs-params">(@onResolved, @onRejected)</span> -&gt;</span>
-    PXL.Context.switchContext @context <span class="hljs-keyword">if</span> @context?
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-9">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
-              </div>
-              <p><strong>resolve</strong></p>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">then</span> : <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@onResolved</span>, <span class="hljs-property">@onRejected</span>)</span> -&gt;</span>
+    PXL.Context.switchContext <span class="hljs-property">@context</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@context</span>?
+    @
+ </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>resolve</strong></p>
 <ul>
 <li><strong>value</strong> - any data to be passed to onResolved </li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  resolve : <span class="hljs-function"><span class="hljs-params">(value)</span> -&gt;</span>
-    PXL.Context.switchContext @context <span class="hljs-keyword">if</span> @context?
-    @onResolved value <span class="hljs-keyword">if</span> @onResolved?</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-10">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
-              </div>
-              <p><strong>reject</strong></p>
+</ul></div></div><div class="code"><div class="wrapper">  resolve : <span class="hljs-function"><span class="hljs-params">(value)</span> -&gt;</span>
+    PXL.Context.switchContext <span class="hljs-property">@context</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@context</span>?
+    <span class="hljs-property">@onResolved</span> value <span class="hljs-keyword">if</span> <span class="hljs-property">@onResolved</span>?
+  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>reject</strong></p>
 <ul>
 <li><strong>value</strong> - any data to be passed to onRejected</li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  reject : <span class="hljs-function"><span class="hljs-params">(value)</span> -&gt;</span>
-    PXL.Context.switchContext @context <span class="hljs-keyword">if</span> @context?
-    @onRejected value <span class="hljs-keyword">if</span> @onRejected?
+</ul></div></div><div class="code"><div class="wrapper">  reject : <span class="hljs-function"><span class="hljs-params">(value)</span> -&gt;</span>
+    PXL.Context.switchContext <span class="hljs-property">@context</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@context</span>?
+    <span class="hljs-property">@onRejected</span> value <span class="hljs-keyword">if</span> <span class="hljs-property">@onRejected</span>?
 
 
 <span class="hljs-built_in">module</span>.exports =
-  Promise : Promise</pre></div></div>
-            
-        </li>
-        
-    </ul>
-  </div>
-</body>
-</html>
-
+  Promise : Promise</div></div></div></div></body></html>

@@ -1,16 +1,16 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 ###
 
@@ -19,7 +19,7 @@ util = require "../util/util"
 {Signal} = require "../util/signal"
 
 
-### MouseEmitter ###
+# ## MouseEmitter
 # Attaches to the App / Context and listens for DOM Mouse events then emmits
 
 MouseEmitter = {}
@@ -118,7 +118,7 @@ MouseEmitter["_setButtons"] = (event) ->
     event
 
 
-### makeMouseEmitter ###
+# ## makeMouseEmitter
 # function to make an object listen on the dom for mouse events
 makeMouseEmitter = (obj) ->
   if obj.canvas?
@@ -225,7 +225,7 @@ makeMouseEmitter = (obj) ->
           false
         obj.canvas.onmousewheel = obj["_onMouseWheel"]
 
-### removeMouseEmitter ###
+# ## removeMouseEmitter
 removeMouseEmitter = (obj) ->
   if obj.canvas?
     #util.extend obj, MouseEmitter

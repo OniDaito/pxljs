@@ -1,21 +1,20 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 ###
 
-
-### RGBA ###
+# ## RGBA
 # The default colour - four floats 0 -> 1 for representing colour
 
 class RGBA
@@ -79,7 +78,7 @@ class RGBA
     new RGBA @r,@g,@b,@a
 
 
-### RGB ###
+# ## RGB
 # Class for colours with no alpha
 
 class RGB

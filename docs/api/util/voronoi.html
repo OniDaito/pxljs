@@ -1,228 +1,79 @@
-<!DOCTYPE html>
-
-<html>
-<head>
-  <title>voronoi.coffee</title>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
-  <link rel="stylesheet" media="all" href="../docco.css" />
-</head>
-<body>
-  <div id="container">
-    <div id="background"></div>
-    
-    <ul class="sections">
-        
-          <li id="title">
-              <div class="annotation">
-                  <h1>voronoi.coffee</h1>
-              </div>
-          </li>
-        
-        
-        
-        <li id="section-1">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-1">&#182;</a>
-              </div>
-              <h2 id="about">ABOUT</h2>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>             .__   
+<!DOCTYPE html><html lang="en"><head><title>util/voronoi</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="util/voronoi"><meta name="groc-project-path" content="src/util/voronoi.coffee"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/util/voronoi.coffee</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><pre><code>             .__   
 _________  __|  |  
 \____ \  \/  /  |  
 |  |_&gt; &gt;    &lt;|  |__
-|   __<span class="hljs-regexp">/__/</span>\_ \____/
+|   __/__/\_ \____/
 |__|        \/     js
 
-                    PXL.js
-                    Benjamin Blundell - ben@pxljs.com
-                    http:<span class="hljs-regexp">//</span>pxljs.com
+                PXL.js
+                Benjamin Blundell - ben@pxljs.com
+                http://pxljs.com
 
-This software <span class="hljs-keyword">is</span> released under the MIT Licence. See LICENCE.txt <span class="hljs-keyword">for</span> details
-
-An implementation <span class="hljs-keyword">of</span> Fortune<span class="hljs-string">'s Sweep algorithm based on the C++ Implementation from 
+This software is released under the MIT Licence. See LICENCE.txt for details</code></pre>
+<p>An implementation of Fortune&#39;s Sweep algorithm based on the C++ Implementation from 
 http:#skynet.ie/~sos/mapviewer/voronoi.php and the Javascript Implementation found
-at https:#github.com/gorhill/Javascript-Voronoi/blob/master/rhill-voronoi-core.js
-
-Adpated from the excellent work by Raymond Hill 
-
-Copyright (C) 2010-2013 Raymond Hill https://github.com/gorhill/Javascript-Voronoi
-
-Licensed under The MIT License http://en.wikipedia.org/wiki/MIT_License
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this
-software and associated documentation files (the "Software"), to deal in the Software 
+at https:#github.com/gorhill/Javascript-Voronoi/blob/master/rhill-voronoi-core.js</p>
+<p>Adpated from the excellent work by Raymond Hill </p>
+<p>Copyright (C) 2010-2013 Raymond Hill <a href="https://github.com/gorhill/Javascript-Voronoi">https://github.com/gorhill/Javascript-Voronoi</a></p>
+<p>Licensed under The MIT License <a href="http://en.wikipedia.org/wiki/MIT_License">http://en.wikipedia.org/wiki/MIT_License</a></p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this
+software and associated documentation files (the &quot;Software&quot;), to deal in the Software 
 without restriction, including without limitation the rights to use, copy, modify, merge, 
 publish, distribute, sublicense, and/or sell copies of the Software, and to permit 
-persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or
-substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
+persons to whom the Software is furnished to do so, subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in all copies or
+substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, 
 INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR 
 PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE 
 FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR 
 OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-DEALINGS IN THE SOFTWARE.
+DEALINGS IN THE SOFTWARE.</p></div></div><div class="code"><div class="wrapper">{Vec2,Vec3,Edge2} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../math/math'</span>
+{RedBlackTree} = <span class="hljs-built_in">require</span> <span class="hljs-string">'./red_black_tree'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO - Sort out this edge as we have this in math as well</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Edge</span></span>
+  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@lSite</span>, <span class="hljs-property">@rSite</span>)</span> -&gt;</span>
+    <span class="hljs-property">@va</span> = <span class="hljs-property">@vb</span> = <span class="hljs-literal">null</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Site Methods</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Cell</span></span>
+  constructor : <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@site</span>)</span> -&gt;</span>
+    <span class="hljs-property">@halfedges</span> = []
+    <span class="hljs-property">@closeMe</span> = <span class="hljs-literal">false</span>
 
-</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-2">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-2">&#182;</a>
-              </div>
-              <p>##</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-{Vec2,Vec3,Edge2} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../math/math'</span>
-{RedBlackTree} = <span class="hljs-built_in">require</span> <span class="hljs-string">'./red_black_tree'</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-3">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
-              </div>
-              <p>TODO - Sort out this edge as we have this in math as well</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Edge</span></span>
-  constructor: <span class="hljs-function"><span class="hljs-params">(@lSite, @rSite)</span> -&gt;</span>
-    @va = @vb = <span class="hljs-literal">null</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-4">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
-              </div>
-              <p>Site Methods</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Cell</span></span>
-  constructor : <span class="hljs-function"><span class="hljs-params">(@site)</span> -&gt;</span>
-    @halfedges = []
-    @closeMe = <span class="hljs-literal">false</span>
-
-  init : <span class="hljs-function"><span class="hljs-params">(@site)</span> -&gt;</span>
-    @halfedges = []
-    @closeMe = <span class="hljs-literal">false</span>
+  init : <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@site</span>)</span> -&gt;</span>
+    <span class="hljs-property">@halfedges</span> = []
+    <span class="hljs-property">@closeMe</span> = <span class="hljs-literal">false</span>
     @
 
 
   prepareHalfedges : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
-    halfedges = @halfedges
+    halfedges = <span class="hljs-property">@halfedges</span>
     iHalfedge = halfedges.length
-    edge</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-5">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
-              </div>
-              <p>get rid of unused halfedges
+    edge</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>get rid of unused halfedges
 rhill 2011-05-27: Keep it simple, no point here in trying
-to be fancy: dangling edges are a typically a minority.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    
+to be fancy: dangling edges are a typically a minority.</p></div></div><div class="code"><div class="wrapper">    
     <span class="hljs-keyword">while</span> iHalfedge--
       edge = halfedges[iHalfedge].edge
       <span class="hljs-keyword">if</span> (!edge.vb <span class="hljs-keyword">or</span> !edge.va)
-        halfedges.splice(iHalfedge,<span class="hljs-number">1</span>)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-6">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
-              </div>
-              <p>rhill 2011-05-26: I tried to use a binary search at insertion
+        halfedges.splice(iHalfedge,<span class="hljs-number">1</span>)
+  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>rhill 2011-05-26: I tried to use a binary search at insertion
 time to keep the array sorted on-the-fly (in Cell.addHalfedge()).
 There was no real benefits in doing so, performance on
 Firefox 3.6 was improved marginally, while performance on
-Opera 11 was penalized marginally.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    halfedges.sort( <span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span> 
+Opera 11 was penalized marginally.</p></div></div><div class="code"><div class="wrapper">    halfedges.sort( <span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span> 
         <span class="hljs-keyword">return</span> b.angle-a.angle
     )
-    <span class="hljs-keyword">return</span> halfedges.length</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
-              </div>
-              <p>Return a list of the neighbor Ids</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  getNeighborIds : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    <span class="hljs-keyword">return</span> halfedges.length</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Return a list of the neighbor Ids</p></div></div><div class="code"><div class="wrapper">  getNeighborIds : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
     neighbors = []
-    iHalfedge = @halfedges.length
+    iHalfedge = <span class="hljs-property">@halfedges</span>.length
     edge
     
     <span class="hljs-keyword">while</span> iHalfedge--
-      edge = @halfedges[iHalfedge].edge
-      <span class="hljs-keyword">if</span> edge.lSite <span class="hljs-keyword">isnt</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">and</span> edge.lSite.voronoiId != @site.voronoiId
+      edge = <span class="hljs-property">@halfedges</span>[iHalfedge].edge
+      <span class="hljs-keyword">if</span> edge.lSite <span class="hljs-keyword">isnt</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">and</span> edge.lSite.voronoiId != <span class="hljs-property">@site</span>.voronoiId
         neighbors.push(edge.lSite.voronoiId)
     
-      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> edge.rSite <span class="hljs-keyword">isnt</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">and</span> edge.rSite.voronoiId != @site.voronoiId
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> edge.rSite <span class="hljs-keyword">isnt</span> <span class="hljs-literal">null</span> <span class="hljs-keyword">and</span> edge.rSite.voronoiId != <span class="hljs-property">@site</span>.voronoiId
         neighbors.push(edge.rSite.voronoiId)
           
-    <span class="hljs-keyword">return</span> neighbors</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-8">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
-              </div>
-              <p>Compute bounding box</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  getBbox : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
-    halfedges = @halfedges
+    <span class="hljs-keyword">return</span> neighbors</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Compute bounding box</p></div></div><div class="code"><div class="wrapper">  getBbox : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
+    halfedges = <span class="hljs-property">@halfedges</span>
     iHalfedge = halfedges.length
     xmin = Infinity
     ymin = Infinity
@@ -246,75 +97,30 @@ Opera 11 was penalized marginally.</p>
         xmax = vx
       
       <span class="hljs-keyword">if</span> vy &gt; ymax
-        ymax = vy</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-9">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
-              </div>
-              <p>we dont need to take into account end point,
-since each end point matches a start point</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    
+        ymax = vy</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>we dont need to take into account end point,
+since each end point matches a start point</p></div></div><div class="code"><div class="wrapper">    
       rval =
-        x: xmin
-        y: ymin
-        width: xmax-xmin
-        height: ymax-ymin
+        <span class="hljs-attribute">x</span>: xmin
+        <span class="hljs-attribute">y</span>: ymin
+        <span class="hljs-attribute">width</span>: xmax-xmin
+        <span class="hljs-attribute">height</span>: ymax-ymin
       
-      <span class="hljs-keyword">return</span> rval</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-10">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
-              </div>
-              <p>Return whether a point is inside, on, or outside the cell:
+      <span class="hljs-keyword">return</span> rval</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Return whether a point is inside, on, or outside the cell:
   -1: point is outside the perimeter of the cell
    0: point is on the perimeter of the cell
-   1: point is inside the perimeter of the cell</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  pointIntersection : <span class="hljs-function"><span class="hljs-params">(x, y)</span> -&gt;</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-11">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
-              </div>
-              <p>Check if point in polygon. Since all polygons of a Voronoi
+   1: point is inside the perimeter of the cell</p></div></div><div class="code"><div class="wrapper">  pointIntersection : <span class="hljs-function"><span class="hljs-params">(x, y)</span> -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Check if point in polygon. Since all polygons of a Voronoi
 diagram are convex, then:
 http:#paulbourke.net/geometry/polygonmesh/
 Solution 3 (2D):
-  “If the polygon is convex then one can consider the polygon
-  “as a ‘path’ from the first vertex. A point is on the interior
-  “of this polygons if it is always on the same side of all the
-  “line segments making up the path. …
-  “(y - y0) (x1 - x0) - (x - x0) (y1 - y0)
-  “if it is less than 0 then P is to the right of the line segment,
-  “if greater than 0 it is to the left, if equal to 0 then it lies
-  “on the line segment”</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    
-    halfedges = @halfedges
+  &quot;If the polygon is convex then one can consider the polygon
+  &quot;as a &#39;path&#39; from the first vertex. A point is on the interior
+  &quot;of this polygons if it is always on the same side of all the
+  &quot;line segments making up the path. ...
+  &quot;(y - y0) (x1 - x0) - (x - x0) (y1 - y0)
+  &quot;if it is less than 0 then P is to the right of the line segment,
+  &quot;if greater than 0 it is to the left, if equal to 0 then it lies
+  &quot;on the line segment&quot;</p></div></div><div class="code"><div class="wrapper">    
+    halfedges = <span class="hljs-property">@halfedges</span>
     iHalfedge = halfedges.length
     halfedge
     p0
@@ -332,196 +138,80 @@ Solution 3 (2D):
         <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
     
       <span class="hljs-keyword">if</span> r &gt; <span class="hljs-number">0</span>
-        <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
 
-    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-12">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
-              </div>
-              <p>Could export this properly, along with edge and half-edge as useful things more generally?</p>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Could export this properly, along with edge and half-edge as useful things more generally?</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Diagram</span></span>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Diagram</span></span>
-
-  constructor: <span class="hljs-function"><span class="hljs-params">(@site)</span> -&gt;</span>
+  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@site</span>)</span> -&gt;</span>
     @
 
 
   
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Halfedge</span></span>
 
-  constructor : <span class="hljs-function"><span class="hljs-params">(@edge, lSite, rSite)</span> -&gt;</span>
-    @site = lSite</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-13">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
-              </div>
-              <p>‘angle’ is a value to be used for properly sorting the
+  constructor : <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@edge</span>, lSite, rSite)</span> -&gt;</span>
+    <span class="hljs-property">@site</span> = lSite</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>&#39;angle&#39; is a value to be used for properly sorting the
 halfsegments counterclockwise. By convention, we will
-use the angle of the line defined by the ‘site to the left’
-to the ‘site to the right’.
-However, border edges have no ‘site to the right’: thus we
+use the angle of the line defined by the &#39;site to the left&#39;
+to the &#39;site to the right&#39;.
+However, border edges have no &#39;site to the right&#39;: thus we
 use the angle of line perpendicular to the halfsegment (the
-edge should have both end points defined in such case.)</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (rSite)
-      @angle = Math.atan2(rSite.y-lSite.y, rSite.x-lSite.x)
+edge should have both end points defined in such case.)</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> (rSite)
+      <span class="hljs-property">@angle</span> = Math.atan2(rSite.y-lSite.y, rSite.x-lSite.x)
     
     <span class="hljs-keyword">else</span>
       va = edge.va
-      vb = edge.vb</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-14">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
-              </div>
-              <p>rhill 2011-05-31: used to call getStartpoint()/getEndpoint(),
-but for performance purpose, these are expanded in place here.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> edge.lSite <span class="hljs-keyword">is</span> lSite 
-        @angle = Math.atan2(vb.x-va.x, va.y-vb.y) 
+      vb = edge.vb</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>rhill 2011-05-31: used to call getStartpoint()/getEndpoint(),
+but for performance purpose, these are expanded in place here.</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> edge.lSite <span class="hljs-keyword">is</span> lSite 
+        <span class="hljs-property">@angle</span> = Math.atan2(vb.x-va.x, va.y-vb.y) 
       <span class="hljs-keyword">else</span>
         Math.atan2(va.x-vb.x, vb.y-va.y)
 
   getStartpoint : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
-    <span class="hljs-keyword">if</span> @edge.lSite <span class="hljs-keyword">is</span> @site
-      <span class="hljs-keyword">return</span> @edge.va 
-    <span class="hljs-keyword">return</span> @edge.vb
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@edge</span>.lSite <span class="hljs-keyword">is</span> <span class="hljs-property">@site</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-property">@edge</span>.va 
+    <span class="hljs-keyword">return</span> <span class="hljs-property">@edge</span>.vb
 
   getEndpoint : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
-    <span class="hljs-keyword">if</span> @edge.lSite <span class="hljs-keyword">is</span> @site
-      <span class="hljs-keyword">return</span> @edge.vb
-    <span class="hljs-keyword">return</span> @edge.va</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-15">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
-              </div>
-              <p>rhill 2011-06-07: For some reasons, performance suffers significantly
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@edge</span>.lSite <span class="hljs-keyword">is</span> <span class="hljs-property">@site</span>
+      <span class="hljs-keyword">return</span> <span class="hljs-property">@edge</span>.vb
+    <span class="hljs-keyword">return</span> <span class="hljs-property">@edge</span>.va</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>rhill 2011-06-07: For some reasons, performance suffers significantly
 when instanciating a literal object instead of an empty ctor
-I have ignored this for now</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Beachsection</span></span>
+I have ignored this for now</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Beachsection</span></span>
   constructor : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-16">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
-              </div>
-              <hr>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-17">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
-              </div>
-              <p>Circle event methods</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-18">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
-              </div>
-              <p>rhill 2011-06-07: For some reasons, performance suffers significantly
-when instanciating a literal object instead of an empty ctor</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  
+    @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr>
+<p>Circle event methods</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>rhill 2011-06-07: For some reasons, performance suffers significantly
+when instanciating a literal object instead of an empty ctor</p></div></div><div class="code"><div class="wrapper">  
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CircleEvent</span></span>
 
-  constructor : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-19">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
-              </div>
-              <p>rhill 2013-10-12: it helps to state exactly what we are at ctor time.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    @arc = <span class="hljs-literal">null</span>
-    @rbLeft = <span class="hljs-literal">null</span>
-    @rbNext = <span class="hljs-literal">null</span>
-    @rbParent = <span class="hljs-literal">null</span>
-    @rbPrevious = <span class="hljs-literal">null</span>
-    @rbRed = <span class="hljs-literal">false</span>
-    @rbRight = <span class="hljs-literal">null</span>
-    @site = <span class="hljs-literal">null</span>
-    @x = @y = @ycenter = <span class="hljs-number">0</span>
+  constructor : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>rhill 2013-10-12: it helps to state exactly what we are at ctor time.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-property">@arc</span> = <span class="hljs-literal">null</span>
+    <span class="hljs-property">@rbLeft</span> = <span class="hljs-literal">null</span>
+    <span class="hljs-property">@rbNext</span> = <span class="hljs-literal">null</span>
+    <span class="hljs-property">@rbParent</span> = <span class="hljs-literal">null</span>
+    <span class="hljs-property">@rbPrevious</span> = <span class="hljs-literal">null</span>
+    <span class="hljs-property">@rbRed</span> = <span class="hljs-literal">false</span>
+    <span class="hljs-property">@rbRight</span> = <span class="hljs-literal">null</span>
+    <span class="hljs-property">@site</span> = <span class="hljs-literal">null</span>
+    <span class="hljs-property">@x</span> = <span class="hljs-property">@y</span> = <span class="hljs-property">@ycenter</span> = <span class="hljs-number">0</span>
     
 
 
 <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Voronoi</span></span>
 
   constructor : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
-    @vertices = <span class="hljs-literal">null</span>
-    @edges = <span class="hljs-literal">null</span>
-    @cells = <span class="hljs-literal">null</span>
-    @toRecycle = <span class="hljs-literal">null</span>
-    @beachsectionJunkyard = []
-    @circleEventJunkyard = []
-    @vertexJunkyard = []
-    @edgeJunkyard = []
-    @cellJunkyard = []
+    <span class="hljs-property">@vertices</span> = <span class="hljs-literal">null</span>
+    <span class="hljs-property">@edges</span> = <span class="hljs-literal">null</span>
+    <span class="hljs-property">@cells</span> = <span class="hljs-literal">null</span>
+    <span class="hljs-property">@toRecycle</span> = <span class="hljs-literal">null</span>
+    <span class="hljs-property">@beachsectionJunkyard</span> = []
+    <span class="hljs-property">@circleEventJunkyard</span> = []
+    <span class="hljs-property">@vertexJunkyard</span> = []
+    <span class="hljs-property">@edgeJunkyard</span> = []
+    <span class="hljs-property">@cellJunkyard</span> = []
 
-  @abs : Math.abs
-  @epsilon :  <span class="hljs-number">1e-9</span>
-  @invepsilon = <span class="hljs-number">1.0</span> / @epsilon
+  <span class="hljs-property">@abs</span> : Math.abs
+  <span class="hljs-property">@epsilon</span> :  <span class="hljs-number">1e-9</span>
+  <span class="hljs-property">@invepsilon</span> = <span class="hljs-number">1.0</span> / <span class="hljs-property">@epsilon</span>
 
   equalWithEpsilon : <span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
     Math.abs(a-b) &lt; <span class="hljs-number">1e-9</span> 
@@ -543,81 +233,34 @@ when instanciating a literal object instead of an empty ctor</p>
 
 
   reset : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
-    <span class="hljs-keyword">if</span> !@beachline
-      @beachline = <span class="hljs-keyword">new</span> RedBlackTree()</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-20">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
-              </div>
-              <p>Move leftover beachsections to the beachsection junkyard.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> @beachline.root
-      beachsection = @beachline.getFirst(@beachline.root)
+    <span class="hljs-keyword">if</span> !<span class="hljs-property">@beachline</span>
+      <span class="hljs-property">@beachline</span> = <span class="hljs-keyword">new</span> RedBlackTree()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Move leftover beachsections to the beachsection junkyard.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> <span class="hljs-property">@beachline</span>.root
+      beachsection = <span class="hljs-property">@beachline</span>.getFirst(<span class="hljs-property">@beachline</span>.root)
       <span class="hljs-keyword">while</span> beachsection
-        @beachsectionJunkyard.push(beachsection) <span class="hljs-comment"># mark for reuse</span>
+        <span class="hljs-property">@beachsectionJunkyard</span>.push(beachsection) <span class="hljs-comment"># mark for reuse</span>
         beachsection = beachsection.rbNext
             
-    @beachline.root = <span class="hljs-literal">null</span>
-    <span class="hljs-keyword">if</span> !@circleEvents
-      @circleEvents = <span class="hljs-keyword">new</span> RedBlackTree()
+    <span class="hljs-property">@beachline</span>.root = <span class="hljs-literal">null</span>
+    <span class="hljs-keyword">if</span> !<span class="hljs-property">@circleEvents</span>
+      <span class="hljs-property">@circleEvents</span> = <span class="hljs-keyword">new</span> RedBlackTree()
     
-    @circleEvents.root = @firstCircleEvent = <span class="hljs-literal">null</span>
-    @vertices = []
-    @edges = []
-    @cells = []
-    @segments = [] <span class="hljs-comment"># New Oni Addition</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-21">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
-              </div>
-              <p>this create and add a vertex to the internal collection</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  createVertex : <span class="hljs-function"><span class="hljs-params">(x, y)</span> -&gt;</span>
-    v = @vertexJunkyard.pop()
+    <span class="hljs-property">@circleEvents</span>.root = <span class="hljs-property">@firstCircleEvent</span> = <span class="hljs-literal">null</span>
+    <span class="hljs-property">@vertices</span> = []
+    <span class="hljs-property">@edges</span> = []
+    <span class="hljs-property">@cells</span> = []
+    <span class="hljs-property">@segments</span> = [] <span class="hljs-comment"># New Oni Addition</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>this create and add a vertex to the internal collection</p></div></div><div class="code"><div class="wrapper">  createVertex : <span class="hljs-function"><span class="hljs-params">(x, y)</span> -&gt;</span>
+    v = <span class="hljs-property">@vertexJunkyard</span>.pop()
     <span class="hljs-keyword">if</span> !v 
       v = <span class="hljs-keyword">new</span> Vec2(x, y)
     <span class="hljs-keyword">else</span>
       v.x = x
       v.y = y
   
-    @vertices.push(v)
-    v</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-22">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
-              </div>
-              <p>this create and add an edge to internal collection, and also create
-two halfedges which are added to each site’s counterclockwise array
-of halfedges.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  createEdge : <span class="hljs-function"><span class="hljs-params">(lSite, rSite, va, vb)</span> -&gt;</span>
-    edge = @edgeJunkyard.pop()
+    <span class="hljs-property">@vertices</span>.push(v)
+    v</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>this create and add an edge to internal collection, and also create
+two halfedges which are added to each site&#39;s counterclockwise array
+of halfedges.</p></div></div><div class="code"><div class="wrapper">  createEdge : <span class="hljs-function"><span class="hljs-params">(lSite, rSite, va, vb)</span> -&gt;</span>
+    edge = <span class="hljs-property">@edgeJunkyard</span>.pop()
     <span class="hljs-keyword">if</span> !edge
       edge = <span class="hljs-keyword">new</span> Edge(lSite, rSite)
 
@@ -626,21 +269,21 @@ of halfedges.</p>
       edge.rSite = rSite
       edge.va = edge.vb = <span class="hljs-literal">null</span>
 
-    @edges.push edge
+    <span class="hljs-property">@edges</span>.push edge
     <span class="hljs-keyword">if</span> va
-      @setEdgeStartpoint(edge, lSite, rSite, va)
+      <span class="hljs-property">@setEdgeStartpoint</span>(edge, lSite, rSite, va)
     
     <span class="hljs-keyword">if</span> vb
-      @setEdgeEndpoint(edge, lSite, rSite, vb)
+      <span class="hljs-property">@setEdgeEndpoint</span>(edge, lSite, rSite, vb)
   
-    @cells[lSite.voronoiId].halfedges.push(@createHalfedge(edge, lSite, rSite))
-    @cells[rSite.voronoiId].halfedges.push(@createHalfedge(edge, rSite, lSite))
+    <span class="hljs-property">@cells</span>[lSite.voronoiId].halfedges.push(<span class="hljs-property">@createHalfedge</span>(edge, lSite, rSite))
+    <span class="hljs-property">@cells</span>[rSite.voronoiId].halfedges.push(<span class="hljs-property">@createHalfedge</span>(edge, rSite, lSite))
     
     edge
   
 
   createBorderEdge : <span class="hljs-function"><span class="hljs-params">(lSite, va, vb)</span> -&gt;</span>
-    edge = @edgeJunkyard.pop()
+    edge = <span class="hljs-property">@edgeJunkyard</span>.pop()
     
     <span class="hljs-keyword">if</span> !edge
       edge = <span class="hljs-keyword">new</span> Edge(lSite, <span class="hljs-literal">null</span>)
@@ -650,7 +293,7 @@ of halfedges.</p>
     
     edge.va = va
     edge.vb = vb
-    @edges.push(edge)
+    <span class="hljs-property">@edges</span>.push(edge)
     edge
 
 
@@ -668,51 +311,25 @@ of halfedges.</p>
     
 
   setEdgeEndpoint : <span class="hljs-function"><span class="hljs-params">(edge, lSite, rSite, vertex)</span> -&gt;</span>
-    @setEdgeStartpoint(edge, rSite, lSite, vertex)
+    <span class="hljs-property">@setEdgeStartpoint</span>(edge, rSite, lSite, vertex)
 
 
 
   createCell : <span class="hljs-function"><span class="hljs-params">(site)</span> -&gt;</span>
-    cell = @cellJunkyard.pop()
+    cell = <span class="hljs-property">@cellJunkyard</span>.pop()
     <span class="hljs-keyword">if</span> cell 
       <span class="hljs-keyword">return</span> cell.init(site)
     
     <span class="hljs-keyword">new</span> Cell(site)
 
   createBeachsection : <span class="hljs-function"><span class="hljs-params">(site)</span> -&gt;</span>
-    beachsection = @beachsectionJunkyard.pop()
+    beachsection = <span class="hljs-property">@beachsectionJunkyard</span>.pop()
     <span class="hljs-keyword">if</span> !beachsection
       beachsection = <span class="hljs-keyword">new</span> Beachsection()
   
     beachsection.site = site
-    beachsection</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-23">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
-              </div>
-              <p>calculate the left break point of a particular beach section,
-given a particular sweep line</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  leftBreakPoint : <span class="hljs-function"><span class="hljs-params">(arc, directrix)</span> -&gt;</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-24">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
-              </div>
-              <p>http:#en.wikipedia.org/wiki/Parabola
+    beachsection</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>calculate the left break point of a particular beach section,
+given a particular sweep line</p></div></div><div class="code"><div class="wrapper">  leftBreakPoint : <span class="hljs-function"><span class="hljs-params">(arc, directrix)</span> -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>http:#en.wikipedia.org/wiki/Parabola
 http:#en.wikipedia.org/wiki/Quadratic_equation
 h1 = x1,
 k1 = (y1+directrix)/2,
@@ -740,45 +357,13 @@ p2 = k2-directrix,
 a2 = 1/(4</em>p2),
 b2 = -h2/(2<em>p2),
 c2 = h2</em>h2/(4<em>p2)+k2,
-x = (-b2 + Math.sqrt(b2</em>b2 - 4<em>(a2-a1)</em>(c2-k1))) / (2*(a2-a1)) + x1</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-25">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
-              </div>
-              <p>change code below at your own risk: care has been taken to
-reduce errors due to computers’ finite arithmetic precision.
+x = (-b2 + Math.sqrt(b2</em>b2 - 4<em>(a2-a1)</em>(c2-k1))) / (2*(a2-a1)) + x1</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>change code below at your own risk: care has been taken to
+reduce errors due to computers&#39; finite arithmetic precision.
 Maybe can still be improved, will see if any more of this
-kind of errors pop up again.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    site = arc.site
+kind of errors pop up again.</p></div></div><div class="code"><div class="wrapper">    site = arc.site
     rfocx = arc.site.x
     rfocy = arc.site.y
-    pby2 = rfocy-directrix</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-26">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
-              </div>
-              <p>parabola in degenerate case where focus is on directrix</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> !pby2
+    pby2 = rfocy-directrix</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>parabola in degenerate case where focus is on directrix</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> !pby2
       <span class="hljs-keyword">return</span> rfocx
   
     lArc = arc.rbPrevious
@@ -789,91 +374,20 @@ kind of errors pop up again.</p>
     site = lArc.site
     lfocx = site.x
     lfocy = site.y
-    plby2 = lfocy-directrix</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-27">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
-              </div>
-              <p>parabola in degenerate case where focus is on directrix</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> !plby2
-      <span class="hljs-keyword">return</span> lfocx</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-28">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
-              </div>
-              <p>We have the site to the left of this site (lfoc) and the site itself (rfoc)</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-    hl = lfocx-rfocx
-    aby2 = <span class="hljs-number">1</span>/pby2<span class="hljs-number">-1</span>/plby2
-    b = hl/plby2</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-29">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
-              </div>
-              <p>This is where the two parabolas cross it seems :S We return the X co-ordinate</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> aby2
-      <span class="hljs-keyword">return</span> (-b+Math.sqrt(b*b<span class="hljs-number">-2</span>*aby2*(hl*hl/(<span class="hljs-number">-2</span>*plby2)-lfocy+plby2/<span class="hljs-number">2</span>+rfocy-pby2/<span class="hljs-number">2</span>)))/aby2+rfocx</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-30">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
-              </div>
-              <p>both parabolas have same distance to directrix, thus break point is midway</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    (rfocx+lfocx)/<span class="hljs-number">2</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-31">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
-              </div>
-              <p>calculate the right break point of a particular beach section,
-given a particular directrix</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  rightBreakPoint : <span class="hljs-function"><span class="hljs-params">(arc, directrix)</span> -&gt;</span>
+    plby2 = lfocy-directrix
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>parabola in degenerate case where focus is on directrix</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> !plby2
+      <span class="hljs-keyword">return</span> lfocx
+  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>We have the site to the left of this site (lfoc) and the site itself (rfoc)</p></div></div><div class="code"><div class="wrapper">    hl = lfocx-rfocx
+    aby2 = <span class="hljs-number">1</span>/pby2-<span class="hljs-number">1</span>/plby2
+    b = hl/plby2
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>This is where the two parabolas cross it seems :S We return the X co-ordinate</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> aby2
+      <span class="hljs-keyword">return</span> (-b+Math.sqrt(b*b-<span class="hljs-number">2</span>*aby2*(hl*hl/(-<span class="hljs-number">2</span>*plby2)-lfocy+plby2/<span class="hljs-number">2</span>+rfocy-pby2/<span class="hljs-number">2</span>)))/aby2+rfocx
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>both parabolas have same distance to directrix, thus break point is midway</p></div></div><div class="code"><div class="wrapper">    (rfocx+lfocx)/<span class="hljs-number">2</span>
+  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>calculate the right break point of a particular beach section,
+given a particular directrix</p></div></div><div class="code"><div class="wrapper">  rightBreakPoint : <span class="hljs-function"><span class="hljs-params">(arc, directrix)</span> -&gt;</span>
     rArc = arc.rbNext
     <span class="hljs-keyword">if</span> rArc
-      <span class="hljs-keyword">return</span> @leftBreakPoint(rArc, directrix)
+      <span class="hljs-keyword">return</span> <span class="hljs-property">@leftBreakPoint</span>(rArc, directrix)
   
     site = arc.site
     <span class="hljs-keyword">if</span> site.y == directrix  <span class="hljs-comment"># could be ===/ is here</span>
@@ -883,590 +397,151 @@ given a particular directrix</p>
     
 
   detachBeachsection : <span class="hljs-function"><span class="hljs-params">(beachsection)</span> -&gt;</span>
-    @detachCircleEvent(beachsection) <span class="hljs-comment"># detach potentially attached circle event</span>
-    @beachline.removeNode(beachsection) <span class="hljs-comment"># remove from RB-tree</span>
-    @beachsectionJunkyard.push(beachsection) <span class="hljs-comment"># mark for reuse</span>
+    <span class="hljs-property">@detachCircleEvent</span>(beachsection) <span class="hljs-comment"># detach potentially attached circle event</span>
+    <span class="hljs-property">@beachline</span>.removeNode(beachsection) <span class="hljs-comment"># remove from RB-tree</span>
+    <span class="hljs-property">@beachsectionJunkyard</span>.push(beachsection) <span class="hljs-comment"># mark for reuse</span>
   
 
   removeBeachsection : <span class="hljs-function"><span class="hljs-params">(beachsection)</span> -&gt;</span>
     circle = beachsection.circleEvent
     x = circle.x
     y = circle.ycenter
-    vertex = @createVertex x,y
+    vertex = <span class="hljs-property">@createVertex</span> x,y
     previous = beachsection.rbPrevious
     next = beachsection.rbNext
     disappearingTransitions = [beachsection]
-    abs_fn = Math.abs</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-32">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
-              </div>
-              <p>remove collapsed beachsection from beachline</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    @detachBeachsection(beachsection)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-33">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
-              </div>
-              <p>there could be more than one empty arc at the deletion point, this
+    abs_fn = Math.abs</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>remove collapsed beachsection from beachline</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-property">@detachBeachsection</span>(beachsection)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>there could be more than one empty arc at the deletion point, this
 happens when more than two edges are linked by the same vertex,
 so we will collect all those edges by looking up both sides of
 the deletion point.
 by the way, there is <em>always</em> a predecessor/successor to any collapsed
-beach section, it’s just impossible to have a collapsing first/last
+beach section, it&#39;s just impossible to have a collapsing first/last
 beach sections on the beachline, since they obviously are unconstrained
-on their left/right side.</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-34">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
-              </div>
-              <p>look left</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    lArc = previous
+on their left/right side.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>look left</p></div></div><div class="code"><div class="wrapper">    lArc = previous
     <span class="hljs-keyword">while</span> (lArc.circleEvent <span class="hljs-keyword">and</span> abs_fn(x-lArc.circleEvent.x) &lt; <span class="hljs-number">1e-9</span>) <span class="hljs-keyword">and</span> abs_fn(y-lArc.circleEvent.ycenter) &lt; <span class="hljs-number">1e-9</span>
       previous = lArc.rbPrevious
       disappearingTransitions.unshift(lArc)
-      @detachBeachsection(lArc) <span class="hljs-comment"># mark for reuse</span>
-      lArc = previous</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-35">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
-              </div>
-              <p>even though it is not disappearing, I will also add the beach section
+      <span class="hljs-property">@detachBeachsection</span>(lArc) <span class="hljs-comment"># mark for reuse</span>
+      lArc = previous
+  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>even though it is not disappearing, I will also add the beach section
 immediately to the left of the left-most collapsed beach section, for
 convenience, since we need to refer to it later as this beach section
-is the ‘left’ site of an edge for which a start point is set.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    disappearingTransitions.unshift(lArc)
-    @detachCircleEvent(lArc)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-36">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
-              </div>
-              <p>look right</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    rArc = next
+is the &#39;left&#39; site of an edge for which a start point is set.</p></div></div><div class="code"><div class="wrapper">    disappearingTransitions.unshift(lArc)
+    <span class="hljs-property">@detachCircleEvent</span>(lArc)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>look right</p></div></div><div class="code"><div class="wrapper">    rArc = next
     <span class="hljs-keyword">while</span> (rArc.circleEvent <span class="hljs-keyword">and</span> abs_fn(x-rArc.circleEvent.x) &lt; <span class="hljs-number">1e-9</span>) <span class="hljs-keyword">and</span> abs_fn(y-rArc.circleEvent.ycenter)&lt;<span class="hljs-number">1e-9</span>
       next = rArc.rbNext
       disappearingTransitions.push(rArc)
-      @detachBeachsection(rArc) <span class="hljs-comment"># mark for reuse</span>
-      rArc = next</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-37">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-37">&#182;</a>
-              </div>
-              <p>we also have to add the beach section immediately to the right of the
+      <span class="hljs-property">@detachBeachsection</span>(rArc) <span class="hljs-comment"># mark for reuse</span>
+      rArc = next</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>we also have to add the beach section immediately to the right of the
 right-most collapsed beach section, since there is also a disappearing
-transition representing an edge’s start point on its left.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    disappearingTransitions.push(rArc)
-    @detachCircleEvent(rArc)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-38">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
-              </div>
-              <p>walk through all the disappearing transitions between beach sections and
-set the start point of their (implied) edge.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    nArcs = disappearingTransitions.length
+transition representing an edge&#39;s start point on its left.</p></div></div><div class="code"><div class="wrapper">    disappearingTransitions.push(rArc)
+    <span class="hljs-property">@detachCircleEvent</span>(rArc)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>walk through all the disappearing transitions between beach sections and
+set the start point of their (implied) edge.</p></div></div><div class="code"><div class="wrapper">    nArcs = disappearingTransitions.length
     iArc
 
-    <span class="hljs-keyword">for</span> iArc <span class="hljs-keyword">in</span> [<span class="hljs-number">1.</span>.nArcs<span class="hljs-number">-1</span>]
+    <span class="hljs-keyword">for</span> iArc <span class="hljs-keyword">in</span> [<span class="hljs-number">1.</span>.nArcs-<span class="hljs-number">1</span>]
       rArc = disappearingTransitions[iArc]
-      lArc = disappearingTransitions[iArc<span class="hljs-number">-1</span>]
-      @setEdgeStartpoint(rArc.edge, lArc.site, rArc.site, vertex)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-39">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
-              </div>
-              <p>create a new edge as we have now a new transition between
+      lArc = disappearingTransitions[iArc-<span class="hljs-number">1</span>]
+      <span class="hljs-property">@setEdgeStartpoint</span>(rArc.edge, lArc.site, rArc.site, vertex)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>create a new edge as we have now a new transition between
 two beach sections which were previously not adjacent.
 since this edge appears as a new vertex is defined, the vertex
 actually define an end point of the edge (relative to the site
-on the left)</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    lArc = disappearingTransitions[<span class="hljs-number">0</span>]
-    rArc = disappearingTransitions[nArcs<span class="hljs-number">-1</span>]
-    rArc.edge = @createEdge(lArc.site, rArc.site, <span class="hljs-literal">undefined</span>, vertex)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-40">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-40">&#182;</a>
-              </div>
-              <p>create circle events if any for beach sections left in the beachline
-adjacent to collapsed sections</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    @attachCircleEvent(lArc)
-    @attachCircleEvent(rArc)
+on the left)</p></div></div><div class="code"><div class="wrapper">    lArc = disappearingTransitions[<span class="hljs-number">0</span>]
+    rArc = disappearingTransitions[nArcs-<span class="hljs-number">1</span>]
+    rArc.edge = <span class="hljs-property">@createEdge</span>(lArc.site, rArc.site, <span class="hljs-literal">undefined</span>, vertex)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>create circle events if any for beach sections left in the beachline
+adjacent to collapsed sections</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-property">@attachCircleEvent</span>(lArc)
+    <span class="hljs-property">@attachCircleEvent</span>(rArc)
 
   addBeachsection : <span class="hljs-function"><span class="hljs-params">(site)</span> -&gt;</span>
     x = site.x
-    directrix = site.y</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-41">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-41">&#182;</a>
-              </div>
-              <p>find the left and right beach sections which will surround the newly
+    directrix = site.y</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>find the left and right beach sections which will surround the newly
 created beach section.
 rhill 2011-06-01: This loop is one of the most often executed,
-hence we expand in-place the comparison-against-epsilon calls.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    lArc
+hence we expand in-place the comparison-against-epsilon calls.</p></div></div><div class="code"><div class="wrapper">    lArc
     rArc
     dxl
     dxr
-    node = @beachline.root
+    node = <span class="hljs-property">@beachline</span>.root
 
     <span class="hljs-keyword">while</span> node
-      dxl = @leftBreakPoint(node,directrix)-x</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-42">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-42">&#182;</a>
-              </div>
-              <p>x lessThanWithEpsilon xl =&gt; falls somewhere before the left edge of the beachsection</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> dxl &gt; <span class="hljs-number">1e-9</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-43">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-43">&#182;</a>
-              </div>
-              <p>this case should never happen
+      dxl = <span class="hljs-property">@leftBreakPoint</span>(node,directrix)-x</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>x lessThanWithEpsilon xl =&gt; falls somewhere before the left edge of the beachsection</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> dxl &gt; <span class="hljs-number">1e-9</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>this case should never happen
 if (!node.rbLeft) -&gt;
    rArc = node.rbLeft
    break
-   }</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        node = node.rbLeft
+   }</p></div></div><div class="code"><div class="wrapper">        node = node.rbLeft
         
       <span class="hljs-keyword">else</span> 
-        dxr = x-@rightBreakPoint(node,directrix)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-44">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-44">&#182;</a>
-              </div>
-              <p>x greaterThanWithEpsilon xr =&gt; falls somewhere after the right edge of the beachsection</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> dxr &gt; <span class="hljs-number">1e-9</span>
+        dxr = x-<span class="hljs-property">@rightBreakPoint</span>(node,directrix)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>x greaterThanWithEpsilon xr =&gt; falls somewhere after the right edge of the beachsection</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">if</span> dxr &gt; <span class="hljs-number">1e-9</span>
           <span class="hljs-keyword">if</span> !node.rbRight
             lArc = node
             <span class="hljs-keyword">break</span>
     
           node = node.rbRight
     
-        <span class="hljs-keyword">else</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-45">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-45">&#182;</a>
-              </div>
-              <p>x equalWithEpsilon xl =&gt; falls exactly on the left edge of the beachsection</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>          <span class="hljs-keyword">if</span> dxl &gt; <span class="hljs-number">-1e-9</span>
+        <span class="hljs-keyword">else</span> </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>x equalWithEpsilon xl =&gt; falls exactly on the left edge of the beachsection</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-keyword">if</span> dxl &gt; -<span class="hljs-number">1e-9</span>
             lArc = node.rbPrevious
-            rArc = node</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-46">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-46">&#182;</a>
-              </div>
-              <p>x equalWithEpsilon xr =&gt; falls exactly on the right edge of the beachsection</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>          <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> dxr &gt; <span class="hljs-number">-1e-9</span>
+            rArc = node
+          </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>x equalWithEpsilon xr =&gt; falls exactly on the right edge of the beachsection</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> dxr &gt; -<span class="hljs-number">1e-9</span>
             lArc = node
-            rArc = node.rbNext</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-47">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-47">&#182;</a>
-              </div>
-              <p>falls exactly somewhere in the middle of the beachsection</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>          <span class="hljs-keyword">else</span>
+            rArc = node.rbNext
+          </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>falls exactly somewhere in the middle of the beachsection</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-keyword">else</span>
             lArc = rArc = node
           
-          <span class="hljs-keyword">break</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-48">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-48">&#182;</a>
-              </div>
-              <p>at this point, keep in mind that lArc and/or rArc could be
-undefined or null.</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-49">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-49">&#182;</a>
-              </div>
-              <p>create a new beach section object for the site and add it to RB-tree</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    newArc = @createBeachsection site
-    @beachline.insertSuccessor lArc, newArc</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-50">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-50">&#182;</a>
-              </div>
-              <p>cases:</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-51">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-51">&#182;</a>
-              </div>
-              <p>[null,null]
+          <span class="hljs-keyword">break</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>at this point, keep in mind that lArc and/or rArc could be
+undefined or null.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>create a new beach section object for the site and add it to RB-tree</p></div></div><div class="code"><div class="wrapper">    newArc = <span class="hljs-property">@createBeachsection</span> site
+    <span class="hljs-property">@beachline</span>.insertSuccessor lArc, newArc</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>cases:</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>[null,null]
 least likely case: new beach section is the first beach section on the
 beachline.
 This case means:
   no new transition appears
   no collapsing beach section
-  new beachsection become root of the RB-tree</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> !lArc <span class="hljs-keyword">and</span> !rArc
-      <span class="hljs-keyword">return</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-52">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-52">&#182;</a>
-              </div>
-              <p>[lArc,rArc] where lArc == rArc
+  new beachsection become root of the RB-tree</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> !lArc <span class="hljs-keyword">and</span> !rArc
+      <span class="hljs-keyword">return</span>
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>[lArc,rArc] where lArc == rArc
 most likely case: new beach section split an existing beach
 section.
 This case means:
   one new transition appears
   the left and right beach section might be collapsing as a result
-  two new nodes added to the RB-tree</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> lArc <span class="hljs-keyword">is</span> rArc</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-53">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-53">&#182;</a>
-              </div>
-              <p>invalidate circle event of split beach section</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      @detachCircleEvent(lArc)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-54">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-54">&#182;</a>
-              </div>
-              <p>split the beach section into two separate beach sections</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      rArc = @createBeachsection(lArc.site)
-      @beachline.insertSuccessor(newArc, rArc)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-55">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-55">&#182;</a>
-              </div>
-              <p>since we have a new transition between two beach sections,
-a new edge is born</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      newArc.edge = rArc.edge = @createEdge(lArc.site, newArc.site)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-56">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-56">&#182;</a>
-              </div>
-              <p>check whether the left and right beach sections are collapsing
+  two new nodes added to the RB-tree</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> lArc <span class="hljs-keyword">is</span> rArc</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>invalidate circle event of split beach section</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-property">@detachCircleEvent</span>(lArc)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>split the beach section into two separate beach sections</p></div></div><div class="code"><div class="wrapper">      rArc = <span class="hljs-property">@createBeachsection</span>(lArc.site)
+      <span class="hljs-property">@beachline</span>.insertSuccessor(newArc, rArc)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>since we have a new transition between two beach sections,
+a new edge is born</p></div></div><div class="code"><div class="wrapper">      newArc.edge = rArc.edge = <span class="hljs-property">@createEdge</span>(lArc.site, newArc.site)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>check whether the left and right beach sections are collapsing
 and if so create circle events, to be notified when the point of
-collapse is reached.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      @attachCircleEvent(lArc)
-      @attachCircleEvent(rArc)
-      <span class="hljs-keyword">return</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-57">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-57">&#182;</a>
-              </div>
-              <p>[lArc,null]
+collapse is reached.</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-property">@attachCircleEvent</span>(lArc)
+      <span class="hljs-property">@attachCircleEvent</span>(rArc)
+      <span class="hljs-keyword">return</span>
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>[lArc,null]
 even less likely case: new beach section is the <em>last</em> beach section
-on the beachline – this can happen <em>only</em> if <em>all</em> the previous beach
+on the beachline -- this can happen <em>only</em> if <em>all</em> the previous beach
 sections currently on the beachline share the same y value as
 the new beach section.
 This case means:
   one new transition appears
   no collapsing beach section as a result
-  new beach section become right-most node of the RB-tree</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> lArc <span class="hljs-keyword">and</span> !rArc
-      newArc.edge = @createEdge(lArc.site,newArc.site)
-      <span class="hljs-keyword">return</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-58">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-58">&#182;</a>
-              </div>
-              <p>[null,rArc]
+  new beach section become right-most node of the RB-tree</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> lArc <span class="hljs-keyword">and</span> !rArc
+      newArc.edge = <span class="hljs-property">@createEdge</span>(lArc.site,newArc.site)
+      <span class="hljs-keyword">return</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>[null,rArc]
 impossible case: because sites are strictly processed from top to bottom,
 and left to right, which guarantees that there will always be a beach section
-on the left – except of course when there are no beach section at all on
+on the left -- except of course when there are no beach section at all on
 the beach line, which case was handled above.
-rhill 2011-06-02: No point testing in non-debug version
-if (!lArc &amp;&amp; rArc) -&gt;
-   throw “Voronoi.addBeachsection(): What is this I don’t even”
-   }</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-59">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-59">&#182;</a>
-              </div>
-              <p>[lArc,rArc] where lArc != rArc
+rhill 2011-06-02: No point testing in non-debug version</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-comment">#if (!lArc &amp;&amp; rArc) -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>   throw &quot;Voronoi.addBeachsection(): What is this I don&#39;t even&quot;
+   }</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>[lArc,rArc] where lArc != rArc
 somewhat less likely case: new beach section falls <em>exactly</em> in between two
 existing beach sections
 This case means:
   one transition disappears
   two new transitions appear
   the left and right beach section might be collapsing as a result
-  only one new node added to the RB-tree</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> lArc <span class="hljs-keyword">isnt</span> rArc</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-60">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-60">&#182;</a>
-              </div>
-              <p>invalidate circle events of left and right sites</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      @detachCircleEvent(lArc)
-      @detachCircleEvent(rArc)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-61">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-61">&#182;</a>
-              </div>
-              <p>an existing transition disappears, meaning a vertex is defined at
+  only one new node added to the RB-tree</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> lArc <span class="hljs-keyword">isnt</span> rArc</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>invalidate circle events of left and right sites</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-property">@detachCircleEvent</span>(lArc)
+      <span class="hljs-property">@detachCircleEvent</span>(rArc)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>an existing transition disappears, meaning a vertex is defined at
 the disappearance point.
 since the disappearance is caused by the new beachsection, the
 vertex is at the center of the circumscribed circle of the left,
 new and right beachsections.
 http:#mathforum.org/library/drmath/view/55002.html
 Except that I bring the origin at A to simplify
-calculation</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      lSite = lArc.site
+calculation</p></div></div><div class="code"><div class="wrapper">      lSite = lArc.site
       ax = lSite.x
       ay = lSite.y
       dx=site.x-ax
@@ -1477,55 +552,10 @@ calculation</p>
       d=<span class="hljs-number">2</span>*(dx*cy-dy*cx)
       hb=dx*dx+dy*dy
       hc=cx*cx+cy*cy
-      vertex = @createVertex((cy*hb-dy*hc)/d+ax, (dx*hc-cx*hb)/d+ay)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-62">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-62">&#182;</a>
-              </div>
-              <p>one transition disappear</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      @setEdgeStartpoint(rArc.edge, lSite, rSite, vertex)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-63">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-63">&#182;</a>
-              </div>
-              <p>two new transitions appear at the new vertex location</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      newArc.edge = @createEdge(lSite, site, <span class="hljs-literal">undefined</span>, vertex)
-      rArc.edge = @createEdge(site, rSite, <span class="hljs-literal">undefined</span>, vertex)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-64">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-64">&#182;</a>
-              </div>
-              <p>check whether the left and right beach sections are collapsing
-and if so create circle events, to handle the point of collapse.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      @attachCircleEvent(lArc)
-      @attachCircleEvent(rArc)
+      vertex = <span class="hljs-property">@createVertex</span>((cy*hb-dy*hc)/d+ax, (dx*hc-cx*hb)/d+ay)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>one transition disappear</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-property">@setEdgeStartpoint</span>(rArc.edge, lSite, rSite, vertex)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>two new transitions appear at the new vertex location</p></div></div><div class="code"><div class="wrapper">      newArc.edge = <span class="hljs-property">@createEdge</span>(lSite, site, <span class="hljs-literal">undefined</span>, vertex)
+      rArc.edge = <span class="hljs-property">@createEdge</span>(site, rSite, <span class="hljs-literal">undefined</span>, vertex)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>check whether the left and right beach sections are collapsing
+and if so create circle events, to handle the point of collapse.</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-property">@attachCircleEvent</span>(lArc)
+      <span class="hljs-property">@attachCircleEvent</span>(rArc)
       <span class="hljs-keyword">return</span>
 
 
@@ -1538,110 +568,37 @@ and if so create circle events, to handle the point of collapse.</p>
      
     lSite = lArc.site
     cSite = arc.site
-    rSite = rArc.site</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-65">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-65">&#182;</a>
-              </div>
-              <p>If site of left beachsection is same as site of
-right beachsection, there can’t be convergence</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> lSite <span class="hljs-keyword">is</span> rSite
-      <span class="hljs-keyword">return</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-66">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-66">&#182;</a>
-              </div>
-              <p>Find the circumscribed circle for the three sites associated
+    rSite = rArc.site</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If site of left beachsection is same as site of
+right beachsection, there can&#39;t be convergence</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> lSite <span class="hljs-keyword">is</span> rSite
+      <span class="hljs-keyword">return</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Find the circumscribed circle for the three sites associated
 with the beachsection triplet.
 rhill 2011-05-26: It is more efficient to calculate in-place
 rather than getting the resulting circumscribed circle from an
 object returned by calling Voronoi.circumcircle()
 http:#mathforum.org/library/drmath/view/55002.html
 Except that I bring the origin at cSite to simplify calculations.
-The bottom-most part of the circumcircle is our Fortune ‘circle
-event’, and its center is a vertex potentially part of the final
-Voronoi diagram.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    dx = cSite.x
+The bottom-most part of the circumcircle is our Fortune &#39;circle
+event&#39;, and its center is a vertex potentially part of the final
+Voronoi diagram.</p></div></div><div class="code"><div class="wrapper">    dx = cSite.x
     dy = cSite.y
     ax = lSite.x-dx
     ay = lSite.y-dy
     cx = rSite.x-dx
-    cy = rSite.y-dy</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-67">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-67">&#182;</a>
-              </div>
-              <p>If points l-&gt;c-&gt;r are clockwise, then center beach section does not
-collapse, hence it can’t end up as a vertex (we reuse ‘d’ here, which
+    cy = rSite.y-dy</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>If points l-&gt;c-&gt;r are clockwise, then center beach section does not
+collapse, hence it can&#39;t end up as a vertex (we reuse &#39;d&#39; here, which
 sign is reverse of the orientation, hence we reverse the test.
 http:#en.wikipedia.org/wiki/Curve_orientation#Orientation_of_a_simple_polygon
 rhill 2011-05-21: Nasty finite precision error which caused circumcircle() to
-return infinites: 1e-12 seems to fix the problem.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    d = <span class="hljs-number">2</span>*(ax*cy-ay*cx)
-    <span class="hljs-keyword">if</span> d &gt;= <span class="hljs-number">-2e-12</span>
+return infinites: 1e-12 seems to fix the problem.</p></div></div><div class="code"><div class="wrapper">    d = <span class="hljs-number">2</span>*(ax*cy-ay*cx)
+    <span class="hljs-keyword">if</span> d &gt;= -<span class="hljs-number">2e-12</span>
       <span class="hljs-keyword">return</span>
 
     ha = ax*ax+ay*ay
     hc = cx*cx+cy*cy
     x = (cy*ha-ay*hc)/d
     y = (ax*hc-cx*ha)/d
-    ycenter = y+dy</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-68">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-68">&#182;</a>
-              </div>
-              <p>Important: ybottom should always be under or at sweep, so no need
-to waste CPU cycles by checking</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-69">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-69">&#182;</a>
-              </div>
-              <p>recycle circle event object if possible</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    circleEvent = @circleEventJunkyard.pop()
+    ycenter = y+dy</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Important: ybottom should always be under or at sweep, so no need
+to waste CPU cycles by checking</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>recycle circle event object if possible</p></div></div><div class="code"><div class="wrapper">    circleEvent = <span class="hljs-property">@circleEventJunkyard</span>.pop()
     <span class="hljs-keyword">if</span> !circleEvent
       circleEvent = <span class="hljs-keyword">new</span> CircleEvent()
   
@@ -1650,24 +607,9 @@ to waste CPU cycles by checking</p>
     circleEvent.x = x+dx
     circleEvent.y = ycenter + Math.sqrt(x*x+y*y) <span class="hljs-comment"># y bottom</span>
     circleEvent.ycenter = ycenter
-    arc.circleEvent = circleEvent</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-70">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-70">&#182;</a>
-              </div>
-              <p>find insertion point in RB-tree: circle events are ordered from
-smallest to largest</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    predecessor = <span class="hljs-literal">null</span>
-    node = @circleEvents.root
+    arc.circleEvent = circleEvent</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>find insertion point in RB-tree: circle events are ordered from
+smallest to largest</p></div></div><div class="code"><div class="wrapper">    predecessor = <span class="hljs-literal">null</span>
+    node = <span class="hljs-property">@circleEvents</span>.root
     
     <span class="hljs-keyword">while</span> node
       <span class="hljs-keyword">if</span> circleEvent.y &lt; node.y <span class="hljs-keyword">or</span> (circleEvent.y == node.y <span class="hljs-keyword">and</span> circleEvent.x &lt;= node.x) <span class="hljs-comment"># potential ===/is here</span>
@@ -1685,9 +627,9 @@ smallest to largest</p>
           predecessor = node
           <span class="hljs-keyword">break</span>
             
-    @circleEvents.insertSuccessor(predecessor, circleEvent)
+    <span class="hljs-property">@circleEvents</span>.insertSuccessor(predecessor, circleEvent)
     <span class="hljs-keyword">if</span> !predecessor
-      @firstCircleEvent = circleEvent
+      <span class="hljs-property">@firstCircleEvent</span> = circleEvent
     
 
   detachCircleEvent : <span class="hljs-function"><span class="hljs-params">(arc)</span> -&gt;</span>
@@ -1695,89 +637,19 @@ smallest to largest</p>
     <span class="hljs-keyword">if</span> circleEvent
       
       <span class="hljs-keyword">if</span> !circleEvent.rbPrevious
-        @firstCircleEvent = circleEvent.rbNext
+        <span class="hljs-property">@firstCircleEvent</span> = circleEvent.rbNext
       
-      @circleEvents.removeNode(circleEvent) <span class="hljs-comment"># remove from RB-tree</span>
-      @circleEventJunkyard.push(circleEvent)
-      arc.circleEvent = <span class="hljs-literal">null</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-71">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-71">&#182;</a>
-              </div>
-              <hr>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-72">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-72">&#182;</a>
-              </div>
-              <p>Diagram completion methods</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-73">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-73">&#182;</a>
-              </div>
-              <p>connect dangling edges (not if a cursory test tells us
+      <span class="hljs-property">@circleEvents</span>.removeNode(circleEvent) <span class="hljs-comment"># remove from RB-tree</span>
+      <span class="hljs-property">@circleEventJunkyard</span>.push(circleEvent)
+      arc.circleEvent = <span class="hljs-literal">null</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr>
+<p>Diagram completion methods</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>connect dangling edges (not if a cursory test tells us
 it is not going to be visible.
 return value:
-  false: the dangling endpoint couldn’t be connected
-  true: the dangling endpoint could be connected</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  
-  connectEdge : <span class="hljs-function"><span class="hljs-params">(edge, bbox)</span> -&gt;</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-74">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-74">&#182;</a>
-              </div>
-              <p>skip if end point already connected</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    vb = edge.vb
+  false: the dangling endpoint couldn&#39;t be connected
+  true: the dangling endpoint could be connected</p></div></div><div class="code"><div class="wrapper">  
+  connectEdge : <span class="hljs-function"><span class="hljs-params">(edge, bbox)</span> -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>skip if end point already connected</p></div></div><div class="code"><div class="wrapper">    vb = edge.vb
     <span class="hljs-keyword">if</span> !!vb
-      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-75">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-75">&#182;</a>
-              </div>
-              <p>make local copy for performance purpose</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    va = edge.va
+      <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>make local copy for performance purpose</p></div></div><div class="code"><div class="wrapper">    va = edge.va
     xl = bbox.xl
     xr = bbox.xr
     yt = bbox.yt
@@ -1791,316 +663,88 @@ return value:
     fx = (lx+rx)/<span class="hljs-number">2</span>
     fy = (ly+ry)/<span class="hljs-number">2</span>
     fm
-    fb</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-76">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-76">&#182;</a>
-              </div>
-              <p>if we reach here, this means cells which use this edge will need
+    fb</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>if we reach here, this means cells which use this edge will need
 to be closed, whether because the edge was removed, or because it
-was connected to the bounding box.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    @cells[lSite.voronoiId].closeMe = <span class="hljs-literal">true</span>
-    @cells[rSite.voronoiId].closeMe = <span class="hljs-literal">true</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-77">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-77">&#182;</a>
-              </div>
-              <p>get the line equation of the bisector if line is not vertical</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> ry <span class="hljs-keyword">isnt</span> ly
+was connected to the bounding box.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-property">@cells</span>[lSite.voronoiId].closeMe = <span class="hljs-literal">true</span>
+    <span class="hljs-property">@cells</span>[rSite.voronoiId].closeMe = <span class="hljs-literal">true</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>get the line equation of the bisector if line is not vertical</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> ry <span class="hljs-keyword">isnt</span> ly
       fm = (lx-rx)/(ry-ly)
-      fb = fy-fm*fx</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-78">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-78">&#182;</a>
-              </div>
-              <p>remember, direction of line (relative to left site):
+      fb = fy-fm*fx
+  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>remember, direction of line (relative to left site):
 upward: left.x &lt; right.x
 downward: left.x &gt; right.x
 horizontal: left.x == right.x
 upward: left.x &lt; right.x
 rightward: left.y &lt; right.y
 leftward: left.y &gt; right.y
-vertical: left.y == right.y</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-79">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-79">&#182;</a>
-              </div>
-              <p>depending on the direction, find the best side of the
-bounding box to use to determine a reasonable start point</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-80">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-80">&#182;</a>
-              </div>
-              <p>rhill 2013-12-02:
+vertical: left.y == right.y</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>depending on the direction, find the best side of the
+bounding box to use to determine a reasonable start point</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>rhill 2013-12-02:
 While at it, since we have the values which define the line,
 clip the end of va if it is outside the bbox.
 https:#github.com/gorhill/Javascript-Voronoi/issues/15
 TODO: Do all the clipping here rather than rely on Liang-Barsky
 which does not do well sometimes due to loss of arithmetic
-precision. The code here doesn’t degrade if one of the vertex is
-at a huge distance.</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-81">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-81">&#182;</a>
-              </div>
-              <p>special case: vertical line</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> fm <span class="hljs-keyword">is</span> <span class="hljs-literal">undefined</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-82">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-82">&#182;</a>
-              </div>
-              <p>doesn’t intersect with viewport</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> fx &lt; xl <span class="hljs-keyword">or</span> fx &gt;= xr
-        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-83">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-83">&#182;</a>
-              </div>
-              <p>downward</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> lx &gt; rx
+precision. The code here doesn&#39;t degrade if one of the vertex is
+at a huge distance.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>special case: vertical line</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> fm <span class="hljs-keyword">is</span> <span class="hljs-literal">undefined</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>doesn&#39;t intersect with viewport</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> fx &lt; xl <span class="hljs-keyword">or</span> fx &gt;= xr
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>downward</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> lx &gt; rx
         <span class="hljs-keyword">if</span> !va <span class="hljs-keyword">or</span> va.y &lt; yt
-          va = @createVertex(fx, yt)
+          va = <span class="hljs-property">@createVertex</span>(fx, yt)
         
         <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> va.y &gt;= yb
           <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
             
-        vb = @createVertex(fx, yb)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-84">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-84">&#182;</a>
-              </div>
-              <p>upward</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">else</span> 
+        vb = <span class="hljs-property">@createVertex</span>(fx, yb)
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>upward</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">else</span> 
         <span class="hljs-keyword">if</span> !va <span class="hljs-keyword">or</span> va.y &gt; yb
-          va = @createVertex(fx, yb)
+          va = <span class="hljs-property">@createVertex</span>(fx, yb)
 
         <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> va.y &lt; yt
           <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
       
-        vb = @createVertex(fx, yt)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-85">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-85">&#182;</a>
-              </div>
-              <p>closer to vertical than horizontal, connect start point to the
-top or bottom side of the bounding box</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> fm &lt; <span class="hljs-number">-1</span> <span class="hljs-keyword">or</span> fm &gt; <span class="hljs-number">1</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-86">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-86">&#182;</a>
-              </div>
-              <p>downward</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> lx &gt; rx
+        vb = <span class="hljs-property">@createVertex</span>(fx, yt)
+        </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>closer to vertical than horizontal, connect start point to the
+top or bottom side of the bounding box</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> fm &lt; -<span class="hljs-number">1</span> <span class="hljs-keyword">or</span> fm &gt; <span class="hljs-number">1</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>downward</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> lx &gt; rx
         <span class="hljs-keyword">if</span> !va <span class="hljs-keyword">or</span> va.y &lt; yt
-          va = @createVertex((yt-fb)/fm, yt)
+          va = <span class="hljs-property">@createVertex</span>((yt-fb)/fm, yt)
         
         <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> va.y &gt;= yb
           <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
         
-        vb = @createVertex((yb-fb)/fm, yb)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-87">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-87">&#182;</a>
-              </div>
-              <p>upward</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">else</span>
+        vb = <span class="hljs-property">@createVertex</span>((yb-fb)/fm, yb)
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>upward</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">else</span>
         <span class="hljs-keyword">if</span> !va <span class="hljs-keyword">or</span> va.y &gt; yb
-          va = @createVertex((yb-fb)/fm, yb)
+          va = <span class="hljs-property">@createVertex</span>((yb-fb)/fm, yb)
           
         <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> va.y &lt; yt
           <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
           
-        vb = @createVertex((yt-fb)/fm, yt)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-88">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-88">&#182;</a>
-              </div>
-              <p>closer to horizontal than vertical, connect start point to the
-left or right side of the bounding box</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">else</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-89">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-89">&#182;</a>
-              </div>
-              <p>rightward</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> ly &lt; ry
+        vb = <span class="hljs-property">@createVertex</span>((yt-fb)/fm, yt)
+     </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>closer to horizontal than vertical, connect start point to the
+left or right side of the bounding box</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">else</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>rightward</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> ly &lt; ry
         <span class="hljs-keyword">if</span> !va <span class="hljs-keyword">or</span> va.x &lt; xl
-          va = @createVertex(xl, fm*xl+fb)
+          va = <span class="hljs-property">@createVertex</span>(xl, fm*xl+fb)
         
         <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> va.x &gt;= xr
           <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
       
-        vb = @createVertex(xr, fm*xr+fb)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-90">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-90">&#182;</a>
-              </div>
-              <p>leftward</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">else</span> 
+        vb = <span class="hljs-property">@createVertex</span>(xr, fm*xr+fb)
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>leftward</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">else</span> 
         <span class="hljs-keyword">if</span> !va <span class="hljs-keyword">or</span> va.x &gt; xr
-          va = @createVertex(xr, fm*xr+fb)
+          va = <span class="hljs-property">@createVertex</span>(xr, fm*xr+fb)
           
         <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> va.x &lt; xl
           <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
         
-        vb = @createVertex(xl, fm*xl+fb)
+        vb = <span class="hljs-property">@createVertex</span>(xl, fm*xl+fb)
           
       
     edge.va = va
     edge.vb = vb
 
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-91">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-91">&#182;</a>
-              </div>
-              <p>line-clipping code taken from:
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>line-clipping code taken from:
   Liang-Barsky function by Daniel White
   http:#www.skytopia.com/project/articles/compsci/clipping.html
 Thanks!
-A bit modified to minimize code paths</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  clipEdge : <span class="hljs-function"><span class="hljs-params">(edge, bbox)</span> -&gt;</span>
+A bit modified to minimize code paths</p></div></div><div class="code"><div class="wrapper">  clipEdge : <span class="hljs-function"><span class="hljs-params">(edge, bbox)</span> -&gt;</span>
     ax = edge.va.x
     ay = edge.va.y
     dx = edge.vb.x
@@ -2108,22 +752,8 @@ A bit modified to minimize code paths</p>
     t0 = <span class="hljs-number">0</span>
     t1 = <span class="hljs-number">1</span>
     dx = dx-ax
-    dy = dy-ay</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-92">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-92">&#182;</a>
-              </div>
-              <p>left</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    q = ax-bbox.xl
+    dy = dy-ay
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>left</p></div></div><div class="code"><div class="wrapper">    q = ax-bbox.xl
     <span class="hljs-keyword">if</span> dx == <span class="hljs-number">0</span> &amp;&amp; q &lt;<span class="hljs-number">0</span>
       <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
     
@@ -2139,22 +769,8 @@ A bit modified to minimize code paths</p>
       <span class="hljs-keyword">if</span> r&gt;t1
         <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
       <span class="hljs-keyword">if</span> r&gt;t0
-        t0=r</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-93">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-93">&#182;</a>
-              </div>
-              <p>right</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    q = bbox.xr-ax
+        t0=r
+      </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>right</p></div></div><div class="code"><div class="wrapper">    q = bbox.xr-ax
     
     <span class="hljs-keyword">if</span> dx == <span class="hljs-number">0</span> &amp;&amp; q&lt;<span class="hljs-number">0</span> 
       <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
@@ -2169,22 +785,8 @@ A bit modified to minimize code paths</p>
       <span class="hljs-keyword">if</span> r&lt;t0
         <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
       <span class="hljs-keyword">if</span> r&lt;t1
-        t1=r</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-94">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-94">&#182;</a>
-              </div>
-              <p>top</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    q = ay-bbox.yt
+        t1=r
+  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>top</p></div></div><div class="code"><div class="wrapper">    q = ay-bbox.yt
     
     <span class="hljs-keyword">if</span> dy == <span class="hljs-number">0</span> &amp;&amp; q&lt;<span class="hljs-number">0</span> 
       <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
@@ -2201,22 +803,8 @@ A bit modified to minimize code paths</p>
       <span class="hljs-keyword">if</span> r&gt;t1
         <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
       <span class="hljs-keyword">if</span> r&gt;t0
-        t0=r</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-95">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-95">&#182;</a>
-              </div>
-              <p>bottom        </p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    q = bbox.yb-ay
+        t0=r
+      </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>bottom        </p></div></div><div class="code"><div class="wrapper">    q = bbox.yb-ay
     <span class="hljs-keyword">if</span> dy == <span class="hljs-number">0</span> &amp;&amp; q&lt;<span class="hljs-number">0</span>
       <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
     r = q/dy
@@ -2231,171 +819,38 @@ A bit modified to minimize code paths</p>
       <span class="hljs-keyword">if</span> r&lt;t0 
         <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
       <span class="hljs-keyword">if</span> r&lt;t1
-        t1=r</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-96">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-96">&#182;</a>
-              </div>
-              <p>if we reach this point, Voronoi edge is within bbox</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-97">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-97">&#182;</a>
-              </div>
-              <p>if t0 &gt; 0, va needs to change
+        t1=r</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>if we reach this point, Voronoi edge is within bbox</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>if t0 &gt; 0, va needs to change
 rhill 2011-06-03: we need to create a new vertex rather
 than modifying the existing one, since the existing
-one is likely shared with at least another edge</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> t0 &gt; <span class="hljs-number">0</span>
-      edge.va = @createVertex(ax+t0*dx, ay+t0*dy)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-98">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-98">&#182;</a>
-              </div>
-              <p>if t1 &lt; 1, vb needs to change
+one is likely shared with at least another edge</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> t0 &gt; <span class="hljs-number">0</span>
+      edge.va = <span class="hljs-property">@createVertex</span>(ax+t0*dx, ay+t0*dy)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>if t1 &lt; 1, vb needs to change
 rhill 2011-06-03: we need to create a new vertex rather
 than modifying the existing one, since the existing
-one is likely shared with at least another edge</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> t1 &lt; <span class="hljs-number">1</span>
-      edge.vb = @createVertex(ax+t1*dx, ay+t1*dy)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-99">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-99">&#182;</a>
-              </div>
-              <p>va and/or vb were clipped, thus we will need to close
-cells which use this edge.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>  t0 &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> t1 &lt; <span class="hljs-number">1</span>
-      @cells[edge.lSite.voronoiId].closeMe = <span class="hljs-literal">true</span>
-      @cells[edge.rSite.voronoiId].closeMe = <span class="hljs-literal">true</span>
+one is likely shared with at least another edge</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> t1 &lt; <span class="hljs-number">1</span>
+      edge.vb = <span class="hljs-property">@createVertex</span>(ax+t1*dx, ay+t1*dy)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>va and/or vb were clipped, thus we will need to close
+cells which use this edge.</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span>  t0 &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> t1 &lt; <span class="hljs-number">1</span>
+      <span class="hljs-property">@cells</span>[edge.lSite.voronoiId].closeMe = <span class="hljs-literal">true</span>
+      <span class="hljs-property">@cells</span>[edge.rSite.voronoiId].closeMe = <span class="hljs-literal">true</span>
   
 
-    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-100">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-100">&#182;</a>
-              </div>
-              <p>Connect/cut edges at bounding box</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  clipEdges : <span class="hljs-function"><span class="hljs-params">(bbox)</span> -&gt;</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-101">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-101">&#182;</a>
-              </div>
-              <p>connect all dangling edges to bounding box
-or get rid of them if it can’t be done</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    edges = @edges
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Connect/cut edges at bounding box</p></div></div><div class="code"><div class="wrapper">  clipEdges : <span class="hljs-function"><span class="hljs-params">(bbox)</span> -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>connect all dangling edges to bounding box
+or get rid of them if it can&#39;t be done</p></div></div><div class="code"><div class="wrapper">    edges = <span class="hljs-property">@edges</span>
     iEdge = edges.length
     edge
-    abs_fn = Math.abs</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-102">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-102">&#182;</a>
-              </div>
-              <p>iterate backward so we can splice safely</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">while</span> iEdge--
-      edge = edges[iEdge]</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-103">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-103">&#182;</a>
-              </div>
-              <p>edge is removed if:
+    abs_fn = Math.abs</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>iterate backward so we can splice safely</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">while</span> iEdge--
+      edge = edges[iEdge]</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>edge is removed if:
   it is wholly outside the bounding box
-  it is looking more like a point than a line</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> !@connectEdge(edge, bbox) <span class="hljs-keyword">or</span> !@clipEdge(edge, bbox) <span class="hljs-keyword">or</span> (abs_fn(edge.va.x-edge.vb.x) &lt; <span class="hljs-number">1e-9</span> <span class="hljs-keyword">and</span> abs_fn(edge.va.y-edge.vb.y)&lt;<span class="hljs-number">1e-9</span>)
+  it is looking more like a point than a line</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> !<span class="hljs-property">@connectEdge</span>(edge, bbox) <span class="hljs-keyword">or</span> !<span class="hljs-property">@clipEdge</span>(edge, bbox) <span class="hljs-keyword">or</span> (abs_fn(edge.va.x-edge.vb.x) &lt; <span class="hljs-number">1e-9</span> <span class="hljs-keyword">and</span> abs_fn(edge.va.y-edge.vb.y)&lt;<span class="hljs-number">1e-9</span>)
         edge.va = edge.vb = <span class="hljs-literal">null</span>
-        edges.splice(iEdge,<span class="hljs-number">1</span>)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-104">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-104">&#182;</a>
-              </div>
-              <p>Close the cells.
+        edges.splice(iEdge,<span class="hljs-number">1</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Close the cells.
 The cells are bound by the supplied bounding box.
 Each cell refers to its associated site, and a list
-of halfedges ordered counterclockwise.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  closeCells : <span class="hljs-function"><span class="hljs-params">(bbox)</span> -&gt;</span>
+of halfedges ordered counterclockwise.</p></div></div><div class="code"><div class="wrapper">  closeCells : <span class="hljs-function"><span class="hljs-params">(bbox)</span> -&gt;</span>
     xl = bbox.xl
     xr = bbox.xr
     yt = bbox.yt
     yb = bbox.yb
-    cells = @cells
+    cells = <span class="hljs-property">@cells</span>
     iCell = cells.length
     cell
     iLeft
@@ -2409,964 +864,201 @@ of halfedges ordered counterclockwise.</p>
     abs_fn = Math.abs
 
     <span class="hljs-keyword">while</span> iCell--
-      cell = cells[iCell]</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-105">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-105">&#182;</a>
-              </div>
-              <p>prune, order halfedges counterclockwise, then add missing ones
-required to close cells</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> !cell.prepareHalfedges()
+      cell = cells[iCell]</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>prune, order halfedges counterclockwise, then add missing ones
+required to close cells</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> !cell.prepareHalfedges()
         <span class="hljs-keyword">continue</span>
       
       <span class="hljs-keyword">if</span> !cell.closeMe
-        <span class="hljs-keyword">continue</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-106">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-106">&#182;</a>
-              </div>
-              <p>find first ‘unclosed’ point.
-an ‘unclosed’ point will be the end point of a halfedge which
-does not match the start point of the following halfedge</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      halfedges = cell.halfedges
-      nHalfedges = halfedges.length</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-107">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-107">&#182;</a>
-              </div>
-              <p>special case: only one site, in which case, the viewport is the cell
-…</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-108">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-108">&#182;</a>
-              </div>
-              <p>all other cases</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      iLeft = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">continue</span>
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>find first &#39;unclosed&#39; point.
+an &#39;unclosed&#39; point will be the end point of a halfedge which
+does not match the start point of the following halfedge</p></div></div><div class="code"><div class="wrapper">      halfedges = cell.halfedges
+      nHalfedges = halfedges.length</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>special case: only one site, in which case, the viewport is the cell
+...</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>all other cases</p></div></div><div class="code"><div class="wrapper">      iLeft = <span class="hljs-number">0</span>
       <span class="hljs-keyword">while</span> iLeft &lt; nHalfedges
         va = halfedges[iLeft].getEndpoint()
-        vz = halfedges[(iLeft+<span class="hljs-number">1</span>) % nHalfedges].getStartpoint()</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-109">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-109">&#182;</a>
-              </div>
-              <p>if end point is not equal to start point, we need to add the missing
-halfedge(s) up to vz</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> (abs_fn(va.x-vz.x)&gt;=<span class="hljs-number">1e-9</span> <span class="hljs-keyword">or</span> abs_fn(va.y-vz.y)&gt;=<span class="hljs-number">1e-9</span>)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-110">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-110">&#182;</a>
-              </div>
-              <p>rhill 2013-12-02:
-“Holes” in the halfedges are not necessarily always adjacent.
-https:#github.com/gorhill/Javascript-Voronoi/issues/16</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-111">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-111">&#182;</a>
-              </div>
-              <p>find entry point:</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>          <span class="hljs-keyword">switch</span> <span class="hljs-literal">true</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-112">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-112">&#182;</a>
-              </div>
-              <p>walk downward along left side</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">when</span> @equalWithEpsilon(va.x,xl) <span class="hljs-keyword">and</span> @lessThanWithEpsilon(va.y,yb)
-              lastBorderSegment = @equalWithEpsilon(vz.x,xl)
+        vz = halfedges[(iLeft+<span class="hljs-number">1</span>) % nHalfedges].getStartpoint()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>if end point is not equal to start point, we need to add the missing
+halfedge(s) up to vz</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">if</span> (abs_fn(va.x-vz.x)&gt;=<span class="hljs-number">1e-9</span> <span class="hljs-keyword">or</span> abs_fn(va.y-vz.y)&gt;=<span class="hljs-number">1e-9</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>rhill 2013-12-02:
+&quot;Holes&quot; in the halfedges are not necessarily always adjacent.
+https:#github.com/gorhill/Javascript-Voronoi/issues/16</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>find entry point:</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-keyword">switch</span> <span class="hljs-literal">true</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>walk downward along left side</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-keyword">when</span> <span class="hljs-property">@equalWithEpsilon</span>(va.x,xl) <span class="hljs-keyword">and</span> <span class="hljs-property">@lessThanWithEpsilon</span>(va.y,yb)
+              lastBorderSegment = <span class="hljs-property">@equalWithEpsilon</span>(vz.x,xl)
               ty = yb
               <span class="hljs-keyword">if</span> lastBorderSegment
                 ty = vz.y 
-              vb = @createVertex(xl, ty)
-              edge = @createBorderEdge(cell.site, va, vb)
+              vb = <span class="hljs-property">@createVertex</span>(xl, ty)
+              edge = <span class="hljs-property">@createBorderEdge</span>(cell.site, va, vb)
               iLeft++
-              halfedges.splice(iLeft, <span class="hljs-number">0</span>, @createHalfedge(edge, cell.site, <span class="hljs-literal">null</span>))
+              halfedges.splice(iLeft, <span class="hljs-number">0</span>, <span class="hljs-property">@createHalfedge</span>(edge, cell.site, <span class="hljs-literal">null</span>))
               nHalfedges++
               <span class="hljs-keyword">if</span> lastBorderSegment
                 <span class="hljs-keyword">break</span> 
-              va = vb</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-113">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-113">&#182;</a>
-              </div>
-              <p>fall through</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-114">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-114">&#182;</a>
-              </div>
-              <p>walk rightward along bottom side</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">when</span> @equalWithEpsilon(va.y,yb) &amp;&amp; @lessThanWithEpsilon(va.x,xr)
-              lastBorderSegment = @equalWithEpsilon(vz.y,yb)
+              va = vb</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>fall through</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>walk rightward along bottom side</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-keyword">when</span> <span class="hljs-property">@equalWithEpsilon</span>(va.y,yb) &amp;&amp; <span class="hljs-property">@lessThanWithEpsilon</span>(va.x,xr)
+              lastBorderSegment = <span class="hljs-property">@equalWithEpsilon</span>(vz.y,yb)
               tx = xr
               <span class="hljs-keyword">if</span> lastBorderSegment
                 tx = vz.x
-              vb = @createVertex(tx, yb)
-              edge = @createBorderEdge(cell.site, va, vb)
+              vb = <span class="hljs-property">@createVertex</span>(tx, yb)
+              edge = <span class="hljs-property">@createBorderEdge</span>(cell.site, va, vb)
               iLeft++
-              halfedges.splice(iLeft, <span class="hljs-number">0</span>, @createHalfedge(edge, cell.site, <span class="hljs-literal">null</span>))
+              halfedges.splice(iLeft, <span class="hljs-number">0</span>, <span class="hljs-property">@createHalfedge</span>(edge, cell.site, <span class="hljs-literal">null</span>))
               nHalfedges++
               <span class="hljs-keyword">if</span> lastBorderSegment
                 <span class="hljs-keyword">break</span>
-              va = vb</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-115">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-115">&#182;</a>
-              </div>
-              <p>fall through</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-116">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-116">&#182;</a>
-              </div>
-              <p>walk upward along right side</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">when</span> @equalWithEpsilon(va.x,xr) <span class="hljs-keyword">and</span> @greaterThanWithEpsilon(va.y,yt)
-              lastBorderSegment = @equalWithEpsilon(vz.x,xr)
+              va = vb</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>fall through</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>walk upward along right side</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-keyword">when</span> <span class="hljs-property">@equalWithEpsilon</span>(va.x,xr) <span class="hljs-keyword">and</span> <span class="hljs-property">@greaterThanWithEpsilon</span>(va.y,yt)
+              lastBorderSegment = <span class="hljs-property">@equalWithEpsilon</span>(vz.x,xr)
               ty = yt
               <span class="hljs-keyword">if</span> lastBorderSegment
                 ty = vz.y
-              vb = @createVertex(xr, ty)
-              edge = @createBorderEdge(cell.site, va, vb)
+              vb = <span class="hljs-property">@createVertex</span>(xr, ty)
+              edge = <span class="hljs-property">@createBorderEdge</span>(cell.site, va, vb)
               iLeft++
-              halfedges.splice(iLeft, <span class="hljs-number">0</span>, @createHalfedge(edge, cell.site, <span class="hljs-literal">null</span>))
+              halfedges.splice(iLeft, <span class="hljs-number">0</span>, <span class="hljs-property">@createHalfedge</span>(edge, cell.site, <span class="hljs-literal">null</span>))
               nHalfedges++
               <span class="hljs-keyword">if</span> lastBorderSegment 
                 <span class="hljs-keyword">break</span> 
-              va = vb</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-117">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-117">&#182;</a>
-              </div>
-              <p>fall through</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-118">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-118">&#182;</a>
-              </div>
-              <p>walk leftward along top side</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">when</span> @equalWithEpsilon(va.y,yt) <span class="hljs-keyword">and</span> @greaterThanWithEpsilon(va.x,xl)
-              lastBorderSegment = @equalWithEpsilon(vz.y,yt)
+              va = vb</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>fall through</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>walk leftward along top side</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-keyword">when</span> <span class="hljs-property">@equalWithEpsilon</span>(va.y,yt) <span class="hljs-keyword">and</span> <span class="hljs-property">@greaterThanWithEpsilon</span>(va.x,xl)
+              lastBorderSegment = <span class="hljs-property">@equalWithEpsilon</span>(vz.y,yt)
               tx = xl
               <span class="hljs-keyword">if</span> lastBorderSegment
                 tx = vz.x
-              vb = @createVertex(tx, yt)
-              edge = @createBorderEdge(cell.site, va, vb)
+              vb = <span class="hljs-property">@createVertex</span>(tx, yt)
+              edge = <span class="hljs-property">@createBorderEdge</span>(cell.site, va, vb)
               iLeft++
-              halfedges.splice(iLeft, <span class="hljs-number">0</span>, @createHalfedge(edge, cell.site, <span class="hljs-literal">null</span>))
+              halfedges.splice(iLeft, <span class="hljs-number">0</span>, <span class="hljs-property">@createHalfedge</span>(edge, cell.site, <span class="hljs-literal">null</span>))
               nHalfedges++
               <span class="hljs-keyword">if</span> lastBorderSegment
                 <span class="hljs-keyword">break</span>
-              va = vb</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-119">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-119">&#182;</a>
-              </div>
-              <p>fall through</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-120">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-120">&#182;</a>
-              </div>
-              <p>walk downward along left side</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>              lastBorderSegment = @equalWithEpsilon(vz.x,xl)
+              va = vb</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>fall through</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>walk downward along left side</p></div></div><div class="code"><div class="wrapper">              lastBorderSegment = <span class="hljs-property">@equalWithEpsilon</span>(vz.x,xl)
 
               ty = yb
               <span class="hljs-keyword">if</span> lastBorderSegment
                 ty = vz.y
-              vb = @createVertex(xl, ty)
+              vb = <span class="hljs-property">@createVertex</span>(xl, ty)
               
-              edge = @createBorderEdge(cell.site, va, vb)
+              edge = <span class="hljs-property">@createBorderEdge</span>(cell.site, va, vb)
               iLeft++
-              halfedges.splice(iLeft, <span class="hljs-number">0</span>, @createHalfedge(edge, cell.site, <span class="hljs-literal">null</span>))
+              halfedges.splice(iLeft, <span class="hljs-number">0</span>, <span class="hljs-property">@createHalfedge</span>(edge, cell.site, <span class="hljs-literal">null</span>))
               nHalfedges++
               <span class="hljs-keyword">if</span> lastBorderSegment
                 <span class="hljs-keyword">break</span>
-              va = vb</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-121">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-121">&#182;</a>
-              </div>
-              <p>fall through</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-122">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-122">&#182;</a>
-              </div>
-              <p>walk rightward along bottom side</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>              lastBorderSegment = @equalWithEpsilon(vz.y,yb)
+              va = vb</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>fall through</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>walk rightward along bottom side</p></div></div><div class="code"><div class="wrapper">              lastBorderSegment = <span class="hljs-property">@equalWithEpsilon</span>(vz.y,yb)
               tx = xr
               <span class="hljs-keyword">if</span> lastBorderSegment
                 tx = vz.x
-              vb = @createVertex(tx, yb)
-              edge = @createBorderEdge(cell.site, va, vb)
+              vb = <span class="hljs-property">@createVertex</span>(tx, yb)
+              edge = <span class="hljs-property">@createBorderEdge</span>(cell.site, va, vb)
               iLeft++
-              halfedges.splice(iLeft, <span class="hljs-number">0</span>, @createHalfedge(edge, cell.site, <span class="hljs-literal">null</span>))
+              halfedges.splice(iLeft, <span class="hljs-number">0</span>, <span class="hljs-property">@createHalfedge</span>(edge, cell.site, <span class="hljs-literal">null</span>))
               nHalfedges++
               <span class="hljs-keyword">if</span> lastBorderSegment 
                 <span class="hljs-keyword">break</span>
-              va = vb</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-123">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-123">&#182;</a>
-              </div>
-              <p>fall through</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-124">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-124">&#182;</a>
-              </div>
-              <p>walk upward along right side</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>              lastBorderSegment = @equalWithEpsilon(vz.x,xr)
+              va = vb</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>fall through</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>walk upward along right side</p></div></div><div class="code"><div class="wrapper">              lastBorderSegment = <span class="hljs-property">@equalWithEpsilon</span>(vz.x,xr)
               ty = yt
               <span class="hljs-keyword">if</span> lastBorderSegment
                 ty = vz.y
-              vb = @createVertex(xr, ty)
-              edge = @createBorderEdge(cell.site, va, vb)
+              vb = <span class="hljs-property">@createVertex</span>(xr, ty)
+              edge = <span class="hljs-property">@createBorderEdge</span>(cell.site, va, vb)
               iLeft++
-              halfedges.splice(iLeft, <span class="hljs-number">0</span>, @createHalfedge(edge, cell.site, <span class="hljs-literal">null</span>))
+              halfedges.splice(iLeft, <span class="hljs-number">0</span>, <span class="hljs-property">@createHalfedge</span>(edge, cell.site, <span class="hljs-literal">null</span>))
               nHalfedges++
               <span class="hljs-keyword">if</span> lastBorderSegment
-                <span class="hljs-keyword">break</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-125">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-125">&#182;</a>
-              </div>
-              <p>fall through</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-            <span class="hljs-keyword">else</span>
+                <span class="hljs-keyword">break</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>fall through</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-keyword">else</span>
               <span class="hljs-keyword">throw</span> <span class="hljs-string">"Voronoi.closeCells() &gt; this makes no sense!"</span>
         
         
         iLeft++
     
-      cell.closeMe = <span class="hljs-literal">false</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-126">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-126">&#182;</a>
-              </div>
-              <hr>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-127">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-127">&#182;</a>
-              </div>
-              <p>Debugging helper</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  dumpBeachline : <span class="hljs-function"><span class="hljs-params">(y)</span> -&gt;</span>
+      cell.closeMe = <span class="hljs-literal">false</span>
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr>
+<p>Debugging helper</p></div></div><div class="code"><div class="wrapper">  dumpBeachline : <span class="hljs-function"><span class="hljs-params">(y)</span> -&gt;</span>
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Voronoi.dumpBeachline(%f) &gt; Beachsections, from left to right:'</span>, y)
-    <span class="hljs-keyword">if</span> !@beachline
+    <span class="hljs-keyword">if</span> !<span class="hljs-property">@beachline</span>
       <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'  None'</span>)
     
     <span class="hljs-keyword">else</span> 
-      bs = @beachline.getFirst(@beachline.root)
+      bs = <span class="hljs-property">@beachline</span>.getFirst(<span class="hljs-property">@beachline</span>.root)
       <span class="hljs-keyword">while</span> bs
-        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'  site %d: xl: %f, xr: %f'</span>, bs.site.voronoiId, @leftBreakPoint(bs, y), @rightBreakPoint(bs, y))
-        bs = bs.rbNext</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-128">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-128">&#182;</a>
-              </div>
-              <hr>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-129">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-129">&#182;</a>
-              </div>
-              <p>Helper: Is Segment - returns true if this site is a segment endpoint</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  isSegment : <span class="hljs-function"><span class="hljs-params">(site)</span> -&gt;</span>
-    <span class="hljs-keyword">for</span> edge <span class="hljs-keyword">in</span> @segments
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'  site %d: xl: %f, xr: %f'</span>, bs.site.voronoiId, <span class="hljs-property">@leftBreakPoint</span>(bs, y), <span class="hljs-property">@rightBreakPoint</span>(bs, y))
+        bs = bs.rbNext
+       
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr>
+<p>Helper: Is Segment - returns true if this site is a segment endpoint</p></div></div><div class="code"><div class="wrapper">  isSegment : <span class="hljs-function"><span class="hljs-params">(site)</span> -&gt;</span>
+    <span class="hljs-keyword">for</span> edge <span class="hljs-keyword">in</span> <span class="hljs-property">@segments</span>
       <span class="hljs-keyword">if</span> site <span class="hljs-keyword">is</span> edge[<span class="hljs-number">0</span>] <span class="hljs-keyword">or</span> site <span class="hljs-keyword">is</span> edge[<span class="hljs-number">1</span>]
         <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
-    <span class="hljs-literal">false</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-130">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-130">&#182;</a>
-              </div>
-              <hr>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-131">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-131">&#182;</a>
-              </div>
-              <p>Helper: Quantize sites</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-132">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-132">&#182;</a>
-              </div>
-              <p>rhill 2013-10-12:
+    <span class="hljs-literal">false</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr>
+<p>Helper: Quantize sites</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>rhill 2013-10-12:
 This is to solve https:#github.com/gorhill/Javascript-Voronoi/issues/15
 Since not all users will end up using the kind of coord values which would
 cause the issue to arise, I chose to let the user decide whether or not
 he should sanitize his coord values through this helper. This way, for
 those users who uses coord values which are known to be fine, no overhead is
-added.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  quantizeSites : <span class="hljs-function"><span class="hljs-params">(sites)</span> -&gt;</span>
-    e = @epsilon
+added.</p></div></div><div class="code"><div class="wrapper">  quantizeSites : <span class="hljs-function"><span class="hljs-params">(sites)</span> -&gt;</span>
+    e = <span class="hljs-property">@epsilon</span>
     n = sites.length
     site
 
     <span class="hljs-keyword">while</span> n--
       site = sites[n]
       site.x = Math.floor(site.x / e) * e
-      site.y = Math.floor(site.y / e) * e</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-133">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-133">&#182;</a>
-              </div>
-              <hr>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-134">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-134">&#182;</a>
-              </div>
-              <p>Helper: Recycle diagram: all vertex, edge and cell objects are
-“surrendered” to the Voronoi object for reuse.
+      site.y = Math.floor(site.y / e) * e
+  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr>
+<p>Helper: Recycle diagram: all vertex, edge and cell objects are
+&quot;surrendered&quot; to the Voronoi object for reuse.
 TODO: rhill-voronoi-core v2: more performance to be gained
-when I change the semantic of what is returned.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  recycle : <span class="hljs-function"><span class="hljs-params">(diagram)</span> -&gt;</span>
+when I change the semantic of what is returned.</p></div></div><div class="code"><div class="wrapper">  recycle : <span class="hljs-function"><span class="hljs-params">(diagram)</span> -&gt;</span>
     <span class="hljs-keyword">if</span> diagram
       <span class="hljs-keyword">if</span>  diagram <span class="hljs-keyword">instanceof</span> Diagram
-        @toRecycle = diagram
+        <span class="hljs-property">@toRecycle</span> = diagram
       
       <span class="hljs-keyword">else</span>
-        <span class="hljs-keyword">throw</span> <span class="hljs-string">'Voronoi.recycleDiagram() &gt; Need a Diagram object.'</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-135">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-135">&#182;</a>
-              </div>
-              <hr>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-136">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-136">&#182;</a>
-              </div>
-              <p>Top-level Fortune loop</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-137">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-137">&#182;</a>
-              </div>
-              <p>rhill 2011-05-19:
+        <span class="hljs-keyword">throw</span> <span class="hljs-string">'Voronoi.recycleDiagram() &gt; Need a Diagram object.'</span>
+ </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><hr>
+<p>Top-level Fortune loop</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>rhill 2011-05-19:
   Voronoi sites are kept client-side now, to allow
   user to freely modify content. At compute time,
-  <em>references</em> to sites are copied locally.</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-138">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-138">&#182;</a>
-              </div>
-              <p>sites is a list of Vec2
+  <em>references</em> to sites are copied locally.</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>sites is a list of Vec2
 bbox is a boundingbox object
-segments is a list of pairs of pointers to Vec2 in sites</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  compute : <span class="hljs-function"><span class="hljs-params">(sites, bbox, segments)</span> -&gt;</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-139">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-139">&#182;</a>
-              </div>
-              <p>to measure execution time</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    startTime = <span class="hljs-keyword">new</span> Date()</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-140">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-140">&#182;</a>
-              </div>
-              <p>init internal state</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    @reset()</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-141">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-141">&#182;</a>
-              </div>
-              <p>Oni Addition. Keep a record of the segments</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    @segments = segments</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-142">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-142">&#182;</a>
-              </div>
-              <p>any diagram data available for recycling?
-I do that here so that this is included in execution time</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> @toRecycle
-      @vertexJunkyard = @vertexJunkyard.concat(@toRecycle.vertices)
-      @edgeJunkyard = @edgeJunkyard.concat(@toRecycle.edges)
-      @cellJunkyard = @cellJunkyard.concat(@toRecycle.cells)
-      @toRecycle = <span class="hljs-literal">null</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-143">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-143">&#182;</a>
-              </div>
-              <p>Initialize site event queue</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    siteEvents = sites.slice(<span class="hljs-number">0</span>)
+segments is a list of pairs of pointers to Vec2 in sites</p></div></div><div class="code"><div class="wrapper">  compute : <span class="hljs-function"><span class="hljs-params">(sites, bbox, segments)</span> -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>to measure execution time</p></div></div><div class="code"><div class="wrapper">    startTime = <span class="hljs-keyword">new</span> Date()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>init internal state</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-property">@reset</span>()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Oni Addition. Keep a record of the segments</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-property">@segments</span> = segments</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>any diagram data available for recycling?
+I do that here so that this is included in execution time</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> <span class="hljs-property">@toRecycle</span>
+      <span class="hljs-property">@vertexJunkyard</span> = <span class="hljs-property">@vertexJunkyard</span>.concat(<span class="hljs-property">@toRecycle</span>.vertices)
+      <span class="hljs-property">@edgeJunkyard</span> = <span class="hljs-property">@edgeJunkyard</span>.concat(<span class="hljs-property">@toRecycle</span>.edges)
+      <span class="hljs-property">@cellJunkyard</span> = <span class="hljs-property">@cellJunkyard</span>.concat(<span class="hljs-property">@toRecycle</span>.cells)
+      <span class="hljs-property">@toRecycle</span> = <span class="hljs-literal">null</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Initialize site event queue</p></div></div><div class="code"><div class="wrapper">    siteEvents = sites.slice(<span class="hljs-number">0</span>)
     siteEvents.sort( <span class="hljs-function"><span class="hljs-params">(a,b)</span> -&gt;</span>
       r = b.y - a.y
       <span class="hljs-keyword">if</span> r
         <span class="hljs-keyword">return</span> r
       <span class="hljs-keyword">return</span> b.x - a.x
-    )</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-144">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-144">&#182;</a>
-              </div>
-              <p>process queue</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    site = siteEvents.pop()
+    )</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>process queue</p></div></div><div class="code"><div class="wrapper">    site = siteEvents.pop()
     siteid = <span class="hljs-number">0</span>
     xsitex  <span class="hljs-comment"># to avoid duplicate sites</span>
     xsitey
-    cells = @cells
-    circle</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-145">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-145">&#182;</a>
-              </div>
-              <p>main loop</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">loop</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-146">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-146">&#182;</a>
-              </div>
-              <p>we need to figure whether we handle a site or circle event
+    cells = <span class="hljs-property">@cells</span>
+    circle</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>main loop</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">loop</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>we need to figure whether we handle a site or circle event
 for this we find out if there is a site event and it is
-‘earlier’ than the circle event</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      circle = @firstCircleEvent</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-147">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-147">&#182;</a>
-              </div>
-              <p>add beach section</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> (site <span class="hljs-keyword">and</span> (!circle <span class="hljs-keyword">or</span> site.y &lt; circle.y <span class="hljs-keyword">or</span> (site.y == circle.y <span class="hljs-keyword">and</span> site.x &lt; circle.x)))</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-148">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-148">&#182;</a>
-              </div>
-              <p>only if site is not a duplicate</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">if</span> site.x != xsitex || site.y != xsitey
-          cells[siteid] = @createCell(site)
-          site.voronoiId = siteid++</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-149">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-149">&#182;</a>
-              </div>
-              <p>then create a beachsection for that site</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>          @addBeachsection(site)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-150">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-150">&#182;</a>
-              </div>
-              <p>remember last site coords to detect duplicate</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>          xsitey = site.y
+&#39;earlier&#39; than the circle event</p></div></div><div class="code"><div class="wrapper">      circle = <span class="hljs-property">@firstCircleEvent</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>add beach section</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> (site <span class="hljs-keyword">and</span> (!circle <span class="hljs-keyword">or</span> site.y &lt; circle.y <span class="hljs-keyword">or</span> (site.y == circle.y <span class="hljs-keyword">and</span> site.x &lt; circle.x)))</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>only if site is not a duplicate</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">if</span> site.x != xsitex || site.y != xsitey
+          cells[siteid] = <span class="hljs-property">@createCell</span>(site)
+          site.voronoiId = siteid++
+          </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>then create a beachsection for that site</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-property">@addBeachsection</span>(site)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>remember last site coords to detect duplicate</p></div></div><div class="code"><div class="wrapper">          xsitey = site.y
           xsitex = site.x
       
 
-        site = siteEvents.pop()</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-151">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-151">&#182;</a>
-              </div>
-              <p>remove beach section</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> circle
-        @removeBeachsection(circle.arc)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-152">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-152">&#182;</a>
-              </div>
-              <p>all done, quit</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">else</span>
-        <span class="hljs-keyword">break</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-153">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-153">&#182;</a>
-              </div>
-              <p>wrapping-up:
+        site = siteEvents.pop()
+        </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>remove beach section</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> circle
+        <span class="hljs-property">@removeBeachsection</span>(circle.arc)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>all done, quit</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">else</span>
+        <span class="hljs-keyword">break</span>
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>wrapping-up:
   connect dangling edges to bounding box
   cut edges as per bounding box
   discard edges completely outside bounding box
-  discard edges which are point-like</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    @clipEdges(bbox)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-154">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-154">&#182;</a>
-              </div>
-              <p>  add missing edges in order to close opened cells</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    @closeCells(bbox)</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-155">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-155">&#182;</a>
-              </div>
-              <p>to measure execution time</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    stopTime = <span class="hljs-keyword">new</span> Date()</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-156">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-156">&#182;</a>
-              </div>
-              <p>prepare return values</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    diagram = <span class="hljs-keyword">new</span> Diagram()
-    diagram.cells = @cells
-    diagram.edges = @edges
-    diagram.vertices = @vertices
-    diagram.execTime = stopTime.getTime()-startTime.getTime()</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-157">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-157">&#182;</a>
-              </div>
-              <p>clean up</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    @reset()
+  discard edges which are point-like</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-property">@clipEdges</span>(bbox)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>  add missing edges in order to close opened cells</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-property">@closeCells</span>(bbox)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>to measure execution time</p></div></div><div class="code"><div class="wrapper">    stopTime = <span class="hljs-keyword">new</span> Date()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>prepare return values</p></div></div><div class="code"><div class="wrapper">    diagram = <span class="hljs-keyword">new</span> Diagram()
+    diagram.cells = <span class="hljs-property">@cells</span>
+    diagram.edges = <span class="hljs-property">@edges</span>
+    diagram.vertices = <span class="hljs-property">@vertices</span>
+    diagram.execTime = stopTime.getTime()-startTime.getTime()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>clean up</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-property">@reset</span>()
 
     <span class="hljs-keyword">return</span> diagram
 
 <span class="hljs-built_in">module</span>.exports =
-  Voronoi : Voronoi</pre></div></div>
-            
-        </li>
-        
-    </ul>
-  </div>
-</body>
-</html>
-
+  Voronoi : Voronoi</div></div></div></div></body></html>

@@ -1,20 +1,20 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                  .__   
+     _________  __|  |  
+     \____ \  \/  /  |  
+     |  |_> >    <|  |__
+     |   __/__/\_ \____/
+     |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
-
-http://www.flipcode.com/documents/matrfaq.html
-http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/index.htm
+    
+    http://www.flipcode.com/documents/matrfaq.html
+    http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/index.htm
 ###
 
 # The maths functons in PXLjs work as follows;
@@ -66,7 +66,7 @@ degToRad = (a) ->
   a * 0.017453292523928
 
 
-### Vec2 ###
+# ## Vec2
 # A two component vector with x,y
 
 class Vec2
@@ -245,7 +245,7 @@ class Vec2
     @
 
 
-### Edge2 ###
+# ## Edge2
 # A container for two vertices, ordered as start and finish - directed
 
 class Edge2
@@ -274,7 +274,7 @@ class Edge2
     @end.dist @start
 
 
-### HalfEdge2 ###
+# ## HalfEdge2
 # **Incomplete**
 # An edge structure that points to the two faces it is connected to
 # start / end are vertices and @face0, @face1 are either triangles
@@ -288,7 +288,7 @@ class HalfEdge2 extends Edge2
     @
 
 
-### Vec3 ###
+# ## Vec3
 # A 3 dimension vector (x,y,z)
 class Vec3
 
@@ -518,7 +518,7 @@ class Vec3
   set : (@x, @y, @z) ->
     @
 
-### Vec4 ###
+# ## Vec4
 # A four dimensional vector (x,y,z,w)
 
 class Vec4
@@ -734,7 +734,7 @@ class Vec4
   set : (@x, @y, @z, @w) ->
     @
 
-### Matrix2 ###
+# ## Matrix2
 # A 2x2 matrix in Column Major Format
 
 class Matrix2
@@ -930,7 +930,7 @@ class Matrix2
     @
 
 
-### Matrix3 ###
+# ## Matrix3
 # A 3x3 matrix in Column Major Format
 
 class Matrix3
@@ -1195,7 +1195,7 @@ class Matrix3
     @mult(r)
     @
 
-### Matrix4 ###
+# ## Matrix4
 # Our 4x4 matrix
 
 class Matrix4
@@ -1628,7 +1628,7 @@ class Matrix4
     @
 
 
-### Quaternion ###
+# ## Quaternion
 # A quaternion to deal with all our rotations
 
 class Quaternion
@@ -2185,8 +2185,6 @@ class Quaternion
         @z = b
 
     @
-
-
 
 module.exports = 
   Vec2 : Vec2

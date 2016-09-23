@@ -1,17 +1,16 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
-
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 Previously we had queues and load items here but it seemed better to just use promises
 somewhat more intelligently. At some point we'll need to figure out filesizes and such from
@@ -25,7 +24,7 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
 {PXLWarning, PXLError, PXLLog} = require '../util/log'
 
 
-### Promise ###
+# ## Promise
 # A class to handle the loading of many items asynchronously
 # Promises seem popular but I thought I'd include one anyway as its good
 # to learn and its not in all browsers. This one presents the results in

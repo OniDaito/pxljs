@@ -1,17 +1,16 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
-
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 - Resources
 
@@ -38,7 +37,7 @@ if (window.File && window.FileReader && window.FileList && window.Blob) {
 {Signal} = require './signal'
 {PXLWarning, PXLError, PXLLog} = require './log'
 
-### Request ###
+# ## Request
 # A class that makes an XMLHTTPRequest for us, given a url
 # One important thing that request does is to hold the current
 # GL context for us so that when loads complete, we can go back

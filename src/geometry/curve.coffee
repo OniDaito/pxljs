@@ -1,23 +1,22 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
-
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 ###
 
 {Vec2, Vec3, PI, degToRad} = require '../math/math'
 
-### CurveLine ###
+# ## CurveLine
 # Base class for a curve that is considered drawable to the screen as oppose
 # to a purely mathematical one.
 # Pass in a mathematical curve such as a quadratic bezier and this will generate

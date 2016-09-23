@@ -1,68 +1,17 @@
-<!DOCTYPE html>
-
-<html>
-<head>
-  <title>md5.coffee</title>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
-  <link rel="stylesheet" media="all" href="../docco.css" />
-</head>
-<body>
-  <div id="container">
-    <div id="background"></div>
-    
-    <ul class="sections">
-        
-          <li id="title">
-              <div class="annotation">
-                  <h1>md5.coffee</h1>
-              </div>
-          </li>
-        
-        
-        
-        <li id="section-1">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-1">&#182;</a>
-              </div>
-              <h2 id="about">ABOUT</h2>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>             .__   
+<!DOCTYPE html><html lang="en"><head><title>import/md5</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content="../"><meta name="groc-document-path" content="import/md5"><meta name="groc-project-path" content="src/import/md5.coffee"><link rel="stylesheet" type="text/css" media="all" href="../assets/style.css"><script type="text/javascript" src="../assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/import/md5.coffee</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><pre><code>             .__   
 _________  __|  |  
 \____ \  \/  /  |  
 |  |_&gt; &gt;    &lt;|  |__
-|   __<span class="hljs-regexp">/__/</span>\_ \____/
+|   __/__/\_ \____/
 |__|        \/     js
 
-                    PXL.js
-                    Benjamin Blundell - ben@pxljs.com
-                    http:<span class="hljs-regexp">//</span>pxljs.com
+                PXL.js
+                Benjamin Blundell - ben@pxljs.com
+                http://pxljs.com
 
-This software <span class="hljs-keyword">is</span> released under the MIT Licence. See LICENCE.txt <span class="hljs-keyword">for</span> details
-
-The MD5 Model format written <span class="hljs-keyword">by</span> ID Software <span class="hljs-keyword">for</span> Doom3
-
-http:<span class="hljs-regexp">//</span>www<span class="hljs-number">.3</span>dgep.com/loading-<span class="hljs-keyword">and</span>-animating-md5-models-with-opengl</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-2">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-2">&#182;</a>
-              </div>
-              <p>##</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-{PXLWarning, PXLError, PXLLog} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../util/log'</span>
+This software is released under the MIT Licence. See LICENCE.txt for details</code></pre>
+<p>The MD5 Model format written by ID Software for Doom3</p>
+<p><a href="http://www.3dgep.com/loading-and-animating-md5-models-with-opengl">http://www.3dgep.com/loading-and-animating-md5-models-with-opengl</a></p></div></div><div class="code"><div class="wrapper">{PXLWarning, PXLError, PXLLog} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../util/log'</span>
 {TriangleMesh, Triangle, Vertex} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../geometry/primitive'</span>
 {Vec4, Vec3, Vec2, Quaternion, Matrix4, Matrix3} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../math/math'</span>
 {Node} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../core/node'</span>
@@ -71,139 +20,48 @@ http:<span class="hljs-regexp">//</span>www<span class="hljs-number">.3</span>dg
 {Request} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../util/request'</span>
 {PhongMaterial} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../material/phong'</span>
 {BasicColourMaterial} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../material/basic'</span>
-{Skeleton, Bone, Skin, SkinWeight, SkinIndex} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../animation/skeleton'</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-3">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
-              </div>
-              <h2 id="md5model">MD5Model</h2>
+{Skeleton, Bone, Skin, SkinWeight, SkinIndex} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../animation/skeleton'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="md5model">MD5Model</h2>
 <p>Loads an MD5 Model creating a set of nodes, materials and a skeleton
 MD5 is one of the widely used ID Software Model formats
-Regarding materials, for now we just load the nearest texture in the directory</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MD5Model</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Node</span></span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-4">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
-              </div>
-              <p><strong>@constructor</strong> for OBJ</p>
+Regarding materials, for now we just load the nearest texture in the directory</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MD5Model</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Node</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>@constructor</strong> for OBJ</p>
 <ul>
 <li><strong>url</strong> - a String - Required</li>
 <li><strong>promise</strong> - a Promise</li>
 <li><strong>params</strong> - NOT CURRENTLY USED
 TODO - We may wish to consider how this fits with queue and loading items :O
 TODO - Remove the queue once its finished with?</li>
-</ul>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  constructor : <span class="hljs-function"><span class="hljs-params">(@url, @promise, @params)</span> -&gt;</span>
+</ul></div></div><div class="code"><div class="wrapper">  constructor : <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@url</span>, <span class="hljs-property">@promise</span>, <span class="hljs-property">@params</span>)</span> -&gt;</span>
     <span class="hljs-keyword">super</span>()
-    @version = <span class="hljs-string">""</span>
-    @num_joints = <span class="hljs-string">""</span>
-    @num_meshes = <span class="hljs-string">""</span>
+    <span class="hljs-property">@version</span> = <span class="hljs-string">""</span>
+    <span class="hljs-property">@num_joints</span> = <span class="hljs-string">""</span>
+    <span class="hljs-property">@num_meshes</span> = <span class="hljs-string">""</span>
 
-    @add <span class="hljs-keyword">new</span> Skeleton() <span class="hljs-comment"># as this is a node, it ends up added at the node level</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-5">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
-              </div>
-              <p>Three promises, chained in order</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    promise_textures = <span class="hljs-keyword">new</span> Promise()
+    <span class="hljs-property">@add</span> <span class="hljs-keyword">new</span> Skeleton() <span class="hljs-comment"># as this is a node, it ends up added at the node level</span>
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Three promises, chained in order</p></div></div><div class="code"><div class="wrapper">    promise_textures = <span class="hljs-keyword">new</span> Promise()
     promise_data = <span class="hljs-keyword">new</span> Promise()
-    promise_main = <span class="hljs-keyword">new</span> Promise()</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-6">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
-              </div>
-              <p>As Promise data is resolved after promise textures, we just have one here</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    promise_main.<span class="hljs-keyword">when</span>(promise_data).<span class="hljs-keyword">then</span> () =&gt;
-      @promise.resolve()
+    promise_main = <span class="hljs-keyword">new</span> Promise()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>As Promise data is resolved after promise textures, we just have one here</p></div></div><div class="code"><div class="wrapper">    promise_main.<span class="hljs-keyword">when</span>(promise_data).<span class="hljs-keyword">then</span> () =&gt;
+      <span class="hljs-property">@promise</span>.resolve()
 
 
     promise_textures.<span class="hljs-keyword">then</span> (text_data) =&gt;
-      @_parse_data(text_data)
+      <span class="hljs-property">@_parse_data</span>(text_data)
       promise_data.resolve() <span class="hljs-comment"># Assuming parse_data never goes wrong :P</span>
 <span class="hljs-function">
     <span class="hljs-title">load_data_promise</span> = <span class="hljs-params">()</span> =&gt;</span>
-      r = <span class="hljs-keyword">new</span> Request(@url)  
+      r = <span class="hljs-keyword">new</span> Request(<span class="hljs-property">@url</span>)  
       r.get (data) =&gt;
-        @_parse_materials(data, promise_textures)
+        <span class="hljs-property">@_parse_materials</span>(data, promise_textures)
                     
 
-    <span class="hljs-keyword">if</span> @promise?</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
-              </div>
-              <p>Create a set of promises</p>
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@promise</span>?</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create a set of promises</p></div></div><div class="code"><div class="wrapper">      load_data_promise()
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      load_data_promise()
-
-    <span class="hljs-keyword">else</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-8">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
-              </div>
-              <p>Make a synchronous get request</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-function">      <span class="hljs-title">onerror</span> = <span class="hljs-params">(result)</span> =&gt;</span>
+    <span class="hljs-keyword">else</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Make a synchronous get request</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function">      <span class="hljs-title">onerror</span> = <span class="hljs-params">(result)</span> =&gt;</span>
         PXLError <span class="hljs-string">"Loading Model: "</span> + url + <span class="hljs-string">" "</span> + result
 
-      r = <span class="hljs-keyword">new</span> Request(@url)
+      r = <span class="hljs-keyword">new</span> Request(<span class="hljs-property">@url</span>)
       r.get( <span class="hljs-function"><span class="hljs-params">(data)</span> =&gt;</span>
-        @_parse_materials_sync(data)
-        @_parse_data(data)
+        <span class="hljs-property">@_parse_materials_sync</span>(data)
+        <span class="hljs-property">@_parse_data</span>(data)
       ,onerror,<span class="hljs-literal">true</span>)
 
     @
@@ -217,163 +75,44 @@ TODO - Remove the queue once its finished with?</li>
 
 
   _parse_materials_sync : <span class="hljs-function"><span class="hljs-params">(text_data)</span> -&gt;</span>
-    @</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-9">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
-              </div>
-              <p>This function is tricky with all the promises it creates. It creates one master promise
+    @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>This function is tricky with all the promises it creates. It creates one master promise
 and then several sub promises with get requests in order to go and load the various images
-we need to create our materials.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-  _parse_materials : <span class="hljs-function"><span class="hljs-params">(text_data, promise_textures)</span> -&gt;</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-10">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
-              </div>
-              <p>Hunt fot any shader lines</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    lines = text_data.split(<span class="hljs-string">"\n"</span>);
+we need to create our materials.</p></div></div><div class="code"><div class="wrapper">  _parse_materials : <span class="hljs-function"><span class="hljs-params">(text_data, promise_textures)</span> -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Hunt fot any shader lines</p></div></div><div class="code"><div class="wrapper">    lines = text_data.split(<span class="hljs-string">"\n"</span>);
     midx = <span class="hljs-number">0</span>
 
-    base_path = @url[<span class="hljs-number">0.</span>.@url.lastIndexOf(<span class="hljs-string">"/"</span>)<span class="hljs-number">-1</span>]</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-11">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
-              </div>
-              <p>Temporary, clean up later</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    _material_promises = []
-    @_material_by_name = {}
+    base_path = <span class="hljs-property">@url</span>[<span class="hljs-number">0.</span>.<span class="hljs-property">@url</span>.lastIndexOf(<span class="hljs-string">"/"</span>)-<span class="hljs-number">1</span>]</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Temporary, clean up later</p></div></div><div class="code"><div class="wrapper">    _material_promises = []
+    <span class="hljs-property">@_material_by_name</span> = {}
       
-    <span class="hljs-keyword">for</span> midx <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.lines.length<span class="hljs-number">-1</span>]
+    <span class="hljs-keyword">for</span> midx <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.lines.length-<span class="hljs-number">1</span>]
       line = lines[midx]
 
-      <span class="hljs-keyword">if</span> line.indexOf(<span class="hljs-string">"shader"</span>) != <span class="hljs-number">-1</span>
+      <span class="hljs-keyword">if</span> line.indexOf(<span class="hljs-string">"shader"</span>) != -<span class="hljs-number">1</span>
         lastquote = line.lastIndexOf(<span class="hljs-string">'"'</span>)
         firstquote = line.indexOf(<span class="hljs-string">'"'</span>)
-        material_path = line[firstquote+<span class="hljs-number">1.</span>.lastquote<span class="hljs-number">-1</span>]</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-12">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-12">&#182;</a>
-              </div>
-              <p>Cheat a bit here - assuming there is a tga of the same name as the shader, for now
-TODO  - Will need to change this sooner </p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        material_url = base_path + <span class="hljs-string">"/"</span> + material_path[material_path.lastIndexOf(<span class="hljs-string">"/"</span>)+<span class="hljs-number">1.</span>.] + <span class="hljs-string">".png"</span>
+        material_path = line[firstquote+<span class="hljs-number">1.</span>.lastquote-<span class="hljs-number">1</span>]
+        </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Cheat a bit here - assuming there is a tga of the same name as the shader, for now
+TODO  - Will need to change this sooner </p></div></div><div class="code"><div class="wrapper">        material_url = base_path + <span class="hljs-string">"/"</span> + material_path[material_path.lastIndexOf(<span class="hljs-string">"/"</span>)+<span class="hljs-number">1.</span>.] + <span class="hljs-string">".png"</span>
 
         p = <span class="hljs-keyword">new</span> Promise()
-        _material_promises.push p</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-13">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
-              </div>
-              <p>A closure with all the data we need to setup this material</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-function">        <span class="hljs-title">onsuccess_closure</span> = <span class="hljs-params">()</span> =&gt;</span>
+        _material_promises.push p
+        </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>A closure with all the data we need to setup this material</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function">        <span class="hljs-title">onsuccess_closure</span> = <span class="hljs-params">()</span> =&gt;</span>
           _p = p
           _material_path = material_path
-          __material_by_name = @_material_by_name
+          __material_by_name = <span class="hljs-property">@_material_by_name</span>
           
           <span class="hljs-keyword">return</span> (_texture) =&gt;
             <span class="hljs-keyword">if</span> PXL.Context.debug
-              PXLLog <span class="hljs-string">"MD5Model Loaded a Texture: "</span> + _material_path</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-14">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
-              </div>
-              <p>default to phong with low specular
-TODO Eventually we’ll do this properly</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>            wh = <span class="hljs-keyword">new</span> RGB.WHITE()
+              PXLLog <span class="hljs-string">"MD5Model Loaded a Texture: "</span> + _material_path</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>default to phong with low specular
+TODO Eventually we&#39;ll do this properly</p></div></div><div class="code"><div class="wrapper">            wh = <span class="hljs-keyword">new</span> RGB.WHITE()
             spec = <span class="hljs-keyword">new</span> RGB.BLACK() 
             __material_by_name[_material_path] = <span class="hljs-keyword">new</span> PhongMaterial wh, _texture, spec 
          
-            _p.resolve()</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-15">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
-              </div>
-              <p>Closure for when we cant load our texture - default to a white texture</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-function">        <span class="hljs-title">onerror_closure</span> = <span class="hljs-params">()</span> =&gt;</span>
+            _p.resolve()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Closure for when we cant load our texture - default to a white texture</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function">        <span class="hljs-title">onerror_closure</span> = <span class="hljs-params">()</span> =&gt;</span>
           _p = p
           _material_path = material_path
-          __material_by_name = @_material_by_name
+          __material_by_name = <span class="hljs-property">@_material_by_name</span>
 
-          <span class="hljs-keyword">return</span> (msg) =&gt;</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-16">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
-              </div>
-              <p>ignore and use a normal material</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">if</span> PXL.Context.debug
+          <span class="hljs-keyword">return</span> (msg) =&gt;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>ignore and use a normal material</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-keyword">if</span> PXL.Context.debug
               PXLLog <span class="hljs-string">"MD5Model Failed to load a Texture: "</span> + _material_path
 
             wh = <span class="hljs-keyword">new</span> PXL.Colour.RGB <span class="hljs-number">1.0</span>,<span class="hljs-number">0.0</span>,<span class="hljs-number">0.0</span>
@@ -381,118 +120,46 @@ TODO Eventually we’ll do this properly</p>
 
             _p.resolve()
 
-        PXL.GL.textureFromURL material_url, onsuccess_closure(), onerror_closure()</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-17">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
-              </div>
-              <p>Grab all the textures we need - if they dont exist, replace with a 
-white plain material for now. Eventually we’ll check a material file</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre> 
+        PXL.GL.textureFromURL material_url, onsuccess_closure(), onerror_closure()
+                    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Grab all the textures we need - if they dont exist, replace with a 
+white plain material for now. Eventually we&#39;ll check a material file</p></div></div><div class="code"><div class="wrapper"> 
     promise_materials = <span class="hljs-keyword">new</span> Promise()
     promise_materials.<span class="hljs-keyword">when</span>.apply(promise_materials, _material_promises).<span class="hljs-keyword">then</span> () =&gt;
       promise_textures.resolve(text_data)
   
     @
 
-  _parse_data: <span class="hljs-function"><span class="hljs-params">(text_data)</span> -&gt;</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-18">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
-              </div>
-              <p>Could be heavy if the file is big :S</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    lines = text_data.split(<span class="hljs-string">"\n"</span>);
-    midx = <span class="hljs-number">0</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-19">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
-              </div>
-              <p>Create a temp joints array as we need to compute vertices with
-them at the end of each mesh</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  
+  <span class="hljs-attribute">_parse_data</span>: <span class="hljs-function"><span class="hljs-params">(text_data)</span> -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Could be heavy if the file is big :S</p></div></div><div class="code"><div class="wrapper">    lines = text_data.split(<span class="hljs-string">"\n"</span>);
+    midx = <span class="hljs-number">0</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create a temp joints array as we need to compute vertices with
+them at the end of each mesh</p></div></div><div class="code"><div class="wrapper">  
 
     <span class="hljs-keyword">while</span> midx &lt; lines.length
 
       line = lines[midx]
 
       <span class="hljs-keyword">if</span> line[<span class="hljs-number">0.</span><span class="hljs-number">.9</span>] == <span class="hljs-string">"MD5Version"</span>
-        @version = line[<span class="hljs-number">11.</span>.]
+        <span class="hljs-property">@version</span> = line[<span class="hljs-number">11.</span>.]
 
       <span class="hljs-keyword">if</span> line[<span class="hljs-number">0.</span><span class="hljs-number">.8</span>] == <span class="hljs-string">"numJoints"</span>
-        @num_joints = parseInt(line[<span class="hljs-number">10.</span>.])
+        <span class="hljs-property">@num_joints</span> = parseInt(line[<span class="hljs-number">10.</span>.])
 
       <span class="hljs-keyword">if</span> line[<span class="hljs-number">0.</span><span class="hljs-number">.8</span>] == <span class="hljs-string">"numMeshes"</span>
-        @num_meshes == parseInt(line[<span class="hljs-number">10.</span>.])</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-20">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
-              </div>
-              <p>Start looping over the joints - the bones basically</p>
+        <span class="hljs-property">@num_meshes</span> == parseInt(line[<span class="hljs-number">10.</span>.])
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> line[<span class="hljs-number">0.</span><span class="hljs-number">.7</span>] == <span class="hljs-string">"joints {"</span>
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Start looping over the joints - the bones basically</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> line[<span class="hljs-number">0.</span><span class="hljs-number">.7</span>] == <span class="hljs-string">"joints {"</span>
   
-        <span class="hljs-keyword">for</span> jidx <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.@num_joints<span class="hljs-number">-1</span>]
+        <span class="hljs-keyword">for</span> jidx <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.<span class="hljs-property">@num_joints</span>-<span class="hljs-number">1</span>]
 
           jline = lines[midx + jidx + <span class="hljs-number">1</span>]
 
           lastquote = jline.lastIndexOf(<span class="hljs-string">'"'</span>)
-          name = jline[jline.indexOf(<span class="hljs-string">'"'</span>)+<span class="hljs-number">1.</span>.lastquote<span class="hljs-number">-1</span>]
+          name = jline[jline.indexOf(<span class="hljs-string">'"'</span>)+<span class="hljs-number">1.</span>.lastquote-<span class="hljs-number">1</span>]
           openbrace = jline.indexOf(<span class="hljs-string">'('</span>)
           closebrace = jline.indexOf(<span class="hljs-string">')'</span>)
 
-          parent_idx = parseInt(jline[lastquote+<span class="hljs-number">1.</span>.openbrace<span class="hljs-number">-1</span>])
-          parent = <span class="hljs-literal">undefined</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-21">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
-              </div>
-              <p>I believe all parents are listed in MD5 before their children</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>          <span class="hljs-keyword">if</span> parent_idx &gt; <span class="hljs-number">-1</span>
-            parent = @skeleton.getBone parent_idx
+          parent_idx = parseInt(jline[lastquote+<span class="hljs-number">1.</span>.openbrace-<span class="hljs-number">1</span>])
+          parent = <span class="hljs-literal">undefined</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>I believe all parents are listed in MD5 before their children</p></div></div><div class="code"><div class="wrapper">          <span class="hljs-keyword">if</span> parent_idx &gt; -<span class="hljs-number">1</span>
+            parent = <span class="hljs-property">@skeleton</span>.getBone parent_idx
 
           tokens = jline[openbrace..closebrace].split(<span class="hljs-string">" "</span>)
           p0 = parseFloat tokens[<span class="hljs-number">1</span>]
@@ -509,121 +176,43 @@ them at the end of each mesh</p>
           r1 = parseFloat tokens[<span class="hljs-number">2</span>]
           r2 = parseFloat tokens[<span class="hljs-number">3</span>]
 
-          rotation = <span class="hljs-keyword">new</span> Quaternion r0, r1, r2, @_computeW(r0,r1,r2)
+          rotation = <span class="hljs-keyword">new</span> Quaternion r0, r1, r2, <span class="hljs-property">@_computeW</span>(r0,r1,r2)
           rotation.normalize()
 
           bone = <span class="hljs-keyword">new</span> Bone name, jidx, parent, rotation, position
           
-          @skeleton.addBone bone
+          <span class="hljs-property">@skeleton</span>.addBone bone
  
-        midx += @num_joints</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-22">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
-              </div>
-              <p>Now we actually create the seperate meshes (one material per mesh we suspect)
+        midx += <span class="hljs-property">@num_joints</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Now we actually create the seperate meshes (one material per mesh we suspect)
 MD5 format calls the material a shader which is probably correct ;)
 We ignore shader for now but this requires loading external files so thats
-definitely a pre-parse step :S</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-      <span class="hljs-keyword">if</span> line[<span class="hljs-number">0.</span><span class="hljs-number">.5</span>] == <span class="hljs-string">"mesh {"</span>
+definitely a pre-parse step :S</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">if</span> line[<span class="hljs-number">0.</span><span class="hljs-number">.5</span>] == <span class="hljs-string">"mesh {"</span>
         
-        tline = lines[midx]</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-23">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
-              </div>
-              <p>Find the mesh for this shader</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">while</span> tline.indexOf(<span class="hljs-string">"shader"</span>) == <span class="hljs-number">-1</span>
+        tline = lines[midx]</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Find the mesh for this shader</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">while</span> tline.indexOf(<span class="hljs-string">"shader"</span>) == -<span class="hljs-number">1</span>
           midx += <span class="hljs-number">1</span>
           tline = lines[midx]
 
-        material_path = tline[tline.indexOf(<span class="hljs-string">'"'</span>)+<span class="hljs-number">1.</span>.tline.lastIndexOf(<span class="hljs-string">'"'</span>)<span class="hljs-number">-1</span>]
+        material_path = tline[tline.indexOf(<span class="hljs-string">'"'</span>)+<span class="hljs-number">1.</span>.tline.lastIndexOf(<span class="hljs-string">'"'</span>)-<span class="hljs-number">1</span>]
 
 
-        <span class="hljs-keyword">while</span> tline.indexOf(<span class="hljs-string">"numverts"</span>) == <span class="hljs-number">-1</span>
+        <span class="hljs-keyword">while</span> tline.indexOf(<span class="hljs-string">"numverts"</span>) == -<span class="hljs-number">1</span>
           midx +=<span class="hljs-number">1</span>
           tline = lines[midx]
 
-        num_verts = parseInt(tline[tline.indexOf(<span class="hljs-string">"numverts"</span>)+<span class="hljs-number">8.</span>.] )</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-24">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
-              </div>
-              <p>Create a subnode for our geometry and material</p>
+        num_verts = parseInt(tline[tline.indexOf(<span class="hljs-string">"numverts"</span>)+<span class="hljs-number">8.</span>.] )</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create a subnode for our geometry and material</p></div></div><div class="code"><div class="wrapper">        current_mesh = <span class="hljs-keyword">new</span> TriangleMesh <span class="hljs-literal">true</span> 
+        current_node = <span class="hljs-keyword">new</span> Node current_mesh</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>We should have all the materials by this point</p></div></div><div class="code"><div class="wrapper">        current_node.material =  <span class="hljs-property">@_material_by_name</span>[material_path] <span class="hljs-keyword">if</span> <span class="hljs-property">@_material_by_name</span>?
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-        current_mesh = <span class="hljs-keyword">new</span> TriangleMesh <span class="hljs-literal">true</span> 
-        current_node = <span class="hljs-keyword">new</span> Node current_mesh</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-25">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
-              </div>
-              <p>We should have all the materials by this point</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        current_node.material =  @_material_by_name[material_path] <span class="hljs-keyword">if</span> @_material_by_name?
-
-        @add current_node</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-26">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-26">&#182;</a>
-              </div>
-              <p>Now loop over the verts, though these arent actual verts - they are indices
+        <span class="hljs-property">@add</span> current_node </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Now loop over the verts, though these arent actual verts - they are indices
 into the data really. First pair is the tex coords - second is the start index
-the next is the count</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
-        temp_verts = []
+the next is the count</p></div></div><div class="code"><div class="wrapper">        temp_verts = []
         
-        <span class="hljs-keyword">for</span> vidx <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.num_verts<span class="hljs-number">-1</span>]
+        <span class="hljs-keyword">for</span> vidx <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.num_verts-<span class="hljs-number">1</span>]
 
           tline = lines[midx + vidx + <span class="hljs-number">1</span>]
 
           openbrace = tline.indexOf(<span class="hljs-string">"("</span>)
           closebrace = tline.indexOf(<span class="hljs-string">")"</span>)
-          idx = parseInt(tline[tline.indexOf(<span class="hljs-string">"vert"</span>)+<span class="hljs-number">1.</span>.openbrace<span class="hljs-number">-1</span>])
+          idx = parseInt(tline[tline.indexOf(<span class="hljs-string">"vert"</span>)+<span class="hljs-number">1.</span>.openbrace-<span class="hljs-number">1</span>])
 
           tokens = tline[openbrace..closebrace].split(<span class="hljs-string">" "</span>)
           u = parseFloat tokens[<span class="hljs-number">1</span>]
@@ -640,47 +229,18 @@ the next is the count</p>
 
           temp_verts.push temp_vert_struct
 
-        midx += num_verts</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-27">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-27">&#182;</a>
-              </div>
-              <p>Now hunt for the number of triangles</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        tline = lines[midx]
-        <span class="hljs-keyword">while</span> tline.indexOf(<span class="hljs-string">"numtris"</span>) == <span class="hljs-number">-1</span>
+        midx += num_verts
+        </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Now hunt for the number of triangles</p></div></div><div class="code"><div class="wrapper">        tline = lines[midx]
+        <span class="hljs-keyword">while</span> tline.indexOf(<span class="hljs-string">"numtris"</span>) == -<span class="hljs-number">1</span>
           midx +=<span class="hljs-number">1</span>
           tline = lines[midx]
 
-        num_tris = parseInt(tline[tline.indexOf(<span class="hljs-string">"numtris"</span>)+<span class="hljs-number">7.</span>.])</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-28">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-28">&#182;</a>
-              </div>
-              <p>Add enough indices for all the points</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.(num_tris*<span class="hljs-number">3</span>)<span class="hljs-number">-1</span>]
+        num_tris = parseInt(tline[tline.indexOf(<span class="hljs-string">"numtris"</span>)+<span class="hljs-number">7.</span>.])</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Add enough indices for all the points</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.(num_tris*<span class="hljs-number">3</span>)-<span class="hljs-number">1</span>]
           current_mesh.addIndex(<span class="hljs-number">0</span>)
 
         tidx = <span class="hljs-number">0</span>
         
-        <span class="hljs-keyword">for</span> tidx <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.num_tris<span class="hljs-number">-1</span>]
+        <span class="hljs-keyword">for</span> tidx <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.num_tris-<span class="hljs-number">1</span>]
           tline = lines[midx + tidx + <span class="hljs-number">1</span>]
 
           tri = tline.indexOf(<span class="hljs-string">"tri"</span>)
@@ -689,78 +249,18 @@ the next is the count</p>
           idx = parseInt tokens[<span class="hljs-number">1</span>]
           a = parseInt tokens[<span class="hljs-number">2</span>]
           b = parseInt tokens[<span class="hljs-number">3</span>]
-          c = parseInt tokens[<span class="hljs-number">4</span>]</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-29">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
-              </div>
-              <p>Consider the winding</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>          current_mesh.setIndex idx * <span class="hljs-number">3</span>, c
+          c = parseInt tokens[<span class="hljs-number">4</span>]</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Consider the winding</p></div></div><div class="code"><div class="wrapper">          current_mesh.setIndex idx * <span class="hljs-number">3</span>, c
           current_mesh.setIndex idx * <span class="hljs-number">3</span> + <span class="hljs-number">1</span>, b
           current_mesh.setIndex idx * <span class="hljs-number">3</span> + <span class="hljs-number">2</span>, a
 
-        midx += num_tris</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-30">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
-              </div>
-              <p>Now hunt for the weights</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        tline = lines[midx]
-        <span class="hljs-keyword">while</span> tline.indexOf(<span class="hljs-string">"numweights"</span>) == <span class="hljs-number">-1</span>
+        midx += num_tris</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Now hunt for the weights</p></div></div><div class="code"><div class="wrapper">        tline = lines[midx]
+        <span class="hljs-keyword">while</span> tline.indexOf(<span class="hljs-string">"numweights"</span>) == -<span class="hljs-number">1</span>
           midx +=<span class="hljs-number">1</span>
           tline = lines[midx]
 
-        num_weights = parseInt(tline[tline.indexOf(<span class="hljs-string">"numweights"</span>)+<span class="hljs-number">10.</span>.])</pre></div></div>
-            
-        </li>
+        num_weights = parseInt(tline[tline.indexOf(<span class="hljs-string">"numweights"</span>)+<span class="hljs-number">10.</span>.])</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Again we need a temporary weights array like temp verts etc</p></div></div><div class="code"><div class="wrapper">        temp_weights = []</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create a skin which we add to the current node</p></div></div><div class="code"><div class="wrapper">        current_skin = <span class="hljs-keyword">new</span> Skin()
         
-        
-        <li id="section-31">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
-              </div>
-              <p>Again we need a temporary weights array like temp verts etc</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        temp_weights = []</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-32">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
-              </div>
-              <p>Create a skin which we add to the current node</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        current_skin = <span class="hljs-keyword">new</span> Skin()
-        
-        <span class="hljs-keyword">for</span> widx <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.num_weights<span class="hljs-number">-1</span>]
+        <span class="hljs-keyword">for</span> widx <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.num_weights-<span class="hljs-number">1</span>]
           tline = lines[midx + widx + <span class="hljs-number">1</span>]
           ws = tline.indexOf(<span class="hljs-string">"weight"</span>)
 
@@ -773,194 +273,60 @@ the next is the count</p>
           bone_id = parseInt tokens[<span class="hljs-number">2</span>]
           bias = parseFloat tokens[<span class="hljs-number">3</span>]
 
-          skinweight = <span class="hljs-keyword">new</span> SkinWeight @skeleton.getBone(bone_id), bias 
+          skinweight = <span class="hljs-keyword">new</span> SkinWeight <span class="hljs-property">@skeleton</span>.getBone(bone_id), bias 
           current_skin.addWeight skinweight
 
           tokens = tline[openbrace..closebrace].split(<span class="hljs-string">" "</span>)
 
           p0 = parseFloat tokens[<span class="hljs-number">1</span>]
           p1 = parseFloat tokens[<span class="hljs-number">2</span>]
-          p2 = parseFloat tokens[<span class="hljs-number">3</span>]</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-33">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
-              </div>
-              <p>Temporary weights array push - apparently for the GPU benefit</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>          temp_weights.push 
+          p2 = parseFloat tokens[<span class="hljs-number">3</span>]</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Temporary weights array push - apparently for the GPU benefit</p></div></div><div class="code"><div class="wrapper">          temp_weights.push 
             position : <span class="hljs-keyword">new</span> Vec3(p0,p1,p2)
             bias : bias
             bone : bone_id
 
-        midx += num_weights</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-34">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
-              </div>
-              <p>Now we process the current mesh from all the temporary crap we’ve made</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.num_verts<span class="hljs-number">-1</span>]</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-35">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
-              </div>
-              <p>create skin indices</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>          si = <span class="hljs-keyword">new</span> SkinIndex temp_verts[i].i, temp_verts[i].c
-          current_skin.addIndex si</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-36">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
-              </div>
-              <p>Now build the actual weights, chosen from the most biased
-This places a limit on the number of weights passed in to the shader</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>          pos = <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>
+        midx += num_weights</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Now we process the current mesh from all the temporary crap we&#39;ve made</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.num_verts-<span class="hljs-number">1</span>]</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>create skin indices</p></div></div><div class="code"><div class="wrapper">          si = <span class="hljs-keyword">new</span> SkinIndex temp_verts[i].i, temp_verts[i].c
+          current_skin.addIndex si</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Now build the actual weights, chosen from the most biased
+This places a limit on the number of weights passed in to the shader</p></div></div><div class="code"><div class="wrapper">          pos = <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>
           actual_weights = []
 
-          <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.si.count<span class="hljs-number">-1</span>]
-            actual_weights.push temp_weights[si.index + j]</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-37">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-37">&#182;</a>
-              </div>
-              <p>Sort the weights keeping the most important ones</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-function">          <span class="hljs-title">_compare_weight</span> = <span class="hljs-params">(a, b)</span> -&gt;</span>
+          <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.si.count-<span class="hljs-number">1</span>]
+            actual_weights.push temp_weights[si.index + j]</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Sort the weights keeping the most important ones</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function">          <span class="hljs-title">_compare_weight</span> = <span class="hljs-params">(a, b)</span> -&gt;</span>
             <span class="hljs-keyword">return</span> a.bias &lt; b.bias
 
           actual_weights.sort(_compare_weight)
 
           <span class="hljs-keyword">if</span> actual_weights.length &gt; Skeleton.PXL_MAX_WEIGHTS
-            actual_weights.splice Skeleton.PXL_MAX_WEIGHTS<span class="hljs-number">-1</span>, actual_weights.length<span class="hljs-number">-1</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-38">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
-              </div>
-              <p>Make sure all sum to 1.0</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>          total = <span class="hljs-number">0</span>
+            actual_weights.splice Skeleton.PXL_MAX_WEIGHTS-<span class="hljs-number">1</span>, actual_weights.length-<span class="hljs-number">1</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Make sure all sum to 1.0</p></div></div><div class="code"><div class="wrapper">          total = <span class="hljs-number">0</span>
           <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> actual_weights
             total += w.bias
 
           total = <span class="hljs-number">1.0</span> / total
           <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> actual_weights
-            w.bias = w.bias * total</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-39">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
-              </div>
-              <p>Now we actually create our vertices as the positions are created from
-the bind pose of the skeleton and all the weights etc</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        
+            w.bias = w.bias * total
+       </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Now we actually create our vertices as the positions are created from
+the bind pose of the skeleton and all the weights etc</p></div></div><div class="code"><div class="wrapper">        
           tw = []
           ti = []
       
-          <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.Skeleton.PXL_MAX_WEIGHTS<span class="hljs-number">-1</span>]
+          <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.Skeleton.PXL_MAX_WEIGHTS-<span class="hljs-number">1</span>]
             <span class="hljs-keyword">if</span> j &lt; actual_weights.length
               w = actual_weights[j]
           
               tw.push w.bias
               ti.push w.bone
 
-              bp = w.position.clone()</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-40">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-40">&#182;</a>
-              </div>
-              <p>So inverting here seems to work which it really shouldnt &gt;&lt; 
+              bp = w.position.clone()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>So inverting here seems to work which it really shouldnt &gt;&lt; 
 I suspect this may or may not work with the animaion file :S
-Also, the rotation appears to be y and z reversed &gt;&lt; Not so good</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>              Quaternion.invert(@skeleton.getBone(w.bone).rotation_pose).transVec3 bp
-              bp.add @skeleton.getBone(w.bone).position_pose
+Also, the rotation appears to be y and z reversed &gt;&lt; Not so good</p></div></div><div class="code"><div class="wrapper">              Quaternion.invert(<span class="hljs-property">@skeleton</span>.getBone(w.bone).rotation_pose).transVec3 bp
+              bp.add <span class="hljs-property">@skeleton</span>.getBone(w.bone).position_pose
               bp.multScalar w.bias
 
               pos.add bp
  
             <span class="hljs-keyword">else</span>
               tw.push <span class="hljs-number">0</span>
-              ti.push <span class="hljs-number">0</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-41">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-41">&#182;</a>
-              </div>
-              <p>Create and add the actual first vertex, built from our bind pose</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>          vertex = <span class="hljs-keyword">new</span> Vertex(
+              ti.push <span class="hljs-number">0</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create and add the actual first vertex, built from our bind pose</p></div></div><div class="code"><div class="wrapper">          vertex = <span class="hljs-keyword">new</span> Vertex(
             p : pos
             t : temp_verts[i].u.clone()
             w : <span class="hljs-keyword">new</span> Vec4 tw[<span class="hljs-number">0</span>], tw[<span class="hljs-number">1</span>], tw[<span class="hljs-number">2</span>], tw[<span class="hljs-number">3</span>]
@@ -968,22 +334,7 @@ Also, the rotation appears to be y and z reversed &gt;&lt; Not so good</p>
             n : <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>
           )
 
-          current_mesh.addVertex vertex</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-42">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-42">&#182;</a>
-              </div>
-              <p>As we are using a trimesh, finally create our triangles and normals</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        j = <span class="hljs-number">0</span>
+          current_mesh.addVertex vertex</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>As we are using a trimesh, finally create our triangles and normals</p></div></div><div class="code"><div class="wrapper">        j = <span class="hljs-number">0</span>
         <span class="hljs-keyword">while</span> j &lt; current_mesh.indices.length
           p0 = current_mesh.vertices[current_mesh.indices[j]]
           p1 = current_mesh.vertices[current_mesh.indices[j+<span class="hljs-number">1</span>]]
@@ -993,23 +344,8 @@ Also, the rotation appears to be y and z reversed &gt;&lt; Not so good</p>
 
           p0.n.add triangle.n
           p1.n.add triangle.n
-          p2.n.add triangle.n</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-43">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-43">&#182;</a>
-              </div>
-              <p>We call push on faces directly as addTriangle builds up the 
-indices table which we’ve already built. This is a bit naughty</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>          current_mesh.faces.push triangle
+          p2.n.add triangle.n</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>We call push on faces directly as addTriangle builds up the 
+indices table which we&#39;ve already built. This is a bit naughty</p></div></div><div class="code"><div class="wrapper">          current_mesh.faces.push triangle
           j+=<span class="hljs-number">3</span>
 
         <span class="hljs-keyword">for</span> vertex <span class="hljs-keyword">in</span> current_mesh.vertices
@@ -1017,31 +353,8 @@ indices table which we’ve already built. This is a bit naughty</p>
 
         current_node.add current_skin
 
-      midx += <span class="hljs-number">1</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-44">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-44">&#182;</a>
-              </div>
-              <p>Delete any temporary things on this node</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    @_material_by_name = <span class="hljs-literal">undefined</span> <span class="hljs-keyword">if</span> @_material_by_name?
+      midx += <span class="hljs-number">1</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Delete any temporary things on this node</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-property">@_material_by_name</span> = <span class="hljs-literal">undefined</span> <span class="hljs-keyword">if</span> <span class="hljs-property">@_material_by_name</span>?
     @
 
 <span class="hljs-built_in">module</span>.exports =
-  MD5Model : MD5Model</pre></div></div>
-            
-        </li>
-        
-    </ul>
-  </div>
-</body>
-</html>
-
+  MD5Model : MD5Model</div></div></div></div></body></html>

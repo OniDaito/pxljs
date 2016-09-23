@@ -40,13 +40,13 @@ and buffers
 
 util = require "../util/util"
 
-### GeometryBrewer ###
+# ## GeometryBrewer
 # A Mini Object attached to geometry in order for them
 # to be drawn to the screen via webgl
 
 GeometryBrewer = {}
 
-### setDataBuffer ###
+# ## setDataBuffer
 # set the data for a buffer
 
 setDataBuffer = (buffer, data, type) ->
@@ -56,7 +56,7 @@ setDataBuffer = (buffer, data, type) ->
   gl.bindBuffer(gl.ARRAY_BUFFER, null)
   buffer
 
-### createArrayBuffer ###
+# ## createArrayBuffer
 # create a buffer of data per vertex
 
 createArrayBuffer = (data, type, size) ->
@@ -68,7 +68,7 @@ createArrayBuffer = (data, type, size) ->
   buffer
 
 
-### updateBuffer ###
+# ## updateBuffer
 # A call to bufferSubData essentially
 
 bufferSubData = (buffer, data, offset) ->
@@ -80,7 +80,7 @@ bufferSubData = (buffer, data, offset) ->
   gl.bindBuffer(gl.ARRAY_BUFFER, null)
   buffer
 
-### createElementBuffer ###
+# ## createElementBuffer
 # create a buffer of indices
 
 createElementBuffer = (data, type, size) ->
@@ -93,14 +93,14 @@ createElementBuffer = (data, type, size) ->
   gl.bindBuffer(gl.ARRAY_BUFFER, null)
   buffer
 
-### deleteBuffer ###
+# ## deleteBuffer
 deleteBuffer = (buffer) ->
   gl = PXL.Context.gl
   gl.deleteBuffer(buffer)
   @
 
 
-### _attribTypeCheckSet ###
+# ## _attribTypeCheckSet
 # check and set an attribute pointer
 
 _attribTypeCheckSet = (a, v) ->
@@ -126,7 +126,7 @@ _attribTypeCheckSet = (a, v) ->
   gl.enableVertexAttribArray(a.pos)
   @
 
-### _uniformTypeCheckSet ###
+# ## _uniformTypeCheckSet
 # check and set a uniform
 
 _uniformTypeCheckSet = (u,v) ->
@@ -219,7 +219,7 @@ _uniformTypeCheckSet = (u,v) ->
 
   @
 
-### _joinContracts ###
+# ## _joinContracts
 # Given an object or object hierarchy within a node, check them
 # against the contract. Recursive call down all objects if they
 # have a contract.
@@ -249,7 +249,7 @@ _joinContracts = (obj, shader_contract) ->
               _joinContracts item, shader_contract
   obj
 
-### matchWithShader ###
+# ## matchWithShader
 # If this obj is drawable, match the uniforms
 # Given the current context, we should have a shader with a @contract 
 # if we do, attempt to match it. It is worth noting that one node on
@@ -289,7 +289,7 @@ matchWithShader = (obj) ->
  
 
 
-### GeometryBrewer.brew ###
+# ## GeometryBrewer.brew
 # given some geometry, move that onto the graphics card. Called internally but also can be called by the user.
 # params is a dictionary of parameters. Currently accepting: 
 # <name>_buffer_access : GL.STATIC_DRAW, GL.DYNAMIC_DRAW etc
@@ -390,7 +390,7 @@ GeometryBrewer.brew = (params) ->
   @
 
 
-### GeometryBrewer.rebrew ###
+# ## GeometryBrewer.rebrew
 # For geometry that is already brewed, rebrew whichever has changed.
 # The user must specify which buffers / vertex attribs to change :)
 # params is a dictionary of parameters and is optional but at least
@@ -424,7 +424,7 @@ GeometryBrewer.rebrew = (params) ->
   @
 
 
-### rebrew_typed ###
+# ## rebrew_typed
 # For geometry that is already brewed, rebrew it as above but with the data already typed.
 # For large geometries (anything above about 1000 verts) this method is much better
 # This means the buffer will be out of sync with the data held on the geometry.

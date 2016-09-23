@@ -1,16 +1,16 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 
 Framebuffer objects - reads the current active context from the exports and creates a FBO
@@ -30,7 +30,7 @@ Remember, NPOT textures are support but not with repeats or mipmapping
 {TextureBase} = require './texture'
 
 
-### Fbo ###
+# ## Fbo
 # A class for Framebuffer objects
 # Simply provide the the constructor variables and then bind in order to draw to this
 

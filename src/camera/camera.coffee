@@ -1,22 +1,21 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
-
-- TODO
+ TODO
   * Combine mouse and touch cameras into one I think (possibly move to interact?)
   * Interactive cameras, when created should add listeners automagically to either window
-    or some passed in DOM object I suspect. Saves us writing boilerplate code
+      or some passed in DOM object I suspect. Saves us writing boilerplate code
 
   * Decouple the GL so we can test - but keep option in because its clean when used
   * TEST ORTHO CAMERA! I dont think it works! ><
@@ -33,7 +32,7 @@ https://gist.github.com/eligrey/384583 - useful for changes to pos,look etc?
 {makeMouseListener} = require '../interact/mouse'
 {Contract} = require '../gl/contract'
 
-### Camera ###
+# ## Camera
 # The base class for cameras - provides base functionality to the other cameras
 
 class Camera
@@ -167,7 +166,7 @@ class Camera
     @
 
 
-### OrthoCamera ###
+# ## OrthoCamera
 # An orthographic camera. This class calls makeOrtho on its perspective matrix
 # Orthographic Camera uses 1 pixel as 1 world unit
 
@@ -199,7 +198,7 @@ class OrthoCamera extends Camera
     @
     
 
-### PerspCamera ###
+# ## PerspCamera
 # An perspective camera. This class calls makePerspective on its perspective matrix
 # TODO - Not sure we need zoom here. Should probably have a spaceball class
 
@@ -297,7 +296,7 @@ class PerspCamera extends Camera
     @
 
 
-### MousePerspCamera ###
+# ## MousePerspCamera
 # Camera that listens for mouse input and moves when the user moves the mouse around
 
 class MousePerspCamera extends PerspCamera

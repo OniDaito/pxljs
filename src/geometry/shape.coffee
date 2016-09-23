@@ -1,17 +1,16 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
-
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 ###
 
@@ -20,7 +19,7 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 {Vec2, Vec3, PI, degToRad} = require '../math/math'
 {Vertex, Triangle, Quad, Geometry} = require './primitive'
 
-### Cuboid ###
+# ## Cuboid
 # A basic Cuboid with indices
 
 class Cuboid extends Geometry
@@ -96,7 +95,7 @@ class Cuboid extends Geometry
 
 
 
-### Sphere ###
+# ## Sphere
 
 # http://local.wasp.uwa.edu.au/~pbourke/texture_colour/spheremap/  Paul Bourke's sphere code
 # We should weigh an alternative that reduces the batch count by using GL_TRIANGLES instead
@@ -176,7 +175,7 @@ class Sphere extends Geometry
         v.c = colour
 
 
-### Cylinder ###
+# ## Cylinder
 # A basic cylinder
 class Cylinder extends Geometry
 

@@ -1,18 +1,16 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
-
-Basic materials for our ubershader
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
 ###
 
@@ -21,7 +19,7 @@ Basic materials for our ubershader
 {uber_uniform_colour, uber_vertex_colour, uber_texture_mat} = require '../gl/uber_shader_paths'
 
 
-### BasicColourMaterial ###
+# ## BasicColourMaterial
 # A Basic material that is made up of a single colour
 
 class BasicColourMaterial extends Material
@@ -40,7 +38,7 @@ class BasicColourMaterial extends Material
     @_uber_defines = ['BASIC_COLOUR']
 
 
-### VertexColourMaterial ###
+# ## VertexColourMaterial
 # A Basic material that takes the colours from the vertices
 
 class VertexColourMaterial extends Material
@@ -52,7 +50,7 @@ class VertexColourMaterial extends Material
     @_uber_defines = ['VERTEX_COLOUR']
 
 
-### TextureMaterial ###
+# ## TextureMaterial
 # A Basic material that uses a texture for it its albedo. 
 
 class TextureMaterial extends Material

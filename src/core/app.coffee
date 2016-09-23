@@ -1,26 +1,26 @@
-### ABOUT
-             .__   
-_________  __|  |  
-\____ \  \/  /  |  
-|  |_> >    <|  |__
-|   __/__/\_ \____/
-|__|        \/     js
+###
+                 .__   
+    _________  __|  |  
+    \____ \  \/  /  |  
+    |  |_> >    <|  |__
+    |   __/__/\_ \____/
+    |__|        \/     js
 
                     PXL.js
                     Benjamin Blundell - ben@pxljs.com
                     http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details
+    This software is released under the MIT Licence. See LICENCE.txt for details
 
-- Resources
+**Resources**
 
-* http://www.yuiblog.com/blog/2007/06/12/module-pattern/
-* http://www.plexical.com/blog/2012/01/25/writing-coffeescript-for-browser-and-nod/
-* https://github.com/field/FieldKit.js
+ - http://www.yuiblog.com/blog/2007/06/12/module-pattern/
+ - http://www.plexical.com/blog/2012/01/25/writing-coffeescript-for-browser-and-nod/
+ - https://github.com/field/FieldKit.js
 
-- TODO 
+**TODO** 
 
-* Not sure we want to make this a listener for events. I suspect we need a keyboard eventor
+ -Not sure we want to make this a listener for events. I suspect we need a keyboard eventor
   style class and touch eventor class that takes a DOM?
 
 ###
@@ -40,7 +40,7 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 # OnEachFrame function
 # Taken from http://nokarma.org/2011/02/02/javascript-game-development-the-game-loop/index.html
 
-### App ###
+# ## App
 # The master class in effect. This class takes functions from your application and calls them
 # as and when needed
 # TODO - is Context a better name? I think so. We should change it

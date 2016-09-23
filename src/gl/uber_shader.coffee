@@ -23,7 +23,7 @@ that is being taken doesnt need these uniforms
 {Shader} = require "./shader"
 uber = require "../shaders/uber" # this is automatically built via gulp
 
-### UberShader ###
+# ## UberShader
 # An implementation of an Ubershader that uses a uniform to choose the path through the shader
 # and a series of hash defines to sort out what we actually need.
 #
