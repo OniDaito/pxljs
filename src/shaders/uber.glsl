@@ -30,6 +30,7 @@ uniform float uCameraFar;
 uniform mat4 uCameraInverseMatrix; 
 uniform mat4 uInverseProjectionMatrix;
 varying vec4 vEyePosition;
+varying mat4 vModelViewMatrix;
 #endif 
 
 #ifdef VERTEX_NORMAL
@@ -156,7 +157,9 @@ void main() {
   gl_Position = vPosition;
 
 #ifdef BASIC_CAMERA
-  gl_Position = uProjectionMatrix * uCameraMatrix * vPosition;
+  vModelViewMatrix = uProjectionMatrix * uCameraMatrix;              
+  gl_Position = vModelViewMatrix * vPosition;
+  vModelViewMatrix *= uModelMatrix;
 #endif
 }
 
@@ -167,6 +170,10 @@ precision highp int;
 uniform float uUber0;
 uniform mat4 uModelMatrix;
 varying vec4 vPosition;
+
+#ifdef BASIC_CAMERA
+varying mat4 vModelViewMatrix;
+#endif
 
 #ifdef BASIC_COLOUR
 uniform vec4 uColour;

@@ -12,8 +12,6 @@
 
     This software is released under the MIT Licence. See LICENCE.txt for details
 
-###
-
 - A class to import OBJ files
 
 - TODO

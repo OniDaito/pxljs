@@ -1,4 +1,4 @@
- #ifdef MAT_PHONG
+#ifdef MAT_PHONG
 uniform vec3 uMaterialAmbientColour;
 uniform float uMaterialShininess;
 uniform vec3 uMaterialDiffuseColour;

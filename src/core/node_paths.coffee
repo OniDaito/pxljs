@@ -84,7 +84,7 @@ _shadow_map_camera = new PerspCamera new Vec3(0,1,0), new Vec3(0,0,0), new Vec3(
 # Called when we find a spotLight that casts shadows
 # A Camera should have been set on the front before this function is called - dont like that :S
 
-shadowmap_create_draw = (node,front,light) -> 
+shadowmap_create_draw = (node,front,light) ->
 
   fc = front.clone()
   # Create the camera we shall use
@@ -105,7 +105,7 @@ shadowmap_create_draw = (node,front,light) ->
   icm = front.globalMatrix.clone()
   icm.mult _shadow_map_camera.m
   icm.mult _shadow_map_camera.p
-  #icm.invert()
+  icm.invert()
   light.invMatrix.copy icm
 
   # Begin the creation of a shadowmap for this light source
@@ -138,15 +138,15 @@ _shadowmap_create_draw = (node, front, light) ->
   #if node.shader?
   #  front.shader = node.shader
   
-  # Create a precomputed model/view/perspecti:ve matrix for speed
-  nm = Matrix4.mult(front.camera.m, nm)
- 
+  # Create a precomputed model/view/perspecti:ve matrix for speed 
+  front._normalMatrix = front.globalMatrix.getMatrix3().invert().transpose()
+
+  nm = Matrix4.mult(front.camera.m, nm) 
+
   # Possibly only needs to be done when we actually need to draw or bind
   front._mvpMatrix.copy nm
   front._mvpMatrix.mult front.camera.m
   front._mvpMatrix.mult front.camera.p
-
-  front._normalMatrix = nm.getMatrix3().invert().transpose()
 
   if node.geometry?
     if not node.geometry.brewed
@@ -231,7 +231,7 @@ main_draw = (node, front) ->
 
   # TODO - Normal Matrix calculation better GPU or CPU side? 
   # TODO - We need to be careful about scaling here as well :S
-  front._normalMatrix = nm.getMatrix3().invert().transpose()
+  front._normalMatrix = front.globalMatrix.getMatrix3().invert().transpose()
 
   for light in node.pointLights
     front.pointLights.push light

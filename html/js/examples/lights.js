@@ -35,8 +35,8 @@ init = function() {
   cube_node.add(new PXL.Material.BasicColourMaterial(new PXL.Colour.RGB(1, 0, 0)));
   cube_node.matrix.translate(new PXL.Math.Vec3(0.25, 0.25, 0));
   shadowed_node.add(cube_node);
-  ambientlight = new PXL.Light.AmbientLight(new PXL.Colour.RGB(0.001, 0.001, 0.001));
-  this.spotlight = new PXL.Light.SpotLight(new PXL.Math.Vec3(0, 2, 0), white, new PXL.Math.Vec3(0, -1, 0), PXL.Math.degToRad(30.0), true);
+  ambientlight = new PXL.Light.AmbientLight(new PXL.Colour.RGB(0.01, 0.01, 0.01));
+  this.spotlight = new PXL.Light.SpotLight(new PXL.Math.Vec3(-2, 2, 0), white, new PXL.Math.Vec3(1, -1, 0), PXL.Math.degToRad(45.0), true);
   shadowed_node.add(this.spotlight);
   this.quad_node = new PXL.Node(q);
   this.quad_node.add(cp);
@@ -50,18 +50,21 @@ init = function() {
   uber1 = new PXL.GL.UberShader(this.quad_node);
   this.topnode.add(uber0);
   this.quad_node.add(uber1);
-  return this.step = 0;
+  this.step = 0;
+  return GL.enable(GL.DEPTH_TEST);
 };
 
 draw = function(dt) {
-  var newpos;
+  var newdir, newpos;
   GL.clearColor(0.15, 0.15, 0.15, 1.0);
   GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT);
   this.topnode.draw();
   this.quad_node.draw();
   this.step += 0.01;
   newpos = new PXL.Math.Vec3(Math.sin(this.step), 2.0 + Math.sin(this.step), Math.cos(this.step));
+  newdir = newpos.clone().multScalar(-1).normalize();
   this.spotlight.pos.copy(newpos);
+  this.spotlight.dir.copy(newdir);
   return this.light_node.matrix.translatePart(newpos);
 };
 

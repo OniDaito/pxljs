@@ -45,9 +45,9 @@ init = () ->
 
   shadowed_node.add cube_node
 
-  ambientlight = new PXL.Light.AmbientLight new PXL.Colour.RGB(0.001,0.001,0.001)
+  ambientlight = new PXL.Light.AmbientLight new PXL.Colour.RGB(0.01,0.01,0.01)
 
-  @spotlight = new PXL.Light.SpotLight new PXL.Math.Vec3(0,2,0), white, new PXL.Math.Vec3(0,-1,0), PXL.Math.degToRad(30.0), true
+  @spotlight = new PXL.Light.SpotLight new PXL.Math.Vec3(-2,2,0), white, new PXL.Math.Vec3(1,-1,0), PXL.Math.degToRad(45.0), true
   shadowed_node.add @spotlight
 
   # our quad node for showing the lights view
@@ -70,6 +70,8 @@ init = () ->
 
   @step = 0
 
+  GL.enable(GL.DEPTH_TEST)
+
 draw = (dt) ->
   
   GL.clearColor(0.15, 0.15, 0.15, 1.0)
@@ -83,8 +85,11 @@ draw = (dt) ->
   @step += 0.01
 
   newpos = new PXL.Math.Vec3(Math.sin(@step),2.0 + Math.sin(@step),Math.cos(@step))
-  
+  newdir = newpos.clone().multScalar(-1).normalize()
+
+  # Keep the spotlight always pointing at the origin
   @spotlight.pos.copy newpos
+  @spotlight.dir.copy newdir
 
   @light_node.matrix.translatePart newpos
 

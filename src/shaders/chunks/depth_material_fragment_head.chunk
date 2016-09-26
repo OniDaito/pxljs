@@ -11,12 +11,17 @@ vec4 packDepth() { return pack(gl_FragCoord.z); }
 
 // Returns the 3D position in eye space. 
 
-vec3 positionFromDepth(float depth, vec2 texcoord) {
+vec3 positionFromDepthMatrix(float depth, mat4 matty, vec2 texcoord){
   vec4 position = vec4(texcoord, depth, 1.0);
   position.xyz = position.xyz*2.0 -1.0;
-  position = uInverseProjectionMatrix*position;
+  position = matty*position;
   position.xyz /= position.w;
   return position.xyz;
+
+}
+
+vec3 positionFromDepth(float depth, vec2 texcoord) {
+  return positionFromDepthMatrix(depth, uInverseProjectionMatrix, texcoord);
 }
 
 #endif
