@@ -159,17 +159,6 @@ void main() {
   gl_Position = uProjectionMatrix * uCameraMatrix  * vPosition;
 #endif
 
-#ifdef LIGHTING_SPOT
-#ifdef SHADOW_MAP
-  if(bitcheck(uUber0,14)) {
-    mat4 bias = mat4(0.5,0.0,0.0,0.0, 0.0,0.5,0.0,0.0, 0.0,0.0,0.5,0.0, 0.5,0.5,0.5,1.0);
-    for (int i=0; i < LIGHTING_NUM_SPOT_LIGHTS; i++) {
-      vSpotPosLight[i] = bias * uSpotLightInvMatrix[i] * vPosition;
-    }
-  }
-#endif
-#endif
-
 }
 
 ##>FRAGMENT

@@ -48,12 +48,26 @@ for (int i=0; i < LIGHTING_NUM_SPOT_LIGHTS; i++) {
 // Unflattened texture lookups for now sadly
 
 if(bitcheck(uUber0,14)) {
-  if (vSpotPosLight[0].x <= 1.0 && vSpotPosLight[0].x >= 0.0 && vSpotPosLight[0].y <= 1.0 && vSpotPosLight[0].y >= 0.0) {
-    float lightDepth = unpack(texture2D(uSamplerSpotShadow[0],vSpotPosLight[0].xy));
-    if(lightDepth < vSpotPosLight[0].z){
+
+  mat4 bias = mat4(0.5,0.0,0.0,0.0, 0.0,0.5,0.0,0.0, 0.0,0.0,0.5,0.0, 0.5,0.5,0.5,1.0);
+
+  vec4 spotPosLight = bias * uSpotLightInvMatrix[0] * vPosition;
+  if (spotPosLight.x <= 1.0 && spotPosLight.x >= 0.0 && spotPosLight.y <= 1.0 && spotPosLight.y >= 0.0) {
+    // should be -1 to 1 in theory with the unpack
+    float lightDepth = unpack(texture2D(uSamplerSpotShadow[0], spotPosLight.xy));
+    if(lightDepth < spotPosLight.z){
       shadow_scale[0] = 0.0;
     }
   }
+
+  spotPosLight = bias * uSpotLightInvMatrix[1] * vPosition;
+  if (spotPosLight.x <= 1.0 && spotPosLight.x >= 0.0 && spotPosLight.y <= 1.0 && spotPosLight.y >= 0.0) { 
+    float lightDepth = unpack(texture2D(uSamplerSpotShadow[1], spotPosLight.xy));
+    if(lightDepth < spotPosLight.z){
+      shadow_scale[1] = 0.0;
+    }
+  }
+
 }
 
 

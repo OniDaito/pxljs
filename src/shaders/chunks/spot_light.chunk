@@ -11,5 +11,6 @@ uniform sampler2D uSamplerSpotShadow[LIGHTING_NUM_SPOT_LIGHTS];
 // TODO - In WebGL2.0 we can perform sampler lookups in the vertex shader and do our matrix
 // math there instead of per fragment which will speed things up
 uniform mat4 uSpotLightInvMatrix[LIGHTING_NUM_SPOT_LIGHTS];
-varying vec4 vSpotPosLight[LIGHTING_NUM_SPOT_LIGHTS];
+// Ideally we'd have varyings but there is a tight limit on how many we can have sadly
+//varying vec4 vSpotPosLight[LIGHTING_NUM_SPOT_LIGHTS];
 #endif
