@@ -40,7 +40,7 @@ init = function() {
   shadowed_node.add(this.spotlight);
   this.quad_node = new PXL.Node(q);
   this.quad_node.add(cp);
-  this.quad_node.add(new PXL.Material.ViewDepthMaterial(this.spotlight.shadowmap_fbo.texture));
+  this.quad_node.add(new PXL.Material.ViewDepthMaterial(this.spotlight.shadowmap_fbo.texture, 0.1, 10));
   this.quad_node.matrix.translate(new PXL.Math.Vec3(1, -1, 0));
   this.topnode = new PXL.Node;
   this.topnode.add(shadowed_node);
@@ -50,15 +50,16 @@ init = function() {
   uber1 = new PXL.GL.UberShader(this.quad_node);
   this.topnode.add(uber0);
   this.quad_node.add(uber1);
-  this.step = 0;
-  return GL.enable(GL.DEPTH_TEST);
+  return this.step = 0;
 };
 
 draw = function(dt) {
   var newdir, newpos;
   GL.clearColor(0.15, 0.15, 0.15, 1.0);
   GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT);
+  GL.enable(GL.DEPTH_TEST);
   this.topnode.draw();
+  GL.disable(GL.DEPTH_TEST);
   this.quad_node.draw();
   this.step += 0.01;
   newpos = new PXL.Math.Vec3(Math.sin(this.step), 2.0 + Math.sin(this.step), Math.cos(this.step));

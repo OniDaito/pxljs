@@ -21,7 +21,7 @@ for (int i=0; i < LIGHTING_NUM_POINT_LIGHTS; i++) {
   // TODO could potentially transform the lights in the vertex shader?
   // TODO - previously we added a break in here for lights - do we keep that?
   // TODO - attenuation factor
-  vec3 lightDirection = normalize((uModelMatrix * vec4(uPointLightPos[i],1.0)).xyz - vPosition.xyz);
+  vec3 lightDirection = normalize(uPointLightPos[i].xyz - vPosition.xyz);
   vec3 reflectionDirection = reflect(-lightDirection, vTransformedNormal.xyz);
   float specularLightBrightness = pow(max(dot(reflectionDirection, eyeDirection), 0.0), uMaterialShininess);
   specularLightWeighting = specularLightWeighting + (uPointLightColour[i] * specularLightBrightness);
@@ -38,48 +38,29 @@ for (int i=0; i < LIGHTING_NUM_POINT_LIGHTS; i++) {
 
 // TODO - shadowmap scale might be removed to its own place for use in other materials
 
-vec3 shadow_scale[LIGHTING_NUM_SPOT_LIGHTS];
+float shadow_scale[LIGHTING_NUM_SPOT_LIGHTS];
 for (int i=0; i < LIGHTING_NUM_SPOT_LIGHTS; i++) {
-  shadow_scale[i] = vec3(1.0,1.0,1.0);
+  shadow_scale[i] = 1.0;
 }
 
-#ifdef SHADOWMAP_TEMP
+#ifdef SHADOWMAP
+// TODO - Eventually shadowmap will exist outside of phong material when we add others
 // Unflattened texture lookups for now sadly
+
 if(bitcheck(uUber0,14)) {
-  vec4 lightdepth;
-  lightdepth.x = (vShadowTexCoord[0].x * 2.0) -1.0;  
-  lightdepth.y = (vShadowTexCoord[0].y * 2.0) -1.0; 
-
-  lightdepth.z = texture2D(uSamplerPointShadow[0],vShadowTexCoord[0].xy).r;
-  lightdepth = uSpotLightInvMatrix[0] * vModelViewMatrix * lightdepth;
-  if(lightdepth.z > gl_FragCoord.z ){
-    shadow_scale[0] = vec3(0.0,0.0,0.0);
-  }
-  
-  lightdepth.z = texture2D(uSamplerPointShadow[1],vShadowTexCoord[1].xy).r;
-  if(lightdepth.z > gl_FragCoord.z ){
-    shadow_scale[1] = vec3(0.0,0.0,0.0);
-  }
-
-  lightdepth.z = texture2D(uSamplerPointShadow[2],vShadowTexCoord[2].xy).r;
-  if(lightdepth.z > gl_FragCoord.z ){
-    shadow_scale[2] = vec3(0.0,0.0,0.0);
-  }
-
-  lightdepth.z = texture2D(uSamplerPointShadow[3],vShadowTexCoord[3].xy).r;
-  if(lightdepth.z > gl_FragCoord.z ){
-    shadow_scale[3] = vec3(0.0,0.0,0.0);
-  }
-
-  lightdepth.z = texture2D(uSamplerPointShadow[4],vShadowTexCoord[4].xy).r;
-  if(lightdepth.z > gl_FragCoord.z ){
-    shadow_scale[4] = vec3(0.0,0.0,0.0);
+  if (vSpotPosLight[0].x <= 1.0 && vSpotPosLight[0].x >= 0.0 && vSpotPosLight[0].y <= 1.0 && vSpotPosLight[0].y >= 0.0) {
+    float lightDepth = unpack(texture2D(uSamplerSpotShadow[0],vSpotPosLight[0].xy));
+    if(lightDepth < vSpotPosLight[0].z){
+      shadow_scale[0] = 0.0;
+    }
   }
 }
+
+
 #endif
 
 for (int i=0; i < LIGHTING_NUM_SPOT_LIGHTS; i++) {
-  vec3 lightDirection = normalize((uModelMatrix * vec4(uSpotLightPos[i],1.0)).xyz - vPosition.xyz);
+  vec3 lightDirection = normalize(uSpotLightPos[i].xyz - vPosition.xyz);
   float spotFactor = dot ( -lightDirection, uSpotLightDir[i]);
   if (spotFactor >= cos(uSpotLightAngle[i])){
     spotFactor = pow(spotFactor, uSpotLightExp[i]);
@@ -92,10 +73,11 @@ for (int i=0; i < LIGHTING_NUM_SPOT_LIGHTS; i++) {
   float diffuseLightBrightness = max(dot(vTransformedNormal.xyz, lightDirection), 0.0);
   diffuseLightWeighting = uSpotLightColour[i] * diffuseLightBrightness;
   specularLightWeighting *= spotFactor;
-  diffuseLightWeighting *= spotFactor;
-  //vec3 final =  (materialDiffuseColour * diffuseLightWeighting + materialSpecularColour * specularLightWeighting + materialEmissiveColour) * shadow_scale[i];
-  vec3 final = materialDiffuseColour * diffuseLightWeighting;
-  gl_FragColor = vec4(final,1.0);
+  //diffuseLightWeighting *= spotFactor;
+  vec3 final =  (materialDiffuseColour * diffuseLightWeighting + materialSpecularColour * specularLightWeighting + materialEmissiveColour) * shadow_scale[i];
+  gl_FragColor += vec4(final,0.0);
 }
+
+
 #endif
 #endif

@@ -77,8 +77,9 @@ class PointLight
   @contract.roles.uPointLightNum = "_numGlobal"
 
   # Called by the node traversal section when we create our node tree
-
-  @_preDraw : (lights) ->
+  # We modify the positions in place with the current matrix. This way
+  # the light positions are pre-computed before they hit the shader
+  @_preDraw : (lights, matrix) ->
 
     idx = 0
     if not lights?
@@ -86,9 +87,10 @@ class PointLight
 
     for light in lights
       # Light transforms are now done in the shader
-      PointLight._posGlobal[idx * 3] = light.pos.x
-      PointLight._posGlobal[idx * 3 + 1] = light.pos.y
-      PointLight._posGlobal[idx * 3 + 2] = light.pos.z
+      ll = Matrix4.multVec(matrix,light.pos)
+      PointLight._posGlobal[idx * 3] = ll.x
+      PointLight._posGlobal[idx * 3 + 1] = ll.y
+      PointLight._posGlobal[idx * 3 + 2] = ll.z
 
       PointLight._colourGlobal[idx * 3] = light.colour.r
       PointLight._colourGlobal[idx * 3 + 1] = light.colour.g
@@ -149,7 +151,8 @@ class SpotLight
   @_dirGlobal = new Float32Array(LIGHTING_NUM_SPOT_LIGHTS * 3)
   @_angleGlobal = new Float32Array(LIGHTING_NUM_SPOT_LIGHTS)
   @_expGlobal = new Float32Array(LIGHTING_NUM_SPOT_LIGHTS)
-  @_invMatrix = new Float32Array(LIGHTING_NUM_SPOT_LIGHTS * 16)
+  @_invMatrixGlobal = new Float32Array(LIGHTING_NUM_SPOT_LIGHTS * 16)
+  @_samplerGlobal = new Int32Array(LIGHTING_NUM_SPOT_LIGHTS)
 
   @contract = new Contract()
   @contract.roles.uSpotLightPos = "_posGlobal"
@@ -159,19 +162,23 @@ class SpotLight
   @contract.roles.uSpotLightAngle = "_angleGlobal"
   @contract.roles.uSpotLightExp = "_expGlobal"
   @contract.roles.uSpotLightNum = "_numGlobal"
-  @contract.roles.uSpotLightInvMatrix = "_invMatrix"
+  @contract.roles.uSpotLightInvMatrix = "_invMatrixGlobal"
+  @contract.roles.uSamplerSpotShadow = "_samplerGlobal"
 
   # called internally - sets up the global contract array
-  @_preDraw : (lights) ->
+  @_preDraw : (lights, matrix) ->
     idx = 0
     
     if not lights?
       return
     
     for light in lights
-      SpotLight._posGlobal[idx * 3] = light.pos.x
-      SpotLight._posGlobal[idx * 3 + 1] = light.pos.y
-      SpotLight._posGlobal[idx * 3 + 2] = light.pos.z
+
+      ll = Matrix4.multVec(matrix, light.pos)
+      
+      SpotLight._posGlobal[idx * 3] = ll.x
+      SpotLight._posGlobal[idx * 3 + 1] = ll.y
+      SpotLight._posGlobal[idx * 3 + 2] = ll.z
 
       SpotLight._colourGlobal[idx * 3] = light.colour.r
       SpotLight._colourGlobal[idx * 3 + 1] = light.colour.g
@@ -189,14 +196,26 @@ class SpotLight
       SpotLight._angleGlobal[idx] = light.angle
       SpotLight._expGlobal[idx] = light.exponent
       
-      for i in [0..15]
-        SpotLight._invMatrix[idx*16+i] = light.invMatrix.a[i]
+      if light.shadowmap
+        for i in [0..15]
+          SpotLight._invMatrixGlobal[idx*16+i] = light.invMatrix.a[i]
+
+        # Bind the shadowmap texture, ready for sampling 
+        light.shadowmap_fbo.texture.bind()
+        SpotLight._samplerGlobal[idx] = light.shadowmap_fbo.texture.unit 
 
       idx += 1
 
     SpotLight.numGlobal = lights.length
 
 
+  # Called internally, mostly to unbind the shadowmaps
+  @_postDraw : (lights) ->
+    for light in lights
+      if light.shadowmap
+        light.shadowmap_fbo.texture.unbind()
+
+  
   # TODO - Add a mask here that basically says which lights are on or off
   # We need this because we may call draw on a subnode of a node that has a light
   # and that light should not affect the scene. this mask would be passed to the shader
@@ -219,7 +238,9 @@ class SpotLight
     @_dirGlobal = SpotLight._dirGlobal
     @_angleGlobal = SpotLight._angleGlobal
     @_expGlobal = SpotLight._expGlobal
-    
+    @_invMatrixGlobal = SpotLight._invMatrixGlobal   
+    @_samplerGlobal = SpotLight._samplerGlobal
+ 
     if not @pos?
       @pos = new Vec3(1,1,1)
     
@@ -235,7 +256,7 @@ class SpotLight
     
     # Attenuation has 4 components - range, constant, linear and quadratic
     if not @attenuation?
-      @attenuation = [ 10, 1.0, 0.045, 0.0075 ]
+      @attenuation = [ 10.0, 1.0, 0.045, 0.0075 ]
   
     if not @dir?
       @dir = new Vec3(0,-1,0)
@@ -260,7 +281,6 @@ class SpotLight
   _removeFromNode: (node) ->
     node.spotLights.splice node.spotLights.indexOf @
     @
-
 
 
 module.exports =

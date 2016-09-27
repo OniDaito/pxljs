@@ -33,17 +33,25 @@ class DepthMaterial extends Material
 
 # ## ViewDepthMaterial
 # Used more for debugging and unpacking the packed depth in the ubershader for viewing on screen
-
+# Pass in the camera used when the depth material was made to linearise the view properly
 class ViewDepthMaterial extends Material
  
   # **constructor**
-  # - **depth_texture** - a Texture
-  constructor : (@depth_texture) ->
+  # - **depth_texture** - a Texture - Required
+  # - **_near** - a Number - Default - 0.1
+  # - **_far** - a Number - Default - 10.0
+  constructor : (@depth_texture, @_near, @_far) ->
     super()
 
     @_override = true
     @_uber0 = uber_depth_read true, @_uber0
-    @_uber_defines = ['FRAGMENT_DEPTH_IN', 'ADVANCED_CAMERA', 'VERTEX_TEXTURE']
+    @_uber_defines = ['FRAGMENT_DEPTH_IN', 'DEPTH_VIEW_MATERIAL', 'ADVANCED_CAMERA', 'VERTEX_TEXTURE']
+      
+    @_near = 0.1 if not @_near? 
+    @_far = 10.0 if not @_far?
+
+    @contract.roles.uNearDepth  = "_near"
+    @contract.roles.uFarDepth  = "_far"
 
   _preDraw : () ->
     @depth_texture.bind()

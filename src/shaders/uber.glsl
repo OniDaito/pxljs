@@ -30,7 +30,6 @@ uniform float uCameraFar;
 uniform mat4 uCameraInverseMatrix; 
 uniform mat4 uInverseProjectionMatrix;
 varying vec4 vEyePosition;
-varying mat4 vModelViewMatrix;
 #endif 
 
 #ifdef VERTEX_NORMAL
@@ -151,16 +150,26 @@ void main() {
 
   
 #ifdef ADVANCED_CAMERA
-  vEyePosition = uCameraInverseMatrix * uModelMatrix * vPosition;
+  vEyePosition = uCameraInverseMatrix * vPosition;
 #endif
 
   gl_Position = vPosition;
 
-#ifdef BASIC_CAMERA
-  vModelViewMatrix = uProjectionMatrix * uCameraMatrix;              
-  gl_Position = vModelViewMatrix * vPosition;
-  vModelViewMatrix *= uModelMatrix;
+#ifdef BASIC_CAMERA 
+  gl_Position = uProjectionMatrix * uCameraMatrix  * vPosition;
 #endif
+
+#ifdef LIGHTING_SPOT
+#ifdef SHADOW_MAP
+  if(bitcheck(uUber0,14)) {
+    mat4 bias = mat4(0.5,0.0,0.0,0.0, 0.0,0.5,0.0,0.0, 0.0,0.0,0.5,0.0, 0.5,0.5,0.5,1.0);
+    for (int i=0; i < LIGHTING_NUM_SPOT_LIGHTS; i++) {
+      vSpotPosLight[i] = bias * uSpotLightInvMatrix[i] * vPosition;
+    }
+  }
+#endif
+#endif
+
 }
 
 ##>FRAGMENT
@@ -226,6 +235,7 @@ bool bitcheck(in float fcheck, in int bitpos) {
   return false;
 }
 
+
 {{ShaderChunk.phong_material_fragment_head}}
 {{ShaderChunk.texture_material_fragment_head}}
 {{ShaderChunk.depth_material_fragment_head}}
@@ -272,9 +282,10 @@ void main() {
   if(bitcheck(uUber0,5)) { gl_FragColor = packDepth(); }
 #endif
 
-#ifdef FRAGMENT_DEPTH_IN
+#ifdef DEPTH_VIEW_MATERIAL
   if(bitcheck(uUber0,6)) {
-    float d = readDepth(vTexCoord);
+    float d = readDepth(vTexCoord, uSamplerDepth);
+    d = linearDepth(d,uNearDepth, uFarDepth);
     gl_FragColor = vec4(d,d,d,1.0); 
   }
 #endif

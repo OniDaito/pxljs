@@ -214,7 +214,7 @@ _uniformTypeCheckSet = (u,v) ->
         gl.uniformMatrix4fv u.pos, false, v
 
     else if v instanceof Int32Array
-      if u.type == GL.LOW_INT or u.type == GL.MEDIUM_INT or u.type == GL.HIGH_INT or u.type == GL.INT
+      if u.type == GL.LOW_INT or u.type == GL.MEDIUM_INT or u.type == GL.HIGH_INT or u.type == GL.INT or u.type == GL.SAMPLER_2D
         gl.uniform1iv u.pos, v # integer
 
   @

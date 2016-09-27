@@ -54,7 +54,7 @@ init = () ->
   @quad_node = new PXL.Node q
   @quad_node.add cp
 
-  @quad_node.add new PXL.Material.ViewDepthMaterial @spotlight.shadowmap_fbo.texture
+  @quad_node.add new PXL.Material.ViewDepthMaterial @spotlight.shadowmap_fbo.texture, 0.1, 10
   @quad_node.matrix.translate(new PXL.Math.Vec3(1,-1,0))
 
   # Now add the nodes and cameras for the main objects
@@ -70,15 +70,18 @@ init = () ->
 
   @step = 0
 
-  GL.enable(GL.DEPTH_TEST)
+
 
 draw = (dt) ->
   
   GL.clearColor(0.15, 0.15, 0.15, 1.0)
   GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT)
 
+  GL.enable(GL.DEPTH_TEST)
   # Draw out nodes
   @topnode.draw()
+  
+  GL.disable(GL.DEPTH_TEST)
   @quad_node.draw()
 
   # Move the light around

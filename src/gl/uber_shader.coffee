@@ -62,8 +62,9 @@ class UberShader extends Shader
       for light in base_node.spotLights
         if light.shadowmap
           @uber_defines.push "SHADOWMAP" if "SHADOWMAP" not in @uber_defines
-          @uber_defines.push "FRAGMENT_DEPTH_OUT" if "FRAGMENT_DEPTH_OUT" not in @uber_defines
-    
+          @uber_defines.push "FRAGMENT_DEPTH_OUT" if "FRAGMENT_DEPTH_OUT" not in @uber_defines 
+          @uber_defines.push "FRAGMENT_DEPTH_IN" if "FRAGMENT_DEPTH_IN" not in @uber_defines
+
     if base_node.skeleton?
       @uber_defines.push "SKINNING" if "SKINNING" not in @uber_defines
 
