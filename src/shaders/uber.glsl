@@ -283,10 +283,6 @@ void main() {
   {{ShaderChunk.phong_material_fragment_main}}
 #endif
 
-#ifdef MATERIAL_TEXTURE
-  {{ShaderChunk.texture_material_fragment_main}}
-#endif
-
 #ifdef BASIC_COLOUR
   if(bitcheck(uUber0,8)) { gl_FragColor = uColour; }
 #endif
