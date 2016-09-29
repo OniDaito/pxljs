@@ -1,0 +1,4 @@
+#ifdef LIGHTING_SPOT
+uniform sampler2D uSamplerSpotShadow[LIGHTING_NUM_SPOT_LIGHTS];
+uniform mat4 uSpotLightMatrix[LIGHTING_NUM_SPOT_LIGHTS];
+#endif

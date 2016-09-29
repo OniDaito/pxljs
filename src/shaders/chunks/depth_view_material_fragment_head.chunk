@@ -1,0 +1,8 @@
+uniform sampler2D uSamplerDepth;
+uniform float uDepthNear;
+uniform float uDepthFar;
+
+float linearDepth(float unpacked, float near, float far){
+  return (near * unpacked) / ( far - unpacked * (far - near) );
+}
+

@@ -75,7 +75,7 @@ class Front
 # TODO - this should really live somewhere else
 _shadow_map_material = new DepthMaterial()
 _shadow_map_camera = new PerspCamera new Vec3(0,1,0), new Vec3(0,0,0), new Vec3(1,0,0), 3.0, 0.1, 100.0
-
+_shadow_map_bias = new Matrix4([0.5,0,0,0, 0,0.5,0,0, 0,0,0.5,0, 0.5,0.5,0.5,1.0])
 # **shadomap_create_draw**
 # -**node** - a Node
 # -**front** - An Object based on Node
@@ -103,22 +103,24 @@ shadowmap_create_draw = (node,front,light) ->
   _shadow_map_camera.look.copy Vec3.add(pp, dd)
   _shadow_map_camera.up.copy Vec3.perp(dd)
   _shadow_map_camera.angle = light.angle
-  #_shadow_map_camera.near = 0.1
+  _shadow_map_camera.near = 0.01
+  _shadow_map_camera.width = light.shadowmap_fbo.width
+  _shadow_map_camera.height = light.shadowmap_fbo.height
   _shadow_map_camera.far = light.attenuation[0]
   fc.camera = _shadow_map_camera
+  _shadow_map_camera.update()
 
   # Create the shadowmap camera matrix
-  # TODO - To make this simpler, could we not delegate this to light._predraw and use some
-  # state instead? Or is this better here as its dependent on shadowcasting being enabled 
-  # as it involves cameras and the like
-  light.invMatrix.copy(_shadow_map_camera.m).mult(_shadow_map_camera.p)
-
+  light.mvpMatrix.copy(_shadow_map_bias).mult(_shadow_map_camera.p).mult(_shadow_map_camera.m)
+  
   # Begin the creation of a shadowmap for this light source
   light.shadowmap_fbo.bind()
-  fc.camera.update()
-  GL.clearColor(0.0, 0.0, 0.0, 0.0)
+  GL.clearColor(0.0, 0.0, 0.0, 1.0)
   GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT)
+  GL.enable(GL.CULL_FACE);
+  GL.cullFace(GL.BACK);
   _shadowmap_create_draw node, fc, light
+  GL.disable(GL.CULL_FACE);
   light.shadowmap_fbo.unbind()
 
 
@@ -135,14 +137,8 @@ _shadowmap_create_draw = (node, front, light) ->
   front.material._preDraw()
 
   front._uber0 = front.material._uber0
-  #front._uber0 = uber.uber_depth_set true, front._uber0
   front._uber0 = uber.uber_vertex_camera true, front._uber0
 
-  # Sort of assuming we have a nice ubershader already
-  # Not needed I believe as the shader should exist on front before it's cloned and passed in
-  #if node.shader?
-  #  front.shader = node.shader
-  
   # Create a precomputed model/view/perspecti:ve matrix for speed 
   front._normalMatrix = front.globalMatrix.getMatrix3().invert().transpose()
 
@@ -251,7 +247,7 @@ main_draw = (node, front) ->
         shadowmap_create_draw node, front, light
         front.spotLights.push light
      
-      front._uber0 = uber.uber_shadowmap true, front.uber0 # we want shadowmapping 
+      front._uber0 = uber.uber_shadowmap true, front.uber0 
 
     front._uber0 = uber.uber_lighting_spot true, front._uber0
   

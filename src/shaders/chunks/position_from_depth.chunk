@@ -1,0 +1,12 @@
+// Returns the 3D position in eye space. 
+
+vec3 positionFromDepthMatrix(float depth, mat4 matty, vec2 texcoord){
+  vec4 position = vec4(texcoord, depth, 1.0);
+  position.xyz = position.xyz*2.0 -1.0;
+  position = matty*position;
+  position.xyz /= position.w;
+  return position.xyz;
+
+}
+
+

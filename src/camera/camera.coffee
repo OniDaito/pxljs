@@ -41,7 +41,10 @@ class Camera
   # - **pos** - a Vec3
   # - **look** - a Vec3
   # - **up** - a Vec3
-  constructor: (@pos, @look, @up) ->
+  # - **width** - a Number - Default PXL.Context.width or 512
+  # - **height** - a Number - Default PXL.Context.height or 512
+ 
+  constructor: (@pos, @look, @up, @width, @height) ->
     if not @pos?
       @pos = new Vec3 0,0,5
     if not @look?
@@ -59,9 +62,14 @@ class Camera
     @q = new Quaternion() # Spare Quaternion to work out rotations
   
     # We keep these for the viewport calculations
-    @width = 1
-    @height = 1
+    if not @width
+      @width = 512
+      @width = PXL.Context.width if PXL.Context? 
 
+    if not @height?
+      @height = 512
+      @height = PXL.Context.height if PXL.Context? 
+    
     @contract = new Contract()
     @contract.roles.uCameraNear = "near"
     @contract.roles.uCameraFar  = "far"
@@ -74,17 +82,11 @@ class Camera
   # **update** - call this in your update function to update the matrices
   # TODO - I wonder if such things should be automatic on our draw / update 
   # paths through the nodes? Needs GL context ideally
-  # - **width** - a Number - default current context width
-  # - **height** - a Number - default current context height
   # - returns this
 
-  update: (width=PXL.Context.width, height=PXL.Context.height) ->
+  update: () ->
     @m.lookAt @pos, @look, @up
-    @i = Matrix4.invert(@m)
-    
-    @width = width
-    @height = height
-
+    @i = Matrix4.invert(@m) 
     GL.viewport 0, 0, @width, @height if GL?
     @
 
@@ -178,8 +180,11 @@ class OrthoCamera extends Camera
   # - **up** - a Vec3 - Required
   # - **near** - a Number
   # - **far** - a Number
-  constructor: (@pos, @look, @up, @near, @far) ->
-    super(@pos,@look,@up)
+  # - **width** - a Number - Default PXL.Context.width or 512
+  # - **height** - a Number - Default PXL.Context.height or 512
+ 
+  constructor: (@pos, @look, @up, @near, @far, @width, @height) ->
+    super(@pos,@look,@up, @width, @height)
     if not @near?
       @near = -1.0
     if not @far?
@@ -189,10 +194,9 @@ class OrthoCamera extends Camera
   # - **width** - a Number - Default is current context width
   # - **height** - a Number - Default is current context height
   # - returns this
-  update: (width=PXL.Context.width, height=PXL.Context.height)->
-
-    OrthoCamera.__super__.update.call(@, width, height)
-    @p.makeOrtho(0, width, 0, height, @near, @far)
+  update: ()->
+    OrthoCamera.__super__.update.call(@, @width, @height)
+    @p.makeOrtho(0, @width, 0, @height, @near, @far)
     @ip = Matrix4.invert(@p)
 
     @
@@ -211,8 +215,10 @@ class PerspCamera extends Camera
   # - **angle** - a Number
   # - **near** - a Number
   # - **far** - a Number
-  constructor: (@pos, @look, @up, @angle, @near, @far) ->
-    super(@pos,@look,@up)
+  # - **width** - a Number - Default PXL.Context.width or 512
+  # - **height** - a Number - Default PXL.Context.height or 512
+  constructor: (@pos, @look, @up, @angle, @near, @far, @width, @height) ->
+    super(@pos,@look,@up,@width,@height)
     if not @angle?
       @angle = degToRad 25.0
     if not @near?
@@ -227,10 +233,9 @@ class PerspCamera extends Camera
   # - **width** - a Number - Default is current context width
   # - **height** - a Number - Default is current context height
   # - returns this
-  update: (width=PXL.Context.width, height=PXL.Context.height)->
-  
-    PerspCamera.__super__.update.call(@, width, height)
-    @p.makePerspective(@angle, width / height, @near, @far )
+  update: ()->
+    PerspCamera.__super__.update.call(@)
+    @p.makePerspective(@angle, @width / @height, @near, @far )
     @ip = Matrix4.invert(@p)
   
     @
@@ -309,9 +314,11 @@ class MousePerspCamera extends PerspCamera
   # - **near** - a Number
   # - **far** - a Number
   # - **sense** - a Number
-  
-  constructor: ( @pos, @look, @up, @angle, @near, @far, @sense) ->
-    super(@pos, @look, @up, @angle, @near, @far)
+  # - **width** - a Number - Default PXL.Context.width or 512
+  # - **height** - a Number - Default PXL.Context.height or 512
+ 
+  constructor: ( @pos, @look, @up, @angle, @near, @far, @width, @height,  @sense) ->
+    super(@pos, @look, @up, @angle, @near, @far, @width, @height)
     
     # Listen for the signals on the PXL Context, emitting mouse events
     PXL.Context.mouseMove.add @onMouseMove, @
@@ -389,14 +396,7 @@ class MousePerspCamera extends PerspCamera
     @_zoom(dp)
     @
 
-  # **update** - call with width and height and the matrix will be updated
-  # - **width** - a Number - Default is current context width
-  # - **height** - a Number - Default is current context height
-  # - returns this
-  update: (width=PXL.Context.width, height=PXL.Context.height)->
-    MousePerspCamera.__super__.update.call(@, width, height)
-    @
-  
+ 
   # onMouseOut - registered with our signal - called when mouse leaves the context
   # - **event** - an Event
   # - returns this
@@ -429,8 +429,8 @@ class TouchPerspCamera extends MousePerspCamera
   # - **far** - a Number
   # - **sense** - a Number
  
-  constructor: ( @pos, @look, @up, @angle, @near, @far, @sense) ->
-    super(@pos, @look, @up, @angle, @near, @far)
+  constructor: ( @pos, @look, @up, @angle, @near, @far, @width, @height, @sense) ->
+    super(@pos, @look, @up, @angle, @near, @far, @width, @height, @sense)
     
     # Listen for the signals on the PXL Context, emitting touch events
     PXL.Context.touchPinch.add @onPinch, @

@@ -43,7 +43,7 @@ class PhongMaterial extends Material
   constructor: (@ambient, @diffuse, @specular, @shine, @emissive) ->
     super()
 
-    @_uber_defines = ['MAT_PHONG', 'VERTEX_NORMAL', 'ADVANCED_CAMERA']
+    @_uber_defines = ['MATERIAL_PHONG', 'VERTEX_NORMAL', 'ADVANCED_CAMERA']
 
     @_preDrawCalls = []
     

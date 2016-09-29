@@ -54,7 +54,7 @@ init = () ->
   @quad_node = new PXL.Node q
   @quad_node.add cp
 
-  @quad_node.add new PXL.Material.ViewDepthMaterial @spotlight.shadowmap_fbo.texture, 0.1, 10
+  @quad_node.add new PXL.Material.ViewDepthMaterial @spotlight.shadowmap_fbo.texture, 0.01, 10.0
   @quad_node.matrix.translate(new PXL.Math.Vec3(1,-1,0))
 
   # Now add the nodes and cameras for the main objects

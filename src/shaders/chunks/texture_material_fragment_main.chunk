@@ -1,3 +1,0 @@
-#ifdef MAT_TEXTURE
-if(bitcheck(uUber0,4)) { gl_FragColor = texture2D(uSamplerTexture, vTexCoord); }
-#endif

@@ -40,7 +40,7 @@ init = function() {
   shadowed_node.add(this.spotlight);
   this.quad_node = new PXL.Node(q);
   this.quad_node.add(cp);
-  this.quad_node.add(new PXL.Material.ViewDepthMaterial(this.spotlight.shadowmap_fbo.texture, 0.1, 10));
+  this.quad_node.add(new PXL.Material.ViewDepthMaterial(this.spotlight.shadowmap_fbo.texture, 0.01, 10.0));
   this.quad_node.matrix.translate(new PXL.Math.Vec3(1, -1, 0));
   this.topnode = new PXL.Node;
   this.topnode.add(shadowed_node);

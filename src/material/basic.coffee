@@ -60,7 +60,7 @@ class TextureMaterial extends Material
   constructor : (@texture) ->
     super()
     @_uber0 = uber_texture_mat true, @_uber0
-    @_uber_defines = ['MAT_TEXTURE', 'VERTEX_TEXTURE']
+    @_uber_defines = ['MATERIAL_TEXTURE', 'VERTEX_TEXTURE']
     @contract.roles.uSamplerTexture  = "texture"
 
   _preDraw : () ->

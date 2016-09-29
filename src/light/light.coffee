@@ -23,7 +23,7 @@ shader which we can modify easily. A user will need to set these if they wish to
 
 ###
 
-{Matrix4, Vec2, Vec3, Vec4} = require '../math/math'
+{Matrix4, Vec2, Vec3, Vec4, degToRad} = require '../math/math'
 {RGB,RGBA} = require '../colour/colour'
 {Contract} = require '../gl/contract'
 {Fbo} = require '../gl/fbo'
@@ -151,7 +151,7 @@ class SpotLight
   @_dirGlobal = new Float32Array(LIGHTING_NUM_SPOT_LIGHTS * 3)
   @_angleGlobal = new Float32Array(LIGHTING_NUM_SPOT_LIGHTS)
   @_expGlobal = new Float32Array(LIGHTING_NUM_SPOT_LIGHTS)
-  @_invMatrixGlobal = new Float32Array(LIGHTING_NUM_SPOT_LIGHTS * 16)
+  @_mvpMatrixGlobal = new Float32Array(LIGHTING_NUM_SPOT_LIGHTS * 16)
   @_samplerGlobal = new Int32Array(LIGHTING_NUM_SPOT_LIGHTS)
 
   @contract = new Contract()
@@ -162,7 +162,7 @@ class SpotLight
   @contract.roles.uSpotLightAngle = "_angleGlobal"
   @contract.roles.uSpotLightExp = "_expGlobal"
   @contract.roles.uSpotLightNum = "_numGlobal"
-  @contract.roles.uSpotLightInvMatrix = "_invMatrixGlobal"
+  @contract.roles.uSpotLightMatrix = "_mvpMatrixGlobal"
   @contract.roles.uSamplerSpotShadow = "_samplerGlobal"
 
   # called internally - sets up the global contract array
@@ -198,7 +198,7 @@ class SpotLight
       
       if light.shadowmap
         for i in [0..15]
-          SpotLight._invMatrixGlobal[idx*16+i] = light.invMatrix.a[i]
+          SpotLight._mvpMatrixGlobal[idx*16+i] = light.mvpMatrix.a[i]
 
         # Bind the shadowmap texture, ready for sampling 
         light.shadowmap_fbo.texture.bind()
@@ -227,7 +227,7 @@ class SpotLight
   # -**angle** - a Number - radians
   # -**exponent** - a Number
   # -**shadowmap** - a Boolean
-  # -**attentuation** - a List of Number - length 4 - optional - default [100, 1.0, 0.045, 0.0075]
+  # -**attentuation** - a List of Number - length 4 - optional - default [10, 1.0, 0.045, 0.0075]
   constructor : (@pos, @colour, @dir, @angle, @shadowmap, @exponent, @attenuation) ->
 
     @contract = SpotLight.contract
@@ -238,7 +238,7 @@ class SpotLight
     @_dirGlobal = SpotLight._dirGlobal
     @_angleGlobal = SpotLight._angleGlobal
     @_expGlobal = SpotLight._expGlobal
-    @_invMatrixGlobal = SpotLight._invMatrixGlobal   
+    @_mvpMatrixGlobal = SpotLight._mvpMatrixGlobal   
     @_samplerGlobal = SpotLight._samplerGlobal
  
     if not @pos?
@@ -251,8 +251,8 @@ class SpotLight
       @shadowmap = false
 
     if @shadowmap
-      @shadowmap_fbo = new Fbo(640,640)
-      @invMatrix = new Matrix4()
+      @shadowmap_fbo = new Fbo(512,512)
+      @mvpMatrix = new Matrix4()
     
     # Attenuation has 4 components - range, constant, linear and quadratic
     if not @attenuation?
@@ -264,7 +264,7 @@ class SpotLight
     @dir.normalize()
 
     if not @angle?
-      @angle = 45.0
+      @angle = degToRad 45.0
     
     if not @exponent?
       @exponent = 100.0

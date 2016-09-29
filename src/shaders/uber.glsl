@@ -22,6 +22,7 @@ varying vec2 vTexCoord;
 #ifdef BASIC_CAMERA
 uniform mat4 uCameraMatrix;
 uniform mat4 uProjectionMatrix;
+varying mat4 vProjCamMatrix;
 #endif
 
 #ifdef ADVANCED_CAMERA
@@ -69,6 +70,10 @@ uniform int uBoneTexDim;
 
 #ifdef VERTEX_SOBEL
 {{ShaderChunk.sobel}}
+#endif
+
+#ifdef SHADOWMAP
+{{ShaderChunk.shadowmap}}
 #endif
 
 #ifdef SKINNING 
@@ -156,7 +161,8 @@ void main() {
   gl_Position = vPosition;
 
 #ifdef BASIC_CAMERA 
-  gl_Position = uProjectionMatrix * uCameraMatrix  * vPosition;
+  vProjCamMatrix = uProjectionMatrix * uCameraMatrix;
+  gl_Position = vProjCamMatrix * vPosition;
 #endif
 
 }
@@ -170,7 +176,7 @@ uniform mat4 uModelMatrix;
 varying vec4 vPosition;
 
 #ifdef BASIC_CAMERA
-varying mat4 vModelViewMatrix;
+varying mat4 vProjCamMatrix;
 #endif
 
 #ifdef BASIC_COLOUR
@@ -215,6 +221,12 @@ varying vec4 vEyePosition;
 {{ShaderChunk.spot_light}}
 #endif
 
+#ifdef SHADOWMAP
+{{ShaderChunk.shadowmap}}
+#endif
+
+
+
 bool bitcheck(in float fcheck, in int bitpos) { 
   int fsi = int(fcheck);
   for (int i = 0; i < 32; i++) { 
@@ -224,11 +236,21 @@ bool bitcheck(in float fcheck, in int bitpos) {
   return false;
 }
 
+#ifdef PACKING
+{{ShaderChunk.packing}}
+#endif
 
+#ifdef MATERIAL_PHONG
 {{ShaderChunk.phong_material_fragment_head}}
+#endif
+
+#ifdef MATERIAL_TEXTURE
 {{ShaderChunk.texture_material_fragment_head}}
-{{ShaderChunk.depth_material_fragment_head}}
-{{ShaderChunk.view_material_fragment_head}}
+#endif
+
+#ifdef DEPTH_VIEW_MATERIAL
+{{ShaderChunk.depth_view_material_fragment_head}}
+#endif
 
 #ifdef FRAGMENT_NOISE
 {{ShaderChunk.noise}}
@@ -256,8 +278,14 @@ float getLuminance(in vec3 colour) {
 #endif
 
 void main() {
+  
+#ifdef MATERIAL_PHONG
   {{ShaderChunk.phong_material_fragment_main}}
+#endif
+
+#ifdef MATERIAL_TEXTURE
   {{ShaderChunk.texture_material_fragment_main}}
+#endif
 
 #ifdef BASIC_COLOUR
   if(bitcheck(uUber0,8)) { gl_FragColor = uColour; }
@@ -268,13 +296,20 @@ void main() {
 #endif
    
 #ifdef FRAGMENT_DEPTH_OUT
-  if(bitcheck(uUber0,5)) { gl_FragColor = packDepth(); }
+  if(bitcheck(uUber0,5)) { 
+    vec4 td = vProjCamMatrix * vPosition; 
+    gl_FragColor = pack( ((td.z / td.w) + 1.0 ) * 0.5  ); 
+  }
+#endif
+
+#ifdef MATERIAL_TEXTURE
+  if(bitcheck(uUber0,4)) { gl_FragColor = texture2D(uSamplerTexture, vTexCoord); }
 #endif
 
 #ifdef DEPTH_VIEW_MATERIAL
   if(bitcheck(uUber0,6)) {
-    float d = readDepth(vTexCoord, uSamplerDepth);
-    d = linearDepth(d,uNearDepth, uFarDepth);
+    float d = unpack(texture2D(uSamplerDepth, vTexCoord));
+    d = linearDepth(d, uDepthNear, uDepthFar);
     gl_FragColor = vec4(d,d,d,1.0); 
   }
 #endif
