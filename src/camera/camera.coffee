@@ -64,11 +64,13 @@ class Camera
     # We keep these for the viewport calculations
     if not @width
       @width = 512
-      @width = PXL.Context.width if PXL.Context? 
+      if PXL? # this is here because of tests :/
+        @width = PXL.Context.width if PXL.Context? 
 
     if not @height?
       @height = 512
-      @height = PXL.Context.height if PXL.Context? 
+      if PXL?
+        @height = PXL.Context.height if PXL.Context? 
     
     @contract = new Contract()
     @contract.roles.uCameraNear = "near"
