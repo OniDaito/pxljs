@@ -51,13 +51,36 @@ class Logo
     @cube_nodes[21].matrix.translate( new PXL.Math.Vec3(1.0,-2.0,0.0) )
     @cube_nodes[22].matrix.translate( new PXL.Math.Vec3(2.0,-2.0,0.0) )
 
+  
+  rotate_cubes : (dt) ->
+    dd = 0
+    stopped = true
+    for cube in @cube_nodes
+      rot = (1.0 + Math.sin(dd)) 
+      if cube._rot < 360
+        cube._rot += rot
+        cube.matrix.rotate new PXL.Math.Vec3(0,1,0), PXL.Math.degToRad(cube._rot) 
+        stopped = false
+      dd += 0.1
+
+    @time += dt
+
+    if not stopped
+      @pause_time = @time
+      
+    if stopped
+      if @time - @pause_time > 5000
+        for cube in @cube_nodes
+          cube._rot = 0
+        @time = 0
+        @pause_time = 0  
+
   init : () ->
 
     @top_node = new PXL.Node()
-
-      
-    @c = new PXL.Camera.MousePerspCamera new PXL.Math.Vec3(0,0,25)
-    @top_node.add @c
+  
+    @camera = new PXL.Camera.PerspCamera new PXL.Math.Vec3(-6.62, -2.15, 7.29), new PXL.Math.Vec3(-1.17, 0.59, -0.64), new PXL.Math.Vec3(-0.16, 0.96, 0.23)
+    @top_node.add @camera
 
     # Create a cuboid with a basic material
     # then translate the cube a little
@@ -65,11 +88,12 @@ class Logo
     hot_pink = new PXL.Colour.RGB(1.0,0.41,0.7)
     spec = new PXL.Colour.RGB(0.0,0.0,0.0)
     @top_node.add new PXL.Material.PhongMaterial(hot_pink, hot_pink, spec)
-  
+ 
     # Create a set of nodes for the logo with the same geometry
     @cube_nodes = []
     for i in [0..22]
       cc = new PXL.Node(cube_geometry)
+      cc._rot = 0
       @cube_nodes.push cc
       @top_node.add cc  
 
@@ -85,18 +109,18 @@ class Logo
       
     @top_node.add uber
 
+    @time = 0
+    @pause_time = 0
 
     GL.enable(GL.CULL_FACE)
     GL.cullFace(GL.BACK)
     GL.enable(GL.DEPTH_TEST)
-
-
-  rotate_cubes : () ->
   
 
-  draw : () ->
+  draw : (dt) ->
     @reset_cubes()
     @arrange_cubes()
+    @rotate_cubes(dt)
     
     GL.clearColor(1.0, 1.0, 1.0, 1.0)
     GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT)

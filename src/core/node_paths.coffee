@@ -48,6 +48,8 @@ class Front
     @shader = undefined
     @skeleton = undefined
     @ambientLight = undefined
+    @spotLightMatrix = new Matrix4()
+    @pointLightMatrix = new Matrix4()
 
   clone : () ->
     c = new Front()
@@ -60,6 +62,8 @@ class Front
     c._normalMatrix.copy @_normalMatrix
     c._mvpMatrix.copy @_mvpMatrix
     c._uber0 = @_uber0
+    c.pointLightMatrix.copy @pointLightMatrix
+    c.spotLightMatrix.copy @spotLightMatrix
     
     # These are references which reflects the 
     # behaviour that cameras, shaders etc, override
@@ -235,21 +239,28 @@ main_draw = (node, front) ->
   # TODO - We need to be careful about scaling here as well :S
   front._normalMatrix = front.globalMatrix.getMatrix3().invert().transpose()
 
+  # Point lights
+  # At the point where we are adding the lights, we fix the point lights global matrix in place
   for light in node.pointLights
     front.pointLights.push light
   
   if node.pointLights.length > 0
     front._uber0 = uber.uber_lighting_point true, front._uber0
-  
+    front.pointLightMatrix.copy front.globalMatrix  
+
+  # Spot Lights
   for light in node.spotLights
+    front.spotLights.push light
+
     # shadowmap jumping off point
     if light.shadowmap
       if PXL.Context.gl?
         shadowmap_create_draw node, front, light
-        front.spotLights.push light
-     
+ 
       front._uber0 = uber.uber_shadowmap true, front.uber0 
 
+  if node.spotLights.length > 0
+    front.spotLightMatrix.copy front.globalMatrix  
     front._uber0 = uber.uber_lighting_spot true, front._uber0
   
   # Overwrite the ambient if there is one closer
@@ -264,7 +275,6 @@ main_draw = (node, front) ->
     front.shader = node.shader
   
   # TODO - Do we need all these if checks? Just copy null?
-
   if node.geometry?
     if not node.geometry.brewed
       node.geometry.brew()
@@ -309,10 +319,9 @@ main_draw = (node, front) ->
     
       if PXL.Context.shader?
         # Set the lights here
-        # We pass in the current matrix as there might be geometry further
-        # down the tree with different matrices
-        PointLight._preDraw front.pointLights, front.globalMatrix
-        SpotLight._preDraw front.spotLights, front.globalMatrix
+        # We pass in the matrix we saved at time of addition to front
+        PointLight._preDraw front.pointLights, front.pointLightMatrix
+        SpotLight._preDraw front.spotLights, front.spotLightMatrix
 
         PXL.Context.shader.bind()
 
