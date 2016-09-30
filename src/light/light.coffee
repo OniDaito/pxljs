@@ -42,12 +42,12 @@ class AmbientLight
 
   # **@constructor**
   # - **colour** - a Colour.RGB - Default RGB(0,0,0)
-  constructor : (@colour) ->
-    if not @colour?
-      @colour = new RGB(0,0,0)
+  constructor : (@ambientcolour) ->
+    if not @ambientcolour?
+      @ambientcolour = new RGB(0,0,0)
 
     @contract = new Contract()
-    @contract.roles.uAmbientLightingColour = "colour"
+    @contract.roles.uAmbientLightingColour = "ambientcolour"
 
   _addToNode: (node) ->
     # Overwrite and give no warning?
@@ -100,6 +100,8 @@ class PointLight
       PointLight._attenuationGlobal[idx * 4 + 1] = light.attenuation.y
       PointLight._attenuationGlobal[idx * 4 + 2] = light.attenuation.z
       PointLight._attenuationGlobal[idx * 4 + 3] = light.attenuation.w
+
+      idx += 1
 
     PointLight._numGlobal = lights.length
 

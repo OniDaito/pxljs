@@ -310,6 +310,12 @@ void main() {
   }
 #endif
 
+#ifdef MATERIAL_NORMAL
+  if(bitcheck(uUber0,15)) {
+    gl_FragColor = vec4((vNormal.xyz + 1.0) * 0.5, 1.0);
+  }
+#endif
+
 }
 
 

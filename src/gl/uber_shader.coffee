@@ -53,6 +53,9 @@ class UberShader extends Shader
     if base_node.pointLights.length > 0
       @uber_defines.push "LIGHTING_POINT" if "LIGHTING_POINT" not in @uber_defines
       @uber_defines.push "LIGHTING" if "LIGHTING" not in @uber_defines
+  
+    if base_node.ambientLight?
+      @uber_defines.push "LIGHTING" if "LIGHTING" not in @uber_defines 
 
     if base_node.spotLights.length > 0
       @uber_defines.push "LIGHTING_SPOT" if "LIGHTING_SPOT" not in @uber_defines

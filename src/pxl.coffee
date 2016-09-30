@@ -98,6 +98,7 @@ extend "Material", require './material/material'
 extend "Material", require './material/basic'
 extend "Material", require './material/phong'
 extend "Material", require './material/depth'
+extend "Material", require './material/normal'
 
 extend "Animation", require './animation/animation'
 

@@ -47,6 +47,7 @@ class Front
     @camera = undefined
     @shader = undefined
     @skeleton = undefined
+    @ambientLight = undefined
 
   clone : () ->
     c = new Front()
@@ -69,7 +70,7 @@ class Front
     c.material = @material
     c.contract = @contract
     c.skeleton = @skeleton
-
+    c.ambientLight = @ambientLight  
     c
 
 # TODO - this should really live somewhere else

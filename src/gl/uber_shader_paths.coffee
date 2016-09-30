@@ -40,6 +40,7 @@ There is probably a more elegant way of doing this but it works for now
 # 12 - phong emissive texture true
 # 13 - phong material
 # 14 - use the shadowmaps and do shadowing
+# 15 - normal mapping
 
 uber_path_map:
   vertex_flat : 0
@@ -57,7 +58,7 @@ uber_path_map:
   phong_emis_tex : 12
   phong_mat : 13
   shadowmap : 14
-  
+  normal_mat : 15  
 
 # Clear the uber flags for materials as we would like to override in the node
 # At the moment, these are 8 to 13 inclusive and 5-6 but WILL change
@@ -140,6 +141,11 @@ uber_shadowmap = (tf,ubervar) ->
     return ubervar | 0x4000
   ubervar & ~0x4000
 
+uber_normal_mat = (tf, ubervar) ->
+  if tf
+    return ubervar | 0x8000
+  ubervar & ~0x8000
+
 module.exports =
   uber_clear_material : uber_clear_material
   uber_vertex_flat : uber_vertex_flat
@@ -157,3 +163,4 @@ module.exports =
   uber_depth_read : uber_depth_read
   uber_lighting_spot : uber_lighting_spot
   uber_shadowmap : uber_shadowmap
+  uber_normal_mat : uber_normal_mat

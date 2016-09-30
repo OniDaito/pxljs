@@ -93,6 +93,167 @@ class Cuboid extends Geometry
     for i in [0..@indices.length-1] by 3
       @faces.push new Triangle(@vertices[@indices[i]], @vertices[@indices[i+1]], @vertices[@indices[i+2]])
 
+# ## CuboidDup
+# A basic Cuboid with no with no interpolated normals. Each corner has duplicated faces for normals
+
+class CuboidDup extends Geometry
+  # TODO - Add resolution here?
+  # TODO - Add tangents here too?
+
+  # **constructor**
+  # - **dim** - a Vec3 - Default Vec3(1,1,1)
+  # - **colour** - a Colour
+  
+  constructor: (dim, colour) ->
+    super()
+
+    @indexed = true
+    @layout = GL.TRIANGLES if GL?
+    
+    if not dim?
+      dim = new Vec3 1.0,1.0,1.0
+
+    w = dim.x / 2
+    h = dim.y / 2
+    d = dim.z / 2
+
+    # front
+    @vertices.push new Vertex 
+      p : new Vec3 -w,-h,d
+      n : new Vec3 0,0,1
+      t : new Vec2 0,0 
+    
+    @vertices.push new Vertex 
+      p : new Vec3 w,-h,d  
+      n : new Vec3 0,0,1
+      t : new Vec2 1,0 
+    
+    @vertices.push new Vertex 
+      p : new Vec3 w,h,d
+      n : new Vec3 0,0,1
+      t : new Vec2 1,1
+    
+    @vertices.push new Vertex 
+      p : new Vec3 -w,h,d  
+      n : new Vec3 0,0,1
+      t : new Vec2 0,1
+    
+    # back
+    @vertices.push new Vertex 
+      p : new Vec3 -w,-h,-d
+      n : new Vec3 0,0,-1
+      t : new Vec2 0,0 
+    
+    @vertices.push new Vertex 
+      p : new Vec3 w,-h,-d  
+      n : new Vec3 0,0,-1
+      t : new Vec2 1,0 
+    
+    @vertices.push new Vertex 
+      p : new Vec3 w,h,-d
+      n : new Vec3 0,0,-1
+      t : new Vec2 1,1
+    
+    @vertices.push new Vertex 
+      p : new Vec3 -w,h,-d  
+      n : new Vec3 0,0,-1
+      t : new Vec2 0,1  
+
+    # left
+    @vertices.push new Vertex 
+      p : new Vec3 -w,-h,-d
+      n : new Vec3 -1,0,0
+      t : new Vec2 0,0 
+    
+    @vertices.push new Vertex 
+      p : new Vec3 -w,-h,d  
+      n : new Vec3 -1,0,0
+      t : new Vec2 1,0 
+    
+    @vertices.push new Vertex 
+      p : new Vec3 -w,h,d
+      n : new Vec3 -1,0,0
+      t : new Vec2 1,1
+    
+    @vertices.push new Vertex 
+      p : new Vec3 -w,h,-d  
+      n : new Vec3 -1,0,0
+      t : new Vec2 0,1  
+
+    # right
+    @vertices.push new Vertex 
+      p : new Vec3 w,-h,-d
+      n : new Vec3 1,0,0
+      t : new Vec2 0,0 
+    
+    @vertices.push new Vertex 
+      p : new Vec3 w,-h,d  
+      n : new Vec3 1,0,0
+      t : new Vec2 1,0 
+    
+    @vertices.push new Vertex 
+      p : new Vec3 w,h,d
+      n : new Vec3 1,0,0
+      t : new Vec2 1,1
+    
+    @vertices.push new Vertex 
+      p : new Vec3 w,h,-d  
+      n : new Vec3 1,0,0
+      t : new Vec2 0,1  
+
+    # top
+    @vertices.push new Vertex 
+      p : new Vec3 -w,h,-d
+      n : new Vec3 0,1,0
+      t : new Vec2 0,0 
+    
+    @vertices.push new Vertex 
+      p : new Vec3 -w,h,d  
+      n : new Vec3 0,1,0
+      t : new Vec2 1,0 
+    
+    @vertices.push new Vertex 
+      p : new Vec3 w,h,d
+      n : new Vec3 0,1,0
+      t : new Vec2 1,1
+    
+    @vertices.push new Vertex 
+      p : new Vec3 w,h,-d  
+      n : new Vec3 0,1,0
+      t : new Vec2 0,1  
+
+    # bottom
+    @vertices.push new Vertex 
+      p : new Vec3 -w,-h,-d
+      n : new Vec3 0,-1,0
+      t : new Vec2 0,0 
+    
+    @vertices.push new Vertex 
+      p : new Vec3 -w,-h,d  
+      n : new Vec3 0,-1,0
+      t : new Vec2 1,0 
+    
+    @vertices.push new Vertex 
+      p : new Vec3 w,-h,d
+      n : new Vec3 0,-1,0
+      t : new Vec2 1,1
+    
+    @vertices.push new Vertex 
+      p : new Vec3 w,-h,-d  
+      n : new Vec3 0,-1,0
+      t : new Vec2 0,1  
+
+    if colour?
+      for v in @vertices
+        v.c = colour
+
+
+    @indices = [0,1,2,0,2,3,6,5,4,7,6,4,8,9,10,8,10,11,14,13,12,15,14,12,16,17,18,16,18,19,22,21,20,23,22,20 ]
+
+    for i in [0..@indices.length-1] by 3
+      @faces.push new Triangle(@vertices[@indices[i]], @vertices[@indices[i+1]], @vertices[@indices[i+2]])
+
+
 
 
 # ## Sphere
@@ -328,6 +489,7 @@ class Cylinder extends Geometry
 module.exports = 
   Cuboid: Cuboid
   Sphere: Sphere
+  CuboidDup: CuboidDup
   Cylinder : Cylinder
   
  

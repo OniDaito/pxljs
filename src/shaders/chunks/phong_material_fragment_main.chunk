@@ -98,7 +98,7 @@ for (int i=0; i < LIGHTING_NUM_SPOT_LIGHTS; i++) {
     spotFactor = 0.0;
   }
  
- vec3 reflectionDirection = reflect(-lightDirection, vTransformedNormal.xyz);
+  vec3 reflectionDirection = reflect(-lightDirection, vTransformedNormal.xyz);
   float specularLightBrightness = pow(max(dot(reflectionDirection, eyeDirection), 0.0), uMaterialShininess);
   specularLightWeighting = specularLightWeighting + (uSpotLightColour[i] * specularLightBrightness);
   float diffuseLightBrightness = max(dot(vTransformedNormal.xyz, lightDirection), 0.0);

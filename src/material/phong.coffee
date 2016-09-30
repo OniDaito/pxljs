@@ -36,7 +36,7 @@ class PhongMaterial extends Material
 
   # **@constructor**
   # - **ambient** - a Colour.RGB - Default RGB(0,0,0)
-  # - **diffuse** - a Colour.RGB or a Texture
+  # - **diffuse** - a Colour.RGB or a Texture - Defaults to Vertex Colours
   # - **specular** - a Colour.RGB or a Texture - Default RGB(1,1,1)
   # - **shine** - a Number - Default 20
   # - **emissive** -  a Colour.RGB or a Texture - default RGB(0,0,0) 
