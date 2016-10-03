@@ -19,22 +19,22 @@ init = () ->
   
   # A basic Z/X aligned plane
   plane = new PXL.Geometry.Plane(8,8)  
-  plane_node = new PXL.Node()
-  plane_node.add plane
+  @plane_node = new PXL.Node()
+  @plane_node.add plane
 
   # A higher resolution flat plane
-  flat_node = new PXL.Node()
+  @flat_node = new PXL.Node()
   flat_plane = new PXL.Geometry.PlaneFlat(128,128)
 
-  flat_node.add(new PXL.Material.BasicColourMaterial(new PXL.Colour.RGB(1,0,0))).add(flat_plane)
-  flat_node.matrix.translate(new PXL.Math.Vec3(0,-2.0,0))
+  @flat_node.add(new PXL.Material.BasicColourMaterial(new PXL.Colour.RGB(1,0,0))).add(flat_plane)
+  @flat_node.matrix.translate(new PXL.Math.Vec3(0,-2.0,0))
 
   # A Hexagon based plane
-  hex_node = new PXL.Node()
+  @hex_node = new PXL.Node()
   hex_plane = new PXL.Geometry.PlaneHexagonFlat(12,12)
 
-  hex_node.add(new PXL.Material.BasicColourMaterial(new PXL.Colour.RGB(0,1,0))).add(hex_plane)
-  hex_node.matrix.translate(new PXL.Math.Vec3(0,2.0,0))
+  @hex_node.add(new PXL.Material.BasicColourMaterial(new PXL.Colour.RGB(0,1,0))).add(hex_plane)
+  @hex_node.matrix.translate(new PXL.Math.Vec3(0,2.0,0))
 
 
   @top_node.add hex_node
@@ -46,7 +46,7 @@ init = () ->
 
   got_texture = (texture) =>
     material = new PXL.Material.TextureMaterial(texture)
-    @top_node.add material
+    @plane_node.add material
     uber = new PXL.GL.UberShader(@top_node)
     @top_node.add uber
 

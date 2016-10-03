@@ -50,6 +50,9 @@ init = () ->
   @spotlight = new PXL.Light.SpotLight new PXL.Math.Vec3(-2,2,0), white, new PXL.Math.Vec3(1,-1,0), PXL.Math.degToRad(45.0), true
   shadowed_node.add @spotlight
 
+  @pointLight = new PXL.Light.PointLight new PXL.Math.Vec3(0,3,0), new PXL.Colour.RGB(0.1,0.12,0.24)
+  @light_node.add @pointLight
+
   # our quad node for showing the lights view
   @quad_node = new PXL.Node q
   @quad_node.add cp

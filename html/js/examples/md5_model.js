@@ -23,13 +23,13 @@ MD5Example = (function() {
     this.top_node = new PXL.Node();
     this.c = new PXL.Camera.MousePerspCamera(new PXL.Math.Vec3(0, 0, 25));
     this.top_node.add(this.c);
-    this.ambientlight = new PXL.Light.AmbientLight(new PXL.Colour.RGB(0.001, 0.001, 0.01));
-    this.light = new PXL.Light.PointLight(new PXL.Math.Vec3(10.0, 5.0, -10.0), new PXL.Colour.RGB(0.8, 0.1, 0.1));
+    this.ambientlight = new PXL.Light.AmbientLight(new PXL.Colour.RGB(0.1, 0.1, 0.1));
+    this.light = new PXL.Light.PointLight(new PXL.Math.Vec3(0.0, 10.0, 10.0), new PXL.Colour.RGB(0.5, 0.3, 0.3));
     this.light2 = new PXL.Light.PointLight(new PXL.Math.Vec3(-10.0, 5.0, 10.0), new PXL.Colour.RGB(0.0, 0.9, 0.9));
     cuboid = new PXL.Geometry.Cuboid(new PXL.Math.Vec3(1, 1, 1));
-    cuboid_node = new PXL.Node(cuboid, new PXL.Material.BasicColourMaterial(new PXL.Colour.RGB(1, 0, 0)));
+    cuboid_node = new PXL.Node(cuboid, new PXL.Material.NormalMaterial());
+    cuboid_node.matrix.translate(this.light.pos);
     this.top_node.add(this.light);
-    this.top_node.add(this.light2);
     this.top_node.add(this.ambientlight);
     this.top_node.add(cuboid_node);
     this.promise = new PXL.Util.Promise();

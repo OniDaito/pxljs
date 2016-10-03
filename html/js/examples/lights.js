@@ -38,6 +38,8 @@ init = function() {
   ambientlight = new PXL.Light.AmbientLight(new PXL.Colour.RGB(0.01, 0.01, 0.01));
   this.spotlight = new PXL.Light.SpotLight(new PXL.Math.Vec3(-2, 2, 0), white, new PXL.Math.Vec3(1, -1, 0), PXL.Math.degToRad(45.0), true);
   shadowed_node.add(this.spotlight);
+  this.pointLight = new PXL.Light.PointLight(new PXL.Math.Vec3(0, 3, 0), new PXL.Colour.RGB(0.1, 0.12, 0.24));
+  this.light_node.add(this.pointLight);
   this.quad_node = new PXL.Node(q);
   this.quad_node.add(cp);
   this.quad_node.add(new PXL.Material.ViewDepthMaterial(this.spotlight.shadowmap_fbo.texture, 0.01, 10.0));

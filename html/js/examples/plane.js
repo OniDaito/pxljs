@@ -16,19 +16,19 @@ This software is released under the MIT Licence. See LICENCE.txt for details
 var cgl, draw, init, params;
 
 init = function() {
-  var camera, flat_node, flat_plane, got_texture, hex_node, hex_plane, params, plane, plane_node;
+  var camera, flat_plane, got_texture, hex_plane, params, plane;
   this.top_node = new PXL.Node();
   plane = new PXL.Geometry.Plane(8, 8);
-  plane_node = new PXL.Node();
-  plane_node.add(plane);
-  flat_node = new PXL.Node();
+  this.plane_node = new PXL.Node();
+  this.plane_node.add(plane);
+  this.flat_node = new PXL.Node();
   flat_plane = new PXL.Geometry.PlaneFlat(128, 128);
-  flat_node.add(new PXL.Material.BasicColourMaterial(new PXL.Colour.RGB(1, 0, 0))).add(flat_plane);
-  flat_node.matrix.translate(new PXL.Math.Vec3(0, -2.0, 0));
-  hex_node = new PXL.Node();
+  this.flat_node.add(new PXL.Material.BasicColourMaterial(new PXL.Colour.RGB(1, 0, 0))).add(flat_plane);
+  this.flat_node.matrix.translate(new PXL.Math.Vec3(0, -2.0, 0));
+  this.hex_node = new PXL.Node();
   hex_plane = new PXL.Geometry.PlaneHexagonFlat(12, 12);
-  hex_node.add(new PXL.Material.BasicColourMaterial(new PXL.Colour.RGB(0, 1, 0))).add(hex_plane);
-  hex_node.matrix.translate(new PXL.Math.Vec3(0, 2.0, 0));
+  this.hex_node.add(new PXL.Material.BasicColourMaterial(new PXL.Colour.RGB(0, 1, 0))).add(hex_plane);
+  this.hex_node.matrix.translate(new PXL.Math.Vec3(0, 2.0, 0));
   this.top_node.add(hex_node);
   this.top_node.add(plane_node);
   this.top_node.add(flat_node);
@@ -38,7 +38,7 @@ init = function() {
     return function(texture) {
       var material, uber;
       material = new PXL.Material.TextureMaterial(texture);
-      _this.top_node.add(material);
+      _this.plane_node.add(material);
       uber = new PXL.GL.UberShader(_this.top_node);
       return _this.top_node.add(uber);
     };

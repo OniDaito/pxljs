@@ -120,6 +120,7 @@ void main() {
   
 #ifdef VERTEX_NORMAL
   vNormal = aVertexNormal;
+  // TODO -  we shouldnt need the normalize in here. I think we are doing something wrong ><
   vTransformedNormal = vec4(uNormalMatrix * aVertexNormal,1.0);
 #endif
 
@@ -127,29 +128,46 @@ void main() {
   vTangent = aVertexTangent;
 #endif
 
+  // Could do to path this as well to avoid uncessary matrix mult
   vPosition = uModelMatrix * vec4(aVertexPosition, 1.0);
 
 #ifdef SKINNING 
   if(bitcheck(uUber0,2)) {
     vPosition = vec4(0.0,0.0,0.0,1.0);
+    vTransformedNormal = vec4(0.0,0.0,0.0,1.0);
     float bias = aVertexSkinWeight.x;
     mat4 tm = sample_palette(aVertexBoneIndex.x);
+    mat3 tn = mat3(tm);
     vec4 bp = tm * vec4(aVertexPosition,1.0) * bias;
+    vec3 np = tn * aVertexNormal * bias;
     vPosition += bp;
+    vTransformedNormal.xyz += np; 
     bias = aVertexSkinWeight.y;
     tm = sample_palette(aVertexBoneIndex.y);
     bp = tm * vec4(aVertexPosition,1.0) * bias;
+    tn = mat3(tm);
+    np = tn * aVertexNormal * bias;
+    vTransformedNormal.xyz += np;
     vPosition += bp;
     bias = aVertexSkinWeight.z;
     tm = sample_palette(aVertexBoneIndex.z);
     bp = tm * vec4(aVertexPosition,1.0) * bias;
+    tn = mat3(tm);
+    np = tn * aVertexNormal * bias;
+    vTransformedNormal.xyz += np;
     vPosition += bp;
     bias = aVertexSkinWeight.w;
     tm = sample_palette(aVertexBoneIndex.w);
     bp = tm * vec4(aVertexPosition,1.0) * bias;
+    tn = mat3(tm);
+    np = tn * aVertexNormal * bias;
+    vTransformedNormal.xyz += np;
     vPosition += bp;
     vPosition.w = 1.0;
     vPosition = uModelMatrix * vPosition;
+    vTransformedNormal.w = 1.0;
+    vTransformedNormal.xyz = uNormalMatrix * vTransformedNormal.xyz;
+    vTransformedNormal.xyz = normalize(vTransformedNormal.xyz);
   } 
 #endif
 

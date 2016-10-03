@@ -24,15 +24,15 @@ class MD5Example
     @c = new PXL.Camera.MousePerspCamera new PXL.Math.Vec3(0,0,25)
     @top_node.add @c
 
-    @ambientlight = new PXL.Light.AmbientLight new PXL.Colour.RGB(0.001, 0.001, 0.01)
-    @light = new PXL.Light.PointLight new PXL.Math.Vec3(10.0,5.0,-10.0), new PXL.Colour.RGB(0.8,0.1,0.1)
+    @ambientlight = new PXL.Light.AmbientLight new PXL.Colour.RGB(0.1, 0.1, 0.1)
+    @light = new PXL.Light.PointLight new PXL.Math.Vec3(0.0,10.0,10.0), new PXL.Colour.RGB(0.5,0.3,0.3)
     @light2 = new PXL.Light.PointLight new PXL.Math.Vec3(-10.0,5.0,10.0), new PXL.Colour.RGB(0.0,0.9,0.9)
 
     cuboid = new PXL.Geometry.Cuboid new PXL.Math.Vec3 1,1,1
-    cuboid_node = new PXL.Node cuboid, new PXL.Material.BasicColourMaterial(new PXL.Colour.RGB(1,0,0))
+    cuboid_node = new PXL.Node cuboid, new PXL.Material.NormalMaterial()
+    cuboid_node.matrix.translate @light.pos   
 
     @top_node.add @light
-    @top_node.add @light2
     @top_node.add @ambientlight
     @top_node.add cuboid_node
 
@@ -43,6 +43,7 @@ class MD5Example
       g.matrix.rotate new PXL.Math.Vec3(1,0,0), -0.5 * PXL.Math.PI
       g.matrix.scale new PXL.Math.Vec3 0.1, 0.1, 0.1
       @top_node.add g
+     
       # Create shaders once everything has loaded
       uber = new PXL.GL.UberShader(@top_node)
       @top_node.add uber

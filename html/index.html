@@ -1,3 +1,19 @@
+<!--
+             .__   
+_________  __|  |  
+\____ \  \/  /  |  
+|  |_> >    <|  |__
+|   __/__/\_ \____/
+|__|        \/     js
+
+                    PXL.js
+                    Benjamin Blundell - ben@pxljs.com
+                    http://pxljs.com
+
+This software is released under the MIT Licence. See LICENCE.txt for details
+
+-->
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -5,11 +21,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>PXLjs</title>
+    <title>PXL.js - A WebGL Engine</title>
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-
+    <link href="css/pxl.css" rel="stylesheet">
+  	<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -24,20 +41,37 @@
 
     <div class="container">
       <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-8">
-		      <canvas id="webgl-canvas" style="border: none;" width="580" height="580"></canvas>
+        <div class="col-md-2 col-lg-2"></div>
+        <div class="col-md-8 col-lg-8 text-center">
+		      <canvas id="webgl-canvas" style="display:inline"  width="640" height="580"></canvas>
         </div>
-        <div class="col-md-2"></div>
+        <div class="col-md-2 col-lg-8"></div>
       </div>
 
       <div class="row">
-        <div class="col-md-3"><a href="https://www.pxljs.com/examples">examples</a></div> 
-        <div class="col-md-3"><a href="https://github.com/OniDaito/pxljs/blob/master/docs/index.markdown">docs</a></div>
-        <div class="col-md-3"><a href="https://api.pxljs.com">api</a></div> 
-        <div class="col-md-3"><a href="https://www.pxljs.com/pxljs.zip">download</a></div>
+        <div class="col-md-3"><h3 class="text-center"><a href="https://www.pxljs.com/examples">examples</a></h3></div> 
+        <div class="col-md-3"><h3 class="text-center"><a href="https://github.com/OniDaito/pxljs/blob/master/docs/index.markdown">docs</a></h3></div>
+        <div class="col-md-3"><h3 class="text-center"><a href="https://api.pxljs.com">api</a></h3></div> 
+        <div class="col-md-3"><h3 class="text-center"><a href="https://www.pxljs.com/pxljs.zip">download</a></h3></div>
       </div>
+			<hr />
+			<div class="row page-header">
+				<p class="lead">PXL.js is a WebGL Engine. It is simple to use and has various functions for the most common processes you need to code when writing WebGL.</p>
+
+				<h3>What does it offer</h3>
+				<p>PXL.js has the following features:</p>
+			</div>
+
     </div>
+
+
+
+    <footer class="footer">
+      <div class="container">
+        <p class="text-muted text-center">Written by Benjamin Blundell - <a href="https://www.section9.co.uk">https://www.section9.co.uk</a></p>
+      </div>
+    </footer>
+
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="/js/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->

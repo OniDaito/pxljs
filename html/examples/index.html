@@ -42,7 +42,7 @@ This software is released under the MIT Licence. See LICENCE.txt for details
   <header></header>
 
   <div id="panel" class="collapsed">
-    <h1> <a href="http://pxljs.com">pxljs</a> / examples</h1>
+    <h1 style="margin-left: 10px"> <a href="http://pxljs.com">pxljs</a>/examples</h1>
     <div id="content">
       <ul>
         <li><a href="helloworld.html" target="webglframe">Hello World</a></li> 
@@ -60,10 +60,17 @@ This software is released under the MIT Licence. See LICENCE.txt for details
     </div>
   </div>
   
-  <iframe id="webglframe" name="webglframe" allowfullscreen onmousewheel=""></iframe>
+  <iframe id="webglframe" name="webglframe" allowfullscreen  onload="resizeIframe(this)"></iframe>
 
-  <script type="text/javascript" src="/js/jquery.js"></script>
+  <script type="text/javascript" src="/js/jquery.min.js"></script>
   <script src="/js/bootstrap.min.js"></script>
+  <script> 
+  function resizeIframe(obj) {
+    obj.style.height = obj.contentWindow.document.body.scrollHeight + 100 + 'px';
+  }	
+  </script>
+
+
 
 </body>
 </html>
