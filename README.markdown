@@ -35,7 +35,7 @@ To use PXLjs you just need a good text editor and a recent web-browser. You can 
 
 ## Building
 
-PXLjs uses [gulp]() as it's build engine. The following command will setup a dev environment for you to play with, including a webserver for testing
+PXLjs uses [gulp](http://www.gulpjs.com) as it's build engine. The following command will setup a dev environment for you to play with, including a webserver for testing
 
     gulp dev
 
