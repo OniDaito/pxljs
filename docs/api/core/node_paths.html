@@ -35,6 +35,9 @@ There is a problem here - as we change node, what happen to front? Better design
     <span class="hljs-property">@camera</span> = <span class="hljs-literal">undefined</span>
     <span class="hljs-property">@shader</span> = <span class="hljs-literal">undefined</span>
     <span class="hljs-property">@skeleton</span> = <span class="hljs-literal">undefined</span>
+    <span class="hljs-property">@ambientLight</span> = <span class="hljs-literal">undefined</span>
+    <span class="hljs-property">@spotLightMatrix</span> = <span class="hljs-keyword">new</span> Matrix4()
+    <span class="hljs-property">@pointLightMatrix</span> = <span class="hljs-keyword">new</span> Matrix4()
 
   clone : <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
     c = <span class="hljs-keyword">new</span> Front()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>These are copied which suggests a potential
@@ -44,6 +47,8 @@ for modifying down the tree</p></div></div><div class="code"><div class="wrapper
     c._normalMatrix.copy <span class="hljs-property">@_normalMatrix</span>
     c._mvpMatrix.copy <span class="hljs-property">@_mvpMatrix</span>
     c._uber0 = <span class="hljs-property">@_uber0</span>
+    c.pointLightMatrix.copy <span class="hljs-property">@pointLightMatrix</span>
+    c.spotLightMatrix.copy <span class="hljs-property">@spotLightMatrix</span>
     </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>These are references which reflects the 
 behaviour that cameras, shaders etc, override
 when when progress down the tree - should
@@ -52,34 +57,42 @@ be made more explicit perhaps</p></div></div><div class="code"><div class="wrapp
     c.material = <span class="hljs-property">@material</span>
     c.contract = <span class="hljs-property">@contract</span>
     c.skeleton = <span class="hljs-property">@skeleton</span>
-
+    c.ambientLight = <span class="hljs-property">@ambientLight</span>  
     c</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO - this should really live somewhere else</p></div></div><div class="code"><div class="wrapper">_shadow_map_material = <span class="hljs-keyword">new</span> DepthMaterial()
-_shadow_map_camera = <span class="hljs-keyword">new</span> PerspCamera <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>), <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>), <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>), <span class="hljs-number">3.0</span>, <span class="hljs-number">0.1</span>, <span class="hljs-number">100.0</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>shadomap_create_draw</strong>
+_shadow_map_camera = <span class="hljs-keyword">new</span> PerspCamera <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>), <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>), <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>), <span class="hljs-number">3.0</span>, <span class="hljs-number">0.1</span>, <span class="hljs-number">100.0</span>
+_shadow_map_bias = <span class="hljs-keyword">new</span> Matrix4([<span class="hljs-number">0.5</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>, <span class="hljs-number">0</span>,<span class="hljs-number">0.5</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>, <span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0.5</span>,<span class="hljs-number">0</span>, <span class="hljs-number">0.5</span>,<span class="hljs-number">0.5</span>,<span class="hljs-number">0.5</span>,<span class="hljs-number">1.0</span>])</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>shadomap_create_draw</strong>
 -<strong>node</strong> - a Node
 -<strong>front</strong> - An Object based on Node
 -<strong>light</strong> - a SpotLight (eventually all lights)</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Called when we find a spotLight that casts shadows
 A Camera should have been set on the front before this function is called - dont like that :S</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function">
-<span class="hljs-title">shadowmap_create_draw</span> = <span class="hljs-params">(node,front,light)</span> -&gt;</span> 
+<span class="hljs-title">shadowmap_create_draw</span> = <span class="hljs-params">(node,front,light)</span> -&gt;</span>
 
   fc = front.clone()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create the camera we shall use
 Shouldnt really do this all the time if not needed :S
 Rather than recreate this matrix in the shader, we pass it in as a uniform for now
 This will be awkward as we are setting values on node objects and looking at modelviews
-and all the rest. Very cross cutting this &gt;&lt;</p></div></div><div class="code"><div class="wrapper">  _shadow_map_camera.pos.copy light.pos
-  _shadow_map_camera.look.copy Vec3.add(light.pos, light.dir)
-  _shadow_map_camera.up.copy Vec3.perp(light.dir)
+and all the rest. Very cross cutting this &gt;&lt;
+We apply the current transformation matrix to both pos and pp</p></div></div><div class="code"><div class="wrapper">  
+  pp = light.pos.clone()
+  dd = light.dir.clone()
+  front.globalMatrix.multVec(pp)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Just the rotation for the dir I think</p></div></div><div class="code"><div class="wrapper">  front.globalMatrix.getMatrix3().multVec(dd) 
+  _shadow_map_camera.pos.copy pp
+  _shadow_map_camera.look.copy Vec3.add(pp, dd)
+  _shadow_map_camera.up.copy Vec3.perp(dd)
   _shadow_map_camera.angle = light.angle
-  <span class="hljs-comment">#_shadow_map_camera.near = 0.1</span>
+  _shadow_map_camera.near = <span class="hljs-number">0.01</span>
+  _shadow_map_camera.width = light.shadowmap_fbo.width
+  _shadow_map_camera.height = light.shadowmap_fbo.height
   _shadow_map_camera.far = light.attenuation[<span class="hljs-number">0</span>]
-  fc.camera = _shadow_map_camera</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create the inverse matrix making sure to multiply by the current modelview matrix</p></div></div><div class="code"><div class="wrapper">  icm = front.globalMatrix.clone()
-  icm.mult _shadow_map_camera.m
-  icm.mult _shadow_map_camera.p
-  <span class="hljs-comment">#icm.invert()</span>
-  light.invMatrix.copy icm</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Begin the creation of a shadowmap for this light source</p></div></div><div class="code"><div class="wrapper">  light.shadowmap_fbo.bind()
-  fc.camera.update()
-  GL.clearColor(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>)
+  fc.camera = _shadow_map_camera
+  _shadow_map_camera.update()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create the shadowmap camera matrix</p></div></div><div class="code"><div class="wrapper">  light.mvpMatrix.copy(_shadow_map_bias).mult(_shadow_map_camera.p).mult(_shadow_map_camera.m)
+  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Begin the creation of a shadowmap for this light source</p></div></div><div class="code"><div class="wrapper">  light.shadowmap_fbo.bind()
+  GL.clearColor(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">1.0</span>)
   GL.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT)
+  GL.enable(GL.CULL_FACE);
+  GL.cullFace(GL.BACK);
   _shadowmap_create_draw node, fc, light
+  GL.disable(GL.CULL_FACE);
   light.shadowmap_fbo.unbind()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>_shadowmap_create_draw </strong>
 Internal recursive function</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function">
 <span class="hljs-title">_shadowmap_create_draw</span> = <span class="hljs-params">(node, front, light)</span> -&gt;</span>
@@ -92,14 +105,11 @@ Internal recursive function</p></div></div><div class="code"><div class="wrapper
   front.material._preDraw()
 
   front._uber0 = front.material._uber0
-  <span class="hljs-comment">#front._uber0 = uber.uber_depth_set true, front._uber0</span>
-  front._uber0 = uber.uber_vertex_camera <span class="hljs-literal">true</span>, front._uber0</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Sort of assuming we have a nice ubershader already
-Not needed I believe as the shader should exist on front before it&#39;s cloned and passed in</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-comment">#if node.shader?</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p> front.shader = node.shader</p></div></div><div class="code"><div class="wrapper">  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create a precomputed model/view/perspecti:ve matrix for speed</p></div></div><div class="code"><div class="wrapper">  nm = Matrix4.mult(front.camera.m, nm)
- </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Possibly only needs to be done when we actually need to draw or bind</p></div></div><div class="code"><div class="wrapper">  front._mvpMatrix.copy nm
+  front._uber0 = uber.uber_vertex_camera <span class="hljs-literal">true</span>, front._uber0</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create a precomputed model/view/perspecti:ve matrix for speed </p></div></div><div class="code"><div class="wrapper">  front._normalMatrix = front.globalMatrix.getMatrix3().invert().transpose()
+
+  nm = Matrix4.mult(front.camera.m, nm) </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Possibly only needs to be done when we actually need to draw or bind</p></div></div><div class="code"><div class="wrapper">  front._mvpMatrix.copy nm
   front._mvpMatrix.mult front.camera.m
   front._mvpMatrix.mult front.camera.p
-
-  front._normalMatrix = nm.getMatrix3().invert().transpose()
 
   <span class="hljs-keyword">if</span> node.geometry?
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node.geometry.brewed
@@ -148,21 +158,21 @@ Also call update here</p></div></div><div class="code"><div class="wrapper">  <s
     nm = Matrix4.mult(front.camera.m, nm)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Create a precomputed model/view/perspective matrix for speed</p></div></div><div class="code"><div class="wrapper">    front._mvpMatrix.copy nm
     front._mvpMatrix.mult front.camera.m
     front._mvpMatrix.mult front.camera.p</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO - Normal Matrix calculation better GPU or CPU side? 
-TODO - We need to be careful about scaling here as well :S</p></div></div><div class="code"><div class="wrapper">  front._normalMatrix = nm.getMatrix3().invert().transpose()
-
-  <span class="hljs-keyword">for</span> light <span class="hljs-keyword">in</span> node.pointLights
+TODO - We need to be careful about scaling here as well :S</p></div></div><div class="code"><div class="wrapper">  front._normalMatrix = front.globalMatrix.getMatrix3().invert().transpose()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Point lights
+At the point where we are adding the lights, we fix the point lights global matrix in place</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">for</span> light <span class="hljs-keyword">in</span> node.pointLights
     front.pointLights.push light
   
   <span class="hljs-keyword">if</span> node.pointLights.length &gt; <span class="hljs-number">0</span>
     front._uber0 = uber.uber_lighting_point <span class="hljs-literal">true</span>, front._uber0
-  
-  <span class="hljs-keyword">for</span> light <span class="hljs-keyword">in</span> node.spotLights</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>shadowmap jumping off point</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> light.shadowmap
+    front.pointLightMatrix.copy front.globalMatrix  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Spot Lights</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">for</span> light <span class="hljs-keyword">in</span> node.spotLights
+    front.spotLights.push light</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>shadowmap jumping off point</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> light.shadowmap
       <span class="hljs-keyword">if</span> PXL.Context.gl?
         shadowmap_create_draw node, front, light
-        front.spotLights.push light
-     
-      front._uber0 = uber.uber_shadowmap <span class="hljs-literal">true</span>, front.uber0 <span class="hljs-comment"># we want shadowmapping</span>
+ 
+      front._uber0 = uber.uber_shadowmap <span class="hljs-literal">true</span>, front.uber0 
 
+  <span class="hljs-keyword">if</span> node.spotLights.length &gt; <span class="hljs-number">0</span>
+    front.spotLightMatrix.copy front.globalMatrix  
     front._uber0 = uber.uber_lighting_spot <span class="hljs-literal">true</span>, front._uber0
   </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Overwrite the ambient if there is one closer
 TODO - combine perhaps?</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-keyword">if</span> node.ambientLight?
@@ -193,8 +203,9 @@ Put a line in here to check we also have a shader on the context</p></div></div>
       <span class="hljs-keyword">if</span> front.shader?      
         PXL.Context.shader = front.shader
     
-      <span class="hljs-keyword">if</span> PXL.Context.shader?</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set the lights here</p></div></div><div class="code"><div class="wrapper">        PointLight._preDraw front.pointLights
-        SpotLight._preDraw front.spotLights
+      <span class="hljs-keyword">if</span> PXL.Context.shader?</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Set the lights here
+We pass in the matrix we saved at time of addition to front</p></div></div><div class="code"><div class="wrapper">        PointLight._preDraw front.pointLights, front.pointLightMatrix
+        SpotLight._preDraw front.spotLights, front.spotLightMatrix
 
         PXL.Context.shader.bind()
 
@@ -215,7 +226,7 @@ front and see if they have a pre and post</p></div></div><div class="code"><div 
     front.material._postDraw()
 
   <span class="hljs-keyword">if</span> front.skeleton?
-    front.skeleton._postDraw()
+    front.skeleton._postDraw()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Basically unbind fbo textures</p></div></div><div class="code"><div class="wrapper">  SpotLight._postDraw front.spotLights
 
   node
 

@@ -9,310 +9,291 @@ _________  __|  |
                 Benjamin Blundell - ben@pxljs.com
                 http://pxljs.com
 
-This software is released under the MIT Licence. See LICENCE.txt for details</code></pre></div></div><div class="code"><div class="wrapper">- A <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">to</span> <span class="hljs-title">import</span> <span class="hljs-title">OBJ</span> <span class="hljs-title">files</span></span>
-
-- TODO
-  - We are passing <span class="hljs-keyword">in</span> a queue here <span class="hljs-keyword">and</span> <span class="hljs-keyword">this</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">modifies</span> <span class="hljs-title">it</span></span>
-    - Do we want that, <span class="hljs-keyword">or</span> should <span class="hljs-keyword">this</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">implement</span> <span class="hljs-title">an</span> <span class="hljs-title">interface</span> <span class="hljs-title">of</span> <span class="hljs-title">some</span> <span class="hljs-title">kind</span>? <span class="hljs-title">Not</span> <span class="hljs-title">sure</span></span>
-
-- Potentially
-
-<span class="hljs-regexp">//</span> Check <span class="hljs-keyword">for</span> the various File API support.
-<span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.File &amp;&amp; <span class="hljs-built_in">window</span>.FileReader &amp;&amp; <span class="hljs-built_in">window</span>.FileList &amp;&amp; <span class="hljs-built_in">window</span>.Blob) {
-  <span class="hljs-regexp">//</span> Great success! All the File APIs are supported.
-} <span class="hljs-keyword">else</span> {
-  alert(<span class="hljs-string">'The File APIs are not fully supported in this browser.'</span>);
-}  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>{PXLWarning, PXLError, PXLLog} = require &#39;../util/log&#39;
-{TriangleMesh, Triangle, Vertex} = require &#39;../geometry/primitive&#39;
-{Vec3, Vec2} = require &#39;../math/math&#39;
-{Node} = require &#39;../core/node&#39;
-{RGB} = require &#39;../colour/colour&#39;
-{Promise} = require &#39;../util/promise&#39;
-{Request} = require &#39;../util/request&#39;
-{PhongMaterial} = require &#39;../material/phong&#39;
-{BasicColourMaterial} = require &#39;../material/basic&#39;</p>
-<h2 id="objmodel">OBJModel</h2>
-<p>Load a basic OBJ Model as a set of nodes with materials</p>
-<p>class OBJModel extends Node</p>
-<p><strong>@constructor</strong></p>
+This software is released under the MIT Licence. See LICENCE.txt for details</code></pre>
 <ul>
-<li><strong>url</strong> - a String - Required</li>
-<li><p><strong>promise</strong> - a Promise </p>
-<p>constructor: (@url, @promise) -&gt;
-  super()
-  promise_main = new Promise()
-  promise_material = new Promise()
-  promise_data = new Promise()</p>
-<p>  promise_main.when(promise_data).then () =&gt;</p>
-<pre><code>@promise.resolve()</code></pre>
-<p>  load_data_promise = () =&gt;</p>
-<pre><code>r = new Request(@url)
-r.get (data) =&gt;</code></pre>
+<li><p>A class to import OBJ files</p>
+</li>
+<li><p>TODO</p>
+<ul>
+<li>We are passing in a queue here and this class modifies it<ul>
+<li>Do we want that, or should this class implement an interface of some kind? Not sure</li>
+</ul>
 </li>
 </ul>
-<p>We assume that the material exists in the same place as the obj
-TODO - allow setting the matlib path
-        matlibName = @_checkForMaterials data</p>
-<pre><code>    if matlibName
-      materials = {} # gets filled with materials when the promise completes
-      load_material_promise = () =&gt;
+</li>
+<li><p>Potentially</p>
+</li>
+</ul>
+<p>// Check for the various File API support.
+if (window.File &amp;&amp; window.FileReader &amp;&amp; window.FileList &amp;&amp; window.Blob) {
+  // Great success! All the File APIs are supported.
+} else {
+  alert(&#39;The File APIs are not fully supported in this browser.&#39;);
+}  </p></div></div><div class="code"><div class="wrapper">{PXLWarning, PXLError, PXLLog} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../util/log'</span>
+{TriangleMesh, Triangle, Vertex} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../geometry/primitive'</span>
+{Vec3, Vec2} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../math/math'</span>
+{Node} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../core/node'</span>
+{RGB} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../colour/colour'</span>
+{Promise} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../util/promise'</span>
+{Request} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../util/request'</span>
+{PhongMaterial} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../material/phong'</span>
+{BasicColourMaterial} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../material/basic'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="objmodel">OBJModel</h2>
+<p>Load a basic OBJ Model as a set of nodes with materials</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">OBJModel</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Node</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>@constructor</strong></p>
+<ul>
+<li><strong>url</strong> - a String - Required</li>
+<li><strong>promise</strong> - a Promise </li>
+</ul></div></div><div class="code"><div class="wrapper">  
+  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@url</span>, <span class="hljs-property">@promise</span>)</span> -&gt;</span>
+    <span class="hljs-keyword">super</span>()
+    promise_main = <span class="hljs-keyword">new</span> Promise()
+    promise_material = <span class="hljs-keyword">new</span> Promise()
+    promise_data = <span class="hljs-keyword">new</span> Promise()
+  
+    promise_main.<span class="hljs-keyword">when</span>(promise_data).<span class="hljs-keyword">then</span> () =&gt;
+      <span class="hljs-property">@promise</span>.resolve()
+<span class="hljs-function">
+    <span class="hljs-title">load_data_promise</span> = <span class="hljs-params">()</span> =&gt;</span>
+      r = <span class="hljs-keyword">new</span> Request(<span class="hljs-property">@url</span>)
+      r.get (data) =&gt;
+        </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>We assume that the material exists in the same place as the obj
+TODO - allow setting the matlib path</p></div></div><div class="code"><div class="wrapper">        matlibName = <span class="hljs-property">@_checkForMaterials</span> data
+      
+        <span class="hljs-keyword">if</span> matlibName
+          materials = {} <span class="hljs-comment"># gets filled with materials when the promise completes</span>
+<span class="hljs-function">          <span class="hljs-title">load_material_promise</span> = <span class="hljs-params">()</span> =&gt;</span>
 
-        matlibName = @url.substring(0,@url.lastIndexOf(&#39;/&#39;)) + &quot;/&quot; + matlibName</code></pre>
-<p>Always remember to set the correct context when we make
-an asynchronous call </p>
-<pre><code>        #PXL.Context.switchContext _cc
+            matlibName = <span class="hljs-property">@url</span>.substring(<span class="hljs-number">0</span>,<span class="hljs-property">@url</span>.lastIndexOf(<span class="hljs-string">'/'</span>)) + <span class="hljs-string">"/"</span> + matlibName
+            </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Always remember to set the correct context when we make
+an asynchronous call </p></div></div><div class="code"><div class="wrapper">            <span class="hljs-comment">#PXL.Context.switchContext _cc</span>
+            
+            r2 = <span class="hljs-keyword">new</span> Request matlibName
+            r2.get (matlibData) =&gt;
+              <span class="hljs-property">@_parseMaterialFile</span> matlibData, materials, promise_material
+      
 
-        r2 = new Request matlibName
-        r2.get (matlibData) =&gt;
-          @_parseMaterialFile matlibData, materials, promise_material
+          promise_material.<span class="hljs-keyword">then</span> () =&gt;
+            <span class="hljs-property">@_parse</span> data, materials
+            promise_data.resolve()
+          
+          load_material_promise()
+          
+        <span class="hljs-keyword">else</span>
+          materials = []
+          <span class="hljs-property">@_parse</span> data, materials
+          promise_data.resolve()
 
+    load_data_promise()
+                
+    @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Check if this model file includes materials in a related material file</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">_checkForMaterials</span>: <span class="hljs-function"><span class="hljs-params">(text_data)</span> -&gt;</span>
+    lines = text_data.split(<span class="hljs-string">"\n"</span>)
+    <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> lines
+      <span class="hljs-keyword">if</span> line[<span class="hljs-number">0.</span><span class="hljs-number">.5</span>] == <span class="hljs-string">"mtllib"</span>
+        <span class="hljs-keyword">return</span> line[<span class="hljs-number">7.</span>.]
+    
+      <span class="hljs-keyword">if</span> line[<span class="hljs-number">0.</span><span class="hljs-number">.1</span>] == <span class="hljs-string">"f "</span>
+        <span class="hljs-keyword">break</span>
 
-      promise_material.then () =&gt;
-        @_parse data, materials
-        promise_data.resolve()
-
-      load_material_promise()
-
-    else
-      materials = []
-      @_parse data, materials
-      promise_data.resolve()
-
-load_data_promise()
-
-@</code></pre>
-<p>Check if this model file includes materials in a related material file</p>
-<p>  _checkForMaterials: (text_data) -&gt;
-    lines = text_data.split(&quot;\n&quot;)
-    for line in lines
-      if line[0..5] == &quot;mtllib&quot;
-        return line[7..]</p>
-<pre><code>  if line[0..1] == &quot;f &quot;
-    break
-
-undefined</code></pre>
-<p>Parse the material file data.
+    <span class="hljs-literal">undefined</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Parse the material file data.
 So far, only basic phong materials are supported and RGB colours
-callback is the function called when all the items have been loaded</p>
-<p>  _parseMaterialFile : (text_data, materials, promise) -&gt;
-    lines = text_data.split(&quot;\n&quot;)</p>
-<p>A temporary holder of promises for textures that need to be loaded
-TODO - maybe a better way to do this?
-    _tex_promises = []
+callback is the function called when all the items have been loaded</p></div></div><div class="code"><div class="wrapper">  _parseMaterialFile : <span class="hljs-function"><span class="hljs-params">(text_data, materials, promise)</span> -&gt;</span>
+    lines = text_data.split(<span class="hljs-string">"\n"</span>)</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>A temporary holder of promises for textures that need to be loaded
+TODO - maybe a better way to do this?</p></div></div><div class="code"><div class="wrapper">    _tex_promises = []
     _tex_funcs = []
-    _mat_names = []</p>
-<pre><code>_material_promise = new Promise()</code></pre>
-<p>This function is called when materials are finally loaded - close over materials and promise
-    _materialsLoaded = (_materials, _mat_names, _promise) -&gt;</p>
-<pre><code>  return () -&gt;</code></pre>
-<p>Go through all the materials and actually create them
+    _mat_names = []
+
+    _material_promise = <span class="hljs-keyword">new</span> Promise()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>This function is called when materials are finally loaded - close over materials and promise</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function">    <span class="hljs-title">_materialsLoaded</span> = <span class="hljs-params">(_materials, _mat_names, _promise)</span> -&gt;</span>
+
+      <span class="hljs-keyword">return</span> () -&gt;</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Go through all the materials and actually create them
 The default shading for OBJ files is Phong Shading - this can be replaced by the user
-if necessary before any draw calls (or after draw calls if you call shader automagic)
-        for name in _mat_names
+if necessary before any draw calls (or after draw calls if you call shader automagic)</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">for</span> name <span class="hljs-keyword">in</span> _mat_names
           m = _materials[name]
-          if m.texture?
-            _materials[name] = new PhongMaterial m.ambient, m.texture, m.specular, m.shine
-          else
-            _materials[name] = new PhongMaterial m.ambient, m.diffuse, m.specular, m.shine</p>
-<pre><code>    _promise.resolve()
+          <span class="hljs-keyword">if</span> m.texture?
+            _materials[name] = <span class="hljs-keyword">new</span> PhongMaterial m.ambient, m.texture, m.specular, m.shine
+          <span class="hljs-keyword">else</span>
+            _materials[name] = <span class="hljs-keyword">new</span> PhongMaterial m.ambient, m.diffuse, m.specular, m.shine
+     
+        _promise.resolve()
+  
 
+    <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> lines
+      <span class="hljs-keyword">if</span> line[<span class="hljs-number">0.</span><span class="hljs-number">.6</span>] == <span class="hljs-string">"newmtl "</span>
+        mat_name = line.split(<span class="hljs-string">" "</span>)[<span class="hljs-number">1</span>]
+        materials[mat_name] = {}
+        _mat_names.push mat_name
 
-for line in lines
-  if line[0..6] == &quot;newmtl &quot;
-    mat_name = line.split(&quot; &quot;)[1]
-    materials[mat_name] = {}
-    _mat_names.push mat_name
+      <span class="hljs-keyword">if</span> line[<span class="hljs-number">0.</span><span class="hljs-number">.1</span>] == <span class="hljs-string">"Ka"</span>
+        tokens = line.split <span class="hljs-string">" "</span>
+        new_tokens = [parseFloat(token) <span class="hljs-keyword">for</span> token <span class="hljs-keyword">in</span> tokens[<span class="hljs-number">1.</span>.]][<span class="hljs-number">0</span>]
+        materials[mat_name].ambient = <span class="hljs-keyword">new</span> RGB new_tokens[<span class="hljs-number">0</span>],new_tokens[<span class="hljs-number">1</span>],new_tokens[<span class="hljs-number">2</span>]
+      
+      <span class="hljs-keyword">if</span> line[<span class="hljs-number">0.</span><span class="hljs-number">.1</span>] == <span class="hljs-string">"Kd"</span>
+        tokens = line.split <span class="hljs-string">" "</span>
+        new_tokens = [parseFloat(token) <span class="hljs-keyword">for</span> token <span class="hljs-keyword">in</span> tokens[<span class="hljs-number">1.</span>.]][<span class="hljs-number">0</span>]
+        materials[mat_name].diffuse = <span class="hljs-keyword">new</span> RGB new_tokens[<span class="hljs-number">0</span>],new_tokens[<span class="hljs-number">1</span>],new_tokens[<span class="hljs-number">2</span>]
 
-  if line[0..1] == &quot;Ka&quot;
-    tokens = line.split &quot; &quot;
-    new_tokens = [parseFloat(token) for token in tokens[1..]][0]
-    materials[mat_name].ambient = new RGB new_tokens[0],new_tokens[1],new_tokens[2]
+      <span class="hljs-keyword">if</span> line[<span class="hljs-number">0.</span><span class="hljs-number">.1</span>] == <span class="hljs-string">"Ks"</span>
+        tokens = line.split <span class="hljs-string">" "</span>
+        new_tokens = [parseFloat(token) <span class="hljs-keyword">for</span> token <span class="hljs-keyword">in</span> tokens[<span class="hljs-number">1.</span>.]][<span class="hljs-number">0</span>]
+        materials[mat_name].specular = <span class="hljs-keyword">new</span> RGB new_tokens[<span class="hljs-number">0</span>],new_tokens[<span class="hljs-number">1</span>],new_tokens[<span class="hljs-number">2</span>]
 
-  if line[0..1] == &quot;Kd&quot;
-    tokens = line.split &quot; &quot;
-    new_tokens = [parseFloat(token) for token in tokens[1..]][0]
-    materials[mat_name].diffuse = new RGB new_tokens[0],new_tokens[1],new_tokens[2]
+      <span class="hljs-keyword">if</span> line[<span class="hljs-number">0.</span><span class="hljs-number">.1</span>] == <span class="hljs-string">"Ns"</span>
+        tokens = line.split <span class="hljs-string">" "</span>
+        new_tokens = [parseInt(token) <span class="hljs-keyword">for</span> token <span class="hljs-keyword">in</span> tokens[<span class="hljs-number">1.</span>.]][<span class="hljs-number">0</span>]
+        materials[mat_name].shine = new_tokens[<span class="hljs-number">1</span>]
 
-  if line[0..1] == &quot;Ks&quot;
-    tokens = line.split &quot; &quot;
-    new_tokens = [parseFloat(token) for token in tokens[1..]][0]
-    materials[mat_name].specular = new RGB new_tokens[0],new_tokens[1],new_tokens[2]
+      <span class="hljs-keyword">if</span> line[<span class="hljs-number">0.</span><span class="hljs-number">.6</span>] == <span class="hljs-string">"map_Kd "</span>
+        tex_name = line[<span class="hljs-number">7.</span>.]
+        </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Again we assume textures are in the same place
+TODO - Allow use of a texture path</p></div></div><div class="code"><div class="wrapper">        tex_url = <span class="hljs-property">@url</span>.substring(<span class="hljs-number">0</span>,<span class="hljs-property">@url</span>.lastIndexOf(<span class="hljs-string">'/'</span>)) + <span class="hljs-string">"/"</span> + tex_name
+        </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Check in case we are testing or running with no webgl</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">if</span> PXL?
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Go and load some textures - create a closure over data we need</p></div></div><div class="code"><div class="wrapper"><span class="hljs-function">         
+          <span class="hljs-title">_tt</span> = <span class="hljs-params">(_tex_url, _mat_name, _cc, _materials, _tex_promise)</span>  -&gt;</span>
+            <span class="hljs-keyword">return</span> () -&gt;
+              PXL.Context.switchContext _cc
+              PXL.GL.textureFromURL _tex_url, <span class="hljs-function"><span class="hljs-params">(tex)</span> -&gt;</span>
+                _materials[_mat_name].texture = tex
+                _tex_promise.resolve()
 
-  if line[0..1] == &quot;Ns&quot;
-    tokens = line.split &quot; &quot;
-    new_tokens = [parseInt(token) for token in tokens[1..]][0]
-    materials[mat_name].shine = new_tokens[1]
+          _tex_promise = <span class="hljs-keyword">new</span> Promise()
+          _tex_func = _tt tex_url, mat_name, PXL.Context, materials, _tex_promise
 
-  if line[0..6] == &quot;map_Kd &quot;
-    tex_name = line[7..]</code></pre>
-<p>Again we assume textures are in the same place
-TODO - Allow use of a texture path
-        tex_url = @url.substring(0,@url.lastIndexOf(&#39;/&#39;)) + &quot;/&quot; + tex_name</p>
-<p>Check in case we are testing or running with no webgl
-        if PXL?</p>
-<p>Go and load some textures - create a closure over data we need</p>
-<pre><code>      _tt = (_tex_url, _mat_name, _cc, _materials, _tex_promise)  -&gt;
-        return () -&gt;
-          PXL.Context.switchContext _cc
-          PXL.GL.textureFromURL _tex_url, (tex) -&gt;
-            _materials[_mat_name].texture = tex
-            _tex_promise.resolve()
-
-      _tex_promise = new Promise()
-      _tex_func = _tt tex_url, mat_name, PXL.Context, materials, _tex_promise
-
-      _tex_promises.push _tex_promise
-      _tex_funcs.push _tex_func</code></pre>
-<p>Now go through and see if we have any promises to resolve
-    if _tex_promises.length &gt; 0
-Should auto resolve this promise?
-      _ml = _materialsLoaded materials, _mat_names, promise
-      _material_promise.when.apply(_material_promise, _tex_promises).then( _ml )
-      for tf in _tex_funcs
+          _tex_promises.push _tex_promise
+          _tex_funcs.push _tex_func
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Now go through and see if we have any promises to resolve</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> _tex_promises.length &gt; <span class="hljs-number">0</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Should auto resolve this promise?</p></div></div><div class="code"><div class="wrapper">      _ml = _materialsLoaded materials, _mat_names, promise
+      _material_promise.<span class="hljs-keyword">when</span>.apply(_material_promise, _tex_promises).<span class="hljs-keyword">then</span>( _ml )
+      <span class="hljs-keyword">for</span> tf <span class="hljs-keyword">in</span> _tex_funcs
         tf()
-    else
-      promise.resolve()</p>
-<pre><code>@</code></pre>
-<p>Parse the data file completely, pulling in vertices
-materials is an object passed in with actual materials under their name</p>
-<p>  _parse: (text_data, materials) -&gt;</p>
-<pre><code>positions = []
-normals = []
-texcoords = []</code></pre>
-<p>Add the none material as a white, basic material</p>
-<pre><code>materials[&quot;none&quot;] = new BasicColourMaterial()</code></pre>
-<p>For each &#39;o&#39; in the file, create a new node
-and clear our arrays</p>
-<pre><code>object_node = null</code></pre>
-<p>Offsets for vertices depending on objects
+    <span class="hljs-keyword">else</span>
+      promise.resolve()
+         
+    @
+  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Parse the data file completely, pulling in vertices
+materials is an object passed in with actual materials under their name</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">_parse</span>: <span class="hljs-function"><span class="hljs-params">(text_data, materials)</span> -&gt;</span>
+
+    positions = []
+    normals = []
+    texcoords = []</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Add the none material as a white, basic material</p></div></div><div class="code"><div class="wrapper">    materials[<span class="hljs-string">"none"</span>] = <span class="hljs-keyword">new</span> BasicColourMaterial()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>For each &#39;o&#39; in the file, create a new node
+and clear our arrays</p></div></div><div class="code"><div class="wrapper">    object_node = <span class="hljs-literal">null</span>
+  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Offsets for vertices depending on objects
 basically, the faces index does NOT get reset when
-a new object occurs
-    offset_v = 0
-    offset_t = 0
-    offset_n = 0</p>
-<p>Could be heavy if the file is big :S
-    lines = text_data.split(&quot;\n&quot;)</p>
-<pre><code>for line in lines
+a new object occurs</p></div></div><div class="code"><div class="wrapper">    offset_v = <span class="hljs-number">0</span>
+    offset_t = <span class="hljs-number">0</span>
+    offset_n = <span class="hljs-number">0</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Could be heavy if the file is big :S</p></div></div><div class="code"><div class="wrapper">    lines = text_data.split(<span class="hljs-string">"\n"</span>)
 
-  if line[0..1] == &quot;o &quot;
+    <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> lines
 
-    object_node = new Node
-    object_node._label = line[2..]
-    @add object_node
+      <span class="hljs-keyword">if</span> line[<span class="hljs-number">0.</span><span class="hljs-number">.1</span>] == <span class="hljs-string">"o "</span>
+      
+        object_node = <span class="hljs-keyword">new</span> Node
+        object_node._label = line[<span class="hljs-number">2.</span>.]
+        <span class="hljs-property">@add</span> object_node
+    
+        current_mesh = <span class="hljs-keyword">new</span> TriangleMesh <span class="hljs-literal">true</span>
+        object_node.geometry = current_mesh
 
-    current_mesh = new TriangleMesh true
-    object_node.geometry = current_mesh
+        offset_v = positions.length
+        offset_n = normals.length
+        offset_t = texcoords.length
 
-    offset_v = positions.length
-    offset_n = normals.length
-    offset_t = texcoords.length
+      <span class="hljs-keyword">if</span> line[<span class="hljs-number">0.</span><span class="hljs-number">.1</span>] == <span class="hljs-string">"v "</span>
+        bits = line[<span class="hljs-number">2.</span>.].split <span class="hljs-string">" "</span>
+        tokens = (parseFloat(token) <span class="hljs-keyword">for</span> token <span class="hljs-keyword">in</span> bits)
+        v = <span class="hljs-keyword">new</span> Vec3 tokens[<span class="hljs-number">0</span>], tokens[<span class="hljs-number">1</span>], tokens[<span class="hljs-number">2</span>]
+        positions.push v
 
-  if line[0..1] == &quot;v &quot;
-    bits = line[2..].split &quot; &quot;
-    tokens = (parseFloat(token) for token in bits)
-    v = new Vec3 tokens[0], tokens[1], tokens[2]
-    positions.push v
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> line[<span class="hljs-number">0.</span><span class="hljs-number">.2</span>] == <span class="hljs-string">"vt "</span>
+        bits = line[<span class="hljs-number">3.</span>.].split <span class="hljs-string">" "</span>
+        tokens = (parseFloat(token) <span class="hljs-keyword">for</span> token <span class="hljs-keyword">in</span> bits)
+        v = <span class="hljs-keyword">new</span> Vec2 tokens[<span class="hljs-number">0</span>], tokens[<span class="hljs-number">1</span>]
+        texcoords.push v
 
-  else if line[0..2] == &quot;vt &quot;
-    bits = line[3..].split &quot; &quot;
-    tokens = (parseFloat(token) for token in bits)
-    v = new Vec2 tokens[0], tokens[1]
-    texcoords.push v
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> line[<span class="hljs-number">0.</span><span class="hljs-number">.2</span>] == <span class="hljs-string">"vn "</span>
+        bits = line[<span class="hljs-number">3.</span>.].split <span class="hljs-string">" "</span>
+        tokens = (parseFloat(token) <span class="hljs-keyword">for</span> token <span class="hljs-keyword">in</span> bits)
+        v = <span class="hljs-keyword">new</span> Vec3 tokens[<span class="hljs-number">0</span>], tokens[<span class="hljs-number">1</span>], tokens[<span class="hljs-number">2</span>]
+        normals.push v
 
-  else if line[0..2] == &quot;vn &quot;
-    bits = line[3..].split &quot; &quot;
-    tokens = (parseFloat(token) for token in bits)
-    v = new Vec3 tokens[0], tokens[1], tokens[2]
-    normals.push v
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> line[<span class="hljs-number">0.</span><span class="hljs-number">.6</span>] == <span class="hljs-string">"usemtl "</span>
+        mat_name = line[<span class="hljs-number">7.</span>.]
+        material = materials[mat_name]</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>I <em>believe</em> it is not possible for an OBJ <em>object</em> to have
+more than one material</p></div></div><div class="code"><div class="wrapper">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> object_node.material?
+          object_node.material = material
+        
 
-  else if line[0..6] == &quot;usemtl &quot;
-    mat_name = line[7..]
-    material = materials[mat_name]</code></pre>
-<p>I <em>believe</em> it is not possible for an OBJ <em>object</em> to have
-more than one material
-        if not object_node.material?
-          object_node.material = material</p>
-<pre><code>  else if line[0..1] == &quot;f &quot;</code></pre>
-<p>Now we have faces we need to create. Good old indexes</p>
-<pre><code>    tc = line[2..]
-    bits = tc.split &quot; &quot;
-    bobs = ( bit.split(&quot;/&quot;) for bit in bits )
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> line[<span class="hljs-number">0.</span><span class="hljs-number">.1</span>] == <span class="hljs-string">"f "</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Now we have faces we need to create. Good old indexes</p></div></div><div class="code"><div class="wrapper">        tc = line[<span class="hljs-number">2.</span>.]
+        bits = tc.split <span class="hljs-string">" "</span>
+        bobs = ( bit.split(<span class="hljs-string">"/"</span>) <span class="hljs-keyword">for</span> bit <span class="hljs-keyword">in</span> bits )
 
 
-    if bobs.length == 3</code></pre>
-<p>We have a lovely triangle</p>
-<pre><code>      vertices = []
-      for i in [0..2]
-        idx_v = parseInt(bobs[i][0]) - 1
+        <span class="hljs-keyword">if</span> bobs.length == <span class="hljs-number">3</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>We have a lovely triangle</p></div></div><div class="code"><div class="wrapper">          vertices = []
+          <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span><span class="hljs-number">.2</span>]
+            idx_v = parseInt(bobs[i][<span class="hljs-number">0</span>]) - <span class="hljs-number">1</span>
+        
+            p0 = positions[idx_v]
+            v = <span class="hljs-keyword">new</span> Vertex
+              p : p0</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>normal lookup</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-keyword">if</span> bobs[i][<span class="hljs-number">2</span>] != <span class="hljs-string">""</span>
+              idx_n = parseInt(bobs[i][<span class="hljs-number">2</span>]) - <span class="hljs-number">1</span>
 
-        p0 = positions[idx_v]
-        v = new Vertex
-          p : p0</code></pre>
-<p>normal lookup
-            if bobs[i][2] != &quot;&quot;
-              idx_n = parseInt(bobs[i][2]) - 1</p>
-<pre><code>          if idx_n &lt; normals.length
-            v.n = normals[idx_n].clone()</code></pre>
-<p>tex coord lookup
-            if bobs[i][1] != &quot;&quot;
-              idx_t = parseInt(bobs[i][1]) - 1
-              if idx_t &lt; texcoords.length
-                v.t = texcoords[idx_t].clone()</p>
-<pre><code>        vertices.push v
+              <span class="hljs-keyword">if</span> idx_n &lt; normals.length
+                v.n = normals[idx_n].clone()</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>tex coord lookup</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-keyword">if</span> bobs[i][<span class="hljs-number">1</span>] != <span class="hljs-string">""</span>
+              idx_t = parseInt(bobs[i][<span class="hljs-number">1</span>]) - <span class="hljs-number">1</span>
+              <span class="hljs-keyword">if</span> idx_t &lt; texcoords.length
+                v.t = texcoords[idx_t].clone()
 
-      current_mesh.addTriangle new Triangle vertices[0], vertices[1], vertices[2]
+            vertices.push v
 
-    else if bobs.length == 4</code></pre>
-<p>we have a nasty quad - triangulate
+          current_mesh.addTriangle <span class="hljs-keyword">new</span> Triangle vertices[<span class="hljs-number">0</span>], vertices[<span class="hljs-number">1</span>], vertices[<span class="hljs-number">2</span>]
+
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> bobs.length == <span class="hljs-number">4</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>we have a nasty quad - triangulate</p></div></div><div class="code"><div class="wrapper">          vertices = []
+          <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span><span class="hljs-number">.3</span>]
+            idx_v = parseInt(bobs[i][<span class="hljs-number">0</span>]) - <span class="hljs-number">1</span>
+            p0 = positions[idx_v]
+            
+            v = <span class="hljs-keyword">new</span> Vertex
+              p : p0
+            </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>normal lookup</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-keyword">if</span> bobs[i][<span class="hljs-number">2</span>] != <span class="hljs-string">""</span>
+              idx_n = parseInt(bobs[i][<span class="hljs-number">2</span>]) - <span class="hljs-number">1</span>
+
+              <span class="hljs-keyword">if</span> idx_n &lt; normals.length
+                v.n = normals[idx_n].clone()
+            </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>tex coord lookup</p></div></div><div class="code"><div class="wrapper">            <span class="hljs-keyword">if</span> bobs[i][<span class="hljs-number">1</span>] != <span class="hljs-string">""</span>
+              idx_t = parseInt(bobs[i][<span class="hljs-number">1</span>]) - <span class="hljs-number">1</span>
+              <span class="hljs-keyword">if</span> idx_t &lt; texcoords.length
+                v.t = texcoords[idx_t].clone()
+
+            vertices.push v
+
+          current_mesh.addTriangle <span class="hljs-keyword">new</span> Triangle vertices[<span class="hljs-number">0</span>], vertices[<span class="hljs-number">1</span>], vertices[<span class="hljs-number">2</span>]
+          current_mesh.addTriangle <span class="hljs-keyword">new</span> Triangle vertices[<span class="hljs-number">0</span>], vertices[<span class="hljs-number">2</span>], vertices[<span class="hljs-number">3</span>]
+          
+        <span class="hljs-keyword">else</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>We have something like a triangle fan</p></div></div><div class="code"><div class="wrapper">  
           vertices = []
-          for i in [0..3]
-            idx_v = parseInt(bobs[i][0]) - 1
-            p0 = positions[idx_v]</p>
-<pre><code>        v = new Vertex
-          p : p0</code></pre>
-<p>normal lookup
-            if bobs[i][2] != &quot;&quot;
-              idx_n = parseInt(bobs[i][2]) - 1</p>
-<pre><code>          if idx_n &lt; normals.length
-            v.n = normals[idx_n].clone()</code></pre>
-<p>tex coord lookup
-            if bobs[i][1] != &quot;&quot;
-              idx_t = parseInt(bobs[i][1]) - 1
-              if idx_t &lt; texcoords.length
-                v.t = texcoords[idx_t].clone()</p>
-<pre><code>        vertices.push v
+          <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.bobs.length-<span class="hljs-number">1</span>]
+            idx_v = tokens[i] - <span class="hljs-number">1</span>
+            p0 = positions[idx_v]
 
-      current_mesh.addTriangle new Triangle vertices[0], vertices[1], vertices[2]
-      current_mesh.addTriangle new Triangle vertices[0], vertices[2], vertices[3]
+            v = <span class="hljs-keyword">new</span> Vertex
+              p : p0
 
-    else</code></pre>
-<p>We have something like a triangle fan</p>
-<pre><code>      vertices = []
-      for i in [0..bobs.length-1]
-        idx_v = tokens[i] - 1
-        p0 = positions[idx_v]
+            <span class="hljs-keyword">if</span> bobs[i][<span class="hljs-number">2</span>] != <span class="hljs-string">""</span>
+              idx_n = parseInt(bobs[i][<span class="hljs-number">2</span>]) - <span class="hljs-number">1</span>
+              <span class="hljs-keyword">if</span> idx_n &lt; normals.length
+                v.n = normals[idx_n]
 
-        v = new Vertex
-          p : p0
+            <span class="hljs-keyword">if</span> bobs[i][<span class="hljs-number">1</span>] != <span class="hljs-string">""</span>
+              idx_t = parseInt(bobs[i][<span class="hljs-number">1</span>]) - <span class="hljs-number">1</span>
+              <span class="hljs-keyword">if</span> idx_t &lt; texcoords.length
+                v.t = normals[idx_t]
+                        
+            vertices.push v
 
-        if bobs[i][2] != &quot;&quot;
-          idx_n = parseInt(bobs[i][2]) - 1
-          if idx_n &lt; normals.length
-            v.n = normals[idx_n]
+          <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">1.</span>.tokens.length-<span class="hljs-number">1</span>]
+            <span class="hljs-keyword">if</span> i == tokens.length-<span class="hljs-number">1</span>
+              current_mesh.addTriangle <span class="hljs-keyword">new</span> Triangle vertices[<span class="hljs-number">0</span>], vertices[i], vertices[<span class="hljs-number">1</span>]
+            <span class="hljs-keyword">else</span>
+              current_mesh.addTriangle <span class="hljs-keyword">new</span> Triangle vertices[<span class="hljs-number">0</span>], vertices[i], vertices[i+<span class="hljs-number">1</span>]
 
-        if bobs[i][1] != &quot;&quot;
-          idx_t = parseInt(bobs[i][1]) - 1
-          if idx_t &lt; texcoords.length
-            v.t = normals[idx_t]
+    @
 
-        vertices.push v
-
-      for i in [1..tokens.length-1]
-        if i == tokens.length-1
-          current_mesh.addTriangle new Triangle vertices[0], vertices[i], vertices[1]
-        else
-          current_mesh.addTriangle new Triangle vertices[0], vertices[i], vertices[i+1]
-
-@</code></pre>
-<p>module.exports =
-  OBJModel : OBJModel</p></div></div></div></div></body></html>
+<span class="hljs-built_in">module</span>.exports =
+  OBJModel : OBJModel</div></div></div></div></body></html>

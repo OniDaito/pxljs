@@ -17,7 +17,7 @@ This software is released under the MIT Licence. See LICENCE.txt for details</co
 be rebuilt essentially if the lights change. To do that we have a set of define lines in the
 shader which we can modify easily. A user will need to set these if they wish to mess with stuff</li>
 </ul>
-<p>*updating the pos and the matrix together :S tricksy</p></div></div><div class="code"><div class="wrapper">{Matrix4, Vec2, Vec3, Vec4} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../math/math'</span>
+<p>*updating the pos and the matrix together :S tricksy</p></div></div><div class="code"><div class="wrapper">{Matrix4, Vec2, Vec3, Vec4, degToRad} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../math/math'</span>
 {RGB,RGBA} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../colour/colour'</span>
 {Contract} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../gl/contract'</span>
 {Fbo} = <span class="hljs-built_in">require</span> <span class="hljs-string">'../gl/fbo'</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>These are set in stone and are the actual values passed to the
@@ -26,12 +26,12 @@ LIGHTING_NUM_SPOT_LIGHTS = <span class="hljs-number">5</span></div></div></div><
 <p>Basic ambient lighting. Should be included with all basic lights</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">AmbientLight</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>@constructor</strong></p>
 <ul>
 <li><strong>colour</strong> - a Colour.RGB - Default RGB(0,0,0)</li>
-</ul></div></div><div class="code"><div class="wrapper">  constructor : <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@colour</span>)</span> -&gt;</span>
-    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@colour</span>?
-      <span class="hljs-property">@colour</span> = <span class="hljs-keyword">new</span> RGB(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)
+</ul></div></div><div class="code"><div class="wrapper">  constructor : <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@ambientcolour</span>)</span> -&gt;</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@ambientcolour</span>?
+      <span class="hljs-property">@ambientcolour</span> = <span class="hljs-keyword">new</span> RGB(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>)
 
     <span class="hljs-property">@contract</span> = <span class="hljs-keyword">new</span> Contract()
-    <span class="hljs-property">@contract</span>.roles.uAmbientLightingColour = <span class="hljs-string">"colour"</span>
+    <span class="hljs-property">@contract</span>.roles.uAmbientLightingColour = <span class="hljs-string">"ambientcolour"</span>
 
   <span class="hljs-attribute">_addToNode</span>: <span class="hljs-function"><span class="hljs-params">(node)</span> -&gt;</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Overwrite and give no warning?</p></div></div><div class="code"><div class="wrapper">    node.ambientLight = @
     @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="pointlight">PointLight</h2>
@@ -51,15 +51,18 @@ shader in the end. That way, they can be passed as arrays and looped over</p></d
   <span class="hljs-property">@contract</span>.roles.uPointLightPos = <span class="hljs-string">"_posGlobal"</span>
   <span class="hljs-property">@contract</span>.roles.uPointLightColour = <span class="hljs-string">"_colourGlobal"</span>
   <span class="hljs-property">@contract</span>.roles.uPointLightAttenuation = <span class="hljs-string">"_attenuationGlobal"</span>
-  <span class="hljs-property">@contract</span>.roles.uPointLightNum = <span class="hljs-string">"_numGlobal"</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Called by the node traversal section when we create our node tree</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-property">@_preDraw</span> : <span class="hljs-function"><span class="hljs-params">(lights)</span> -&gt;</span>
+  <span class="hljs-property">@contract</span>.roles.uPointLightNum = <span class="hljs-string">"_numGlobal"</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Called by the node traversal section when we create our node tree
+We modify the positions in place with the current matrix. This way
+the light positions are pre-computed before they hit the shader</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-property">@_preDraw</span> : <span class="hljs-function"><span class="hljs-params">(lights, matrix)</span> -&gt;</span>
 
     idx = <span class="hljs-number">0</span>
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> lights?
       <span class="hljs-keyword">return</span>
 
-    <span class="hljs-keyword">for</span> light <span class="hljs-keyword">in</span> lights</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Light transforms are now done in the shader</p></div></div><div class="code"><div class="wrapper">      PointLight._posGlobal[idx * <span class="hljs-number">3</span>] = light.pos.x
-      PointLight._posGlobal[idx * <span class="hljs-number">3</span> + <span class="hljs-number">1</span>] = light.pos.y
-      PointLight._posGlobal[idx * <span class="hljs-number">3</span> + <span class="hljs-number">2</span>] = light.pos.z
+    <span class="hljs-keyword">for</span> light <span class="hljs-keyword">in</span> lights</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Light transforms are now done in the shader</p></div></div><div class="code"><div class="wrapper">      ll = Matrix4.multVec(matrix,light.pos)
+      PointLight._posGlobal[idx * <span class="hljs-number">3</span>] = ll.x
+      PointLight._posGlobal[idx * <span class="hljs-number">3</span> + <span class="hljs-number">1</span>] = ll.y
+      PointLight._posGlobal[idx * <span class="hljs-number">3</span> + <span class="hljs-number">2</span>] = ll.z
 
       PointLight._colourGlobal[idx * <span class="hljs-number">3</span>] = light.colour.r
       PointLight._colourGlobal[idx * <span class="hljs-number">3</span> + <span class="hljs-number">1</span>] = light.colour.g
@@ -69,6 +72,8 @@ shader in the end. That way, they can be passed as arrays and looped over</p></d
       PointLight._attenuationGlobal[idx * <span class="hljs-number">4</span> + <span class="hljs-number">1</span>] = light.attenuation.y
       PointLight._attenuationGlobal[idx * <span class="hljs-number">4</span> + <span class="hljs-number">2</span>] = light.attenuation.z
       PointLight._attenuationGlobal[idx * <span class="hljs-number">4</span> + <span class="hljs-number">3</span>] = light.attenuation.w
+
+      idx += <span class="hljs-number">1</span>
 
     PointLight._numGlobal = lights.length</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>@constructor</strong></p>
 <ul>
@@ -102,7 +107,8 @@ Just as in PointLight, the spotlight prototype records all spots</p></div></div>
   <span class="hljs-property">@_dirGlobal</span> = <span class="hljs-keyword">new</span> Float32Array(LIGHTING_NUM_SPOT_LIGHTS * <span class="hljs-number">3</span>)
   <span class="hljs-property">@_angleGlobal</span> = <span class="hljs-keyword">new</span> Float32Array(LIGHTING_NUM_SPOT_LIGHTS)
   <span class="hljs-property">@_expGlobal</span> = <span class="hljs-keyword">new</span> Float32Array(LIGHTING_NUM_SPOT_LIGHTS)
-  <span class="hljs-property">@_invMatrix</span> = <span class="hljs-keyword">new</span> Float32Array(LIGHTING_NUM_SPOT_LIGHTS * <span class="hljs-number">16</span>)
+  <span class="hljs-property">@_mvpMatrixGlobal</span> = <span class="hljs-keyword">new</span> Float32Array(LIGHTING_NUM_SPOT_LIGHTS * <span class="hljs-number">16</span>)
+  <span class="hljs-property">@_samplerGlobal</span> = <span class="hljs-keyword">new</span> Int32Array(LIGHTING_NUM_SPOT_LIGHTS)
 
   <span class="hljs-property">@contract</span> = <span class="hljs-keyword">new</span> Contract()
   <span class="hljs-property">@contract</span>.roles.uSpotLightPos = <span class="hljs-string">"_posGlobal"</span>
@@ -112,16 +118,20 @@ Just as in PointLight, the spotlight prototype records all spots</p></div></div>
   <span class="hljs-property">@contract</span>.roles.uSpotLightAngle = <span class="hljs-string">"_angleGlobal"</span>
   <span class="hljs-property">@contract</span>.roles.uSpotLightExp = <span class="hljs-string">"_expGlobal"</span>
   <span class="hljs-property">@contract</span>.roles.uSpotLightNum = <span class="hljs-string">"_numGlobal"</span>
-  <span class="hljs-property">@contract</span>.roles.uSpotLightInvMatrix = <span class="hljs-string">"_invMatrix"</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>called internally - sets up the global contract array</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-property">@_preDraw</span> : <span class="hljs-function"><span class="hljs-params">(lights)</span> -&gt;</span>
+  <span class="hljs-property">@contract</span>.roles.uSpotLightMatrix = <span class="hljs-string">"_mvpMatrixGlobal"</span>
+  <span class="hljs-property">@contract</span>.roles.uSamplerSpotShadow = <span class="hljs-string">"_samplerGlobal"</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>called internally - sets up the global contract array</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-property">@_preDraw</span> : <span class="hljs-function"><span class="hljs-params">(lights, matrix)</span> -&gt;</span>
     idx = <span class="hljs-number">0</span>
     
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> lights?
       <span class="hljs-keyword">return</span>
     
     <span class="hljs-keyword">for</span> light <span class="hljs-keyword">in</span> lights
-      SpotLight._posGlobal[idx * <span class="hljs-number">3</span>] = light.pos.x
-      SpotLight._posGlobal[idx * <span class="hljs-number">3</span> + <span class="hljs-number">1</span>] = light.pos.y
-      SpotLight._posGlobal[idx * <span class="hljs-number">3</span> + <span class="hljs-number">2</span>] = light.pos.z
+
+      ll = Matrix4.multVec(matrix, light.pos)
+      
+      SpotLight._posGlobal[idx * <span class="hljs-number">3</span>] = ll.x
+      SpotLight._posGlobal[idx * <span class="hljs-number">3</span> + <span class="hljs-number">1</span>] = ll.y
+      SpotLight._posGlobal[idx * <span class="hljs-number">3</span> + <span class="hljs-number">2</span>] = ll.z
 
       SpotLight._colourGlobal[idx * <span class="hljs-number">3</span>] = light.colour.r
       SpotLight._colourGlobal[idx * <span class="hljs-number">3</span> + <span class="hljs-number">1</span>] = light.colour.g
@@ -139,12 +149,19 @@ Just as in PointLight, the spotlight prototype records all spots</p></div></div>
       SpotLight._angleGlobal[idx] = light.angle
       SpotLight._expGlobal[idx] = light.exponent
       
-      <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span><span class="hljs-number">.15</span>]
-        SpotLight._invMatrix[idx*<span class="hljs-number">16</span>+i] = light.invMatrix.a[i]
+      <span class="hljs-keyword">if</span> light.shadowmap
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span><span class="hljs-number">.15</span>]
+          SpotLight._mvpMatrixGlobal[idx*<span class="hljs-number">16</span>+i] = light.mvpMatrix.a[i]</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Bind the shadowmap texture, ready for sampling </p></div></div><div class="code"><div class="wrapper">        light.shadowmap_fbo.texture.bind()
+        SpotLight._samplerGlobal[idx] = light.shadowmap_fbo.texture.unit 
 
       idx += <span class="hljs-number">1</span>
 
-    SpotLight.numGlobal = lights.length</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO - Add a mask here that basically says which lights are on or off
+    SpotLight.numGlobal = lights.length</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Called internally, mostly to unbind the shadowmaps</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-property">@_postDraw</span> : <span class="hljs-function"><span class="hljs-params">(lights)</span> -&gt;</span>
+    <span class="hljs-keyword">for</span> light <span class="hljs-keyword">in</span> lights
+      <span class="hljs-keyword">if</span> light.shadowmap
+        light.shadowmap_fbo.texture.unbind()
+
+  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO - Add a mask here that basically says which lights are on or off
 We need this because we may call draw on a subnode of a node that has a light
 and that light should not affect the scene. this mask would be passed to the shader</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>@constructor</strong> 
 -<strong>pos</strong> - a Vec3
@@ -153,7 +170,7 @@ and that light should not affect the scene. this mask would be passed to the sha
 -<strong>angle</strong> - a Number - radians
 -<strong>exponent</strong> - a Number
 -<strong>shadowmap</strong> - a Boolean
--<strong>attentuation</strong> - a List of Number - length 4 - optional - default [100, 1.0, 0.045, 0.0075]</p></div></div><div class="code"><div class="wrapper">  constructor : <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@pos</span>, <span class="hljs-property">@colour</span>, <span class="hljs-property">@dir</span>, <span class="hljs-property">@angle</span>, <span class="hljs-property">@shadowmap</span>, <span class="hljs-property">@exponent</span>, <span class="hljs-property">@attenuation</span>)</span> -&gt;</span>
+-<strong>attentuation</strong> - a List of Number - length 4 - optional - default [10, 1.0, 0.045, 0.0075]</p></div></div><div class="code"><div class="wrapper">  constructor : <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@pos</span>, <span class="hljs-property">@colour</span>, <span class="hljs-property">@dir</span>, <span class="hljs-property">@angle</span>, <span class="hljs-property">@shadowmap</span>, <span class="hljs-property">@exponent</span>, <span class="hljs-property">@attenuation</span>)</span> -&gt;</span>
 
     <span class="hljs-property">@contract</span> = SpotLight.contract
 
@@ -163,7 +180,9 @@ and that light should not affect the scene. this mask would be passed to the sha
     <span class="hljs-property">@_dirGlobal</span> = SpotLight._dirGlobal
     <span class="hljs-property">@_angleGlobal</span> = SpotLight._angleGlobal
     <span class="hljs-property">@_expGlobal</span> = SpotLight._expGlobal
-    
+    <span class="hljs-property">@_mvpMatrixGlobal</span> = SpotLight._mvpMatrixGlobal   
+    <span class="hljs-property">@_samplerGlobal</span> = SpotLight._samplerGlobal
+ 
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@pos</span>?
       <span class="hljs-property">@pos</span> = <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">1</span>,<span class="hljs-number">1</span>,<span class="hljs-number">1</span>)
     
@@ -174,10 +193,10 @@ and that light should not affect the scene. this mask would be passed to the sha
       <span class="hljs-property">@shadowmap</span> = <span class="hljs-literal">false</span>
 
     <span class="hljs-keyword">if</span> <span class="hljs-property">@shadowmap</span>
-      <span class="hljs-property">@shadowmap_fbo</span> = <span class="hljs-keyword">new</span> Fbo(<span class="hljs-number">640</span>,<span class="hljs-number">640</span>)
-      <span class="hljs-property">@invMatrix</span> = <span class="hljs-keyword">new</span> Matrix4()
+      <span class="hljs-property">@shadowmap_fbo</span> = <span class="hljs-keyword">new</span> Fbo(<span class="hljs-number">512</span>,<span class="hljs-number">512</span>)
+      <span class="hljs-property">@mvpMatrix</span> = <span class="hljs-keyword">new</span> Matrix4()
     </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Attenuation has 4 components - range, constant, linear and quadratic</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@attenuation</span>?
-      <span class="hljs-property">@attenuation</span> = [ <span class="hljs-number">10</span>, <span class="hljs-number">1.0</span>, <span class="hljs-number">0.045</span>, <span class="hljs-number">0.0075</span> ]
+      <span class="hljs-property">@attenuation</span> = [ <span class="hljs-number">10.0</span>, <span class="hljs-number">1.0</span>, <span class="hljs-number">0.045</span>, <span class="hljs-number">0.0075</span> ]
   
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@dir</span>?
       <span class="hljs-property">@dir</span> = <span class="hljs-keyword">new</span> Vec3(<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>)
@@ -185,7 +204,7 @@ and that light should not affect the scene. this mask would be passed to the sha
     <span class="hljs-property">@dir</span>.normalize()
 
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@angle</span>?
-      <span class="hljs-property">@angle</span> = <span class="hljs-number">45.0</span>
+      <span class="hljs-property">@angle</span> = degToRad <span class="hljs-number">45.0</span>
     
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@exponent</span>?
       <span class="hljs-property">@exponent</span> = <span class="hljs-number">100.0</span>
@@ -197,7 +216,6 @@ and that light should not affect the scene. this mask would be passed to the sha
     @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>_removeFromNode - called when this class is removed from a node</p></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">_removeFromNode</span>: <span class="hljs-function"><span class="hljs-params">(node)</span> -&gt;</span>
     node.spotLights.splice node.spotLights.indexOf @
     @
-
 
 
 <span class="hljs-built_in">module</span>.exports =

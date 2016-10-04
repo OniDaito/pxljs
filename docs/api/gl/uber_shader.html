@@ -28,14 +28,19 @@ runtime changes each frame, whereas ubershader deals with defines that should on
     <span class="hljs-keyword">if</span> base_node.pointLights.length &gt; <span class="hljs-number">0</span>
       <span class="hljs-property">@uber_defines</span>.push <span class="hljs-string">"LIGHTING_POINT"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"LIGHTING_POINT"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-property">@uber_defines</span>
       <span class="hljs-property">@uber_defines</span>.push <span class="hljs-string">"LIGHTING"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"LIGHTING"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-property">@uber_defines</span>
+  
+    <span class="hljs-keyword">if</span> base_node.ambientLight?
+      <span class="hljs-property">@uber_defines</span>.push <span class="hljs-string">"LIGHTING"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"LIGHTING"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-property">@uber_defines</span> 
 
     <span class="hljs-keyword">if</span> base_node.spotLights.length &gt; <span class="hljs-number">0</span>
       <span class="hljs-property">@uber_defines</span>.push <span class="hljs-string">"LIGHTING_SPOT"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"LIGHTING_SPOT"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-property">@uber_defines</span>
       <span class="hljs-property">@uber_defines</span>.push <span class="hljs-string">"LIGHTING"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"LIGHTING"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-property">@uber_defines</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Checking for shadowmaps</p></div></div><div class="code"><div class="wrapper">      <span class="hljs-keyword">for</span> light <span class="hljs-keyword">in</span> base_node.spotLights
         <span class="hljs-keyword">if</span> light.shadowmap
+          <span class="hljs-property">@uber_defines</span>.push <span class="hljs-string">"ADVANCED_CAMERA"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"ADVANCED_CAMERA"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-property">@uber_defines</span>
           <span class="hljs-property">@uber_defines</span>.push <span class="hljs-string">"SHADOWMAP"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"SHADOWMAP"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-property">@uber_defines</span>
+          <span class="hljs-property">@uber_defines</span>.push <span class="hljs-string">"PACKING"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"PACKING"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-property">@uber_defines</span>
           <span class="hljs-property">@uber_defines</span>.push <span class="hljs-string">"FRAGMENT_DEPTH_OUT"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"FRAGMENT_DEPTH_OUT"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-property">@uber_defines</span>
-    
+
     <span class="hljs-keyword">if</span> base_node.skeleton?
       <span class="hljs-property">@uber_defines</span>.push <span class="hljs-string">"SKINNING"</span> <span class="hljs-keyword">if</span> <span class="hljs-string">"SKINNING"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> <span class="hljs-property">@uber_defines</span>
 

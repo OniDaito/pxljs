@@ -74,6 +74,143 @@ TODO - Add tangents here too?</p></div></div></div><div class="segment"><div cla
     <span class="hljs-property">@indices</span> = [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>,<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">6</span>,<span class="hljs-number">4</span>,<span class="hljs-number">7</span>,<span class="hljs-number">4</span>,<span class="hljs-number">0</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">7</span>,<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>,<span class="hljs-number">6</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">1</span>,<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>]
 
     <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.<span class="hljs-property">@indices</span>.length-<span class="hljs-number">1</span>] <span class="hljs-keyword">by</span> <span class="hljs-number">3</span>
+      <span class="hljs-property">@faces</span>.push <span class="hljs-keyword">new</span> Triangle(<span class="hljs-property">@vertices</span>[<span class="hljs-property">@indices</span>[i]], <span class="hljs-property">@vertices</span>[<span class="hljs-property">@indices</span>[i+<span class="hljs-number">1</span>]], <span class="hljs-property">@vertices</span>[<span class="hljs-property">@indices</span>[i+<span class="hljs-number">2</span>]])</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="cuboiddup">CuboidDup</h2>
+<p>A basic Cuboid with no with no interpolated normals. Each corner has duplicated faces for normals</p></div></div><div class="code"><div class="wrapper"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CuboidDup</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Geometry</span></span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>TODO - Add resolution here?
+TODO - Add tangents here too?</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>constructor</strong></p>
+<ul>
+<li><strong>dim</strong> - a Vec3 - Default Vec3(1,1,1)</li>
+<li><strong>colour</strong> - a Colour</li>
+</ul></div></div><div class="code"><div class="wrapper">  
+  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(dim, colour)</span> -&gt;</span>
+    <span class="hljs-keyword">super</span>()
+
+    <span class="hljs-property">@indexed</span> = <span class="hljs-literal">true</span>
+    <span class="hljs-property">@layout</span> = GL.TRIANGLES <span class="hljs-keyword">if</span> GL?
+    
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> dim?
+      dim = <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">1.0</span>,<span class="hljs-number">1.0</span>,<span class="hljs-number">1.0</span>
+
+    w = dim.x / <span class="hljs-number">2</span>
+    h = dim.y / <span class="hljs-number">2</span>
+    d = dim.z / <span class="hljs-number">2</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>front</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-property">@vertices</span>.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 -w,-h,d
+      n : <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">0</span>,<span class="hljs-number">0</span> 
+    
+    <span class="hljs-property">@vertices</span>.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 w,-h,d  
+      n : <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">1</span>,<span class="hljs-number">0</span> 
+    
+    <span class="hljs-property">@vertices</span>.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 w,h,d
+      n : <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">1</span>,<span class="hljs-number">1</span>
+    
+    <span class="hljs-property">@vertices</span>.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 -w,h,d  
+      n : <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">0</span>,<span class="hljs-number">1</span>
+    </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>back</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-property">@vertices</span>.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 -w,-h,-d
+      n : <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">0</span>,<span class="hljs-number">0</span> 
+    
+    <span class="hljs-property">@vertices</span>.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 w,-h,-d  
+      n : <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">1</span>,<span class="hljs-number">0</span> 
+    
+    <span class="hljs-property">@vertices</span>.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 w,h,-d
+      n : <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">1</span>,<span class="hljs-number">1</span>
+    
+    <span class="hljs-property">@vertices</span>.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 -w,h,-d  
+      n : <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">0</span>,<span class="hljs-number">1</span>  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>left</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-property">@vertices</span>.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 -w,-h,-d
+      n : <span class="hljs-keyword">new</span> Vec3 -<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">0</span>,<span class="hljs-number">0</span> 
+    
+    <span class="hljs-property">@vertices</span>.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 -w,-h,d  
+      n : <span class="hljs-keyword">new</span> Vec3 -<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">1</span>,<span class="hljs-number">0</span> 
+    
+    <span class="hljs-property">@vertices</span>.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 -w,h,d
+      n : <span class="hljs-keyword">new</span> Vec3 -<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">1</span>,<span class="hljs-number">1</span>
+    
+    <span class="hljs-property">@vertices</span>.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 -w,h,-d  
+      n : <span class="hljs-keyword">new</span> Vec3 -<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">0</span>,<span class="hljs-number">1</span>  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>right</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-property">@vertices</span>.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 w,-h,-d
+      n : <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">0</span>,<span class="hljs-number">0</span> 
+    
+    <span class="hljs-property">@vertices</span>.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 w,-h,d  
+      n : <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">1</span>,<span class="hljs-number">0</span> 
+    
+    <span class="hljs-property">@vertices</span>.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 w,h,d
+      n : <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">1</span>,<span class="hljs-number">1</span>
+    
+    <span class="hljs-property">@vertices</span>.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 w,h,-d  
+      n : <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">0</span>,<span class="hljs-number">1</span>  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>top</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-property">@vertices</span>.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 -w,h,-d
+      n : <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">0</span>,<span class="hljs-number">0</span> 
+    
+    <span class="hljs-property">@vertices</span>.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 -w,h,d  
+      n : <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">1</span>,<span class="hljs-number">0</span> 
+    
+    <span class="hljs-property">@vertices</span>.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 w,h,d
+      n : <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">1</span>,<span class="hljs-number">1</span>
+    
+    <span class="hljs-property">@vertices</span>.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 w,h,-d  
+      n : <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">0</span>
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">0</span>,<span class="hljs-number">1</span>  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>bottom</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-property">@vertices</span>.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 -w,-h,-d
+      n : <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">0</span>,<span class="hljs-number">0</span> 
+    
+    <span class="hljs-property">@vertices</span>.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 -w,-h,d  
+      n : <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">1</span>,<span class="hljs-number">0</span> 
+    
+    <span class="hljs-property">@vertices</span>.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 w,-h,d
+      n : <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">1</span>,<span class="hljs-number">1</span>
+    
+    <span class="hljs-property">@vertices</span>.push <span class="hljs-keyword">new</span> Vertex 
+      p : <span class="hljs-keyword">new</span> Vec3 w,-h,-d  
+      n : <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>
+      t : <span class="hljs-keyword">new</span> Vec2 <span class="hljs-number">0</span>,<span class="hljs-number">1</span>  
+
+    <span class="hljs-keyword">if</span> colour?
+      <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> <span class="hljs-property">@vertices</span>
+        v.c = colour
+
+
+    <span class="hljs-property">@indices</span> = [<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">6</span>,<span class="hljs-number">5</span>,<span class="hljs-number">4</span>,<span class="hljs-number">7</span>,<span class="hljs-number">6</span>,<span class="hljs-number">4</span>,<span class="hljs-number">8</span>,<span class="hljs-number">9</span>,<span class="hljs-number">10</span>,<span class="hljs-number">8</span>,<span class="hljs-number">10</span>,<span class="hljs-number">11</span>,<span class="hljs-number">14</span>,<span class="hljs-number">13</span>,<span class="hljs-number">12</span>,<span class="hljs-number">15</span>,<span class="hljs-number">14</span>,<span class="hljs-number">12</span>,<span class="hljs-number">16</span>,<span class="hljs-number">17</span>,<span class="hljs-number">18</span>,<span class="hljs-number">16</span>,<span class="hljs-number">18</span>,<span class="hljs-number">19</span>,<span class="hljs-number">22</span>,<span class="hljs-number">21</span>,<span class="hljs-number">20</span>,<span class="hljs-number">23</span>,<span class="hljs-number">22</span>,<span class="hljs-number">20</span> ]
+
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.<span class="hljs-property">@indices</span>.length-<span class="hljs-number">1</span>] <span class="hljs-keyword">by</span> <span class="hljs-number">3</span>
       <span class="hljs-property">@faces</span>.push <span class="hljs-keyword">new</span> Triangle(<span class="hljs-property">@vertices</span>[<span class="hljs-property">@indices</span>[i]], <span class="hljs-property">@vertices</span>[<span class="hljs-property">@indices</span>[i+<span class="hljs-number">1</span>]], <span class="hljs-property">@vertices</span>[<span class="hljs-property">@indices</span>[i+<span class="hljs-number">2</span>]])</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><h2 id="sphere">Sphere</h2></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><a href="http://local.wasp.uwa.edu.au/~pbourke/texture_colour/spheremap/">http://local.wasp.uwa.edu.au/~pbourke/texture_colour/spheremap/</a>  Paul Bourke&#39;s sphere code
 We should weigh an alternative that reduces the batch count by using GL_TRIANGLES instead
 TODO - Add Tangents?
@@ -278,6 +415,7 @@ Potentially this is bad but attributes are what they are and this is cheaper</p>
 <span class="hljs-built_in">module</span>.exports = 
   <span class="hljs-attribute">Cuboid</span>: Cuboid
   <span class="hljs-attribute">Sphere</span>: Sphere
+  <span class="hljs-attribute">CuboidDup</span>: CuboidDup
   Cylinder : Cylinder
   
  </div></div></div></div></body></html>

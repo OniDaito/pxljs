@@ -32,7 +32,10 @@ This software is released under the MIT Licence. See LICENCE.txt for details</co
 <li><strong>pos</strong> - a Vec3</li>
 <li><strong>look</strong> - a Vec3</li>
 <li><strong>up</strong> - a Vec3</li>
-</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@pos</span>, <span class="hljs-property">@look</span>, <span class="hljs-property">@up</span>)</span> -&gt;</span>
+<li><strong>width</strong> - a Number - Default PXL.Context.width or 512</li>
+<li><strong>height</strong> - a Number - Default PXL.Context.height or 512</li>
+</ul></div></div><div class="code"><div class="wrapper"> 
+  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@pos</span>, <span class="hljs-property">@look</span>, <span class="hljs-property">@up</span>, <span class="hljs-property">@width</span>, <span class="hljs-property">@height</span>)</span> -&gt;</span>
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@pos</span>?
       <span class="hljs-property">@pos</span> = <span class="hljs-keyword">new</span> Vec3 <span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">5</span>
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@look</span>?
@@ -44,9 +47,16 @@ if we&#39;ve not been given it :S</p></div></div><div class="code"><div class="w
     <span class="hljs-property">@i</span> = <span class="hljs-keyword">new</span> Matrix4()
     <span class="hljs-property">@ip</span> = <span class="hljs-keyword">new</span> Matrix4()
     <span class="hljs-property">@q</span> = <span class="hljs-keyword">new</span> Quaternion() <span class="hljs-comment"># Spare Quaternion to work out rotations</span>
-  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>We keep these for the viewport calculations</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-property">@width</span> = <span class="hljs-number">1</span>
-    <span class="hljs-property">@height</span> = <span class="hljs-number">1</span>
+  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>We keep these for the viewport calculations</p></div></div><div class="code"><div class="wrapper">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@width</span>
+      <span class="hljs-property">@width</span> = <span class="hljs-number">512</span>
+      <span class="hljs-keyword">if</span> PXL? <span class="hljs-comment"># this is here because of tests :/</span>
+        <span class="hljs-property">@width</span> = PXL.Context.width <span class="hljs-keyword">if</span> PXL.Context? 
 
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@height</span>?
+      <span class="hljs-property">@height</span> = <span class="hljs-number">512</span>
+      <span class="hljs-keyword">if</span> PXL?
+        <span class="hljs-property">@height</span> = PXL.Context.height <span class="hljs-keyword">if</span> PXL.Context? 
+    
     <span class="hljs-property">@contract</span> = <span class="hljs-keyword">new</span> Contract()
     <span class="hljs-property">@contract</span>.roles.uCameraNear = <span class="hljs-string">"near"</span>
     <span class="hljs-property">@contract</span>.roles.uCameraFar  = <span class="hljs-string">"far"</span>
@@ -57,16 +67,10 @@ if we&#39;ve not been given it :S</p></div></div><div class="code"><div class="w
 TODO - I wonder if such things should be automatic on our draw / update 
 paths through the nodes? Needs GL context ideally</p>
 <ul>
-<li><strong>width</strong> - a Number - default current context width</li>
-<li><strong>height</strong> - a Number - default current context height</li>
 <li>returns this</li>
-</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">update</span>: <span class="hljs-function"><span class="hljs-params">(width=PXL.Context.width, height=PXL.Context.height)</span> -&gt;</span>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">update</span>: <span class="hljs-function"><span class="hljs-params">()</span> -&gt;</span>
     <span class="hljs-property">@m</span>.lookAt <span class="hljs-property">@pos</span>, <span class="hljs-property">@look</span>, <span class="hljs-property">@up</span>
-    <span class="hljs-property">@i</span> = Matrix4.invert(<span class="hljs-property">@m</span>)
-    
-    <span class="hljs-property">@width</span> = width
-    <span class="hljs-property">@height</span> = height
-
+    <span class="hljs-property">@i</span> = Matrix4.invert(<span class="hljs-property">@m</span>) 
     GL.viewport <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-property">@width</span>, <span class="hljs-property">@height</span> <span class="hljs-keyword">if</span> GL?
     @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>lookat</strong> - point the camera</p>
 <ul>
@@ -145,8 +149,11 @@ Orthographic Camera uses 1 pixel as 1 world unit</p></div></div><div class="code
 <li><strong>up</strong> - a Vec3 - Required</li>
 <li><strong>near</strong> - a Number</li>
 <li><strong>far</strong> - a Number</li>
-</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@pos</span>, <span class="hljs-property">@look</span>, <span class="hljs-property">@up</span>, <span class="hljs-property">@near</span>, <span class="hljs-property">@far</span>)</span> -&gt;</span>
-    <span class="hljs-keyword">super</span>(<span class="hljs-property">@pos</span>,<span class="hljs-property">@look</span>,<span class="hljs-property">@up</span>)
+<li><strong>width</strong> - a Number - Default PXL.Context.width or 512</li>
+<li><strong>height</strong> - a Number - Default PXL.Context.height or 512</li>
+</ul></div></div><div class="code"><div class="wrapper"> 
+  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@pos</span>, <span class="hljs-property">@look</span>, <span class="hljs-property">@up</span>, <span class="hljs-property">@near</span>, <span class="hljs-property">@far</span>, <span class="hljs-property">@width</span>, <span class="hljs-property">@height</span>)</span> -&gt;</span>
+    <span class="hljs-keyword">super</span>(<span class="hljs-property">@pos</span>,<span class="hljs-property">@look</span>,<span class="hljs-property">@up</span>, <span class="hljs-property">@width</span>, <span class="hljs-property">@height</span>)
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@near</span>?
       <span class="hljs-property">@near</span> = -<span class="hljs-number">1.0</span>
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@far</span>?
@@ -155,10 +162,9 @@ Orthographic Camera uses 1 pixel as 1 world unit</p></div></div><div class="code
 <li><strong>width</strong> - a Number - Default is current context width</li>
 <li><strong>height</strong> - a Number - Default is current context height</li>
 <li>returns this</li>
-</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">update</span>: <span class="hljs-function"><span class="hljs-params">(width=PXL.Context.width, height=PXL.Context.height)</span>-&gt;</span>
-
-    OrthoCamera.__super__.update.call(@, width, height)
-    <span class="hljs-property">@p</span>.makeOrtho(<span class="hljs-number">0</span>, width, <span class="hljs-number">0</span>, height, <span class="hljs-property">@near</span>, <span class="hljs-property">@far</span>)
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">update</span>: <span class="hljs-function"><span class="hljs-params">()</span>-&gt;</span>
+    OrthoCamera.__super__.update.call(@, <span class="hljs-property">@width</span>, <span class="hljs-property">@height</span>)
+    <span class="hljs-property">@p</span>.makeOrtho(<span class="hljs-number">0</span>, <span class="hljs-property">@width</span>, <span class="hljs-number">0</span>, <span class="hljs-property">@height</span>, <span class="hljs-property">@near</span>, <span class="hljs-property">@far</span>)
     <span class="hljs-property">@ip</span> = Matrix4.invert(<span class="hljs-property">@p</span>)
 
     @
@@ -172,8 +178,10 @@ TODO - Not sure we need zoom here. Should probably have a spaceball class</p></d
 <li><strong>angle</strong> - a Number</li>
 <li><strong>near</strong> - a Number</li>
 <li><strong>far</strong> - a Number</li>
-</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@pos</span>, <span class="hljs-property">@look</span>, <span class="hljs-property">@up</span>, <span class="hljs-property">@angle</span>, <span class="hljs-property">@near</span>, <span class="hljs-property">@far</span>)</span> -&gt;</span>
-    <span class="hljs-keyword">super</span>(<span class="hljs-property">@pos</span>,<span class="hljs-property">@look</span>,<span class="hljs-property">@up</span>)
+<li><strong>width</strong> - a Number - Default PXL.Context.width or 512</li>
+<li><strong>height</strong> - a Number - Default PXL.Context.height or 512</li>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(<span class="hljs-property">@pos</span>, <span class="hljs-property">@look</span>, <span class="hljs-property">@up</span>, <span class="hljs-property">@angle</span>, <span class="hljs-property">@near</span>, <span class="hljs-property">@far</span>, <span class="hljs-property">@width</span>, <span class="hljs-property">@height</span>)</span> -&gt;</span>
+    <span class="hljs-keyword">super</span>(<span class="hljs-property">@pos</span>,<span class="hljs-property">@look</span>,<span class="hljs-property">@up</span>,<span class="hljs-property">@width</span>,<span class="hljs-property">@height</span>)
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@angle</span>?
       <span class="hljs-property">@angle</span> = degToRad <span class="hljs-number">25.0</span>
     <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@near</span>?
@@ -187,10 +195,9 @@ TODO - Not sure we need zoom here. Should probably have a spaceball class</p></d
 <li><strong>width</strong> - a Number - Default is current context width</li>
 <li><strong>height</strong> - a Number - Default is current context height</li>
 <li>returns this</li>
-</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">update</span>: <span class="hljs-function"><span class="hljs-params">(width=PXL.Context.width, height=PXL.Context.height)</span>-&gt;</span>
-  
-    PerspCamera.__super__.update.call(@, width, height)
-    <span class="hljs-property">@p</span>.makePerspective(<span class="hljs-property">@angle</span>, width / height, <span class="hljs-property">@near</span>, <span class="hljs-property">@far</span> )
+</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">update</span>: <span class="hljs-function"><span class="hljs-params">()</span>-&gt;</span>
+    PerspCamera.__super__.update.call(@)
+    <span class="hljs-property">@p</span>.makePerspective(<span class="hljs-property">@angle</span>, <span class="hljs-property">@width</span> / <span class="hljs-property">@height</span>, <span class="hljs-property">@near</span>, <span class="hljs-property">@far</span> )
     <span class="hljs-property">@ip</span> = Matrix4.invert(<span class="hljs-property">@p</span>)
   
     @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>castRay</strong> - Given a screen position (in pixels 0 -&gt; dimension), cast a ray through the screen along the frustum from the eye pos</p>
@@ -258,9 +265,11 @@ the near and far clip planes (by default - these can be changed)</p>
 <li><strong>near</strong> - a Number</li>
 <li><strong>far</strong> - a Number</li>
 <li><strong>sense</strong> - a Number</li>
-</ul></div></div><div class="code"><div class="wrapper">  
-  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">( <span class="hljs-property">@pos</span>, <span class="hljs-property">@look</span>, <span class="hljs-property">@up</span>, <span class="hljs-property">@angle</span>, <span class="hljs-property">@near</span>, <span class="hljs-property">@far</span>, <span class="hljs-property">@sense</span>)</span> -&gt;</span>
-    <span class="hljs-keyword">super</span>(<span class="hljs-property">@pos</span>, <span class="hljs-property">@look</span>, <span class="hljs-property">@up</span>, <span class="hljs-property">@angle</span>, <span class="hljs-property">@near</span>, <span class="hljs-property">@far</span>)
+<li><strong>width</strong> - a Number - Default PXL.Context.width or 512</li>
+<li><strong>height</strong> - a Number - Default PXL.Context.height or 512</li>
+</ul></div></div><div class="code"><div class="wrapper"> 
+  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">( <span class="hljs-property">@pos</span>, <span class="hljs-property">@look</span>, <span class="hljs-property">@up</span>, <span class="hljs-property">@angle</span>, <span class="hljs-property">@near</span>, <span class="hljs-property">@far</span>, <span class="hljs-property">@width</span>, <span class="hljs-property">@height</span>,  <span class="hljs-property">@sense</span>)</span> -&gt;</span>
+    <span class="hljs-keyword">super</span>(<span class="hljs-property">@pos</span>, <span class="hljs-property">@look</span>, <span class="hljs-property">@up</span>, <span class="hljs-property">@angle</span>, <span class="hljs-property">@near</span>, <span class="hljs-property">@far</span>, <span class="hljs-property">@width</span>, <span class="hljs-property">@height</span>)
     </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Listen for the signals on the PXL Context, emitting mouse events</p></div></div><div class="code"><div class="wrapper">    PXL.Context.mouseMove.add <span class="hljs-property">@onMouseMove</span>, @
     PXL.Context.mouseDown.add <span class="hljs-property">@onMouseDown</span>, @ 
     PXL.Context.mouseUp.add <span class="hljs-property">@onMouseUp</span>, @
@@ -329,15 +338,9 @@ At the moment, this appears to be chrome only</p>
 
     dp = dt / tl
     <span class="hljs-property">@_zoom</span>(dp)
-    @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>update</strong> - call with width and height and the matrix will be updated</p>
-<ul>
-<li><strong>width</strong> - a Number - Default is current context width</li>
-<li><strong>height</strong> - a Number - Default is current context height</li>
-<li>returns this</li>
-</ul></div></div><div class="code"><div class="wrapper">  <span class="hljs-attribute">update</span>: <span class="hljs-function"><span class="hljs-params">(width=PXL.Context.width, height=PXL.Context.height)</span>-&gt;</span>
-    MousePerspCamera.__super__.update.call(@, width, height)
     @
-  </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>onMouseOut - registered with our signal - called when mouse leaves the context</p>
+
+ </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>onMouseOut - registered with our signal - called when mouse leaves the context</p>
 <ul>
 <li><strong>event</strong> - an Event</li>
 <li>returns this</li>
@@ -365,8 +368,8 @@ Camera that listens for both mouse input and touch gestures</p></div></div><div 
 <li><strong>far</strong> - a Number</li>
 <li><strong>sense</strong> - a Number</li>
 </ul></div></div><div class="code"><div class="wrapper"> 
-  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">( <span class="hljs-property">@pos</span>, <span class="hljs-property">@look</span>, <span class="hljs-property">@up</span>, <span class="hljs-property">@angle</span>, <span class="hljs-property">@near</span>, <span class="hljs-property">@far</span>, <span class="hljs-property">@sense</span>)</span> -&gt;</span>
-    <span class="hljs-keyword">super</span>(<span class="hljs-property">@pos</span>, <span class="hljs-property">@look</span>, <span class="hljs-property">@up</span>, <span class="hljs-property">@angle</span>, <span class="hljs-property">@near</span>, <span class="hljs-property">@far</span>)
+  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">( <span class="hljs-property">@pos</span>, <span class="hljs-property">@look</span>, <span class="hljs-property">@up</span>, <span class="hljs-property">@angle</span>, <span class="hljs-property">@near</span>, <span class="hljs-property">@far</span>, <span class="hljs-property">@width</span>, <span class="hljs-property">@height</span>, <span class="hljs-property">@sense</span>)</span> -&gt;</span>
+    <span class="hljs-keyword">super</span>(<span class="hljs-property">@pos</span>, <span class="hljs-property">@look</span>, <span class="hljs-property">@up</span>, <span class="hljs-property">@angle</span>, <span class="hljs-property">@near</span>, <span class="hljs-property">@far</span>, <span class="hljs-property">@width</span>, <span class="hljs-property">@height</span>, <span class="hljs-property">@sense</span>)
     </div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>Listen for the signals on the PXL Context, emitting touch events</p></div></div><div class="code"><div class="wrapper">    PXL.Context.touchPinch.add <span class="hljs-property">@onPinch</span>, @
     PXL.Context.touchSpread.add <span class="hljs-property">@onSpread</span>, @
     PXL.Context.touchSwipe.add <span class="hljs-property">@onSwipe</span>, @</div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p><strong>onPinch</strong></p>
