@@ -205,8 +205,14 @@ And that is it. Compile this with CoffeeScript using the following command insid
 
 As we are performing requests to grab our shader, we should run a small websever to test our page. If you are on OSX or Linux you should have access to python. Open up a terminal, navigate to your directory and type...
 
+Python2
 <pre>
-  python -m SimpleHTTPServer
+  python -m SimpleHTTPServer 
+</pre>
+
+Python3
+<pre>
+  python -m http.server
 </pre>
 
 Now browse to **http://localhost:8000** page in your favorite web-browser and voila! You should see your first triangle!
