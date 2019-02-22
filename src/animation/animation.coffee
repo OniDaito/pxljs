@@ -212,7 +212,7 @@ class Tween
     if @f0.obj.copy?
       @_original = @f0.obj.clone()
       @reset = () ->
-        @f0.copy @_original
+        @f0.obj.copy @_original
     else
       @_original = @f0
       @reset = () ->
