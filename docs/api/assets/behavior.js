@@ -33,7 +33,34 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "pageTitle": "animation/animation",
             "title": "animation"
           },
-          "depth": 2
+          "depth": 2,
+          "outline": [
+            {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "Interpolation",
+                "slug": "interpolation"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "KeyFrame",
+                "slug": "keyframe"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "Tween",
+                "slug": "tween"
+              },
+              "depth": 2
+            }
+          ]
         }, {
           "type": "file",
           "data": {
@@ -54,7 +81,50 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "pageTitle": "animation/skeleton",
             "title": "skeleton"
           },
-          "depth": 2
+          "depth": 2,
+          "outline": [
+            {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "Bone",
+                "slug": "bone"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "SkinIndex",
+                "slug": "skinindex"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "SkinWeight",
+                "slug": "skinweight"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "Skin",
+                "slug": "skin"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "Skeleton",
+                "slug": "skeleton"
+              },
+              "depth": 2
+            }
+          ]
         }
       ]
     }, {
@@ -151,7 +221,26 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "pageTitle": "colour/colour",
             "title": "colour"
           },
-          "depth": 2
+          "depth": 2,
+          "outline": [
+            {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "RGBA",
+                "slug": "rgba"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "RGB",
+                "slug": "rgb"
+              },
+              "depth": 2
+            }
+          ]
         }
       ]
     }, {
@@ -214,7 +303,18 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "pageTitle": "core/node",
             "title": "node"
           },
-          "depth": 2
+          "depth": 2,
+          "outline": [
+            {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "Node",
+                "slug": "node"
+              },
+              "depth": 2
+            }
+          ]
         }, {
           "type": "file",
           "data": {
@@ -277,7 +377,18 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "pageTitle": "geometry/curve",
             "title": "curve"
           },
-          "depth": 2
+          "depth": 2,
+          "outline": [
+            {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "CurveLine",
+                "slug": "curveline"
+              },
+              "depth": 2
+            }
+          ]
         }, {
           "type": "file",
           "data": {
@@ -484,7 +595,18 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "pageTitle": "gl/contract",
             "title": "contract"
           },
-          "depth": 2
+          "depth": 2,
+          "outline": [
+            {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "Contract",
+                "slug": "contract"
+              },
+              "depth": 2
+            }
+          ]
         }, {
           "type": "file",
           "data": {
@@ -537,7 +659,26 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "pageTitle": "gl/shader",
             "title": "shader"
           },
-          "depth": 2
+          "depth": 2,
+          "outline": [
+            {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "Shader",
+                "slug": "shader"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "shaderFromText",
+                "slug": "shaderfromtext"
+              },
+              "depth": 2
+            }
+          ]
         }, {
           "type": "file",
           "data": {
@@ -888,7 +1029,34 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "pageTitle": "interact/key",
             "title": "key"
           },
-          "depth": 2
+          "depth": 2,
+          "outline": [
+            {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "KeyEmitter",
+                "slug": "keyemitter"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "makeKeyEmitter",
+                "slug": "makekeyemitter"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "removeKeyEmitter",
+                "slug": "removekeyemitter"
+              },
+              "depth": 2
+            }
+          ]
         }, {
           "type": "file",
           "data": {
@@ -909,7 +1077,34 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "pageTitle": "interact/mouse",
             "title": "mouse"
           },
-          "depth": 2
+          "depth": 2,
+          "outline": [
+            {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "MouseEmitter",
+                "slug": "mouseemitter"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "makeMouseEmitter",
+                "slug": "makemouseemitter"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "removeMouseEmitter",
+                "slug": "removemouseemitter"
+              },
+              "depth": 2
+            }
+          ]
         }, {
           "type": "file",
           "data": {
@@ -930,7 +1125,34 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "pageTitle": "interact/touch",
             "title": "touch"
           },
-          "depth": 2
+          "depth": 2,
+          "outline": [
+            {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "TouchEmitter",
+                "slug": "touchemitter"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "makeTouchEmitter",
+                "slug": "maketouchemitter"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "removeTouchEmitter",
+                "slug": "removetouchemitter"
+              },
+              "depth": 2
+            }
+          ]
         }
       ]
     }, {
@@ -1107,7 +1329,18 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "pageTitle": "material/material",
             "title": "material"
           },
-          "depth": 2
+          "depth": 2,
+          "outline": [
+            {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "Material",
+                "slug": "material"
+              },
+              "depth": 2
+            }
+          ]
         }, {
           "type": "file",
           "data": {
@@ -1202,7 +1435,74 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "pageTitle": "math/curve",
             "title": "curve"
           },
-          "depth": 2
+          "depth": 2,
+          "outline": [
+            {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "Curve2",
+                "slug": "curve2"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "Curve",
+                "slug": "curve"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "BezierCubic3",
+                "slug": "beziercubic3"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "CatmullPatch",
+                "slug": "catmullpatch"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "CubicHermiteSpline",
+                "slug": "cubichermitespline"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "CatmullRomSpline",
+                "slug": "catmullromspline"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "CurveSlide",
+                "slug": "curveslide"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "NURB",
+                "slug": "nurb"
+              },
+              "depth": 2
+            }
+          ]
         }, {
           "type": "file",
           "data": {
@@ -1223,7 +1523,82 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "pageTitle": "math/math",
             "title": "math"
           },
-          "depth": 2
+          "depth": 2,
+          "outline": [
+            {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "Vec2",
+                "slug": "vec2"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "Edge2",
+                "slug": "edge2"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "HalfEdge2",
+                "slug": "halfedge2"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "Vec3",
+                "slug": "vec3"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "Vec4",
+                "slug": "vec4"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "Matrix2",
+                "slug": "matrix2"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "Matrix3",
+                "slug": "matrix3"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "Matrix4",
+                "slug": "matrix4"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "Quaternion",
+                "slug": "quaternion"
+              },
+              "depth": 2
+            }
+          ]
         }, {
           "type": "file",
           "data": {
@@ -1244,7 +1619,66 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "pageTitle": "math/math_functions",
             "title": "math_functions"
           },
-          "depth": 2
+          "depth": 2,
+          "outline": [
+            {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "rayPlaneIntersect",
+                "slug": "rayplaneintersect"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "screenNodeHitTest",
+                "slug": "screennodehittest"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "precomputeTangent",
+                "slug": "precomputetangent"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "rayCircleIntersection",
+                "slug": "raycircleintersection"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "LERP",
+                "slug": "lerp"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "closestPointLine",
+                "slug": "closestpointline"
+              },
+              "depth": 2
+            }, {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "medialAxis2D",
+                "slug": "medialaxis2d"
+              },
+              "depth": 2
+            }
+          ]
         }
       ]
     }, {
@@ -1307,7 +1741,8 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "pageTitle": "util/cache_var",
             "title": "cache_var"
           },
-          "depth": 2
+          "depth": 2,
+          "outline": []
         }, {
           "type": "file",
           "data": {
@@ -1328,7 +1763,8 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "pageTitle": "util/debug",
             "title": "debug"
           },
-          "depth": 2
+          "depth": 2,
+          "outline": []
         }, {
           "type": "file",
           "data": {
@@ -1421,7 +1857,18 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "pageTitle": "util/medial_axis",
             "title": "medial_axis"
           },
-          "depth": 2
+          "depth": 2,
+          "outline": [
+            {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "medialAxis2D",
+                "slug": "medialaxis2d"
+              },
+              "depth": 2
+            }
+          ]
         }, {
           "type": "file",
           "data": {
@@ -1442,7 +1889,18 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "pageTitle": "util/noise",
             "title": "noise"
           },
-          "depth": 2
+          "depth": 2,
+          "outline": [
+            {
+              "type": "heading",
+              "data": {
+                "level": 5,
+                "title": "Perlin noise stuff",
+                "slug": "perlin-noise-stuff"
+              },
+              "depth": 5
+            }
+          ]
         }, {
           "type": "file",
           "data": {
@@ -1463,7 +1921,18 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "pageTitle": "util/promise",
             "title": "promise"
           },
-          "depth": 2
+          "depth": 2,
+          "outline": [
+            {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "Promise",
+                "slug": "promise"
+              },
+              "depth": 2
+            }
+          ]
         }, {
           "type": "file",
           "data": {
@@ -1484,7 +1953,8 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "pageTitle": "util/red_black_tree",
             "title": "red_black_tree"
           },
-          "depth": 2
+          "depth": 2,
+          "outline": []
         }, {
           "type": "file",
           "data": {
@@ -1505,7 +1975,18 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "pageTitle": "util/request",
             "title": "request"
           },
-          "depth": 2
+          "depth": 2,
+          "outline": [
+            {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "Request",
+                "slug": "request"
+              },
+              "depth": 2
+            }
+          ]
         }, {
           "type": "file",
           "data": {
@@ -1526,7 +2007,18 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "pageTitle": "util/signal",
             "title": "signal"
           },
-          "depth": 2
+          "depth": 2,
+          "outline": [
+            {
+              "type": "heading",
+              "data": {
+                "level": 2,
+                "title": "Signal",
+                "slug": "signal"
+              },
+              "depth": 2
+            }
+          ]
         }, {
           "type": "file",
           "data": {
@@ -1547,7 +2039,8 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "pageTitle": "util/util",
             "title": "util"
           },
-          "depth": 2
+          "depth": 2,
+          "outline": []
         }, {
           "type": "file",
           "data": {
@@ -1568,7 +2061,8 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "pageTitle": "util/voronoi",
             "title": "voronoi"
           },
-          "depth": 2
+          "depth": 2,
+          "outline": []
         }, {
           "type": "file",
           "data": {
@@ -1589,7 +2083,8 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "pageTitle": "util/webcam",
             "title": "webcam"
           },
-          "depth": 2
+          "depth": 2,
+          "outline": []
         }
       ]
     }
@@ -1654,15 +2149,15 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
   };
 
   selectNodeByDocumentPath = function(documentPath, headerSlug) {
-    var j, len, link, ref, urlChunks;
+    var link, urlChunks, _i, _len, _ref;
     if (headerSlug == null) {
       headerSlug = null;
     }
     currentNode$ = fileMap[documentPath];
     if (headerSlug) {
-      ref = currentNode$.find('.outline a');
-      for (j = 0, len = ref.length; j < len; j++) {
-        link = ref[j];
+      _ref = currentNode$.find('.outline a');
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        link = _ref[_i];
         urlChunks = $(link).attr('href').split('#');
         if (urlChunks[1] === headerSlug) {
           currentNode$ = $(link).parents('li').first();
@@ -1676,10 +2171,10 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
   };
 
   moveCurrentNode = function(up) {
-    var i, j, len, newIndex, node, visibleNodes$;
+    var i, newIndex, node, visibleNodes$, _i, _len;
     visibleNodes$ = toc$.find('li:visible:not(.filtered)');
     newIndex = 0;
-    for (i = j = 0, len = visibleNodes$.length; j < len; i = ++j) {
+    for (i = _i = 0, _len = visibleNodes$.length; _i < _len; i = ++_i) {
       node = visibleNodes$[i];
       if (node === currentNode$[0]) {
         newIndex = up ? i - 1 : i + 1;
@@ -1716,7 +2211,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
   currentQuery = '';
 
   searchNodes = function(queryString) {
-    var c, filtered, j, k, l, len, len1, len2, matched, matcher, nodeInfo, p, results;
+    var c, filtered, matched, matcher, nodeInfo, p, _i, _j, _k, _len, _len1, _len2, _results;
     queryString = queryString.toLowerCase().replace(/\s+/, '');
     if (queryString === currentQuery) {
       return;
@@ -1726,18 +2221,18 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
       return clearFilter();
     }
     matcher = new RegExp(((function() {
-      var j, len, results;
-      results = [];
-      for (j = 0, len = queryString.length; j < len; j++) {
-        c = queryString[j];
-        results.push(c.replace(/[-[\]{}()*+?.,\\^$|#\s]/, "\\$&"));
+      var _i, _len, _results;
+      _results = [];
+      for (_i = 0, _len = queryString.length; _i < _len; _i++) {
+        c = queryString[_i];
+        _results.push(c.replace(/[-[\]{}()*+?.,\\^$|#\s]/, "\\$&"));
       }
-      return results;
+      return _results;
     })()).join('.*'));
     matched = [];
     filtered = [];
-    for (j = 0, len = searchableNodes.length; j < len; j++) {
-      nodeInfo = searchableNodes[j];
+    for (_i = 0, _len = searchableNodes.length; _i < _len; _i++) {
+      nodeInfo = searchableNodes[_i];
       if (matcher.test(nodeInfo[0])) {
         matched.push(nodeInfo);
       } else {
@@ -1748,53 +2243,53 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
       return clearFilter();
     }
     nav$.addClass('searching');
-    for (k = 0, len1 = filtered.length; k < len1; k++) {
-      nodeInfo = filtered[k];
+    for (_j = 0, _len1 = filtered.length; _j < _len1; _j++) {
+      nodeInfo = filtered[_j];
       nodeInfo[1].removeClass('matched-child');
       nodeInfo[1].addClass('filtered');
       clearHighlight(nodeInfo[2]);
     }
-    results = [];
-    for (l = 0, len2 = matched.length; l < len2; l++) {
-      nodeInfo = matched[l];
+    _results = [];
+    for (_k = 0, _len2 = matched.length; _k < _len2; _k++) {
+      nodeInfo = matched[_k];
       nodeInfo[1].removeClass('filtered matched-child');
       nodeInfo[1].addClass('matched');
       highlightMatch(nodeInfo[2], queryString);
-      results.push((function() {
-        var len3, m, ref, results1;
-        ref = nodeInfo[1].parents('li');
-        results1 = [];
-        for (m = 0, len3 = ref.length; m < len3; m++) {
-          p = ref[m];
-          results1.push($(p).addClass('matched-child'));
+      _results.push((function() {
+        var _l, _len3, _ref, _results1;
+        _ref = nodeInfo[1].parents('li');
+        _results1 = [];
+        for (_l = 0, _len3 = _ref.length; _l < _len3; _l++) {
+          p = _ref[_l];
+          _results1.push($(p).addClass('matched-child'));
         }
-        return results1;
+        return _results1;
       })());
     }
-    return results;
+    return _results;
   };
 
   clearFilter = function() {
-    var j, len, nodeInfo, results;
+    var nodeInfo, _i, _len, _results;
     nav$.removeClass('searching');
     currentQuery = '';
-    results = [];
-    for (j = 0, len = searchableNodes.length; j < len; j++) {
-      nodeInfo = searchableNodes[j];
+    _results = [];
+    for (_i = 0, _len = searchableNodes.length; _i < _len; _i++) {
+      nodeInfo = searchableNodes[_i];
       nodeInfo[1].removeClass('filtered matched-child');
-      results.push(clearHighlight(nodeInfo[2]));
+      _results.push(clearHighlight(nodeInfo[2]));
     }
-    return results;
+    return _results;
   };
 
   highlightMatch = function(text$, queryString) {
-    var char, foundIndex, furthestIndex, j, len, lowerText, markedText, nodeText;
+    var char, foundIndex, furthestIndex, lowerText, markedText, nodeText, _i, _len;
     nodeText = text$.text();
     lowerText = nodeText.toLowerCase();
     markedText = '';
     furthestIndex = 0;
-    for (j = 0, len = queryString.length; j < len; j++) {
-      char = queryString[j];
+    for (_i = 0, _len = queryString.length; _i < _len; _i++) {
+      char = queryString[_i];
       foundIndex = lowerText.indexOf(char, furthestIndex);
       markedText += nodeText.slice(furthestIndex, foundIndex) + ("<em>" + nodeText[foundIndex] + "</em>");
       furthestIndex = foundIndex + 1;
@@ -1809,7 +2304,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
   fileMap = {};
 
   buildNav = function(metaInfo) {
-    var j, len, node, sourceURL;
+    var node, sourceURL, _i, _len;
     nav$ = $("<nav>\n  <ul class=\"tools\">\n    <li class=\"toggle\">Table of Contents</li>\n    <li class=\"search\">\n      <input id=\"search\" type=\"search\" autocomplete=\"off\"/>\n    </li>\n  </ul>\n  <ol class=\"toc\"/>\n  </div>\n</nav>").appendTo($('body'));
     toc$ = nav$.find('.toc');
     if (metaInfo.githubURL) {
@@ -1820,15 +2315,15 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
       }
       nav$.find('.tools').prepend("<li class=\"github\">\n  <a href=\"" + sourceURL + "\" title=\"View source on GitHub\">\n    View source on GitHub\n  </a>\n</li>");
     }
-    for (j = 0, len = tableOfContents.length; j < len; j++) {
-      node = tableOfContents[j];
+    for (_i = 0, _len = tableOfContents.length; _i < _len; _i++) {
+      node = tableOfContents[_i];
       toc$.append(buildTOCNode(node, metaInfo));
     }
     return nav$;
   };
 
   buildTOCNode = function(node, metaInfo) {
-    var c, children$, clickLabel, discloser, discloser$, j, label$, len, node$, ref, ref1, ref2;
+    var c, children$, clickLabel, discloser, discloser$, label$, node$, _i, _len, _ref, _ref1, _ref2;
     node$ = $("<li class=\"" + node.type + "\"/>");
     discloser = null;
     switch (node.type) {
@@ -1852,11 +2347,11 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
           return false;
         };
     }
-    if (((ref = node.children) != null ? ref.length : void 0) > 0) {
+    if (((_ref = node.children) != null ? _ref.length : void 0) > 0) {
       children$ = $('<ol class="children"/>');
-      ref1 = node.children;
-      for (j = 0, len = ref1.length; j < len; j++) {
-        c = ref1[j];
+      _ref1 = node.children;
+      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+        c = _ref1[_i];
         children$.append(buildTOCNode(c, metaInfo));
       }
       node$.append(children$);
@@ -1864,7 +2359,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
     label$ = node$.find('> .label');
     label$.click(clickLabel);
     discloser$ = $('<span class="discloser"/>').prependTo(label$);
-    if (!(((ref2 = node.children) != null ? ref2.length : void 0) > 0)) {
+    if (!(((_ref2 = node.children) != null ? _ref2.length : void 0) > 0)) {
       discloser$.addClass('placeholder');
     }
     discloser = discloser$.get(0);

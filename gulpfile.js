@@ -14,8 +14,6 @@ var sourcemaps = require('gulp-sourcemaps');
 var budo = require('budo')
 var shader_builder = require('./shader_builder');
 
-
-
 // http://stackoverflow.com/questions/23023650/is-it-possible-to-pass-a-flag-to-gulp-to-have-it-run-tasks-in-different-ways#23038290
 
 //var watchify = require('watchify'); // TODO - Eventually use watchify
@@ -73,7 +71,6 @@ gulp.task('web', ['build'], function(){
 
   var through2 = require('through2')
   var bl = require('bl')
-
 
   function vinylizeBrowserify(transform) {
     return through2.obj(write, flush)

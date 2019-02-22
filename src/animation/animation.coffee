@@ -74,7 +74,7 @@ class Interpolation
     @_set()
 
   _setVec2 : () ->
-    new Vec2(@obj0.x + ((@obj.x - @obj0.x) * @_value), @obj0.y + ((@obj1.y - @obj0.y) * @_value))
+    new Vec2(@obj0.x + ((@obj1.x - @obj0.x) * @_value), @obj0.y + ((@obj1.y - @obj0.y) * @_value))
 
   _setVec3 : () ->
     new Vec3(@obj0.x + ((@obj1.x - @obj0.x) * @_value), 
@@ -164,7 +164,7 @@ class Animator
       @_current_frame += ff
       if @_current_frame >= @num_frames
         if @_loop
-          reset()
+          @reset()
         
       @_process()
       @_dt = @_dt - (ff * @_frover)
