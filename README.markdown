@@ -3,16 +3,14 @@
 
 ### v0.1.0
 
-![Build Status Images](https://travis-ci.org/OniDaito/pxljs.svg?branch=master)
-
 ## A WebGL Library for CoffeeScript and Vanilla Javascript.
 
-<img src="https://pxljs.section9.co.uk/images/pxl00.png" style="display: inline-block;"/>
-<img src="https://pxljs.section9.co.uk/images/pxl01.png" style="display: inline-block;"/>
-<img src="https://pxljs.section9.co.uk/images/pxl02.png" style="display: inline-block;"/>
-<img src="https://pxljs.section9.co.uk/images/pxl03.png" style="display: inline-block;"/>
-<img src="https://pxljs.section9.co.uk/images/pxl04.png" style="display: inline-block;"/>
-<img src="https://pxljs.section9.co.uk/images/pxl05.png" style="display: inlinei-block;"/>
+<img src="http://pxljs.section9.co.uk/images/pxl00.png" style="display: inline-block;"/>
+<img src="http://pxljs.section9.co.uk/images/pxl01.png" style="display: inline-block;"/>
+<img src="http://pxljs.section9.co.uk/images/pxl02.png" style="display: inline-block;"/>
+<img src="http://pxljs.section9.co.uk/images/pxl03.png" style="display: inline-block;"/>
+<img src="http://pxljs.section9.co.uk/images/pxl04.png" style="display: inline-block;"/>
+<img src="http://pxljs.section9.co.uk/images/pxl05.png" style="display: inlinei-block;"/>
 <br />
 
 PXLjs is a WebGL Library designed to help programmers create 3D programs for the World-Wide-Web using [CoffeeScript](http://coffeescript.org) or normal Javscript. This project is open-source and designed to provide useful functions for beginners without restricting the option to program in raw WebGL.
