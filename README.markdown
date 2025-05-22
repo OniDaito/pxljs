@@ -7,12 +7,12 @@
 
 ## A WebGL Library for CoffeeScript and Vanilla Javascript.
 
-<img src="https://www.pxljs.com/images/pxl00.png" style="display: inline-block;"/>
-<img src="https://www.pxljs.com/images/pxl01.png" style="display: inline-block;"/>
-<img src="https://www.pxljs.com/images/pxl02.png" style="display: inline-block;"/>
-<img src="https://www.pxljs.com/images/pxl03.png" style="display: inline-block;"/>
-<img src="https://www.pxljs.com/images/pxl04.png" style="display: inline-block;"/>
-<img src="https://www.pxljs.com/images/pxl05.png" style="display: inlinei-block;"/>
+<img src="https://pxljs.section9.co.uk/images/pxl00.png" style="display: inline-block;"/>
+<img src="https://pxljs.section9.co.uk/images/pxl01.png" style="display: inline-block;"/>
+<img src="https://pxljs.section9.co.uk/images/pxl02.png" style="display: inline-block;"/>
+<img src="https://pxljs.section9.co.uk/images/pxl03.png" style="display: inline-block;"/>
+<img src="https://pxljs.section9.co.uk/images/pxl04.png" style="display: inline-block;"/>
+<img src="https://pxljs.section9.co.uk/images/pxl05.png" style="display: inlinei-block;"/>
 <br />
 
 PXLjs is a WebGL Library designed to help programmers create 3D programs for the World-Wide-Web using [CoffeeScript](http://coffeescript.org) or normal Javscript. This project is open-source and designed to provide useful functions for beginners without restricting the option to program in raw WebGL.
@@ -22,7 +22,7 @@ PXLjs is a WebGL Library designed to help programmers create 3D programs for the
 
 You can get PXLjs in a variety of ways: 
 
-* As a [zip direct download](http://www.pxljs.com/pxljs.zip) of the minified and standard library from [pxljs.com](http://pxljs.com).
+* As a [zip direct download](http://pxljs.section9.co.uk/pxljs.zip) of the minified and standard library from [pxljs.com](http://pxljs.com).
 * The latest [zip from github](https://github.com/OniDaito/pxljs/archive/master.zip).
 * Visit the [Github page](https://www.github.com/OniDaito/PXLjs) and clone the respository.
 * Directly through npm using the command below.
